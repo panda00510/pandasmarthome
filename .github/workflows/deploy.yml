@@ -54,7 +54,10 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          # 22, not 20: wrangler 4 refuses to run on anything older, and
+          # Node 20 is now deprecated on Actions runners. Vite 8 is happy on
+          # either, so local development on 20 is unaffected.
+          node-version: 22
           cache: npm
 
       - run: npm ci
