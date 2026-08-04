@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Menu, X } from 'lucide-react'
 import { Wordmark } from '../brand/Wordmark'
 import { Button } from '../ui'
+import { useActiveSection } from '../../hooks/motion'
 import { useI18n, type Lang } from '../../i18n/context'
 
 const LANGS: { code: Lang; label: string }[] = [
@@ -13,6 +14,7 @@ export function Header() {
   const { t, lang, setLang } = useI18n()
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const activeSection = useActiveSection(t.nav.items.map((item) => item.id))
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8)
@@ -53,15 +55,29 @@ export function Header() {
         </a>
 
         <nav aria-label="Primary" className="hidden items-center gap-1 lg:flex">
-          {t.nav.items.map((item) => (
-            <a
-              key={item.id}
-              href={`#${item.id}`}
-              className="rounded-full px-3.5 py-2 text-[0.9375rem] font-medium text-ink-600 transition-colors hover:bg-ink-100 hover:text-ink-950"
-            >
-              {item.label}
-            </a>
-          ))}
+          {t.nav.items.map((item) => {
+            const current = item.id === activeSection
+            return (
+              <a
+                key={item.id}
+                href={`#${item.id}`}
+                aria-current={current ? 'true' : undefined}
+                className={`relative rounded-full px-3.5 py-2 text-[0.9375rem] font-medium transition-colors ${
+                  current
+                    ? 'text-ink-950'
+                    : 'text-ink-600 hover:bg-ink-100 hover:text-ink-950'
+                }`}
+              >
+                {item.label}
+                <span
+                  aria-hidden="true"
+                  className={`absolute inset-x-3.5 -bottom-0.5 h-px origin-left bg-bamboo-500 transition-transform duration-300 ${
+                    current ? 'scale-x-100' : 'scale-x-0'
+                  }`}
+                />
+              </a>
+            )
+          })}
         </nav>
 
         <div className="flex items-center gap-2 sm:gap-3">

@@ -27,9 +27,13 @@ export function Process() {
           />
         </div>
 
-        <ol className="relative space-y-2">
+        <ol className="reveal-group relative space-y-2">
           {t.process.steps.map((step, i) => (
-            <li key={step.title} className="relative flex gap-5 rounded-card p-5 sm:gap-6 sm:p-6">
+            <li
+              key={step.title}
+              data-reveal
+              className="relative flex gap-5 rounded-card p-5 transition-colors duration-300 hover:bg-ink-50 sm:gap-6 sm:p-6"
+            >
               <div className="flex flex-col items-center">
                 <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-ink-950 text-[0.8125rem] font-semibold text-paper tabular-nums">
                   {i + 1}

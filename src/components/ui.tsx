@@ -64,6 +64,7 @@ export function SectionHeading({
   const dark = tone === 'dark'
   return (
     <div
+      data-reveal
       className={`max-w-3xl ${align === 'center' ? 'mx-auto text-center' : ''}`}
     >
       <p className={`eyebrow ${dark ? 'text-bamboo-300!' : ''}`}>

@@ -21,9 +21,9 @@ export function Homes() {
       <div className="shell">
         <SectionHeading eyebrow={t.homes.eyebrow} title={t.homes.title} lead={t.homes.lead} />
 
-        <ul className="mt-12 grid gap-4 md:grid-cols-2 lg:mt-16">
+        <ul className="reveal-group mt-12 grid gap-4 md:grid-cols-2 lg:mt-16">
           {t.homes.items.map((item) => (
-            <li key={item.id} className="card flex flex-col overflow-hidden">
+            <li key={item.id} data-reveal className="card group flex flex-col overflow-hidden">
               <img
                 src={IMAGES[item.id]}
                 alt={item.imageAlt}
@@ -31,7 +31,7 @@ export function Homes() {
                 height={675}
                 loading="lazy"
                 decoding="async"
-                className="aspect-[16/9] w-full object-cover"
+                className="aspect-[16/9] w-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04]"
               />
 
               <div className="flex flex-1 flex-col p-6 lg:p-7">

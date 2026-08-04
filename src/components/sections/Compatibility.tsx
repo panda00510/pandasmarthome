@@ -22,11 +22,11 @@ export function Compatibility() {
           third-party logo licensing is not established, and text avoids any
           suggestion of an official partnership.
         */}
-        <ul className="mt-12 grid gap-4 md:grid-cols-2 lg:mt-16 lg:grid-cols-3">
+        <ul className="reveal-group mt-12 grid gap-4 md:grid-cols-2 lg:mt-16 lg:grid-cols-3">
           {t.compatibility.groups.map((group, i) => {
             const Icon = GROUP_ICONS[i] ?? Lightbulb
             return (
-              <li key={group.title} className="card p-6">
+              <li key={group.title} data-reveal className="card spotlight p-6">
                 <div className="flex items-center gap-3">
                   <span className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-ink-100 text-ink-700">
                     <Icon size={17} aria-hidden="true" />

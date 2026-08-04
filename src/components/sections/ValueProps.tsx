@@ -18,11 +18,11 @@ export function ValueProps() {
       <div className="shell">
         <SectionHeading eyebrow={t.value.eyebrow} title={t.value.title} lead={t.value.lead} />
 
-        <ul className="mt-12 grid gap-4 sm:grid-cols-2 lg:mt-16 lg:grid-cols-4">
+        <ul className="reveal-group mt-12 grid gap-4 sm:grid-cols-2 lg:mt-16 lg:grid-cols-4">
           {t.value.items.map((item) => {
             const Icon = ICONS[item.id] ?? Server
             return (
-              <li key={item.id} className="card flex flex-col p-6">
+              <li key={item.id} data-reveal className="card spotlight flex flex-col p-6">
                 <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-bamboo-50 text-bamboo-600 ring-1 ring-bamboo-100">
                   <Icon size={18} aria-hidden="true" />
                 </span>

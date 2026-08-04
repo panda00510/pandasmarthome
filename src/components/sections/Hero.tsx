@@ -9,10 +9,16 @@ export function Hero() {
 
   return (
     <section id="top" className="relative overflow-hidden">
-      {/* Soft brand wash behind the fold. */}
+      {/* Soft brand wash behind the fold, drifting slowly so the fold feels
+          alive rather than printed. Stopped by prefers-reduced-motion. */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(80rem_40rem_at_78%_-10%,rgba(31,138,95,0.13),transparent_60%),radial-gradient(50rem_28rem_at_8%_0%,rgba(12,15,19,0.06),transparent_65%)]"
+        className="pointer-events-none absolute inset-0 -z-10 [animation:drift_26s_ease-in-out_infinite] bg-[radial-gradient(80rem_40rem_at_78%_-10%,rgba(31,138,95,0.15),transparent_60%),radial-gradient(50rem_28rem_at_8%_0%,rgba(12,15,19,0.07),transparent_65%)]"
+      />
+      {/* Faint engineering grid — reads as "system", fades out down the fold. */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 -z-10 opacity-[0.035] [background-image:linear-gradient(to_right,#0c0f13_1px,transparent_1px),linear-gradient(to_bottom,#0c0f13_1px,transparent_1px)] [background-size:64px_64px] [mask-image:linear-gradient(to_bottom,black,transparent_75%)]"
       />
 
       <div className="shell grid items-center gap-12 pt-12 pb-16 sm:pt-16 lg:grid-cols-[minmax(0,0.88fr)_minmax(0,1.12fr)] lg:gap-16 lg:pt-20 lg:pb-28">

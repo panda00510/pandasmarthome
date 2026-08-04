@@ -1,3 +1,4 @@
+import type { PointerEvent } from 'react'
 import { Blinds, Gauge, LayoutDashboard, Lightbulb, Lock, Thermometer } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { Check } from 'lucide-react'
@@ -13,6 +14,20 @@ const ICONS: Record<string, LucideIcon> = {
   energy: Gauge,
 }
 
+/**
+ * Feeds the cursor position to the nearest `.spotlight` card as CSS custom
+ * properties. Delegated from the grid so there is one listener rather than
+ * one per card, and the CSS decides whether to render anything (pointer
+ * devices only).
+ */
+function onPointerMove(event: PointerEvent<HTMLElement>) {
+  const card = (event.target as HTMLElement).closest<HTMLElement>('.spotlight')
+  if (!card) return
+  const rect = card.getBoundingClientRect()
+  card.style.setProperty('--mx', `${event.clientX - rect.left}px`)
+  card.style.setProperty('--my', `${event.clientY - rect.top}px`)
+}
+
 export function Solutions() {
   const { t } = useI18n()
 
@@ -25,13 +40,17 @@ export function Solutions() {
           lead={t.solutions.lead}
         />
 
-        <ul className="mt-12 grid gap-4 md:grid-cols-2 lg:mt-16 lg:grid-cols-3">
+        <ul
+          className="reveal-group mt-12 grid gap-4 md:grid-cols-2 lg:mt-16 lg:grid-cols-3"
+          onPointerMove={onPointerMove}
+        >
           {t.solutions.items.map((item) => {
             const Icon = ICONS[item.id] ?? Lightbulb
             return (
               <li
                 key={item.id}
-                className="card group flex flex-col p-6 transition-shadow duration-300 hover:shadow-lift lg:p-7"
+                data-reveal
+                className="card spotlight group flex flex-col p-6 transition-shadow duration-300 hover:shadow-lift lg:p-7"
               >
                 <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-ink-950 text-paper transition-colors duration-300 group-hover:bg-bamboo-600">
                   <Icon size={19} aria-hidden="true" />

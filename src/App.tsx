@@ -11,10 +11,12 @@ import { Platform } from './components/sections/Platform'
 import { Process } from './components/sections/Process'
 import { Solutions } from './components/sections/Solutions'
 import { ValueProps } from './components/sections/ValueProps'
+import { useReveal } from './hooks/motion'
 import { useI18n } from './i18n/context'
 
 export default function App() {
   const { t } = useI18n()
+  useReveal()
 
   return (
     <>
