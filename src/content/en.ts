@@ -36,13 +36,13 @@ export const en: Content = {
     eyebrow: 'Open smart home · Singapore',
     titleLead: 'A home that answers to you,',
     titleAccent: 'not to the cloud.',
-    lead: 'Panda Smart Home designs, installs and tunes open smart home systems for Singapore apartments and houses. Lights, aircon, curtains, locks and cameras from different brands, running together on one local system you actually own.',
+    lead: 'Lights, aircon, curtains, locks and cameras from different brands — running together on one local system you actually own.',
     primaryCta: 'Plan your system',
     secondaryCta: 'See what we install',
     trust: [
       'Runs locally, keeps working offline',
       'Mix brands without lock-in',
-      'No monthly subscription to switch on a light',
+      'No subscription to switch on a light',
       'Documented and handed over to you',
     ],
     imageAlt:
@@ -63,27 +63,27 @@ export const en: Content = {
   value: {
     eyebrow: 'Why open',
     title: 'Most smart homes break at the seams between brands.',
-    lead: 'Every manufacturer wants its own app, its own account and its own hub. An open system removes those seams: one place to control everything, one place to automate it, and nothing that stops working because a company changed its mind.',
+    lead: 'Every manufacturer wants its own app, its own account and its own hub. An open system removes those seams.',
     items: [
       {
         id: 'local',
         title: 'Local first, private by default',
-        body: 'Your automations run on hardware in your own home. Lights, switches and sensors keep responding when the internet drops, and day-to-day activity data does not have to leave the flat.',
+        body: 'Automations run on hardware in your home. Switches and sensors keep responding when the internet drops.',
       },
       {
         id: 'brands',
         title: 'One system, many brands',
-        body: 'Choose devices on merit — the aircon controller that fits your unit, the lock your family likes, the lights that suit the ceiling. We connect them into a single interface instead of six apps.',
+        body: 'Choose devices on merit, not on which hub you already own. One interface instead of six apps.',
       },
       {
         id: 'nolockin',
-        title: 'No lock-in, no surprise paywalls',
-        body: 'The platform is open source and maintained by a non-profit foundation. There is no subscription standing between you and your own switches, and no single vendor that can strand your setup.',
+        title: 'No lock-in, no paywalls',
+        body: 'Open source, maintained by a non-profit foundation. No subscription between you and your own light switch.',
       },
       {
         id: 'handover',
         title: 'Built to be handed over',
-        body: 'You get the admin credentials, a written device and network inventory, and a walkthrough. If you ever want to take it over yourself — or bring in someone else — nothing is hidden.',
+        body: 'You get the admin credentials, a written device inventory and a walkthrough. Nothing is hidden.',
       },
     ],
   },
@@ -91,72 +91,66 @@ export const en: Content = {
   solutions: {
     eyebrow: 'Solutions',
     title: 'What we design and install',
-    lead: 'Every home gets a different mix. These are the areas we work in most often for Singapore properties, and what a well-executed version of each actually looks like.',
+    lead: 'Every home gets a different mix. These are the areas we work in most often.',
     items: [
       {
         id: 'lighting',
         title: 'Lighting & scenes',
-        body: 'Smart lighting that respects how a room is really used — warm and dim in the evening, bright and neutral for cleaning, and no hunting for the right app at midnight.',
+        body: 'Warm and dim in the evening, bright for cleaning, and no hunting for the right app at midnight.',
         bullets: [
-          'Smart switches, dimmers or smart bulbs, chosen per circuit',
-          'Neutral-wire and no-neutral solutions for older HDB wiring',
-          'Scene control from wall switches, phone or voice',
+          'Smart switches, dimmers or bulbs, chosen per circuit',
+          'No-neutral options for older HDB wiring',
           'Physical switches always keep working',
         ],
       },
       {
         id: 'climate',
         title: 'Aircon & comfort',
-        body: 'Singapore comfort is an aircon and humidity problem. We bring split units and fans into the system so they respond to schedules, presence and actual room conditions.',
+        body: 'Comfort here is an aircon and humidity problem. Split units and fans respond to real room conditions.',
         bullets: [
-          'IR or manufacturer-module control for common split systems',
-          'Room temperature and humidity sensors, not guesswork',
-          'Auto-off when a bedroom window opens or the room empties',
-          'Bedtime and wake-up climate schedules per room',
+          'IR or manufacturer-module control for common split units',
+          'Temperature and humidity sensors, not guesswork',
+          'Auto-off when a window opens or the room empties',
         ],
       },
       {
         id: 'shades',
         title: 'Curtains & blinds',
-        body: 'Motorised tracks and roller blinds integrated properly, so morning light, afternoon heat and privacy are handled without anyone touching a remote.',
+        body: 'Morning light, afternoon heat and privacy handled without anyone touching a remote.',
         bullets: [
           'Motorised curtain tracks, roller and zip blinds',
-          'Sunrise, sunset and west-sun heat scheduling',
+          'Sunrise, sunset and west-sun scheduling',
           'Partial-open positions for glare control',
-          'Coordinated with lighting and aircon scenes',
         ],
       },
       {
         id: 'security',
         title: 'Doors & security',
-        body: 'Digital locks, door sensors and cameras that report to one dashboard — with local recording options so your footage stays in your home.',
+        body: 'Digital locks, door sensors and cameras on one dashboard, with local recording where supported.',
         bullets: [
           'Digital lock and gate status in one view',
           'Door, window and motion sensors with useful alerts',
-          'Local NVR / network camera recording where supported',
-          'Away, home and night modes that change what gets watched',
+          'Away, home and night modes',
         ],
       },
       {
         id: 'control',
         title: 'Control surfaces',
-        body: 'A system is only as good as the way people reach it. We build interfaces for everyone in the household, including guests and helpers who never installed an app.',
+        body: 'A system is only as good as the way people reach it — including guests and helpers who never installed an app.',
         bullets: [
           'Custom phone and tablet dashboards',
           'Wall-mounted tablet or scene keypads',
-          'Voice assistants, including local voice options',
-          'Simple mode for family members who just want a button',
+          'Simple mode for anyone who just wants a button',
         ],
       },
       {
         id: 'energy',
         title: 'Energy & monitoring',
-        body: 'See where the electricity actually goes. Useful for aircon-heavy homes and for anyone with solar or an EV charger.',
+        body: 'See where the electricity actually goes. Useful for aircon-heavy homes, solar or an EV charger.',
         bullets: [
-          'Whole-home or per-circuit energy monitoring',
+          'Whole-home or per-circuit monitoring',
           'Aircon runtime and consumption breakdowns',
-          'Water leak, smoke and gas sensor integration',
-          'Alerts that reach you before a problem becomes damage',
+          'Water leak, smoke and gas sensors',
         ],
       },
     ],
@@ -165,23 +159,23 @@ export const en: Content = {
   platform: {
     eyebrow: 'The platform',
     title: 'Built on Home Assistant',
-    lead: 'We build on Home Assistant, an open-source home automation platform that puts local control and privacy first. It is stewarded by the non-profit Open Home Foundation, which means the software underneath your home cannot simply be sold, discontinued or moved behind a paywall.',
+    lead: 'An open-source platform that puts local control and privacy first, stewarded by the non-profit Open Home Foundation. The software under your home cannot be sold or moved behind a paywall.',
     points: [
       {
         title: 'A very wide device net',
-        body: 'Home Assistant lists over 1,500 integrations — from mainstream smart home brands to aircon systems, inverters, routers and network cameras. If a device speaks a documented protocol, there is usually a way in.',
+        body: 'Over 1,500 integrations — mainstream brands, aircon systems, inverters, routers and cameras.',
       },
       {
         title: 'Automations that read the room',
-        body: 'Rules can combine time, sunlight, presence, temperature, humidity and door state. That is the difference between a light on a timer and a home that simply behaves correctly.',
+        body: 'Rules combine time, sunlight, presence, temperature and door state — not just a timer.',
       },
       {
         title: 'Runs on hardware in your home',
-        body: 'We size and install the controller — official Home Assistant hardware or a small always-on server — sited in your DB box area, TV console or store room with wired network where possible.',
+        body: 'We size and install the controller, on wired network where possible.',
       },
       {
         title: 'Remote access, on your terms',
-        body: 'Secure remote access is optional and configured deliberately. Nothing about the day-to-day operation of the house depends on a remote server being reachable.',
+        body: 'Optional and configured deliberately. Nothing day-to-day depends on a remote server.',
       },
     ],
     protocolsTitle: 'Protocols we work with',
@@ -189,7 +183,7 @@ export const en: Content = {
     protocols: [
       { label: 'Matter', note: 'Cross-brand standard, local by design' },
       { label: 'Thread', note: 'Low-power mesh for battery devices' },
-      { label: 'Zigbee', note: 'Mature mesh for lights, sensors, switches' },
+      { label: 'Zigbee', note: 'Mature mesh for lights and sensors' },
       { label: 'Z-Wave', note: 'Separate radio band, strong for locks' },
       { label: 'Wi-Fi / LAN', note: 'Local APIs where the vendor exposes them' },
       { label: 'Bluetooth LE', note: 'Presence, trackers, compact sensors' },
@@ -197,23 +191,22 @@ export const en: Content = {
       { label: 'MQTT / Modbus', note: 'Inverters, meters, industrial gear' },
     ],
     sourceNote:
-      'Integration count and platform details as published on home-assistant.io. Panda Smart Home is an independent installer and is not affiliated with the Home Assistant project or the Open Home Foundation.',
+      'Integration count and platform details as published on home-assistant.io. Panda Smart Home is an independent installer, not affiliated with the Home Assistant project or the Open Home Foundation.',
   },
 
   homes: {
     eyebrow: 'Your home',
     title: 'Different homes, different constraints',
-    lead: 'A 4-room resale flat, a BTO you have not collected yet and a condo with an MCST all need different plans. What matters is matching the system to the wiring, the renovation timeline and the rules you actually have to live with.',
+    lead: 'A resale flat, a BTO you have not collected yet and a condo with an MCST each need a different plan.',
     items: [
       {
         id: 'bto',
         title: 'BTO & new keys',
         subtitle: 'Best possible timing',
-        body: 'Before renovation is the cheapest moment to get this right. Deciding switch positions, neutral wires, network points and curtain track power at the electrical layout stage costs almost nothing extra — retrofitting them later costs hacking.',
+        body: 'Before renovation is the cheapest moment to get this right. Switch positions, neutral wires and network points cost almost nothing at the layout stage — and hacking later.',
         bullets: [
           'Smart-ready electrical and network layout review',
           'Neutral wires and deeper back boxes where needed',
-          'Curtain track power planned before false ceiling',
           'Coordinated with your ID and electrician',
         ],
         imageAlt: 'HDB blocks in Punggol, Singapore, with solar panels on the rooftops',
@@ -222,11 +215,10 @@ export const en: Content = {
         id: 'hdb',
         title: 'HDB resale & existing flats',
         subtitle: '3-room to executive',
-        body: 'Existing flats can be upgraded without tearing up walls. We survey what your wiring actually supports, then pick devices that fit it — including no-neutral switch options and battery sensors where running cable is not worth it.',
+        body: 'Existing flats upgrade without tearing up walls. We survey what your wiring actually supports, then pick devices that fit it.',
         bullets: [
           'Wiring survey before anything is ordered',
-          'No-neutral and retrofit-friendly device options',
-          'Works around existing lights and aircon you like',
+          'No-neutral and retrofit-friendly options',
           'Staged rollout — start with one area, extend later',
         ],
         imageAlt: 'HDB residential blocks beside a canal near Segar LRT station, Singapore',
@@ -235,12 +227,11 @@ export const en: Content = {
         id: 'condo',
         title: 'Condominiums',
         subtitle: 'Working within MCST rules',
-        body: 'Condos bring their own constraints: renovation windows, restrictions on facade and common-area changes, and building-provided systems that may need to coexist rather than be replaced.',
+        body: 'Renovation windows, facade restrictions, and building systems that need to coexist rather than be replaced.',
         bullets: [
           'Solutions that respect MCST renovation rules',
           'Coexist with building intercom and access systems',
-          'Wireless-first approach where drilling is restricted',
-          'Multi-zone aircon and large-window shading',
+          'Wireless-first where drilling is restricted',
         ],
         imageAlt:
           'High-rise residential towers at Marina Bay, Singapore, seen from below',
@@ -249,11 +240,10 @@ export const en: Content = {
         id: 'landed',
         title: 'Landed & larger homes',
         subtitle: 'Multi-storey, multi-household',
-        body: 'Bigger homes need real network design before they need clever automations. Coverage across floors, a gate and perimeter to cover, and several generations with different expectations of how a light switch should work.',
+        body: 'Bigger homes need real network design before clever automations: coverage across floors, a perimeter to cover, and several generations with different expectations.',
         bullets: [
           'Structured network and mesh coverage planning',
           'Gate, perimeter and multi-camera integration',
-          'Per-floor and per-household zones',
           'Simple physical controls alongside the app',
         ],
         imageAlt: 'Landed houses along a quiet residential street in Singapore',
@@ -269,23 +259,23 @@ export const en: Content = {
     steps: [
       {
         title: 'Consultation',
-        body: 'We talk through how the household actually lives — who is home when, what annoys you today, what your renovation timeline looks like, and what you already own.',
+        body: 'How the household actually lives, what annoys you today, and what you already own.',
       },
       {
         title: 'Survey & system design',
-        body: 'A site visit or detailed floor plan review. We check wiring, network and mounting realities, then produce a written device list, network plan and scope with clear assumptions.',
+        body: 'A site visit or floor plan review, then a written device list, network plan and scope.',
       },
       {
         title: 'Coordination',
-        body: 'We work alongside your interior designer, contractor and electrician so wiring, back boxes and network points land in the right places before the walls close.',
+        body: 'We work alongside your interior designer, contractor and electrician before the walls close.',
       },
       {
         title: 'Installation & configuration',
-        body: 'Devices installed, controller commissioned, network segmented, dashboards built and automations tuned against how the rooms are really used.',
+        body: 'Devices installed, controller commissioned, dashboards built and automations tuned.',
       },
       {
         title: 'Handover & support',
-        body: 'A walkthrough for the household, written documentation, admin credentials, and a support arrangement for changes, additions and the occasional firmware surprise.',
+        body: 'A walkthrough, written documentation, admin credentials, and a support arrangement.',
       },
     ],
     note: 'Electrical work is carried out by appropriately licensed personnel in accordance with Singapore requirements.',
@@ -294,7 +284,7 @@ export const en: Content = {
   compatibility: {
     eyebrow: 'Compatibility',
     title: 'Brands and systems we commonly integrate',
-    lead: 'This is an indicative list of what we encounter in Singapore homes, not a catalogue of what we sell. Some products integrate locally, some only through a cloud API, and some models within a brand behave differently — we confirm the specific model before it goes into a plan.',
+    lead: 'An indicative list of what we meet in Singapore homes, not a catalogue of what we sell. Some products integrate locally, some only through a cloud API — we confirm the specific model before it goes into a plan.',
     groups: [
       {
         title: 'Lighting & switches',
@@ -380,35 +370,35 @@ export const en: Content = {
     items: [
       {
         q: 'What happens when the internet goes down?',
-        a: 'The core of your home keeps working. Automations, wall switches, sensors, scene buttons and local dashboards run on the controller in your home, so lights, aircon and curtains behave normally. Only features that genuinely need the internet — remote access from outside, cloud-only devices and some voice services — pause until the connection returns.',
+        a: 'The core keeps working. Automations, wall switches, sensors and local dashboards all run on the controller in your home. Only remote access and cloud-only devices pause until the connection returns.',
       },
       {
         q: 'Do I need to rewire or hack my walls?',
-        a: 'Usually not. Many upgrades work with existing wiring using retrofit switch modules, no-neutral switches, battery sensors and wireless devices. If you are renovating or collecting a BTO, planning it into the electrical layout is cheaper and cleaner — but it is not a prerequisite.',
+        a: 'Usually not. Retrofit switch modules, no-neutral switches and battery sensors work with existing wiring. Planning it into a renovation is cheaper and cleaner, but it is not a prerequisite.',
       },
       {
         q: 'Can I keep the devices I already bought?',
-        a: 'Very often, yes. Bring your list to the consultation. Many popular brands integrate directly; a few work only through a cloud account, and a small number cannot be integrated in a way we would be comfortable relying on. We tell you which is which before you spend anything more.',
+        a: 'Very often, yes — bring your list to the consultation. Most popular brands integrate directly; a few work only through a cloud account. We tell you which is which before you spend anything more.',
       },
       {
         q: 'Is there a monthly fee?',
-        a: 'Not for the system itself. Home Assistant is open source and runs on hardware in your home. Some optional extras have their own costs — a cloud service you choose to keep, an optional remote-access subscription, or a support plan with us — and those are always stated separately.',
+        a: 'Not for the system itself. Home Assistant is open source and runs on hardware in your home. Optional extras — a cloud service you keep, or a support plan with us — are always stated separately.',
       },
       {
-        q: 'What about my family, or a helper, who will not use an app?',
-        a: 'That is a design requirement, not an afterthought. Physical switches keep working exactly as they always did, and we add wall keypads, scene buttons or a simple wall tablet screen so nobody needs a phone to turn on a light.',
+        q: 'What about family who will not use an app?',
+        a: 'Physical switches keep working exactly as they always did. We add wall keypads, scene buttons or a simple wall tablet so nobody needs a phone to turn on a light.',
       },
       {
         q: 'How private is this, really?',
-        a: 'Substantially more private than a stack of vendor apps, because the automation logic and the history stay on your hardware. It is not absolute: any device you choose that talks to its manufacturer will keep doing so. We flag which devices in your plan reach the internet and why, and offer local-only alternatives where they exist.',
+        a: 'The automation logic and history stay on your hardware, which is a large step up from a stack of vendor apps. It is not absolute: any device you choose that talks to its manufacturer will keep doing so. We flag which ones do, and offer local-only alternatives where they exist.',
       },
       {
         q: 'Can I take over the system myself later?',
-        a: 'Yes, and we build with that in mind. You receive the administrator credentials, documentation of the devices, network and automations, and no proprietary layer that only we can service.',
+        a: 'Yes, and we build with that in mind. You receive the administrator credentials and full documentation, with no proprietary layer only we can service.',
       },
       {
         q: 'How long does an installation take?',
-        a: 'A focused single-area retrofit is often a day or two. A whole-home system coordinated with a renovation is spread across the renovation timeline, with our work scheduled around the electrical and carpentry stages. You get an indicative schedule with the written scope.',
+        a: 'A focused single-area retrofit is often a day or two. A whole-home system runs alongside your renovation timeline. You get an indicative schedule with the written scope.',
       },
     ],
   },
@@ -416,7 +406,7 @@ export const en: Content = {
   contact: {
     eyebrow: 'Get in touch',
     title: 'Tell us about your home',
-    lead: 'Share your home type and what you would like to solve first. We will come back with an honest view of what is worth doing, in what order, and what it depends on.',
+    lead: 'Share your home type and what you would like to solve first. We will come back with an honest view of what is worth doing, and in what order.',
     detailsTitle: 'Contact',
     pendingDetails: 'Contact details to be confirmed',
     pendingDetailsNote:
@@ -478,7 +468,7 @@ export const en: Content = {
 
   cta: {
     title: 'Start with a conversation, not a shopping list.',
-    lead: 'The best systems begin with how a household actually lives. Tell us that, and the device list writes itself.',
+    lead: 'The best systems begin with how a household actually lives.',
     primary: 'Plan your system',
     secondary: 'Read the FAQ',
   },
@@ -490,8 +480,6 @@ export const en: Content = {
     legalTitle: 'Legal',
     contactTitle: 'Contact',
     credits: 'Image credits & licences',
-    // Resolved against import.meta.env.BASE_URL in Footer.tsx — no leading
-    // slash, so it survives being served from a sub-path.
     creditsHref: 'asset-sources.txt',
     rights: 'All rights reserved.',
     builtWith: 'Built on Home Assistant. Independent installer.',
