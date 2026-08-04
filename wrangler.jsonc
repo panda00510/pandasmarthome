@@ -8,6 +8,9 @@
   // served straight from ./dist without running any script.
   "name": "pandasmarthome",
   "compatibility_date": "2026-08-04",
+  // Keeps pandasmarthome.<subdomain>.workers.dev serving. Without this an
+  // explicit deploy can disable the workers.dev route and take the URL down.
+  "workers_dev": true,
   "assets": {
     "directory": "./dist",
     // The site has no client-side routing, so an unknown path is a genuine
