@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+
+    <!--
+      Defaults below are the English SEO baseline served to crawlers before
+      hydration. src/components/Seo.tsx keeps them in sync with the language
+      the visitor actually selects, and adds canonical / og:url / hreflang /
+      JSON-LD once VITE_SITE_URL is configured.
+    -->
+    <title>Panda Smart Home | Open Smart Home Solutions Singapore</title>
+    <meta
+      name="description"
+      content="Panda Smart Home designs and installs open, local-first smart home systems for Singapore HDB, BTO, condo and landed homes — built on Home Assistant, with no vendor lock-in."
+    />
+    <meta
+      name="keywords"
+      content="smart home Singapore, Home Assistant Singapore, HDB smart home, BTO smart home, condo smart home, smart lighting Singapore, smart aircon control, smart curtains, Matter, Zigbee"
+    />
+    <meta name="author" content="Panda Smart Home" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Panda Smart Home" />
+    <meta property="og:title" content="Panda Smart Home | Open Smart Home Solutions Singapore" />
+    <meta
+      property="og:description"
+      content="Open, local-first smart home design and installation for Singapore homes, built on Home Assistant."
+    />
+    <meta property="og:image" content="/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="Panda Smart Home — open smart home solutions in Singapore"
+    />
+    <meta property="og:locale" content="en_SG" />
+    <meta property="og:locale:alternate" content="zh_SG" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Panda Smart Home | Open Smart Home Solutions Singapore" />
+    <meta
+      name="twitter:description"
+      content="Open, local-first smart home design and installation for Singapore homes, built on Home Assistant."
+    />
+    <meta name="twitter:image" content="/og-image.png" />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#fbfbf9" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0c0f13" media="(prefers-color-scheme: dark)" />
+    <meta name="color-scheme" content="light" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

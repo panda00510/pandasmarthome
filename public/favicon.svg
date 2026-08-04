@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" width="40" height="40">
+  <title>Panda Smart Home</title>
+  <!--
+    Temporary brand favicon. Intentionally simple so it can be swapped later.
+    Replace together with src/components/brand/PandaMark.tsx and public/og-image.svg.
+  -->
+  <style>
+    .plate { fill: #0c0f13; }
+    .glyph { fill: #fbfbf9; }
+    .ring  { fill: none; stroke: #fbfbf9; stroke-width: 2.6; }
+    @media (prefers-color-scheme: dark) {
+      .plate { fill: #fbfbf9; }
+      .glyph { fill: #0c0f13; }
+      .ring  { stroke: #0c0f13; }
+    }
+  </style>
+  <rect class="plate" width="40" height="40" rx="9" />
+  <mask id="pandaEyes" maskUnits="userSpaceOnUse" x="0" y="0" width="40" height="40">
+    <rect width="40" height="40" fill="#fff" />
+    <circle cx="15.4" cy="21.1" r="1.55" fill="#000" />
+    <circle cx="24.6" cy="21.1" r="1.55" fill="#000" />
+  </mask>
+  <g mask="url(#pandaEyes)">
+    <circle class="glyph" cx="11.9" cy="12.7" r="4.2" />
+    <circle class="glyph" cx="28.1" cy="12.7" r="4.2" />
+    <circle class="ring" cx="20" cy="22.6" r="11.1" />
+    <ellipse class="glyph" cx="15.2" cy="20.9" rx="3.4" ry="4.5" transform="rotate(-20 15.2 20.9)" />
+    <ellipse class="glyph" cx="24.8" cy="20.9" rx="3.4" ry="4.5" transform="rotate(20 24.8 20.9)" />
+  </g>
+</svg>
