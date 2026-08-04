@@ -481,7 +481,7 @@ export const zh: Content = {
     legalTitle: '法律信息',
     contactTitle: '联系',
     credits: '图片来源与许可',
-    creditsHref: '/asset-sources.txt',
+    creditsHref: 'asset-sources.txt',
     rights: '保留所有权利。',
     builtWith: '基于 Home Assistant 构建，独立安装服务商。',
     disclaimer:

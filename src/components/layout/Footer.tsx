@@ -127,9 +127,10 @@ export function Footer() {
             </h2>
             <ul className="mt-3 space-y-1 text-sm text-ink-700">
               <li>
-                {/* Served from public/ by the prebuild copy of ASSET_SOURCES.md. */}
+                {/* Served from public/ by the prebuild copy of ASSET_SOURCES.md.
+                    BASE_URL keeps it correct when the site lives at a sub-path. */}
                 <a
-                  href={t.footer.creditsHref}
+                  href={import.meta.env.BASE_URL + t.footer.creditsHref}
                   target="_blank"
                   rel="noopener noreferrer"
                   className={LINK_ICON}

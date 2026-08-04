@@ -287,13 +287,45 @@ origin before launch.
 
 ---
 
-## Going live
+## Deployment
+
+### GitHub Pages (configured)
+
+`.github/workflows/deploy.yml` builds and publishes on every push to `main`.
+It runs lint, typecheck and the relay self-check first, so a broken commit
+fails the deploy instead of shipping.
+
+Live at **<https://panda00510.github.io/pandasmarthome/>**.
+
+Because `.env.local` is git-ignored, the CI build reads contact details from
+**repository variables** instead (Settings → Secrets and variables → Actions →
+Variables). Currently set: `VITE_SITE_URL`, `VITE_CONTACT_EMAIL`,
+`VITE_WHATSAPP_NUMBER`. Add `VITE_FORM_ENDPOINT` / `VITE_FORM_ACCESS_KEY`
+there too when you wire up form delivery — the workflow already passes them
+through. Changing a variable needs a re-run of the workflow to take effect.
+
+A project page is served from `/<repo>/`, so the build sets `BASE_PATH`
+accordingly (see `vite.config.ts`). Local `npm run dev` and `npm run preview`
+stay at the root; to reproduce the sub-path build locally:
+
+```bash
+BASE_PATH=/pandasmarthome/ npm run build && BASE_PATH=/pandasmarthome/ npm run preview
+```
+
+> **Known limitation of project pages:** crawlers read `robots.txt` from the
+> domain root (`panda00510.github.io/robots.txt`), which belongs to your user
+> site — not to this repo. The `public/robots.txt` here is effectively ignored
+> until the site moves to its own domain.
+
+### Any other static host
+
+`dist/` is plain static files — Netlify, Vercel, Cloudflare Pages, S3 +
+CloudFront and nginx all work with no server runtime.
 
 1. Set at minimum `VITE_SITE_URL`, plus whichever contact channels are real.
-2. `npm run lint && npm run typecheck && npm run build`
-3. Deploy the `dist/` folder to any static host (Netlify, Vercel, Cloudflare
-   Pages, S3 + CloudFront, nginx). No server runtime is required.
-4. Update `Sitemap:` in `public/robots.txt`.
+2. Leave `BASE_PATH` unset when serving from a domain root.
+3. `npm run lint && npm run typecheck && npm run build`
+4. Point `Sitemap:` in `public/robots.txt` at the real origin.
 5. Re-run `npm run og` if the brand artwork changed.
 
 ---

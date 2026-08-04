@@ -489,7 +489,9 @@ export const en: Content = {
     legalTitle: 'Legal',
     contactTitle: 'Contact',
     credits: 'Image credits & licences',
-    creditsHref: '/asset-sources.txt',
+    // Resolved against import.meta.env.BASE_URL in Footer.tsx — no leading
+    // slash, so it survives being served from a sub-path.
+    creditsHref: 'asset-sources.txt',
     rights: 'All rights reserved.',
     builtWith: 'Built on Home Assistant. Independent installer.',
     disclaimer:

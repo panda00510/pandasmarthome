@@ -1,0 +1,79 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Allow the workflow to publish to Pages.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One deploy at a time; let a newer push finish rather than cancelling it.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      # Fail the deploy on a lint or type error rather than shipping it.
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: node serverless/telegram-relay.test.mjs
+
+      - name: Build
+        env:
+          # Project pages are served from /<repo>/, so the bundle needs a
+          # matching base. github.event.repository.name keeps this correct
+          # even if the repo is renamed.
+          BASE_PATH: /${{ github.event.repository.name }}/
+          # Contact details live in repository variables, not in the repo —
+          # .env.local is git-ignored. Unset variables simply mean the site
+          # hides that channel; nothing is ever invented.
+          VITE_SITE_URL: ${{ vars.VITE_SITE_URL }}
+          VITE_CONTACT_EMAIL: ${{ vars.VITE_CONTACT_EMAIL }}
+          VITE_WHATSAPP_NUMBER: ${{ vars.VITE_WHATSAPP_NUMBER }}
+          VITE_CONTACT_PHONE: ${{ vars.VITE_CONTACT_PHONE }}
+          VITE_FORM_ENDPOINT: ${{ vars.VITE_FORM_ENDPOINT }}
+          VITE_FORM_ACCESS_KEY: ${{ vars.VITE_FORM_ACCESS_KEY }}
+          VITE_COMPANY_NAME: ${{ vars.VITE_COMPANY_NAME }}
+          VITE_COMPANY_NAME_ZH: ${{ vars.VITE_COMPANY_NAME_ZH }}
+          VITE_COMPANY_REGISTRATION_NO: ${{ vars.VITE_COMPANY_REGISTRATION_NO }}
+          VITE_OFFICE_ADDRESS_STREET: ${{ vars.VITE_OFFICE_ADDRESS_STREET }}
+          VITE_OFFICE_ADDRESS_LOCALITY: ${{ vars.VITE_OFFICE_ADDRESS_LOCALITY }}
+          VITE_OFFICE_ADDRESS_POSTAL_CODE: ${{ vars.VITE_OFFICE_ADDRESS_POSTAL_CODE }}
+          VITE_SOCIAL_INSTAGRAM: ${{ vars.VITE_SOCIAL_INSTAGRAM }}
+          VITE_SOCIAL_FACEBOOK: ${{ vars.VITE_SOCIAL_FACEBOOK }}
+          VITE_SOCIAL_YOUTUBE: ${{ vars.VITE_SOCIAL_YOUTUBE }}
+          VITE_SOCIAL_LINKEDIN: ${{ vars.VITE_SOCIAL_LINKEDIN }}
+          VITE_SOCIAL_TELEGRAM: ${{ vars.VITE_SOCIAL_TELEGRAM }}
+          VITE_SOCIAL_XIAOHONGSHU: ${{ vars.VITE_SOCIAL_XIAOHONGSHU }}
+        run: npm run build
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
