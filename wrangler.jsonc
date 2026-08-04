@@ -1,0 +1,18 @@
+{
+  // Cloudflare Worker that serves the built site as static assets.
+  //
+  // Deployed by .github/workflows/deploy.yml, NOT by Cloudflare Workers Builds.
+  // One build, one set of variables, two hosts — see README → Deployment.
+  //
+  // There is no `main` entry: this Worker is assets-only, so requests are
+  // served straight from ./dist without running any script.
+  "name": "pandasmarthome",
+  "compatibility_date": "2026-08-04",
+  "assets": {
+    "directory": "./dist",
+    // The site has no client-side routing, so an unknown path is a genuine
+    // 404. Returning index.html instead would create soft-404s that search
+    // engines index as duplicates of the homepage.
+    "not_found_handling": "none"
+  }
+}

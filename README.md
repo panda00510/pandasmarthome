@@ -320,63 +320,56 @@ BASE_PATH=/pandasmarthome/ npm run build && BASE_PATH=/pandasmarthome/ npm run p
 
 ### Cloudflare mirror
 
-<https://pandasmarthome.xunleix8.workers.dev> serves the same repo via
-Cloudflare Workers Builds (connected to GitHub, rebuilds on push to `main`).
+Both hosts are published by **one** GitHub Actions run
+(`.github/workflows/deploy.yml`). There is a single set of variables — the
+repository variables — so the two copies cannot drift apart.
 
-It is a **mirror, not the primary**. GitHub Pages is canonical, so the
-Cloudflare build must use the *same* `VITE_SITE_URL` as Pages — that makes
-every page on the mirror emit `<link rel="canonical">` pointing back at
-GitHub Pages, which is what stops the two copies competing as duplicate
-content.
+Cloudflare's own Workers Builds is **not** used and must stay disconnected
+(Worker → Settings → Build → **Disconnect**). If both pipelines are live they
+race each other and whichever finishes last wins.
 
-These must be **build-time** variables, not runtime ones. Cloudflare has two
-separate panels and only one of them works here:
+Required GitHub secrets (Settings → Secrets and variables → Actions →
+Secrets):
 
-| Panel | What it does | Use it? |
-| --- | --- | --- |
-| Settings → **Variables and Secrets** | Runtime bindings, handed to a Worker script on each request | ❌ Never reaches the build; a static bundle cannot read these |
-| Settings → **Build** → variables/secrets | Environment of the container that runs `npm run build` | ✅ This one |
-
-Vite inlines `VITE_*` at build time, so a value that is not present while
-`npm run build` runs simply does not exist in the output. Symptom: the deploy
-succeeds and the bundle hash changes, but the site still shows "Contact details
-to be confirmed".
-
-Values (plain text — none are secret):
-
-| Variable | Value |
+| Secret | Where to get it |
 | --- | --- |
-| `VITE_SITE_URL` | the **GitHub Pages** URL, not the workers.dev one |
-| `VITE_CONTACT_EMAIL` | same as the GitHub repo variable |
-| `VITE_WHATSAPP_NUMBER` | same as the GitHub repo variable |
-| `VITE_FORM_ENDPOINT` | `https://api.web3forms.com/submit` |
-| `VITE_FORM_ACCESS_KEY` | same as the GitHub repo variable |
+| `CLOUDFLARE_API_TOKEN` | Cloudflare → My Profile → API Tokens → Create Token → **Edit Cloudflare Workers** template |
+| `CLOUDFLARE_ACCOUNT_ID` | Cloudflare dashboard URL, or Workers overview → Account ID |
 
-Leave `BASE_PATH` **unset** here — Cloudflare serves from the domain root, so
-the default `/` base is correct. Setting it would break every asset URL.
+Until `CLOUDFLARE_API_TOKEN` exists the Cloudflare step is skipped, so the
+Pages deploy still succeeds on its own.
 
-If the two panels are hard to tell apart in the dashboard, sidestep them
-entirely by inlining the values into the **build command**, which always runs
-in a shell:
+The workflow builds **twice** — Pages needs `BASE_PATH=/<repo>/`, Cloudflare
+serves from the domain root and must have it unset. It also fails the run if
+`VITE_*` variables were set but did not make it into the bundle, which is the
+exact failure that made the mirror render as unconfigured.
 
-```bash
-VITE_SITE_URL=https://panda00510.github.io/pandasmarthome VITE_CONTACT_EMAIL=you@example.com VITE_WHATSAPP_NUMBER=6500000000 VITE_FORM_ENDPOINT=https://api.web3forms.com/submit VITE_FORM_ACCESS_KEY=your-key npm run build
-```
+`wrangler.jsonc` defines the Worker: assets-only (no script), serving `dist`,
+with `not_found_handling: "none"` so unknown paths return a real 404 instead
+of soft-404ing the homepage.
 
-To confirm a build actually picked the values up, grep the deployed bundle —
-if this prints nothing, the variables did not reach the build:
+#### Why not Cloudflare Workers Builds
+
+The mirror was originally built by Cloudflare's own Git integration, and it
+could not be made to see the `VITE_*` values. Deploys succeeded and the bundle
+hash changed on every push, yet every variable was absent from the output, so
+the site rendered as though nothing was configured. That held true both with
+Cloudflare's build variables panel and with the values inlined directly into
+the build command — while the identical inline command reproduced perfectly in
+a local POSIX shell, which ruled out Vite.
+
+Rather than keep debugging someone else's build container, the build moved to
+GitHub Actions, which was already producing a correct bundle for Pages. One
+build, one set of variables, no second place for configuration to go stale.
+
+Verify a deploy actually picked the values up:
 
 ```bash
 curl -s https://pandasmarthome.xunleix8.workers.dev/ | grep -o '/assets/index-[^"]*\.js' | head -1
 ```
 
-Two things to be aware of on this deployment:
-
-* Unknown paths currently return `200` with `index.html` (single-page-app
-  fallback). This site has no client-side routing, so that produces soft-404s;
-  switching the Worker's not-found handling to a real 404 is more correct.
-* `robots.txt` *does* work here, unlike on GitHub Pages project sites — but
-  since Pages is canonical, leave the crawl directives pointing there.
+Fetch that bundle and grep it for a known value; the workflow now runs the
+same check itself and fails the build if it comes up empty.
 
 ### Any other static host
 
