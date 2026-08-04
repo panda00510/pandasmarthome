@@ -109,7 +109,9 @@ export function Contact() {
           ...(contact.includes('@') ? { email: contact } : {}),
           name,
           contact,
-          homeType: homeType || null,
+          // Omitted rather than sent as null, so it does not show up as an
+          // empty row in the notification email.
+          ...(homeType ? { homeType } : {}),
           message,
           language: lang,
           submittedAt: new Date().toISOString(),

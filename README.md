@@ -100,20 +100,14 @@ The form has three modes, picked automatically:
 
 | Config | Behaviour |
 | --- | --- |
-| `VITE_FORM_ENDPOINT` set | Posts JSON to your endpoint and shows the success state in-page. Best experience. |
-| Endpoint blank, `VITE_CONTACT_EMAIL` set | **Current setup.** Opens the visitor's mail client with the enquiry pre-filled and addressed to you. No backend needed. |
+| `VITE_FORM_ENDPOINT` set | **Current setup.** Posts JSON to the endpoint and shows the success state in-page. The visitor never leaves the site. |
+| Endpoint blank, `VITE_CONTACT_EMAIL` set | Fallback: opens the visitor's mail client with the enquiry pre-filled. No backend needed, but depends on them having a mail app — webmail-only users and several mobile browsers get nothing. |
 | Both blank | Form disabled with a visible "not configured" notice. Never fakes a submission. |
 
-In mail-client mode the button reads "Send by email", a note explains what will
-happen, and the confirmation says the enquiry only reaches you once the visitor
-presses send in their own mail app — because the page genuinely cannot know
-whether they did.
+Live delivery goes through **Web3Forms** to the address in
+`VITE_CONTACT_EMAIL`; verified end to end from a browser submission.
 
-**Mail-client mode is a stopgap.** It depends on the visitor having a mail app
-configured — webmail-only users and several mobile browsers get nothing when
-they tap. Switch to a real endpoint as soon as you can.
-
-#### Getting submissions delivered without a backend
+#### Other delivery options
 
 | Option | Setup | Notes |
 | --- | --- | --- |
@@ -152,8 +146,15 @@ either add a second `fetch` to the Worker, or forward Telegram alerts manually.
 
 `VITE_FORM_ACCESS_KEY` is sent as `access_key` in the payload. It is a *public*
 submission key, not a secret — it only routes mail to the address that
-registered it — so it is safe in a client bundle. Endpoints that don't use one
-can leave it blank; the field is simply omitted.
+registered it, and cannot read anything back — so it is safe in a client
+bundle. Endpoints that don't use one can leave it blank; the field is omitted.
+
+> **Lock the key to your domains.** Because the key ships in the public bundle,
+> anyone can copy it and POST from anywhere, which means spam straight to your
+> inbox. In the Web3Forms dashboard set **Allowed Domains** to
+> `panda00510.github.io` and `pandasmarthome.xunleix8.workers.dev` (plus any
+> future custom domain). Web3Forms also has a built-in spam filter and an
+> optional hCaptcha if it ever gets abused.
 
 After changing either variable, run `npm run build`. Nothing else changes —
 the form switches to true in-page submission on its own.
@@ -336,6 +337,8 @@ Secrets** (build-time, plain text — none of them are secret):
 | `VITE_SITE_URL` | the **GitHub Pages** URL, not the workers.dev one |
 | `VITE_CONTACT_EMAIL` | same as the GitHub repo variable |
 | `VITE_WHATSAPP_NUMBER` | same as the GitHub repo variable |
+| `VITE_FORM_ENDPOINT` | `https://api.web3forms.com/submit` |
+| `VITE_FORM_ACCESS_KEY` | same as the GitHub repo variable |
 
 Leave `BASE_PATH` **unset** here — Cloudflare serves from the domain root, so
 the default `/` base is correct. Setting it would break every asset URL.
