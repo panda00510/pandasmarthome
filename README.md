@@ -329,8 +329,20 @@ every page on the mirror emit `<link rel="canonical">` pointing back at
 GitHub Pages, which is what stops the two copies competing as duplicate
 content.
 
-Set these in Cloudflare → your Worker → **Settings → Build → Variables and
-Secrets** (build-time, plain text — none of them are secret):
+These must be **build-time** variables, not runtime ones. Cloudflare has two
+separate panels and only one of them works here:
+
+| Panel | What it does | Use it? |
+| --- | --- | --- |
+| Settings → **Variables and Secrets** | Runtime bindings, handed to a Worker script on each request | ❌ Never reaches the build; a static bundle cannot read these |
+| Settings → **Build** → variables/secrets | Environment of the container that runs `npm run build` | ✅ This one |
+
+Vite inlines `VITE_*` at build time, so a value that is not present while
+`npm run build` runs simply does not exist in the output. Symptom: the deploy
+succeeds and the bundle hash changes, but the site still shows "Contact details
+to be confirmed".
+
+Values (plain text — none are secret):
 
 | Variable | Value |
 | --- | --- |
@@ -342,6 +354,21 @@ Secrets** (build-time, plain text — none of them are secret):
 
 Leave `BASE_PATH` **unset** here — Cloudflare serves from the domain root, so
 the default `/` base is correct. Setting it would break every asset URL.
+
+If the two panels are hard to tell apart in the dashboard, sidestep them
+entirely by inlining the values into the **build command**, which always runs
+in a shell:
+
+```bash
+VITE_SITE_URL=https://panda00510.github.io/pandasmarthome VITE_CONTACT_EMAIL=you@example.com VITE_WHATSAPP_NUMBER=6500000000 VITE_FORM_ENDPOINT=https://api.web3forms.com/submit VITE_FORM_ACCESS_KEY=your-key npm run build
+```
+
+To confirm a build actually picked the values up, grep the deployed bundle —
+if this prints nothing, the variables did not reach the build:
+
+```bash
+curl -s https://pandasmarthome.xunleix8.workers.dev/ | grep -o '/assets/index-[^"]*\.js' | head -1
+```
 
 Two things to be aware of on this deployment:
 
