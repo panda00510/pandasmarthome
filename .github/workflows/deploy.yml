@@ -95,10 +95,14 @@ jobs:
         # Skipped automatically until the API token secret exists, so the
         # Pages deploy never fails just because Cloudflare is not set up yet.
         if: env.CLOUDFLARE_API_TOKEN != ''
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        # Invoked directly rather than via cloudflare/wrangler-action, which
+        # pulls in wrangler 3.x by default. An assets-only Worker (no `main`
+        # entry point) needs wrangler 4 — on 3.x it fails with
+        # "Missing entry-point". Pinned exactly so a future wrangler release
+        # cannot break the deploy without a visible commit.
+        run: npx --yes wrangler@4.118.0 deploy
 
   deploy-pages:
     needs: build
