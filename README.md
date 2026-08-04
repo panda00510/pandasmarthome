@@ -317,6 +317,37 @@ BASE_PATH=/pandasmarthome/ npm run build && BASE_PATH=/pandasmarthome/ npm run p
 > site — not to this repo. The `public/robots.txt` here is effectively ignored
 > until the site moves to its own domain.
 
+### Cloudflare mirror
+
+<https://pandasmarthome.xunleix8.workers.dev> serves the same repo via
+Cloudflare Workers Builds (connected to GitHub, rebuilds on push to `main`).
+
+It is a **mirror, not the primary**. GitHub Pages is canonical, so the
+Cloudflare build must use the *same* `VITE_SITE_URL` as Pages — that makes
+every page on the mirror emit `<link rel="canonical">` pointing back at
+GitHub Pages, which is what stops the two copies competing as duplicate
+content.
+
+Set these in Cloudflare → your Worker → **Settings → Build → Variables and
+Secrets** (build-time, plain text — none of them are secret):
+
+| Variable | Value |
+| --- | --- |
+| `VITE_SITE_URL` | the **GitHub Pages** URL, not the workers.dev one |
+| `VITE_CONTACT_EMAIL` | same as the GitHub repo variable |
+| `VITE_WHATSAPP_NUMBER` | same as the GitHub repo variable |
+
+Leave `BASE_PATH` **unset** here — Cloudflare serves from the domain root, so
+the default `/` base is correct. Setting it would break every asset URL.
+
+Two things to be aware of on this deployment:
+
+* Unknown paths currently return `200` with `index.html` (single-page-app
+  fallback). This site has no client-side routing, so that produces soft-404s;
+  switching the Worker's not-found handling to a real 404 is more correct.
+* `robots.txt` *does* work here, unlike on GitHub Pages project sites — but
+  since Pages is canonical, leave the crawl directives pointing there.
+
 ### Any other static host
 
 `dist/` is plain static files — Netlify, Vercel, Cloudflare Pages, S3 +
