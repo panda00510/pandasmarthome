@@ -120,7 +120,35 @@ they tap. Switch to a real endpoint as soon as you can.
 | **Web3Forms** | Enter your email at <https://web3forms.com>, they email you an Access Key. No account or password. | Works anywhere, including GitHub Pages. Set `VITE_FORM_ENDPOINT=https://api.web3forms.com/submit` and `VITE_FORM_ACCESS_KEY=<key>`. |
 | **Netlify Forms / Cloudflare Pages** | Built into the host if you deploy there. | Submissions land in the host dashboard with email notifications and spam filtering; no third party. Requires deploying on that host. |
 | **Formspree / Basin** | Free tier, but needs an account. | Same shape — set `VITE_FORM_ENDPOINT` to the form URL. |
+| **Telegram** | Deploy `serverless/telegram-relay.js` as a Cloudflare Worker (free, no CLI). | Instant push to your phone. **The bot token must stay in the Worker** — see below. |
 | **Your own API route** | Any serverless function. | Accepts the JSON below and does whatever you want with it. |
+
+#### Telegram delivery
+
+`serverless/telegram-relay.js` is a ready-to-paste Cloudflare Worker that
+forwards submissions into a Telegram chat. Deployment steps are in the comment
+at the top of that file; it takes about five minutes and needs no CLI.
+
+**Never call the Telegram API directly from the site.** `VITE_*` values are
+inlined into the public JS bundle, so a bot token placed there is readable by
+anyone — and a leaked token lets them impersonate the bot, call `getUpdates` to
+read every message sent to it, and rewrite its webhook. The Worker exists
+purely to keep the token server-side; the browser only ever talks to the
+Worker, which validates the request origin so it cannot be used as an open
+relay.
+
+Once deployed, point `VITE_FORM_ENDPOINT` at the Worker URL and rebuild. No
+site code changes.
+
+Run its self-check with:
+
+```bash
+node serverless/telegram-relay.test.mjs
+```
+
+Telegram is a notification channel, not an archive — messages are easy to lose
+in a busy chat. If enquiries matter commercially, keep an emailed copy too:
+either add a second `fetch` to the Worker, or forward Telegram alerts manually.
 
 `VITE_FORM_ACCESS_KEY` is sent as `access_key` in the payload. It is a *public*
 submission key, not a secret — it only routes mail to the address that
@@ -166,6 +194,7 @@ any submission where it is non-empty as spam.
 ```
 public/              favicon, social card, app icons, robots.txt, manifest
 scripts/make-og.mjs  rasterises the brand SVGs into PNGs (npm run og)
+serverless/          optional Cloudflare Worker: form -> Telegram relay
 src/
   index.css          the whole design system: colour, type, spacing, components
   config/
