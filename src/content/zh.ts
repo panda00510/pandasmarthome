@@ -184,6 +184,7 @@ export const zh: Content = {
       },
     ],
     protocolsTitle: '我们支持的协议',
+    hubLabel: '你的家',
     protocols: [
       { label: 'Matter', note: '跨品牌标准，设计上即为本地通信' },
       { label: 'Thread', note: '适合电池设备的低功耗网状网络' },

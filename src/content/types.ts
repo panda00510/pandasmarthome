@@ -56,6 +56,8 @@ export type Content = {
     lead: string
     points: { title: string; body: string }[]
     protocolsTitle: string
+    /** Centre of the protocol diagram — what everything connects into. */
+    hubLabel: string
     protocols: { label: string; note: string }[]
     sourceNote: string
   }

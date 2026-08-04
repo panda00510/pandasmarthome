@@ -185,6 +185,7 @@ export const en: Content = {
       },
     ],
     protocolsTitle: 'Protocols we work with',
+    hubLabel: 'Your home',
     protocols: [
       { label: 'Matter', note: 'Cross-brand standard, local by design' },
       { label: 'Thread', note: 'Low-power mesh for battery devices' },

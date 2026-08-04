@@ -184,6 +184,11 @@
     html {
       scroll-behavior: auto;
     }
+    /* SMIL animation ignores animation-duration, so the protocol diagram's
+       moving parts have to be removed rather than sped up. */
+    .protocol-packet {
+      display: none;
+    }
     *,
     *::before,
     *::after {

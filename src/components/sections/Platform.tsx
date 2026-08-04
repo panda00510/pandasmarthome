@@ -1,4 +1,5 @@
 import haLogo from '../../assets/brands/home-assistant-logo.png'
+import { ProtocolHub } from '../graphics/ProtocolHub'
 import { SectionHeading } from '../ui'
 import { useI18n } from '../../i18n/context'
 
@@ -56,7 +57,12 @@ export function Platform() {
           <h3 className="text-sm font-semibold tracking-wide text-ink-300">
             {t.platform.protocolsTitle}
           </h3>
-          <ul className="reveal-group mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          {/* Diagram on desktop, plain list below lg where it cannot fit. */}
+          <div className="hidden lg:block">
+            <ProtocolHub />
+          </div>
+
+          <ul className="reveal-group mt-5 grid gap-3 sm:grid-cols-2 lg:hidden">
             {t.platform.protocols.map((protocol) => (
               <li
                 key={protocol.label}
