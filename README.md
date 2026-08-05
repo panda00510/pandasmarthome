@@ -248,8 +248,10 @@ through components:
 * **Favicon** — `public/favicon.svg` (theme-aware; inverts in dark mode)
 * **Social card** — `public/og-image.svg` → `npm run og`
 
-The favicon and share card are deliberately simple placeholders pending a
-final identity. Replace the three files above together, then run `npm run og`.
+The glyph is a vector redraw of a reference supplied by the site owner. Its
+geometry is duplicated across `PandaMark.tsx`, `favicon.svg` and
+`og-image.svg` — change all three together, then run `npm run og` to
+regenerate the PNG derivatives.
 
 The panda motif is used sparingly — logo, favicon and share card only — and
 never inside page sections.
