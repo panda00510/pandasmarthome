@@ -397,3 +397,15 @@ certifications, partner relationships, customer counts or prices**. Anything of
 that kind must be added deliberately, with evidence.
 
 Asset provenance and licences: [ASSET_SOURCES.md](ASSET_SOURCES.md).
+
+## 3D 样板间 `/showroom/`
+
+`public/showroom/` 是一个独立构建的 3D 智能家居样板间，Vite 会把它原样复制到 `dist/`，
+本仓库的构建流程、lint、typecheck 都不参与它。
+
+- 源码不在本仓库，产物在这里
+- 它的资源用**相对路径**引用，所以 GitHub Pages（`/pandasmarthome/`）和
+  Cloudflare（`/`）两个 base 都能直接工作，不需要为它构建两次
+- 语言跟随 `?lang=` 参数，和站点一致：`/showroom/?lang=zh`
+
+更新时整个替换 `public/showroom/` 目录即可。
