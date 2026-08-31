@@ -167,8 +167,8 @@ function Television() {
   })
   return (
     <group>
-      <B p={[-3, 1.5, -3.8]} s={[2.02, 1.17, 0.07]} c="#15181c" r={0.4} />
-      <mesh position={[-3, 1.5, -3.74]}>
+      <B p={[-5.4, 1.52, -5.3]} s={[2.02, 1.17, 0.07]} c="#15181c" r={0.4} />
+      <mesh position={[-5.4, 1.52, -5.24]}>
         <planeGeometry args={[1.94, 1.09]} />
         <meshStandardMaterial ref={screen} color="#0d1014" emissive="#7fb8ff" emissiveIntensity={0} roughness={0.25} />
       </mesh>

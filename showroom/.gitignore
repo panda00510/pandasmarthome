@@ -22,10 +22,3 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-
-# Poly Haven 原始下载素材，重新烘焙时按 tools/README.md 重下即可
-assets-src/
-# Blender 中间产物（.blend / 未压缩贴图）
-tools/_work/
-__pycache__/
-.DS_Store

@@ -23,7 +23,7 @@ const MODEL_URL = import.meta.env.VITE_HOUSE_MODEL || null
 
 export const VIEWS = {
   overview: { name: { en: 'Overview', zh: '全屋' }, pos: [11.8, 10.4, 14.1], target: [0.2, 1.5, -1.2] },
-  living: { name: { en: 'Living', zh: '客厅' }, pos: [-6.8, 2.6, -3.4], target: [-4.8, 0.9, 2.2] },
+  living: { name: { en: 'Living', zh: '客厅' }, pos: [-7.0, 2.15, 4.0], target: [-5.2, 1.2, -4.9] },
   bedroom: { name: { en: 'Bedroom', zh: '主卧' }, pos: [3.2, 2.4, -0.6], target: [1.3, 0.85, -4.4] },
   second: { name: { en: 'Second', zh: '次卧' }, pos: [3.2, 2.4, 2.2], target: [1.3, 0.85, 4.8] },
   kitchen: { name: { en: 'Kitchen', zh: '厨房' }, pos: [5.2, 2.5, -0.7], target: [7.0, 1.0, -4.6] },
