@@ -1,0 +1,30 @@
+# ── Panda 智能家居样板间 · Apache/cPanel 部署配置 ──
+
+# .glb 和 .hdr 在多数共享主机上没有默认 MIME 类型，
+# 不声明的话浏览器可能拒绝加载或按 text/plain 处理
+AddType model/gltf-binary .glb
+AddType image/vnd.radiance .hdr
+AddType font/woff2 .woff2
+
+# 压缩：JS 未压缩 1.5 MB，gzip 后约 440 KB，差别很大
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/css
+  AddOutputFilterByType DEFLATE application/javascript application/json
+  AddOutputFilterByType DEFLATE image/svg+xml
+  # 二进制资源本身已压缩过，再压是浪费 CPU
+</IfModule>
+
+# 缓存：构建产物文件名带 hash，可以长期缓存；HTML 必须每次校验
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresDefault                        "access plus 1 month"
+  ExpiresByType text/html               "access plus 0 seconds"
+  ExpiresByType application/javascript  "access plus 1 year"
+  ExpiresByType text/css                "access plus 1 year"
+  ExpiresByType model/gltf-binary       "access plus 1 year"
+  ExpiresByType image/vnd.radiance      "access plus 1 year"
+</IfModule>
+
+<IfModule mod_headers.c>
+  Header set Cache-Control "no-cache" "expr=%{CONTENT_TYPE} =~ m#text/html#"
+</IfModule>

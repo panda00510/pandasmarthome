@@ -29,6 +29,7 @@ export const en: Content = {
       { id: 'process', label: 'How it works' },
       { id: 'faq', label: 'FAQ' },
     ],
+    showroom: '3D Showroom',
     cta: 'Plan your system',
   },
 

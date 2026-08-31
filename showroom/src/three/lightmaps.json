@@ -1,0 +1,45 @@
+{
+  "size": 1024,
+  "samples": 160,
+  "atlases": [
+    {
+      "file": "lightmap_0.png",
+      "scales": [
+        2.2632181644439697,
+        4.1297526359558105,
+        1.0789483785629272
+      ],
+      "channels": {
+        "R": "light.living_main",
+        "G": "light.living_strip",
+        "B": "light.dining_pendant"
+      }
+    },
+    {
+      "file": "lightmap_1.png",
+      "scales": [
+        1.081717610359192,
+        5.827226161956787,
+        1.282879114151001
+      ],
+      "channels": {
+        "R": "light.bedroom_main",
+        "G": "light.bedroom_bedside",
+        "B": "light.second_main"
+      }
+    },
+    {
+      "file": "lightmap_2.png",
+      "scales": [
+        1.3669687509536743,
+        3.654156446456909,
+        4.509090900421143
+      ],
+      "channels": {
+        "R": "light.kitchen_spot",
+        "G": "light.bath_mirror",
+        "B": "light.hall_down"
+      }
+    }
+  ]
+}

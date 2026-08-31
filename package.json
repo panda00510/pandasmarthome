@@ -11,7 +11,8 @@
     "typecheck": "tsc -b --noEmit",
     "og": "node scripts/make-og.mjs",
     "predev": "node scripts/copy-credits.mjs",
-    "prebuild": "node scripts/copy-credits.mjs"
+    "prebuild": "node scripts/copy-credits.mjs",
+    "showroom": "npm --prefix showroom ci && npm --prefix showroom run build && rm -rf public/showroom && cp -R showroom/dist public/showroom && rm -f public/showroom/.htaccess"
   },
   "dependencies": {
     "lucide-react": "^1.28.0",
