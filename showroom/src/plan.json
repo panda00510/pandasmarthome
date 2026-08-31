@@ -1,0 +1,527 @@
+{
+  "_comment": "户型的唯一数据源。Blender 脚本 (tools/plan.py) 和 three.js (utils.js) 都读这一份，避免两边漂移。坐标是 three.js 的 Y-up：x 横向、y 向上、z 纵深。",
+  "width": 18,
+  "depth": 11,
+  "wallH": 2.75,
+  "wallT": 0.16,
+  "rooms": {
+    "living": {
+      "x0": -9,
+      "x1": -1,
+      "z0": -5.5,
+      "z1": 5.5,
+      "floor": "woodFloor",
+      "name": {
+        "en": "Living Room",
+        "zh": "客厅"
+      }
+    },
+    "bedroom": {
+      "x0": -1,
+      "x1": 4,
+      "z0": -5.5,
+      "z1": 0,
+      "floor": "woodFloorWarm",
+      "name": {
+        "en": "Bedroom",
+        "zh": "主卧"
+      }
+    },
+    "kitchen": {
+      "x0": 4,
+      "x1": 9,
+      "z0": -5.5,
+      "z1": 0,
+      "floor": "tile",
+      "name": {
+        "en": "Kitchen",
+        "zh": "厨房"
+      }
+    },
+    "hall": {
+      "x0": -1,
+      "x1": 9,
+      "z0": 0,
+      "z1": 1.5,
+      "floor": "tile",
+      "name": {
+        "en": "Hallway",
+        "zh": "走廊"
+      }
+    },
+    "second": {
+      "x0": -1,
+      "x1": 4,
+      "z0": 1.5,
+      "z1": 5.5,
+      "floor": "woodFloorWarm",
+      "name": {
+        "en": "Second Bedroom",
+        "zh": "次卧"
+      }
+    },
+    "bath": {
+      "x0": 4,
+      "x1": 9,
+      "z0": 1.5,
+      "z1": 5.5,
+      "floor": "tile",
+      "name": {
+        "en": "Bathroom",
+        "zh": "卫生间"
+      }
+    }
+  },
+  "exterior": [
+    {
+      "id": "north",
+      "axis": "x",
+      "at": -5.5,
+      "from": -9,
+      "to": 9,
+      "holes": [
+        {
+          "from": 0.2,
+          "to": 3.2,
+          "y0": 0.5,
+          "y1": 2.35,
+          "glass": true
+        },
+        {
+          "from": 5.2,
+          "to": 8.2,
+          "y0": 0.95,
+          "y1": 2.2,
+          "glass": true
+        }
+      ]
+    },
+    {
+      "id": "south",
+      "axis": "x",
+      "at": 5.5,
+      "from": -9,
+      "to": 9,
+      "transparent": true,
+      "holes": [
+        {
+          "from": -8.2,
+          "to": -2.4,
+          "y0": 0,
+          "y1": 2.4,
+          "glass": true
+        },
+        {
+          "from": 0.2,
+          "to": 3.2,
+          "y0": 0,
+          "y1": 2.4,
+          "glass": true
+        },
+        {
+          "from": 5.4,
+          "to": 7.4,
+          "y0": 1.0,
+          "y1": 2.2,
+          "glass": true
+        }
+      ]
+    },
+    {
+      "id": "west",
+      "axis": "z",
+      "at": -9,
+      "from": -5.5,
+      "to": 5.5,
+      "holes": [
+        {
+          "from": -3.2,
+          "to": 1.8,
+          "y0": 0.45,
+          "y1": 2.35,
+          "glass": true
+        }
+      ]
+    },
+    {
+      "id": "east",
+      "axis": "z",
+      "at": 9,
+      "from": -5.5,
+      "to": 5.5,
+      "holes": [
+        {
+          "from": -4.4,
+          "to": -1.6,
+          "y0": 0.95,
+          "y1": 2.2,
+          "glass": true
+        }
+      ]
+    }
+  ],
+  "interior": [
+    {
+      "id": "living_east",
+      "axis": "z",
+      "at": -1,
+      "from": -5.5,
+      "to": 5.5,
+      "holes": [
+        {
+          "from": 0,
+          "to": 1.5,
+          "y0": 0,
+          "y1": 2.75
+        }
+      ]
+    },
+    {
+      "id": "bed_kitchen",
+      "axis": "z",
+      "at": 4,
+      "from": -5.5,
+      "to": 0,
+      "holes": []
+    },
+    {
+      "id": "second_bath",
+      "axis": "z",
+      "at": 4,
+      "from": 1.5,
+      "to": 5.5,
+      "holes": []
+    },
+    {
+      "id": "hall_north",
+      "axis": "x",
+      "at": 0,
+      "from": -1,
+      "to": 9,
+      "holes": [
+        {
+          "from": 0.6,
+          "to": 1.7,
+          "y0": 0,
+          "y1": 2.1,
+          "door": "bedroom"
+        },
+        {
+          "from": 5.6,
+          "to": 6.7,
+          "y0": 0,
+          "y1": 2.1,
+          "door": "kitchen"
+        }
+      ]
+    },
+    {
+      "id": "hall_south",
+      "axis": "x",
+      "at": 1.5,
+      "from": -1,
+      "to": 9,
+      "holes": [
+        {
+          "from": 0.6,
+          "to": 1.7,
+          "y0": 0,
+          "y1": 2.1,
+          "door": "second"
+        },
+        {
+          "from": 5.6,
+          "to": 6.7,
+          "y0": 0,
+          "y1": 2.1,
+          "door": "bath"
+        }
+      ]
+    }
+  ],
+  "lamps": [
+    {
+      "id": "light.living_main",
+      "room": "living",
+      "bake": true,
+      "pos": [
+        -5.4,
+        2.5,
+        -1.6
+      ],
+      "power": 130,
+      "kelvin": 3200,
+      "kind": "ceiling",
+      "size": 0.62
+    },
+    {
+      "id": "light.living_strip",
+      "room": "living",
+      "bake": true,
+      "pos": [
+        -5.4,
+        2.56,
+        -5.2
+      ],
+      "power": 62,
+      "kelvin": 2800,
+      "kind": "strip",
+      "size": [
+        5.6,
+        0.06
+      ]
+    },
+    {
+      "id": "light.dining_pendant",
+      "room": "living",
+      "bake": true,
+      "pos": [
+        -4.6,
+        2.0,
+        3.3
+      ],
+      "power": 55,
+      "kelvin": 2900,
+      "kind": "pendant",
+      "size": 0.34
+    },
+    {
+      "id": "light.living_floor",
+      "room": "living",
+      "bake": false,
+      "pos": [
+        -8.1,
+        1.55,
+        0.6
+      ],
+      "power": 42,
+      "kelvin": 2700,
+      "kind": "floor",
+      "size": 0.28
+    },
+    {
+      "id": "light.bedroom_main",
+      "room": "bedroom",
+      "bake": true,
+      "pos": [
+        1.5,
+        2.5,
+        -3.0
+      ],
+      "power": 85,
+      "kelvin": 4000,
+      "kind": "ceiling",
+      "size": 0.5
+    },
+    {
+      "id": "light.bedroom_bedside",
+      "room": "bedroom",
+      "bake": true,
+      "pos": [
+        0.15,
+        0.62,
+        -4.7
+      ],
+      "power": 22,
+      "kelvin": 2700,
+      "kind": "table",
+      "size": 0.18
+    },
+    {
+      "id": "light.second_main",
+      "room": "second",
+      "bake": true,
+      "pos": [
+        1.5,
+        2.5,
+        3.5
+      ],
+      "power": 78,
+      "kelvin": 4000,
+      "kind": "ceiling",
+      "size": 0.46
+    },
+    {
+      "id": "light.kitchen_spot",
+      "room": "kitchen",
+      "bake": true,
+      "pos": [
+        6.5,
+        2.52,
+        -2.6
+      ],
+      "power": 74,
+      "kelvin": 5000,
+      "kind": "spots",
+      "size": 0.2
+    },
+    {
+      "id": "light.bath_mirror",
+      "room": "bath",
+      "bake": true,
+      "pos": [
+        6.5,
+        1.85,
+        5.2
+      ],
+      "power": 40,
+      "kelvin": 4300,
+      "kind": "strip",
+      "size": [
+        1.4,
+        0.05
+      ]
+    },
+    {
+      "id": "light.hall_down",
+      "room": "hall",
+      "bake": true,
+      "pos": [
+        4.0,
+        2.52,
+        0.75
+      ],
+      "power": 46,
+      "kelvin": 3500,
+      "kind": "spots",
+      "size": 0.16
+    }
+  ],
+  "occluders": [
+    [
+      "sofa",
+      -5.4,
+      0.42,
+      1.2,
+      2.9,
+      0.84,
+      1.0
+    ],
+    [
+      "coffee",
+      -5.4,
+      0.36,
+      -0.6,
+      1.5,
+      0.06,
+      0.8
+    ],
+    [
+      "tv_console",
+      -5.4,
+      0.22,
+      -5.0,
+      2.8,
+      0.44,
+      0.44
+    ],
+    [
+      "dining_top",
+      -4.6,
+      0.72,
+      3.3,
+      1.9,
+      0.06,
+      1.0
+    ],
+    [
+      "sideboard",
+      -8.6,
+      0.35,
+      -2.6,
+      0.42,
+      0.7,
+      1.8
+    ],
+    [
+      "plant",
+      -1.9,
+      0.6,
+      4.6,
+      0.6,
+      1.2,
+      0.6
+    ],
+    [
+      "bed",
+      1.5,
+      0.42,
+      -3.3,
+      1.95,
+      0.85,
+      2.15
+    ],
+    [
+      "wardrobe",
+      3.55,
+      1.15,
+      -1.6,
+      0.62,
+      2.3,
+      2.1
+    ],
+    [
+      "bed2",
+      1.4,
+      0.38,
+      3.6,
+      1.35,
+      0.75,
+      1.95
+    ],
+    [
+      "desk",
+      3.5,
+      0.6,
+      4.8,
+      0.6,
+      0.06,
+      1.4
+    ],
+    [
+      "counter",
+      6.5,
+      0.45,
+      -5.1,
+      3.6,
+      0.9,
+      0.62
+    ],
+    [
+      "island",
+      6.4,
+      0.45,
+      -2.4,
+      1.7,
+      0.9,
+      0.85
+    ],
+    [
+      "fridge",
+      8.4,
+      0.9,
+      -3.8,
+      0.75,
+      1.85,
+      0.7
+    ],
+    [
+      "vanity",
+      6.5,
+      0.42,
+      5.1,
+      1.8,
+      0.85,
+      0.55
+    ],
+    [
+      "shower",
+      8.2,
+      1.05,
+      2.6,
+      1.3,
+      2.1,
+      1.6
+    ]
+  ]
+}

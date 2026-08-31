@@ -29,6 +29,7 @@ export const zh: Content = {
       { id: 'process', label: '服务流程' },
       { id: 'faq', label: '常见问题' },
     ],
+    showroom: '3D 样板间',
     cta: '规划我的系统',
   },
 

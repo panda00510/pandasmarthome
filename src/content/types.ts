@@ -19,6 +19,9 @@ export type Content = {
   }
   nav: {
     items: NavItem[]
+    /** Label for the 3D showroom link. Not a NavItem: those are in-page
+     *  anchors, this one leaves the page. */
+    showroom: string
     cta: string
   }
   hero: {

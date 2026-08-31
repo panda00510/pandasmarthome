@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Menu, X } from 'lucide-react'
+import { Menu, X, Box } from 'lucide-react'
 import { Wordmark } from '../brand/Wordmark'
 import { Button } from '../ui'
 import { useActiveSection } from '../../hooks/motion'
@@ -13,6 +13,9 @@ const LANGS: { code: Lang; label: string }[] = [
 export function Header() {
   const { t, lang, setLang } = useI18n()
   const [open, setOpen] = useState(false)
+  // The showroom is a separate build served from /showroom/. BASE_URL keeps it
+  // correct on both hosts, and ?lang carries the current language across.
+  const showroomHref = `${import.meta.env.BASE_URL}showroom/?lang=${lang}`
   const [scrolled, setScrolled] = useState(false)
   const activeSection = useActiveSection(t.nav.items.map((item) => item.id))
 
@@ -78,6 +81,14 @@ export function Header() {
               </a>
             )
           })}
+
+          <a
+            href={showroomHref}
+            className="ml-1 inline-flex items-center gap-1.5 rounded-full px-3.5 py-2 text-[0.9375rem] font-medium text-ink-600 transition-colors hover:bg-ink-100 hover:text-ink-950"
+          >
+            <Box size={15} aria-hidden="true" />
+            {t.nav.showroom}
+          </a>
         </nav>
 
         <div className="flex items-center gap-2 sm:gap-3">
@@ -117,6 +128,14 @@ export function Header() {
               {item.label}
             </a>
           ))}
+          <a
+            href={showroomHref}
+            onClick={() => setOpen(false)}
+            className="inline-flex items-center gap-2 rounded-xl px-3 py-3 text-base font-medium text-ink-800 transition-colors hover:bg-ink-100"
+          >
+            <Box size={17} aria-hidden="true" />
+            {t.nav.showroom}
+          </a>
           <Button
             as="a"
             href="#contact"
