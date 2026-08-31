@@ -59,8 +59,23 @@ jobs:
           # either, so local development on 20 is unaffected.
           node-version: 22
           cache: npm
+          # Both lockfiles, or the showroom's dependencies reinstall from
+          # scratch on every run.
+          cache-dependency-path: |
+            package-lock.json
+            showroom/package-lock.json
 
       - run: npm ci
+
+      # --- The 3D showroom ---------------------------------------------------
+      # Built once and copied into both site builds. Its assets use relative
+      # paths, so one output works under either base — unlike the site itself,
+      # which has to be built twice.
+      - name: Build the 3D showroom
+        working-directory: showroom
+        run: |
+          npm ci
+          npm run build
 
       # Fail the deploy on a lint or type error rather than shipping it.
       - run: npm run lint
@@ -74,6 +89,9 @@ jobs:
         env:
           BASE_PATH: /${{ github.event.repository.name }}/
         run: npm run build
+
+      - name: Add the showroom to the Pages build
+        run: cp -R showroom/dist dist/showroom
 
       - name: Fail if contact details did not reach the bundle
         run: |
@@ -93,6 +111,9 @@ jobs:
       # differs between the two hosts.
       - name: Build for Cloudflare
         run: npm run build
+
+      - name: Add the showroom to the Cloudflare build
+        run: cp -R showroom/dist dist/showroom
 
       - name: Deploy to Cloudflare
         # Skipped automatically until the API token secret exists, so the
