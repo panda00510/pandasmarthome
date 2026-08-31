@@ -408,14 +408,20 @@ Asset provenance and licences: [ASSET_SOURCES.md](ASSET_SOURCES.md).
 cd showroom
 npm ci
 npm run dev      # 独立开发，默认 5173
-npm run build    # 产物在 showroom/dist/
 ```
 
-部署时由 `.github/workflows/deploy.yml` 构建一次，复制进两次站点构建的 `dist/showroom/`。
+产物**不进版本库** —— `.github/workflows/deploy.yml` 在部署时构建一次，
+复制进两次站点构建的 `dist/showroom/`。想在本地完整预览（站点 + 样板间）：
+
+```bash
+npm run build:all
+npm run preview
+```
+
 它的资源用**相对路径**引用，所以 Pages（`/pandasmarthome/`）和 Cloudflare（`/`）
 两个 base 共用同一份产物，不像本站那样需要构建两遍。
 
 语言跟随本站的 `?lang=` 参数：`/showroom/?lang=zh` 直接以中文打开。
 
-`showroom/tools/` 是 Blender 烘焙管线（全局光照烘成贴图），
+`showroom/tools/` 是 Blender 烘焙管线（把全局光照烘成贴图），
 用法见 [showroom/tools/README.md](showroom/tools/README.md)。
