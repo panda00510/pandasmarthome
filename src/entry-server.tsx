@@ -62,6 +62,10 @@ ${(['en', 'zh'] as const)
   </url>`,
   )
   .join('\n')}
+  <url>
+    <loc>${site.url}/showroom/</loc>
+    <lastmod>${today}</lastmod>
+  </url>
 </urlset>
 `
     : null
