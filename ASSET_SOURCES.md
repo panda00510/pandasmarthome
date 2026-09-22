@@ -46,19 +46,9 @@ creative alteration was applied.
 
 ## 2. Third-party brand assets
 
-| File | Asset | Source | Notes |
-| --- | --- | --- | --- |
-| `src/assets/brands/home-assistant-logo.png` | Home Assistant wordmark + icon | <https://brands.home-assistant.io/homeassistant/logo.png> | Used nominatively, in the Platform section, to state which platform the systems are built on. |
+**None.** No third-party logos are used anywhere on the site.
 
-If a compact mark is ever needed, the icon-only version is at
-<https://brands.home-assistant.io/homeassistant/icon.png>.
-
-The Home Assistant name and logo are trademarks of the Open Home Foundation.
-Panda Smart Home is an independent installer and is not affiliated with,
-sponsored by or endorsed by the Home Assistant project or the Open Home
-Foundation. The site states this explicitly in the Platform section.
-
-### Why other brand logos are not used
+### Why brand logos are not used
 
 The compatibility section lists device manufacturers as **plain text labels
 only**. Logo licensing for those brands is not established, and text labels

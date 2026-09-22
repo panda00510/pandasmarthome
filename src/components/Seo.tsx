@@ -66,6 +66,17 @@ export function Seo() {
     }
   }, [lang, t])
 
+  // Singapore plus its five planning regions, so "smart home in Tampines"-style
+  // queries have something explicit to match against.
+  const areaServed = [
+    { '@type': 'Country', name: 'Singapore' },
+    ...t.homes.areas.regions.map((region) => ({
+      '@type': 'AdministrativeArea',
+      name: region.name,
+      containedInPlace: { '@type': 'Country', name: 'Singapore' },
+    })),
+  ]
+
   const business: Record<string, unknown> = {
     '@type': ['LocalBusiness', 'HomeAndConstructionBusiness'],
     '@id': site.url ? `${site.url}#business` : undefined,
@@ -75,8 +86,10 @@ export function Seo() {
     url: site.url ?? undefined,
     logo: site.url ? site.url + brandAssets.ogImage : undefined,
     image: site.url ? site.url + brandAssets.ogImage : undefined,
-    areaServed: { '@type': 'Country', name: 'Singapore' },
+    areaServed,
     knowsLanguage: ['en', 'zh-Hans'],
+    keywords: t.meta.keywords,
+    slogan: lang === 'zh' ? brand.taglineZh : brand.taglineEn,
     // Contact channels appear only when a real value is configured.
     email: site.email ?? undefined,
     telephone: site.telephone ?? undefined,
@@ -92,7 +105,13 @@ export function Seo() {
     sameAs: socialLinks.length ? socialLinks.map(([, url]) => url) : undefined,
     makesOffer: t.solutions.items.map((item) => ({
       '@type': 'Offer',
-      itemOffered: { '@type': 'Service', name: item.title, description: item.body },
+      itemOffered: {
+        '@type': 'Service',
+        name: item.title,
+        description: item.body,
+        serviceType: 'Smart home installation',
+        areaServed,
+      },
     })),
   }
 
@@ -107,7 +126,19 @@ export function Seo() {
 
   const graph = {
     '@context': 'https://schema.org',
-    '@graph': [business, faq],
+    '@graph': [
+      business,
+      faq,
+      {
+        '@type': 'WebSite',
+        '@id': site.url ? `${site.url}#website` : undefined,
+        url: site.url ?? undefined,
+        name: brand.name,
+        alternateName: brand.nameZh,
+        inLanguage: lang === 'zh' ? 'zh-Hans-SG' : 'en-SG',
+        publisher: site.url ? { '@id': `${site.url}#business` } : undefined,
+      },
+    ],
   }
 
   return (

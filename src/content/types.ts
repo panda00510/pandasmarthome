@@ -62,7 +62,6 @@ export type Content = {
     /** Centre of the protocol diagram — what everything connects into. */
     hubLabel: string
     protocols: { label: string; note: string }[]
-    sourceNote: string
   }
   homes: {
     eyebrow: string
@@ -76,6 +75,8 @@ export type Content = {
       bullets: string[]
       imageAlt: string
     }[]
+    /** Service-area block — plain text on purpose, so crawlers and AI answers can quote it. */
+    areas: { title: string; lead: string; regions: { name: string; towns: string }[] }
     note: string
   }
   process: {
@@ -91,7 +92,6 @@ export type Content = {
     lead: string
     groups: { title: string; brands: string[] }[]
     disclaimer: string
-    haCaption: string
   }
   faq: {
     eyebrow: string

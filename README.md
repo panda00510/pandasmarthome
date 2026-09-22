@@ -1,7 +1,7 @@
 # Panda Smart Home
 
 Marketing site for **Panda Smart Home** (Panda智能家居) — open, local-first smart
-home design and installation for Singapore homes, built on Home Assistant.
+home design and installation for homes across Singapore.
 
 Single-page bilingual site (English / 简体中文) with no backend. Vite + React 19 +
 TypeScript + Tailwind CSS v4.
@@ -193,7 +193,7 @@ any submission where it is non-empty as spam.
 ## Project layout
 
 ```
-public/              favicon, social card, app icons, robots.txt, manifest
+public/              favicon, social card, app icons, manifest
 scripts/make-og.mjs  rasterises the brand SVGs into PNGs (npm run og)
 serverless/          optional Cloudflare Worker: form -> Telegram relay
 src/
@@ -277,7 +277,16 @@ fails the type check until the other is updated too.
 * `canonical`, `hreflang` (`en`, `zh-Hans`, `x-default`) and `og:url` — emitted
   only once `VITE_SITE_URL` is set, so no domain is ever guessed.
 * JSON-LD `@graph` with `LocalBusiness` / `HomeAndConstructionBusiness`
-  (services included as `makesOffer`) and a `FAQPage` built from the FAQ copy.
+  (services included as `makesOffer`, `areaServed` = Singapore + its five
+  regions), a `FAQPage` built from the FAQ copy, and a `WebSite` node.
+* **Prerendered.** `npm run build` also renders the English page on the server
+  (`src/entry-server.tsx` → `scripts/prerender.mjs`) and writes it into
+  `dist/index.html`, so crawlers that skip JavaScript (most AI bots, Bing's
+  first pass) still see the full copy, JSON-LD and canonical links. The browser
+  re-renders on load; there is no hydration to keep in sync.
+* `robots.txt` (explicitly allows Googlebot, Bingbot and the named AI
+  crawlers), `sitemap.xml` and `llms.txt` are **generated at build** from the
+  copy and `VITE_SITE_URL` — there is no hand-written copy in `public/`.
 * Skip link, landmark elements, labelled form fields with `aria-describedby`
   error messaging, an `aria-live` region for submission status, visible focus
   rings, and `prefers-reduced-motion` support.
@@ -285,8 +294,8 @@ fails the type check until the other is updated too.
   find-in-page work without JavaScript.
 * Images are sized to prevent layout shift; below-the-fold images are lazy.
 
-`public/robots.txt` has a commented-out `Sitemap:` line — point it at the real
-origin before launch.
+After deploying, submit `<VITE_SITE_URL>/sitemap.xml` in Google Search Console
+and Bing Webmaster Tools — both need the site owner to verify the property.
 
 ---
 
@@ -317,8 +326,10 @@ BASE_PATH=/pandasmarthome/ npm run build && BASE_PATH=/pandasmarthome/ npm run p
 
 > **Known limitation of project pages:** crawlers read `robots.txt` from the
 > domain root (`panda00510.github.io/robots.txt`), which belongs to your user
-> site — not to this repo. The `public/robots.txt` here is effectively ignored
-> until the site moves to its own domain.
+> site — not to this repo. The generated `robots.txt` is effectively ignored
+> there (everything is crawlable by default anyway), so submit the sitemap
+> manually in Search Console / Bing Webmaster Tools until the site has its own
+> domain.
 
 ### Cloudflare mirror
 
@@ -381,16 +392,11 @@ CloudFront and nginx all work with no server runtime.
 1. Set at minimum `VITE_SITE_URL`, plus whichever contact channels are real.
 2. Leave `BASE_PATH` unset when serving from a domain root.
 3. `npm run lint && npm run typecheck && npm run build`
-4. Point `Sitemap:` in `public/robots.txt` at the real origin.
-5. Re-run `npm run og` if the brand artwork changed.
+4. Re-run `npm run og` if the brand artwork changed.
 
 ---
 
 ## Content accuracy
-
-Claims about Home Assistant (open source, local-first, stewarded by the Open
-Home Foundation, 1,500+ integrations, Matter/Thread/Zigbee/Z-Wave support) are
-taken from <https://www.home-assistant.io> and attributed on the page.
 
 The site contains **no invented company history, founding date, awards,
 certifications, partner relationships, customer counts or prices**. Anything of

@@ -1,4 +1,3 @@
-import haLogo from '../../assets/brands/home-assistant-logo.png'
 import { ProtocolHub } from '../graphics/ProtocolHub'
 import { SectionHeading } from '../ui'
 import { useI18n } from '../../i18n/context'
@@ -9,32 +8,12 @@ export function Platform() {
   return (
     <section id="platform" className="band bg-ink-950 text-paper">
       <div className="shell">
-        <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end lg:gap-16">
-          <SectionHeading
-            eyebrow={t.platform.eyebrow}
-            title={t.platform.title}
-            lead={t.platform.lead}
-            tone="dark"
-          />
-
-          <div className="lg:text-right">
-            {/* The logo keeps its own light clear-space, per common brand practice. */}
-            <div className="inline-flex items-center rounded-2xl bg-white px-5 py-3.5">
-              <img
-                src={haLogo}
-                alt="Home Assistant"
-                width={905}
-                height={128}
-                loading="lazy"
-                decoding="async"
-                className="h-6 w-auto sm:h-7"
-              />
-            </div>
-            <p className="mt-4 max-w-xs text-sm leading-relaxed text-ink-400 lg:ml-auto">
-              {t.compatibility.haCaption}
-            </p>
-          </div>
-        </div>
+        <SectionHeading
+          eyebrow={t.platform.eyebrow}
+          title={t.platform.title}
+          lead={t.platform.lead}
+          tone="dark"
+        />
 
         <ul
           data-reveal
@@ -74,10 +53,6 @@ export function Platform() {
               </li>
             ))}
           </ul>
-
-          <p className="mt-8 max-w-3xl text-[0.8125rem] leading-relaxed text-ink-500">
-            {t.platform.sourceNote}
-          </p>
         </div>
       </div>
     </section>

@@ -1,4 +1,4 @@
-import { Check, Info } from 'lucide-react'
+import { Check, Info, MapPin } from 'lucide-react'
 import condo from '../../assets/photos/sg-condo-marina.jpg'
 import hdb from '../../assets/photos/sg-hdb-segar.jpg'
 import landed from '../../assets/photos/sg-landed.jpg'
@@ -58,6 +58,22 @@ export function Homes() {
             </li>
           ))}
         </ul>
+
+        <div data-reveal className="card mt-4 p-6 lg:p-8">
+          <h3 className="flex items-center gap-2 text-lg font-semibold text-ink-950">
+            <MapPin size={18} className="text-bamboo-500" aria-hidden="true" />
+            {t.homes.areas.title}
+          </h3>
+          <p className="mt-1.5 text-[0.9375rem] text-ink-600">{t.homes.areas.lead}</p>
+          <dl className="mt-5 grid gap-x-8 gap-y-4 sm:grid-cols-2 lg:grid-cols-5">
+            {t.homes.areas.regions.map((region) => (
+              <div key={region.name}>
+                <dt className="text-sm font-semibold text-ink-900">{region.name}</dt>
+                <dd className="mt-1 text-sm leading-relaxed text-ink-600">{region.towns}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
 
         <p className="mt-8 flex max-w-2xl items-start gap-2.5 rounded-2xl bg-ink-100/70 px-5 py-4 text-sm leading-relaxed text-ink-600">
           <Info size={16} className="mt-0.5 shrink-0 text-ink-500" aria-hidden="true" />

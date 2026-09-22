@@ -6,9 +6,9 @@ export const en: Content = {
   meta: {
     title: 'Panda Smart Home | Open Smart Home Solutions Singapore',
     description:
-      'Panda Smart Home designs and installs open, local-first smart home systems for Singapore HDB, BTO, condo and landed homes — built on Home Assistant, with no vendor lock-in.',
+      'Smart home design and installation across Singapore — HDB, BTO, condo and landed homes. Lighting, aircon, curtains, locks and cameras on one local system, with no vendor lock-in.',
     keywords:
-      'smart home Singapore, Home Assistant Singapore, HDB smart home, BTO smart home, condo smart home, smart lighting Singapore, smart aircon control, smart curtains, Matter, Zigbee',
+      'smart home Singapore, smart home installation Singapore, smart home company Singapore, smart home solutions Singapore, home automation Singapore, smart home system Singapore, whole home automation, HDB smart home, BTO smart home, BTO renovation smart home, condo smart home, landed house smart home, smart lighting Singapore, smart switch Singapore, no neutral smart switch, smart aircon control Singapore, smart curtains Singapore, motorised curtains Singapore, motorised blinds Singapore, digital lock Singapore, smart door lock Singapore, CCTV installation Singapore, home security Singapore, energy monitoring, Matter, Zigbee, Thread, Apple Home, Google Home, Alexa',
     ogImageAlt: 'Panda Smart Home — open smart home solutions in Singapore',
   },
 
@@ -79,7 +79,7 @@ export const en: Content = {
       {
         id: 'nolockin',
         title: 'No lock-in, no paywalls',
-        body: 'Open source, maintained by a non-profit foundation. No subscription between you and your own light switch.',
+        body: 'Built on open-source software. No subscription between you and your own light switch.',
       },
       {
         id: 'handover',
@@ -159,12 +159,12 @@ export const en: Content = {
 
   platform: {
     eyebrow: 'The platform',
-    title: 'Built on Home Assistant',
-    lead: 'An open-source platform that puts local control and privacy first, stewarded by the non-profit Open Home Foundation. The software under your home cannot be sold or moved behind a paywall.',
+    title: 'Your own system, running at home',
+    lead: 'Open-source software on a controller in your home. No vendor cloud in the middle, and nothing that can be moved behind a paywall.',
     points: [
       {
         title: 'A very wide device net',
-        body: 'Over 1,500 integrations — mainstream brands, aircon systems, inverters, routers and cameras.',
+        body: 'Mainstream brands, aircon systems, inverters, routers and cameras — on one system.',
       },
       {
         title: 'Automations that read the room',
@@ -191,8 +191,6 @@ export const en: Content = {
       { label: 'ESPHome', note: 'Custom sensors and controllers' },
       { label: 'MQTT / Modbus', note: 'Inverters, meters, industrial gear' },
     ],
-    sourceNote:
-      'Integration count and platform details as published on home-assistant.io. Panda Smart Home is an independent installer, not affiliated with the Home Assistant project or the Open Home Foundation.',
   },
 
   homes: {
@@ -250,6 +248,17 @@ export const en: Content = {
         imageAlt: 'Landed houses along a quiet residential street in Singapore',
       },
     ],
+    areas: {
+      title: 'Serving homes across Singapore',
+      lead: 'HDB estates, condos and landed homes in every region.',
+      regions: [
+        { name: 'Central', towns: 'Bishan · Toa Payoh · Queenstown · Bukit Merah · Bukit Timah · Novena' },
+        { name: 'East', towns: 'Tampines · Bedok · Pasir Ris' },
+        { name: 'North', towns: 'Woodlands · Yishun · Sembawang' },
+        { name: 'North-East', towns: 'Punggol · Sengkang · Hougang · Ang Mo Kio · Serangoon' },
+        { name: 'West', towns: 'Jurong · Bukit Batok · Choa Chu Kang · Clementi · Bukit Panjang · Tengah' },
+      ],
+    },
     note: 'Scope and pricing are quoted after a site assessment. We do not publish package prices that would need a dozen assumptions to be meaningful.',
   },
 
@@ -361,7 +370,6 @@ export const en: Content = {
     ],
     disclaimer:
       'Panda Smart Home integrates compatible third-party products through Home Assistant and supported connection methods. Product names and trademarks belong to their respective owners. Compatibility does not imply official partnership or endorsement.',
-    haCaption: 'Home Assistant — the open-source platform our systems are built on.',
   },
 
   faq: {
@@ -369,6 +377,18 @@ export const en: Content = {
     title: 'Questions worth asking before you start',
     lead: 'The things people actually want to know, answered without marketing gloss.',
     items: [
+      {
+        q: 'Which areas of Singapore do you cover?',
+        a: 'Homes across Singapore — HDB estates, condos and landed properties in every region, from Punggol and Tampines to Jurong, Woodlands and the city centre.',
+      },
+      {
+        q: 'Do you work within HDB and condo renovation rules?',
+        a: 'Yes. We plan around HDB renovation guidelines and your MCST rules, and electrical work is carried out by appropriately licensed personnel.',
+      },
+      {
+        q: 'Can we talk in Chinese?',
+        a: 'Yes — English or Chinese, whichever the household prefers.',
+      },
       {
         q: 'What happens when the internet goes down?',
         a: 'The core keeps working. Automations, wall switches, sensors and local dashboards all run on the controller in your home. Only remote access and cloud-only devices pause until the connection returns.',
@@ -383,7 +403,7 @@ export const en: Content = {
       },
       {
         q: 'Is there a monthly fee?',
-        a: 'Not for the system itself. Home Assistant is open source and runs on hardware in your home. Optional extras — a cloud service you keep, or a support plan with us — are always stated separately.',
+        a: 'Not for the system itself. It is open source and runs on hardware in your home. Optional extras — a cloud service you keep, or a support plan with us — are always stated separately.',
       },
       {
         q: 'What about family who will not use an app?',
@@ -476,14 +496,14 @@ export const en: Content = {
 
   footer: {
     blurb:
-      'Open, local-first smart home design and installation for Singapore homes, built on Home Assistant.',
+      'Open, local-first smart home design and installation for homes across Singapore.',
     navTitle: 'Explore',
     legalTitle: 'Legal',
     contactTitle: 'Contact',
     credits: 'Image credits & licences',
     creditsHref: 'asset-sources.txt',
     rights: 'All rights reserved.',
-    builtWith: 'Built on Home Assistant. Independent installer.',
+    builtWith: 'Serving HDB, condo and landed homes across Singapore.',
     disclaimer:
       'Panda Smart Home integrates compatible third-party products through Home Assistant and supported connection methods. Product names and trademarks belong to their respective owners. Compatibility does not imply official partnership or endorsement.',
   },
