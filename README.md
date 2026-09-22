@@ -307,7 +307,9 @@ and Bing Webmaster Tools — both need the site owner to verify the property.
 It runs lint, typecheck and the relay self-check first, so a broken commit
 fails the deploy instead of shipping.
 
-Live at **<https://panda00510.github.io/pandasmarthome/>**.
+Live at **<https://panda00510.github.io/pandasmarthome/>** — a secondary copy.
+The canonical host is Cloudflare (see below); this copy's canonical links
+point there.
 
 Because `.env.local` is git-ignored, the CI build reads contact details from
 **repository variables** instead (Settings → Secrets and variables → Actions →
@@ -328,10 +330,14 @@ BASE_PATH=/pandasmarthome/ npm run build && BASE_PATH=/pandasmarthome/ npm run p
 > domain root (`panda00510.github.io/robots.txt`), which belongs to your user
 > site — not to this repo. The generated `robots.txt` is effectively ignored
 > there (everything is crawlable by default anyway), so submit the sitemap
-> manually in Search Console / Bing Webmaster Tools until the site has its own
-> domain.
+> manually in Search Console / Bing Webmaster Tools. This is also why
+> Cloudflare, not Pages, is the canonical host.
 
-### Cloudflare mirror
+### Cloudflare (canonical)
+
+Canonical URL: **<https://pandasmarthome.xunleix8.workers.dev/>** — the value of
+`VITE_SITE_URL`. Submit `https://pandasmarthome.xunleix8.workers.dev/sitemap.xml`
+in Google Search Console and Bing Webmaster Tools.
 
 Both hosts are published by **one** GitHub Actions run
 (`.github/workflows/deploy.yml`). There is a single set of variables — the

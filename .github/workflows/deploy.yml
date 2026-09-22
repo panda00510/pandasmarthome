@@ -19,9 +19,10 @@ concurrency:
 # (.env.local is git-ignored). An unset variable simply means the site hides
 # that channel — nothing is ever invented.
 #
-# VITE_SITE_URL is deliberately the GitHub Pages URL even for the Cloudflare
-# build: Pages is canonical, so the mirror points back at it instead of
-# competing as duplicate content.
+# VITE_SITE_URL is the Cloudflare URL for BOTH builds: Cloudflare is canonical
+# (it serves from the domain root, so its robots.txt and sitemap are actually
+# read), and the Pages copy points back at it instead of competing as
+# duplicate content.
 env:
   # Declared at workflow level so the "is Cloudflare configured?" step guard
   # can read it — a step cannot test an env var it defines itself.
