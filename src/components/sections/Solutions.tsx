@@ -50,7 +50,7 @@ export function Solutions() {
               <li
                 key={item.id}
                 data-reveal
-                className="card spotlight group flex flex-col p-6 transition-shadow duration-300 hover:shadow-lift lg:p-7"
+                className="card spotlight group flex flex-col p-6 lg:p-7"
               >
                 <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-ink-950 text-paper transition-colors duration-300 group-hover:bg-bamboo-600">
                   <Icon size={19} aria-hidden="true" />

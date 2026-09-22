@@ -51,13 +51,13 @@ export function Header() {
       <div className="shell flex h-16 items-center justify-between gap-4 lg:h-[4.5rem]">
         <a
           href="#top"
-          className="rounded-lg text-ink-950 transition-opacity hover:opacity-70"
+          className="shrink-0 rounded-lg text-ink-950 transition-opacity hover:opacity-70"
           aria-label={t.a11y.homeLink}
         >
           <Wordmark />
         </a>
 
-        <nav aria-label="Primary" className="hidden items-center gap-1 lg:flex">
+        <nav aria-label="Primary" className="hidden items-center gap-0.5 xl:flex">
           {t.nav.items.map((item) => {
             const current = item.id === activeSection
             return (
@@ -65,7 +65,7 @@ export function Header() {
                 key={item.id}
                 href={`#${item.id}`}
                 aria-current={current ? 'true' : undefined}
-                className={`relative rounded-full px-3.5 py-2 text-[0.9375rem] font-medium transition-colors ${
+                className={`relative rounded-full px-3 py-2 text-[0.9rem] font-medium whitespace-nowrap transition-colors ${
                   current
                     ? 'text-ink-950'
                     : 'text-ink-600 hover:bg-ink-100 hover:text-ink-950'
@@ -74,7 +74,7 @@ export function Header() {
                 {item.label}
                 <span
                   aria-hidden="true"
-                  className={`absolute inset-x-3.5 -bottom-0.5 h-px origin-left bg-bamboo-500 transition-transform duration-300 ${
+                  className={`absolute inset-x-3 -bottom-0.5 h-px origin-left bg-bamboo-500 transition-transform duration-300 ${
                     current ? 'scale-x-100' : 'scale-x-0'
                   }`}
                 />
@@ -84,14 +84,14 @@ export function Header() {
 
           <a
             href={showroomHref}
-            className="ml-1 inline-flex items-center gap-1.5 rounded-full px-3.5 py-2 text-[0.9375rem] font-medium text-ink-600 transition-colors hover:bg-ink-100 hover:text-ink-950"
+            className="ml-1 inline-flex items-center gap-1.5 rounded-full px-3 py-2 text-[0.9rem] font-medium whitespace-nowrap text-ink-600 transition-colors hover:bg-ink-100 hover:text-ink-950"
           >
             <Box size={15} aria-hidden="true" />
             {t.nav.showroom}
           </a>
         </nav>
 
-        <div className="flex items-center gap-2 sm:gap-3">
+        <div className="flex shrink-0 items-center gap-2 sm:gap-3">
           <LangToggle lang={lang} setLang={setLang} label={t.a11y.languageSwitcher} />
 
           <Button as="a" href="#contact" size="sm" className="hidden sm:inline-flex">
@@ -104,7 +104,7 @@ export function Header() {
             aria-expanded={open}
             aria-controls="mobile-nav"
             aria-label={open ? t.a11y.closeMenu : t.a11y.openMenu}
-            className="-mr-1 inline-flex h-10 w-10 items-center justify-center rounded-full text-ink-800 transition-colors hover:bg-ink-100 lg:hidden"
+            className="-mr-1 inline-flex h-10 w-10 items-center justify-center rounded-full text-ink-800 transition-colors hover:bg-ink-100 xl:hidden"
           >
             {open ? <X size={20} aria-hidden="true" /> : <Menu size={20} aria-hidden="true" />}
           </button>
@@ -115,7 +115,7 @@ export function Header() {
       <div
         id="mobile-nav"
         hidden={!open}
-        className="border-t border-ink-200/70 bg-paper/95 backdrop-blur-xl lg:hidden"
+        className="border-t border-ink-200/70 bg-paper/95 backdrop-blur-xl xl:hidden"
       >
         <nav aria-label="Primary mobile" className="shell flex flex-col gap-1 py-4">
           {t.nav.items.map((item) => (
@@ -175,7 +175,7 @@ function LangToggle({
             onClick={() => setLang(option.code)}
             aria-pressed={active}
             lang={option.code === 'zh' ? 'zh-Hans' : 'en'}
-            className={`rounded-full px-2.5 py-1.5 text-xs font-semibold transition-colors ${
+            className={`rounded-full px-2.5 py-1.5 text-xs font-semibold whitespace-nowrap transition-colors ${
               active
                 ? 'bg-white text-ink-950 shadow-[0_1px_2px_rgb(12_15_19/0.08)]'
                 : 'text-ink-500 hover:text-ink-800'

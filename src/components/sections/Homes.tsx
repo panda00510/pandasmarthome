@@ -59,17 +59,29 @@ export function Homes() {
           ))}
         </ul>
 
-        <div data-reveal className="card mt-4 p-6 lg:p-8">
-          <h3 className="flex items-center gap-2 text-lg font-semibold text-ink-950">
-            <MapPin size={18} className="text-bamboo-500" aria-hidden="true" />
+        {/* Service area — the one dark panel in this section, so "where we work" reads at a glance. */}
+        <div
+          data-reveal
+          className="relative isolate mt-4 overflow-hidden rounded-panel bg-ink-950 p-6 text-paper sm:p-8 lg:p-10"
+        >
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(40rem_20rem_at_100%_0%,rgba(31,138,95,0.3),transparent_70%)]"
+          />
+          <h3 className="flex items-center gap-2.5 text-xl font-semibold tracking-[-0.015em] sm:text-2xl">
+            <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-bamboo-500/15 text-bamboo-300 ring-1 ring-bamboo-300/25">
+              <MapPin size={18} aria-hidden="true" />
+            </span>
             {t.homes.areas.title}
           </h3>
-          <p className="mt-1.5 text-[0.9375rem] text-ink-600">{t.homes.areas.lead}</p>
-          <dl className="mt-5 grid gap-x-8 gap-y-4 sm:grid-cols-2 lg:grid-cols-5">
+          <p className="mt-3 max-w-2xl text-[0.9375rem] leading-relaxed text-ink-300">
+            {t.homes.areas.lead}
+          </p>
+          <dl className="mt-8 grid gap-x-8 gap-y-6 sm:grid-cols-2 lg:grid-cols-5">
             {t.homes.areas.regions.map((region) => (
-              <div key={region.name}>
-                <dt className="text-sm font-semibold text-ink-900">{region.name}</dt>
-                <dd className="mt-1 text-sm leading-relaxed text-ink-600">{region.towns}</dd>
+              <div key={region.name} className="border-t border-white/10 pt-4">
+                <dt className="text-sm font-semibold text-bamboo-300">{region.name}</dt>
+                <dd className="mt-1.5 text-sm leading-relaxed text-ink-300">{region.towns}</dd>
               </div>
             ))}
           </dl>

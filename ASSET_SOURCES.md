@@ -55,8 +55,8 @@ only**. Logo licensing for those brands is not established, and text labels
 avoid any implication of an official partnership. The site carries this
 statement in both languages, in the compatibility section and the footer:
 
-> Panda Smart Home integrates compatible third-party products through Home
-> Assistant and supported connection methods. Product names and trademarks
+> Panda Smart Home integrates compatible third-party products through supported
+> connection methods. Product names and trademarks
 > belong to their respective owners. Compatibility does not imply official
 > partnership or endorsement.
 

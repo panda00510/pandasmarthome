@@ -346,6 +346,21 @@
     background: #fff;
     box-shadow: var(--shadow-soft);
   }
+  @media (hover: hover) and (pointer: fine) {
+    .card.spotlight {
+      /* opacity keeps the scroll-reveal fade working on these cards */
+      transition:
+        opacity 0.7s var(--ease-out-soft),
+        transform 0.35s var(--ease-out-soft),
+        box-shadow 0.35s var(--ease-out-soft),
+        border-color 0.35s var(--ease-out-soft);
+    }
+    .card.spotlight:hover {
+      transform: translateY(-3px);
+      border-color: var(--color-bamboo-200);
+      box-shadow: var(--shadow-lift);
+    }
+  }
 
   /* Small-caps label used above section headings. */
   .eyebrow {

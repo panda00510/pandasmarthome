@@ -369,7 +369,7 @@ export const en: Content = {
       },
     ],
     disclaimer:
-      'Panda Smart Home integrates compatible third-party products through Home Assistant and supported connection methods. Product names and trademarks belong to their respective owners. Compatibility does not imply official partnership or endorsement.',
+      'Panda Smart Home integrates compatible third-party products through supported connection methods. Product names and trademarks belong to their respective owners. Compatibility does not imply official partnership or endorsement.',
   },
 
   faq: {
@@ -505,6 +505,6 @@ export const en: Content = {
     rights: 'All rights reserved.',
     builtWith: 'Serving HDB, condo and landed homes across Singapore.',
     disclaimer:
-      'Panda Smart Home integrates compatible third-party products through Home Assistant and supported connection methods. Product names and trademarks belong to their respective owners. Compatibility does not imply official partnership or endorsement.',
+      'Panda Smart Home integrates compatible third-party products through supported connection methods. Product names and trademarks belong to their respective owners. Compatibility does not imply official partnership or endorsement.',
   },
 }
