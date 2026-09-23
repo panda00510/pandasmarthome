@@ -3,7 +3,7 @@
 Marketing site for **Panda Smart Home** (Panda智能家居) — open, local-first smart
 home design and installation for homes across Singapore.
 
-Single-page bilingual site (English / 简体中文) with no backend. Vite + React 19 +
+Bilingual static site (English at `/`, 简体中文 at `/zh/`) with a guides section and no backend. Vite + React 19 +
 TypeScript + Tailwind CSS v4.
 
 ---
@@ -204,13 +204,18 @@ src/
   content/
     types.ts         shape of the site copy
     en.ts  zh.ts     all user-facing text, both languages
-  i18n/              language context, detection and URL/localStorage sync
+    guides/          articles, one Markdown file per language (see "Guides")
+    guides.ts        loads the articles; page list and per-page title/description
+  i18n/              language context and path helpers (/ vs /zh/)
   components/
     brand/           PandaMark (glyph) and Wordmark (lockup)
     layout/          Header, Footer
     graphics/        HomePanel — the hero control-panel illustration
     sections/        one file per page section
     Seo.tsx          head sync + JSON-LD structured data
+  entry-server.tsx   prerender entry: routes, sitemap, robots, llms.txt
+scripts/prerender.mjs  writes one static HTML file per page into dist/
+scripts/indexnow.mjs   pings IndexNow with changed URLs after deploy
     ui.tsx           Button, SectionHeading, Chip
   assets/            photos, fonts, third-party brand logos (all local)
 ```
@@ -260,10 +265,14 @@ never inside page sections.
 
 ## Internationalisation
 
-English is the default; Chinese is served at `?lang=zh`. Language is chosen
-from the URL parameter first, then `localStorage`, then the browser language.
-Switching updates `<html lang>`, the URL, the document title and the
-structured data.
+The language is part of the path: English at `/`, Chinese at `/zh/`, and every
+page exists under both (`/guides/…` and `/zh/guides/…`). Each is a separate
+prerendered HTML file, so crawlers get real Chinese markup. The language toggle
+is a plain link to the same page in the other language; there is no browser
+detection or `localStorage`. Old `/?lang=zh` links redirect to `/zh/`.
+
+Helpers in `src/i18n/context.ts`: `pageHref(lang, path)` for links (includes
+`BASE_URL`), `langPath(lang, path)` for absolute URLs with `site.url`.
 
 All copy lives in `src/content/en.ts` and `src/content/zh.ts`, both typed
 against `Content` in `src/content/types.ts` — adding a field to one language
@@ -279,14 +288,24 @@ fails the type check until the other is updated too.
 * JSON-LD `@graph` with `LocalBusiness` / `HomeAndConstructionBusiness`
   (services included as `makesOffer`, `areaServed` = Singapore + its five
   regions), a `FAQPage` built from the FAQ copy, and a `WebSite` node.
-* **Prerendered.** `npm run build` also renders the English page on the server
-  (`src/entry-server.tsx` → `scripts/prerender.mjs`) and writes it into
-  `dist/index.html`, so crawlers that skip JavaScript (most AI bots, Bing's
+* JSON-LD `Article` + `BreadcrumbList` on every guide page.
+* **Prerendered.** `npm run build` also renders every page in both languages on
+  the server (`src/entry-server.tsx` → `scripts/prerender.mjs`) and writes
+  `dist/[zh/]<path>/index.html`, so crawlers that skip JavaScript (most AI bots, Bing's
   first pass) still see the full copy, JSON-LD and canonical links. The browser
   re-renders on load; there is no hydration to keep in sync.
 * `robots.txt` (explicitly allows Googlebot, Bingbot and the named AI
   crawlers), `sitemap.xml` and `llms.txt` are **generated at build** from the
   copy and `VITE_SITE_URL` — there is no hand-written copy in `public/`.
+* Sitemap `lastmod` is real: guide pages use their `updated` date; other pages
+  use the last git commit touching `src/` or `index.html` (the showroom uses
+  `showroom/`). CI checks out full history (`fetch-depth: 0`) for this — a
+  shallow clone would stamp every page with today.
+* **IndexNow.** After the Cloudflare deploy, `scripts/indexnow.mjs` sends the
+  URLs whose `lastmod` changed since the previous deploy to Bing and the other
+  IndexNow engines. The key file `public/3bda083900f886a126076308efacb0f3.txt`
+  is public by design; don't delete it. Google ignores IndexNow and reads the
+  sitemap instead.
 * Skip link, landmark elements, labelled form fields with `aria-describedby`
   error messaging, an `aria-live` region for submission status, visible focus
   rings, and `prefers-reduced-motion` support.
@@ -399,6 +418,34 @@ CloudFront and nginx all work with no server runtime.
 2. Leave `BASE_PATH` unset when serving from a domain root.
 3. `npm run lint && npm run typecheck && npm run build`
 4. Re-run `npm run og` if the brand artwork changed.
+
+---
+
+## Guides
+
+Articles live in `src/content/guides/` as `<slug>.en.md` and `<slug>.zh.md`.
+**Both languages are required**; the build fails if one is missing. The slug
+becomes the URL: `/guides/<slug>/` and `/zh/guides/<slug>/`.
+
+```markdown
+---
+title: Page title (the brand suffix is added automatically)
+description: Meta description, about 150 characters
+published: 2026-09-23
+updated: 2026-09-23
+draft: true
+---
+Body in Markdown.
+```
+
+* `draft: true` shows the article in `npm run dev` only. Delete the line to publish.
+* Bump `updated` on every real edit. It drives the sitemap `lastmod` and IndexNow.
+* Supported Markdown: `##` / `###` headings, `-` and `1.` lists, paragraphs,
+  `**bold**`, `[links](/zh/#contact)`. Root-relative links get the base path added.
+* Publishing = commit and push. The deploy regenerates the sitemap and
+  `llms.txt` and pings IndexNow.
+* Same rules as the rest of the site: no invented prices, statistics, customer
+  stories or awards.
 
 ---
 

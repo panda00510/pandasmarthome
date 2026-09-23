@@ -496,6 +496,21 @@ export const en: Content = {
     secondary: 'Read the FAQ',
   },
 
+  guides: {
+    eyebrow: 'Guides',
+    title: 'Straight answers before you buy',
+    lead: 'Plain-language notes on the questions Singapore homeowners ask us most.',
+    metaTitle: 'Smart Home Guides for Singapore Homes | Panda Smart Home',
+    metaDescription:
+      'Practical smart home guides for HDB, condo and landed homes in Singapore — wiring, local control, devices and planning.',
+    all: 'All guides',
+    updated: 'Updated',
+    more: 'More guides',
+    ctaTitle: 'Planning a smart home?',
+    ctaBody: 'Tell us about your home and we will suggest what fits, in English or Chinese.',
+    ctaButton: 'Plan your system',
+  },
+
   footer: {
     blurb:
       'Open, local-first smart home design and installation for homes across Singapore.',

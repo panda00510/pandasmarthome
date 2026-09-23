@@ -52,6 +52,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          # Full history: sitemap lastmod comes from each page's last commit
+          # date, and IndexNow compares against the previously deployed commit.
+          fetch-depth: 0
 
       - uses: actions/setup-node@v4
         with:
@@ -128,6 +132,14 @@ jobs:
         # "Missing entry-point". Pinned exactly so a future wrangler release
         # cannot break the deploy without a visible commit.
         run: npx --yes wrangler@4.118.0 deploy
+
+      - name: Notify IndexNow (Bing and others) of changed pages
+        if: env.CLOUDFLARE_API_TOKEN != ''
+        # A search-engine hiccup must never fail a deploy that already shipped.
+        continue-on-error: true
+        env:
+          BEFORE_SHA: ${{ github.event.before }}
+        run: node scripts/indexnow.mjs
 
   deploy-pages:
     needs: build

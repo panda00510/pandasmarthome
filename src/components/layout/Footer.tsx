@@ -1,7 +1,7 @@
 import { ExternalLink, Mail, MessageCircle, Phone } from 'lucide-react'
 import { Wordmark } from '../brand/Wordmark'
 import { formattedAddress, hasAnyContactDetail, site, socialLinks } from '../../config/site'
-import { useI18n } from '../../i18n/context'
+import { pageHref, useI18n } from '../../i18n/context'
 
 const SOCIAL_LABELS: Record<string, string> = {
   instagram: 'Instagram',
@@ -16,7 +16,8 @@ const LINK = 'inline-block py-1 text-sm text-ink-700 transition-colors hover:tex
 const LINK_ICON = 'inline-flex items-center gap-2 py-1 transition-colors hover:text-bamboo-700'
 
 export function Footer() {
-  const { t, lang } = useI18n()
+  const { t, lang, path } = useI18n()
+  const home = path ? pageHref(lang) : ''
   const year = new Date().getFullYear()
   const companyName = lang === 'zh' ? site.companyNameZh : site.companyName
 
@@ -27,7 +28,7 @@ export function Footer() {
           {/* Brand */}
           <div>
             <a
-              href="#top"
+              href={`${home}#top`}
               className="inline-block rounded-lg text-ink-950 transition-opacity hover:opacity-70"
               aria-label={t.a11y.homeLink}
             >
@@ -62,13 +63,18 @@ export function Footer() {
             <ul className="mt-3 space-y-1">
               {t.nav.items.map((item) => (
                 <li key={item.id}>
-                  <a href={`#${item.id}`} className={LINK}>
+                  <a href={`${home}#${item.id}`} className={LINK}>
                     {item.label}
                   </a>
                 </li>
               ))}
               <li>
-                <a href="#contact" className={LINK}>
+                <a href={pageHref(lang, 'guides/')} className={LINK}>
+                  {t.guides.eyebrow}
+                </a>
+              </li>
+              <li>
+                <a href={`${home}#contact`} className={LINK}>
                   {t.footer.contactTitle}
                 </a>
               </li>

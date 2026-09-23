@@ -158,6 +158,22 @@ export type Content = {
     primary: string
     secondary: string
   }
+  /** Articles section: homepage strip, /guides/ index and article pages. */
+  guides: {
+    eyebrow: string
+    title: string
+    lead: string
+    /** <title> / description of the /guides/ index page. */
+    metaTitle: string
+    metaDescription: string
+    all: string
+    updated: string
+    more: string
+    ctaTitle: string
+    ctaBody: string
+    ctaButton: string
+  }
+
   footer: {
     blurb: string
     navTitle: string

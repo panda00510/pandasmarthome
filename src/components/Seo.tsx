@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { brand, brandAssets } from '../config/brand'
 import { hasAddress, site, socialLinks } from '../config/site'
+import { guidePath, pageMeta } from '../content/guides'
 import { langPath, useI18n } from '../i18n/context'
 
 /** Upsert a `<meta>` tag by its name/property attribute. */
@@ -38,33 +39,36 @@ function setLink(rel: string, href: string, hreflang?: string) {
  * description with no phone, email or address rather than a placeholder.
  */
 export function Seo() {
-  const { lang, t } = useI18n()
+  const { lang, t, path } = useI18n()
+  const { title, description, guide } = pageMeta(lang, path)
+  const url = site.url ? site.url + langPath(lang, path) : undefined
 
   useEffect(() => {
-    document.title = t.meta.title
+    document.title = title
 
-    setMeta('name', 'description', t.meta.description)
+    setMeta('name', 'description', description)
     setMeta('name', 'keywords', t.meta.keywords)
-    setMeta('property', 'og:title', t.meta.title)
-    setMeta('property', 'og:description', t.meta.description)
+    setMeta('property', 'og:type', guide ? 'article' : 'website')
+    setMeta('property', 'og:title', title)
+    setMeta('property', 'og:description', description)
     setMeta('property', 'og:image:alt', t.meta.ogImageAlt)
     setMeta('property', 'og:locale', lang === 'zh' ? 'zh_SG' : 'en_SG')
     setMeta('property', 'og:locale:alternate', lang === 'zh' ? 'en_SG' : 'zh_SG')
-    setMeta('name', 'twitter:title', t.meta.title)
-    setMeta('name', 'twitter:description', t.meta.description)
+    setMeta('name', 'twitter:title', title)
+    setMeta('name', 'twitter:description', description)
 
     // Absolute URLs need a configured origin; without one we publish neither a
     // canonical nor hreflang rather than guessing at the deployed domain.
-    if (site.url) {
-      setLink('canonical', site.url + langPath(lang))
-      setLink('alternate', site.url + langPath('en'), 'en')
-      setLink('alternate', site.url + langPath('zh'), 'zh-Hans')
-      setLink('alternate', site.url + langPath('en'), 'x-default')
-      setMeta('property', 'og:url', site.url + langPath(lang))
+    if (site.url && url) {
+      setLink('canonical', url)
+      setLink('alternate', site.url + langPath('en', path), 'en')
+      setLink('alternate', site.url + langPath('zh', path), 'zh-Hans')
+      setLink('alternate', site.url + langPath('en', path), 'x-default')
+      setMeta('property', 'og:url', url)
       setMeta('property', 'og:image', site.url + brandAssets.ogImage)
       setMeta('name', 'twitter:image', site.url + brandAssets.ogImage)
     }
-  }, [lang, t])
+  }, [lang, t, path, title, description, guide, url])
 
   // Singapore plus its five planning regions, so "smart home in Tampines"-style
   // queries have something explicit to match against.
@@ -124,11 +128,40 @@ export function Seo() {
     })),
   }
 
+  // Article pages describe the article and its place in the site; the FAQ
+  // belongs to the homepage only.
+  const article = guide
+    ? [
+        {
+          '@type': 'Article',
+          headline: guide.title,
+          description: guide.description,
+          datePublished: guide.published,
+          dateModified: guide.updated,
+          inLanguage: lang === 'zh' ? 'zh-Hans-SG' : 'en-SG',
+          mainEntityOfPage: url,
+          image: site.url ? site.url + brandAssets.ogImage : undefined,
+          author: site.url ? { '@id': `${site.url}#business` } : undefined,
+          publisher: site.url ? { '@id': `${site.url}#business` } : undefined,
+        },
+        site.url
+          ? {
+              '@type': 'BreadcrumbList',
+              itemListElement: [
+                { name: lang === 'zh' ? brand.nameZh : brand.name, item: site.url + langPath(lang) },
+                { name: t.guides.eyebrow, item: site.url + langPath(lang, 'guides/') },
+                { name: guide.title, item: site.url + langPath(lang, guidePath(guide.slug)) },
+              ].map((crumb, i) => ({ '@type': 'ListItem', position: i + 1, ...crumb })),
+            }
+          : null,
+      ].filter(Boolean)
+    : []
+
   const graph = {
     '@context': 'https://schema.org',
     '@graph': [
       business,
-      faq,
+      ...(path === '' ? [faq] : article),
       {
         '@type': 'WebSite',
         '@id': site.url ? `${site.url}#website` : undefined,

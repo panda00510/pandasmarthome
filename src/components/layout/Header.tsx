@@ -3,7 +3,7 @@ import { Menu, X, Box } from 'lucide-react'
 import { Wordmark } from '../brand/Wordmark'
 import { Button } from '../ui'
 import { useActiveSection } from '../../hooks/motion'
-import { useI18n, type Lang } from '../../i18n/context'
+import { pageHref, useI18n, type Lang } from '../../i18n/context'
 
 const LANGS: { code: Lang; label: string }[] = [
   { code: 'en', label: 'EN' },
@@ -11,7 +11,9 @@ const LANGS: { code: Lang; label: string }[] = [
 ]
 
 export function Header() {
-  const { t, lang, setLang } = useI18n()
+  const { t, lang, path } = useI18n()
+  // Section anchors live on the homepage; from a guide they go back there.
+  const home = path ? pageHref(lang) : ''
   const [open, setOpen] = useState(false)
   // The showroom is a separate build served from /showroom/. BASE_URL keeps it
   // correct on both hosts, and ?lang carries the current language across.
@@ -50,7 +52,7 @@ export function Header() {
     >
       <div className="shell flex h-16 items-center justify-between gap-4 lg:h-[4.5rem]">
         <a
-          href="#top"
+          href={`${home}#top`}
           className="shrink-0 rounded-lg text-ink-950 transition-opacity hover:opacity-70"
           aria-label={t.a11y.homeLink}
         >
@@ -63,7 +65,7 @@ export function Header() {
             return (
               <a
                 key={item.id}
-                href={`#${item.id}`}
+                href={`${home}#${item.id}`}
                 aria-current={current ? 'true' : undefined}
                 className={`relative rounded-full px-3 py-2 text-[0.9rem] font-medium whitespace-nowrap transition-colors ${
                   current
@@ -92,9 +94,9 @@ export function Header() {
         </nav>
 
         <div className="flex shrink-0 items-center gap-2 sm:gap-3">
-          <LangToggle lang={lang} setLang={setLang} label={t.a11y.languageSwitcher} />
+          <LangToggle lang={lang} path={path} label={t.a11y.languageSwitcher} />
 
-          <Button as="a" href="#contact" size="sm" className="hidden sm:inline-flex">
+          <Button as="a" href={`${home}#contact`} size="sm" className="hidden sm:inline-flex">
             {t.nav.cta}
           </Button>
 
@@ -121,7 +123,7 @@ export function Header() {
           {t.nav.items.map((item) => (
             <a
               key={item.id}
-              href={`#${item.id}`}
+              href={`${home}#${item.id}`}
               onClick={() => setOpen(false)}
               className="rounded-xl px-3 py-3 text-base font-medium text-ink-800 transition-colors hover:bg-ink-100"
             >
@@ -138,7 +140,7 @@ export function Header() {
           </a>
           <Button
             as="a"
-            href="#contact"
+            href={`${home}#contact`}
             size="lg"
             className="mt-3 w-full"
             onClick={() => setOpen(false)}
@@ -153,11 +155,11 @@ export function Header() {
 
 function LangToggle({
   lang,
-  setLang,
+  path,
   label,
 }: {
   lang: Lang
-  setLang: (l: Lang) => void
+  path: string
   label: string
 }) {
   return (
@@ -169,12 +171,12 @@ function LangToggle({
       {LANGS.map((option) => {
         const active = option.code === lang
         return (
-          <button
+          <a
             key={option.code}
-            type="button"
-            onClick={() => setLang(option.code)}
-            aria-pressed={active}
+            href={pageHref(option.code, path)}
+            aria-current={active ? 'page' : undefined}
             lang={option.code === 'zh' ? 'zh-Hans' : 'en'}
+            hrefLang={option.code === 'zh' ? 'zh-Hans' : 'en'}
             className={`rounded-full px-2.5 py-1.5 text-xs font-semibold whitespace-nowrap transition-colors ${
               active
                 ? 'bg-white text-ink-950 shadow-[0_1px_2px_rgb(12_15_19/0.08)]'
@@ -182,7 +184,7 @@ function LangToggle({
             }`}
           >
             {option.label}
-          </button>
+          </a>
         )
       })}
     </div>

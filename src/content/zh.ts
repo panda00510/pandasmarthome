@@ -488,6 +488,21 @@ export const zh: Content = {
     secondary: '查看常见问题',
   },
 
+  guides: {
+    eyebrow: '指南',
+    title: '买之前，先把问题问清楚',
+    lead: '把新加坡业主最常问我们的问题，用大白话讲明白。',
+    metaTitle: '新加坡智能家居指南｜Panda智能家居',
+    metaDescription:
+      '面向新加坡 HDB、公寓和有地住宅的智能家居实用指南：布线、本地控制、设备选择与规划。',
+    all: '全部指南',
+    updated: '更新于',
+    more: '更多指南',
+    ctaTitle: '正在规划智能家居？',
+    ctaBody: '说说你家的情况，我们用中文或英文给你合适的建议。',
+    ctaButton: '规划我的系统',
+  },
+
   footer: {
     blurb:
       '面向全新加坡住宅的开放式、本地优先智能家居设计与安装服务。',

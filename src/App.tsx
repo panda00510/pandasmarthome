@@ -6,6 +6,7 @@ import { Compatibility } from './components/sections/Compatibility'
 import { Contact } from './components/sections/Contact'
 import { CtaBand } from './components/sections/CtaBand'
 import { Faq } from './components/sections/Faq'
+import { GuidePage, GuidesIndex, LatestGuides } from './components/sections/Guides'
 import { Hero } from './components/sections/Hero'
 import { Homes } from './components/sections/Homes'
 import { Platform } from './components/sections/Platform'
@@ -13,11 +14,13 @@ import { Process } from './components/sections/Process'
 import { Solutions } from './components/sections/Solutions'
 import { ValueProps } from './components/sections/ValueProps'
 import { site } from './config/site'
+import { findGuide } from './content/guides'
 import { useReveal } from './hooks/motion'
 import { useI18n } from './i18n/context'
 
 export default function App() {
-  const { t } = useI18n()
+  const { t, lang, path } = useI18n()
+  const guide = findGuide(lang, path)
   useReveal()
 
   return (
@@ -34,16 +37,25 @@ export default function App() {
       <Header />
 
       <main id="main">
-        <Hero />
-        <ValueProps />
-        <Solutions />
-        <Platform />
-        <Homes />
-        <Process />
-        <Compatibility />
-        <Faq />
-        <CtaBand />
-        <Contact />
+        {guide ? (
+          <GuidePage guide={guide} />
+        ) : path === 'guides/' ? (
+          <GuidesIndex />
+        ) : (
+          <>
+            <Hero />
+            <ValueProps />
+            <Solutions />
+            <Platform />
+            <Homes />
+            <Process />
+            <Compatibility />
+            <Faq />
+            <LatestGuides />
+            <CtaBand />
+            <Contact />
+          </>
+        )}
       </main>
 
       <Footer />
