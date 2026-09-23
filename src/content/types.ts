@@ -25,6 +25,8 @@ export type Content = {
     cta: string
   }
   hero: {
+    /** Overlay link on the hero photo into the 3D showroom. */
+    showroomCta: string
     eyebrow: string
     titleLead: string
     titleAccent: string
@@ -146,6 +148,8 @@ export type Content = {
     /** Subject line used when the enquiry is handed to the mail client. */
     mailSubject: string
     whatsappCta: string
+    /** Pre-filled first message when a visitor opens WhatsApp from the site. */
+    whatsappGreeting: string
     emailCta: string
   }
   cta: {

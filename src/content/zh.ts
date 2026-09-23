@@ -34,6 +34,7 @@ export const zh: Content = {
   },
 
   hero: {
+    showroomCta: '体验 3D 样板间',
     eyebrow: '开放式智能家居 · 新加坡',
     titleLead: '真正听你的家，',
     titleAccent: '而不是听云端的。',
@@ -475,6 +476,7 @@ export const zh: Content = {
       invalidContact: '请填写有效的邮箱地址或电话号码。',
     },
     whatsappCta: '通过WhatsApp联系',
+    whatsappGreeting: '你好，我想了解智能家居方案。',
     emailCta: '发送邮件',
     mailSubject: '智能家居咨询',
   },

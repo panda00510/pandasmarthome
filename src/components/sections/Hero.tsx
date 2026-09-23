@@ -1,4 +1,4 @@
-import { ArrowRight, Check, MapPin } from 'lucide-react'
+import { ArrowRight, Box, Check, MapPin } from 'lucide-react'
 import livingRoom from '../../assets/photos/living-room.jpg'
 import { HomePanel } from '../graphics/HomePanel'
 import { Button } from '../ui'
@@ -74,15 +74,29 @@ export function Hero() {
               decoding="async"
               className="aspect-[4/3] w-full object-cover sm:aspect-[16/9] lg:aspect-[21/9]"
             />
-            {/* Scrim so the location chip stays legible on any part of the photo. */}
+            {/* Scrim so the overlay chips stay legible on any part of the photo. */}
             <div
               aria-hidden="true"
               className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink-950/45 via-transparent to-transparent"
             />
-            <span className="absolute top-4 left-4 inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-ink-950/55 px-3 py-1.5 text-xs font-medium text-paper backdrop-blur-md sm:top-auto sm:bottom-6 sm:left-6">
-              <MapPin size={13} aria-hidden="true" />
-              {t.homes.areas.title}
-            </span>
+            <div className="absolute top-4 right-4 left-4 flex flex-wrap items-center gap-2 sm:top-auto sm:right-auto sm:bottom-6 sm:left-6">
+              <a
+                href={`${import.meta.env.BASE_URL}showroom/?lang=${lang}`}
+                className="group inline-flex items-center gap-2 rounded-full bg-paper px-4 py-2 text-sm font-semibold text-ink-950 shadow-lift transition-colors hover:bg-bamboo-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-paper"
+              >
+                <Box size={16} className="text-bamboo-600" aria-hidden="true" />
+                {t.hero.showroomCta}
+                <ArrowRight
+                  size={15}
+                  className="transition-transform group-hover:translate-x-0.5 motion-reduce:transition-none"
+                  aria-hidden="true"
+                />
+              </a>
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-ink-950/55 px-3 py-1.5 text-xs font-medium text-paper backdrop-blur-md">
+                <MapPin size={13} aria-hidden="true" />
+                {t.homes.areas.title}
+              </span>
+            </div>
           </div>
 
           {/* Overlaps the photo's foot on small screens; floats over its right side on lg. */}

@@ -34,6 +34,7 @@ export const en: Content = {
   },
 
   hero: {
+    showroomCta: 'Try the 3D showroom',
     eyebrow: 'Open smart home · Singapore',
     titleLead: 'A home that answers to you,',
     titleAccent: 'not to the cloud.',
@@ -483,6 +484,7 @@ export const en: Content = {
       invalidContact: 'Enter a valid email address or phone number.',
     },
     whatsappCta: 'Message on WhatsApp',
+    whatsappGreeting: "Hi Panda Smart Home, I'd like to plan a smart home.",
     emailCta: 'Email us',
     mailSubject: 'Smart home enquiry',
   },
