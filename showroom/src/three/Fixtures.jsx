@@ -32,8 +32,37 @@ export const LAMPS = PLAN.lamps.map((l) => ({
   span: l.span ?? 1.2,
   power: l.power * POWER_TO_CANDELA,
   dist: l.kind === 'table' ? 3.2 : l.kind === 'floor' ? 4.2 : l.kind === 'spots' ? 4.4 : l.kind === 'pendant' ? 4.2 : 6.2,
-  shadow: l.id === 'light.living_main',
 }))
+
+// 实时壳体没有烘焙遮挡。点光源要投射阴影，灯才不会穿墙照到隔壁。
+// 同时亮着的灯太多会超出纹理单元，只给照得最远的几盏开阴影。
+const SHADOW_LIGHTS = new Set()
+const MAX_POINT_SHADOWS = 5
+
+function rememberLight(light, reach) {
+  if (!light) return
+  light.userData.reach = reach
+  SHADOW_LIGHTS.add(light)
+}
+
+function forgetLight(light) {
+  if (light) SHADOW_LIGHTS.delete(light)
+}
+
+function ShadowBudget() {
+  useFrame(() => {
+    const on = []
+    for (const light of SHADOW_LIGHTS) {
+      if (light.intensity > 0.02 && light.visible) on.push(light)
+      else light.castShadow = false
+    }
+    on.sort((a, b) => (b.userData.reach || 0) - (a.userData.reach || 0))
+    on.forEach((light, i) => {
+      light.castShadow = i < MAX_POINT_SHADOWS
+    })
+  })
+  return null
+}
 
 function Fixture({ kind, matRef, span = 1.2, along = 'z' }) {
   const S = shades()
@@ -152,6 +181,12 @@ function Lamp({ conf }) {
 
   const lightY = conf.kind === 'floor' ? 1.55 : conf.kind === 'table' ? 0.33 : -0.06
 
+  useEffect(() => {
+    const light = lightRef.current
+    rememberLight(light, conf.dist)
+    return () => forgetLight(light)
+  }, [conf.dist])
+
   return (
     <group position={conf.pos}>
       <Fixture kind={conf.kind} matRef={matRef} span={conf.span} along={conf.along} />
@@ -161,9 +196,11 @@ function Lamp({ conf }) {
         distance={conf.dist}
         decay={2}
         intensity={0}
-        castShadow={!!conf.shadow}
-        shadow-mapSize={[1024, 1024]}
-        shadow-bias={-0.0016}
+        castShadow={false}
+        shadow-mapSize={[256, 256]}
+        shadow-camera-near={0.08}
+        shadow-camera-far={conf.dist}
+        shadow-bias={-0.001}
         shadow-normalBias={0.02}
       />
     </group>
@@ -205,6 +242,18 @@ function LightStrip({ conf }) {
   const spread = Math.min(length * 0.32, 0.85)
   const p1 = along === 'z' ? [x, y - 0.08, z - spread] : [x - spread, y - 0.08, z]
   const p2 = along === 'z' ? [x, y - 0.08, z + spread] : [x + spread, y - 0.08, z]
+  const reach = 4.2
+
+  useEffect(() => {
+    rememberLight(l1.current, reach)
+    rememberLight(l2.current, reach)
+    const a = l1.current
+    const b = l2.current
+    return () => {
+      forgetLight(a)
+      forgetLight(b)
+    }
+  }, [])
 
   return (
     <group>
@@ -212,8 +261,32 @@ function LightStrip({ conf }) {
         <boxGeometry args={args} />
         <meshStandardMaterial ref={matRef} color="#fff2dd" emissive="#ffb066" emissiveIntensity={0} toneMapped={false} />
       </mesh>
-      <pointLight ref={l1} position={p1} distance={4.2} decay={2} intensity={0} />
-      <pointLight ref={l2} position={p2} distance={4.2} decay={2} intensity={0} />
+      <pointLight
+        ref={l1}
+        position={p1}
+        distance={reach}
+        decay={2}
+        intensity={0}
+        castShadow={false}
+        shadow-mapSize={[256, 256]}
+        shadow-camera-near={0.08}
+        shadow-camera-far={reach}
+        shadow-bias={-0.001}
+        shadow-normalBias={0.02}
+      />
+      <pointLight
+        ref={l2}
+        position={p2}
+        distance={reach}
+        decay={2}
+        intensity={0}
+        castShadow={false}
+        shadow-mapSize={[256, 256]}
+        shadow-camera-near={0.08}
+        shadow-camera-far={reach}
+        shadow-bias={-0.001}
+        shadow-normalBias={0.02}
+      />
     </group>
   )
 }
@@ -303,6 +376,7 @@ function Daylight() {
 export default function Fixtures() {
   return (
     <group>
+      <ShadowBudget />
       {LAMPS.filter((c) => c.kind !== 'strip').map((conf) => (
         <Lamp key={conf.id} conf={conf} />
       ))}

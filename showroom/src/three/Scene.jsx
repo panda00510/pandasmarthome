@@ -23,11 +23,12 @@ const MODEL_URL = import.meta.env.VITE_HOUSE_MODEL || null
 
 export const VIEWS = {
   overview: { name: { en: 'Overview', zh: '全屋' }, pos: [7.6, 9.6, 9.8], target: [-0.2, 0.35, 0.2] },
-  living: { name: { en: 'Living', zh: '客厅' }, pos: [-2.2, 2.2, 2.35], target: [-3.7, 0.95, -2.1] },
-  bedroom: { name: { en: 'Master', zh: '主卧' }, pos: [4.6, 2.45, 0.85], target: [3.3, 0.75, -2.9] },
-  second: { name: { en: 'Bed 2', zh: '次卧' }, pos: [1.7, 2.35, 0.55], target: [0.35, 0.7, -2.9] },
-  kitchen: { name: { en: 'Kitchen', zh: '厨房' }, pos: [-1.55, 2.5, 2.4], target: [-4.15, 0.85, 3.0] },
-  bath: { name: { en: 'Bath', zh: '卫生间' }, pos: [1.7, 2.3, 1.15], target: [-0.1, 0.85, 1.25] },
+  // 机位都在房间内部，视线不穿实墙。客厅从餐厅一侧看向沙发，主卧靠近房门看向床。
+  living: { name: { en: 'Living', zh: '客厅' }, pos: [-2.2, 2.05, 2.05], target: [-3.7, 0.9, -2.2] },
+  bedroom: { name: { en: 'Master', zh: '主卧' }, pos: [4.15, 1.85, -1.5], target: [3.5, 0.75, -3.3] },
+  second: { name: { en: 'Bed 2', zh: '次卧' }, pos: [0.45, 1.75, -1.45], target: [0.4, 0.65, -3.55] },
+  kitchen: { name: { en: 'Kitchen', zh: '厨房' }, pos: [-3.4, 1.9, 1.65], target: [-4.6, 0.8, 3.55] },
+  bath: { name: { en: 'Bath', zh: '卫生间' }, pos: [0.1, 1.7, 0.45], target: [-0.4, 0.95, 1.75] },
 }
 
 const MOBILE_FOV = 60
