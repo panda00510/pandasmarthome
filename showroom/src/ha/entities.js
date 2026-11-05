@@ -2,12 +2,12 @@
 // 实体 ID / 属性名与真实 HA 保持一致，将来换成真设备时只需替换 store 的传输层。
 
 export const AREAS = {
-  living: { en: 'Living Room', zh: '客厅' },
-  bedroom: { en: 'Bedroom', zh: '主卧' },
-  second: { en: 'Second Bedroom', zh: '次卧' },
+  living: { en: 'Living & Dining', zh: '客餐厅' },
   kitchen: { en: 'Kitchen', zh: '厨房' },
-  bath: { en: 'Bathroom', zh: '卫生间' },
-  hall: { en: 'Hallway', zh: '走廊' },
+  bedroom: { en: 'Master Bedroom', zh: '主卧' },
+  second: { en: 'Common Bedroom', zh: '卧室' },
+  bath: { en: 'Common Bathroom', zh: '公共卫生间' },
+  hall: { en: 'Corridor', zh: '走廊' },
 }
 
 export const INITIAL_ENTITIES = {

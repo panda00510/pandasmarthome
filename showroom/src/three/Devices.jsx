@@ -22,7 +22,7 @@ function AirConditioner() {
   })
 
   return (
-    <group position={[-1.2, 2.3, -3.4]}>
+    <group position={[-1.16, 2.22, -2.55]}>
       <RoundedBox args={[0.24, 0.32, 1.15]} radius={0.05} smoothness={3} castShadow>
         <meshStandardMaterial color="#f3f1ec" roughness={0.5} />
       </RoundedBox>
@@ -49,7 +49,7 @@ function FreshAir() {
     if (blade.current) blade.current.rotation.z += spd.current * dt * 6
   })
   return (
-    <group position={[-8.87, 2.35, 2.6]} rotation={[0, Math.PI / 2, 0]}>
+    <group position={[-5.08, 2.32, -3.55]} rotation={[0, Math.PI / 2, 0]}>
       <mesh>
         <boxGeometry args={[0.62, 0.42, 0.08]} />
         <meshStandardMaterial color="#e4e0d9" roughness={0.7} />
@@ -79,8 +79,8 @@ function FloorHeating() {
     }
   })
   return (
-    <mesh ref={ref} rotation={[-Math.PI / 2, 0, 0]} position={[1.5, 0.03, -2.75]}>
-      <planeGeometry args={[4.8, 5.3]} />
+    <mesh ref={ref} rotation={[-Math.PI / 2, 0, 0]} position={[3.5, 0.02, -2.9]}>
+      <planeGeometry args={[3.05, 2.25]} />
       <meshBasicMaterial color="#ff8c4a" transparent opacity={0} depthWrite={false} />
     </mesh>
   )

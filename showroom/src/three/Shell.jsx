@@ -1,11 +1,15 @@
-import { useMemo } from 'react'
+import { lazy, Suspense, useMemo } from 'react'
 import { RoundedBox } from '@react-three/drei'
 import { PLAN, MAT } from './utils'
 import { getTextures, tiled } from './textures'
-import BakedShell from './BakedShell'
+import ProceduralShell from './ProceduralShell'
 
-// 墙体与地面全部来自 Blender 烘焙好的整屋壳体（BakedShell）。
-// 这里只补壳体里没有的东西：玻璃、门扇、地台、地毯。
+// 只有 plan.gi === 'baked' 且贴图与当前户型同时烘过才挂烘焙壳体。
+// 动态导入，避免把上一版户型的 glb / lightmap 打进默认包并画错墙。
+const BakedShell = lazy(() => import('./BakedShell'))
+
+// 墙体与地面：gi=baked 时用 Blender 壳体，否则按 plan.json 实时生成（ProceduralShell）。
+// 这里另外补玻璃、门扇、地台、地毯。
 
 function Glass({ axis, at, from, to, y0, y1 }) {
   const len = to - from
@@ -80,25 +84,33 @@ export default function Shell() {
     []
   )
   const doors = useMemo(
-    () => PLAN.interior.flatMap((w) =>
+    () => [...PLAN.exterior, ...PLAN.interior].flatMap((w) =>
       (w.holes ?? []).filter((h) => h.door).map((h) => ({ axis: w.axis, at: w.at, ...h }))
     ),
     []
   )
 
+  const [cx, cz] = PLAN.center ?? [0, 0]
+
   return (
     <group>
       {/* 地台：房子坐落在一块独立基座上，背景保持干净 */}
-      <mesh receiveShadow castShadow position={[0, -0.17, 0]}>
+      <mesh receiveShadow castShadow position={[cx, -0.17, cz]}>
         <boxGeometry args={[PLAN.width + 1.2, 0.3, PLAN.depth + 1.2]} />
         <meshStandardMaterial color="#3d4148" roughness={0.9} />
       </mesh>
-      <mesh receiveShadow position={[0, -0.015, 0]}>
+      <mesh receiveShadow position={[cx, -0.015, cz]}>
         <boxGeometry args={[PLAN.width + 0.5, 0.02, PLAN.depth + 0.5]} />
         <meshStandardMaterial color="#cdc7bd" roughness={0.95} />
       </mesh>
 
-      <BakedShell />
+      {PLAN.gi === 'baked' ? (
+        <Suspense fallback={null}>
+          <BakedShell />
+        </Suspense>
+      ) : (
+        <ProceduralShell />
+      )}
 
       {glass.map((g, i) => (
         <Glass key={i} axis={g.axis} at={g.at} from={g.from} to={g.to} y0={g.y0} y1={g.y1} />
@@ -107,9 +119,9 @@ export default function Shell() {
         <Door key={i} axis={d.axis} at={d.at} from={d.from} to={d.to} height={d.y1} />
       ))}
 
-      <Rug x={-5.4} z={-0.4} w={4.6} d={3.2} />
-      <Rug x={1.5} z={-1.4} w={2.4} d={1.8} color="#b3a897" />
-      <Rug x={1.4} z={4.4} w={2.0} d={1.5} color="#a8a196" />
+      <Rug x={-3.7} z={-2.35} w={2.5} d={2.15} />
+      <Rug x={3.15} z={-2.95} w={2.05} d={1.45} color="#b3a897" />
+      <Rug x={0.35} z={-3.15} w={1.45} d={1.15} color="#a8a196" />
     </group>
   )
 }

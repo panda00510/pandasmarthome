@@ -4,7 +4,7 @@ import { Color, DoubleSide } from 'three'
 import { useHA, lightLevel } from '../ha/store'
 import { kelvinToColor, rgbArrayToColor, damp, PLAN } from './utils'
 import { latheGeometry, PROFILES } from './shapes'
-import { SHELL_LAYER } from './BakedShell'
+import { SHELL_LAYER } from './layers'
 
 // 灯罩是典型的旋转体，用轮廓转出来比堆圆柱像得多
 let SHADES = null
@@ -27,12 +27,15 @@ export const LAMPS = PLAN.lamps.map((l) => ({
   id: l.id,
   kind: l.kind,
   pos: l.pos,
+  size: l.size,
+  along: l.along || 'x',
+  span: l.span ?? 1.2,
   power: l.power * POWER_TO_CANDELA,
-  dist: l.kind === 'table' ? 4 : l.kind === 'floor' ? 6.5 : 9,
+  dist: l.kind === 'table' ? 3.2 : l.kind === 'floor' ? 4.2 : l.kind === 'spots' ? 4.4 : l.kind === 'pendant' ? 4.2 : 6.2,
   shadow: l.id === 'light.living_main',
 }))
 
-function Fixture({ kind, matRef }) {
+function Fixture({ kind, matRef, span = 1.2, along = 'z' }) {
   const S = shades()
   const emissive = (
     <meshStandardMaterial
@@ -59,15 +62,15 @@ function Fixture({ kind, matRef }) {
     case 'spots':
       return (
         <group>
-          {[-0.85, 0, 0.85].map((z) => (
-            <group key={z} position={[0, 0, z]}>
+          {[-span / 2, 0, span / 2].map((offset) => (
+            <group key={offset} position={along === 'x' ? [offset, 0, 0] : [0, 0, offset]}>
               <mesh>
                 <cylinderGeometry args={[0.075, 0.095, 0.055, 20]} />
                 <meshStandardMaterial color="#8a8178" roughness={0.4} metalness={0.55} />
               </mesh>
               <mesh position={[0, -0.032, 0]}>
                 <cylinderGeometry args={[0.065, 0.065, 0.012, 20]} />
-                {z === 0 ? (
+                {offset === 0 ? (
                   emissive
                 ) : (
                   <meshStandardMaterial color="#fdf6e8" emissive="#ffdcae" emissiveIntensity={0} toneMapped={false} />
@@ -89,6 +92,19 @@ function Fixture({ kind, matRef }) {
             <meshStandardMaterial color="#3a3630" roughness={0.4} metalness={0.6} />
           </mesh>
           <mesh geometry={S.floor} position={[0, 1.42, 0]} castShadow>{emissive}</mesh>
+        </group>
+      )
+    case 'pendant':
+      return (
+        <group>
+          <mesh position={[0, 0.36, 0]}>
+            <cylinderGeometry args={[0.006, 0.006, 0.72, 8]} />
+            <meshStandardMaterial color="#8a8178" roughness={0.4} metalness={0.55} />
+          </mesh>
+          <mesh>
+            <sphereGeometry args={[0.13, 22, 16]} />
+            {emissive}
+          </mesh>
         </group>
       )
     case 'table':
@@ -138,7 +154,7 @@ function Lamp({ conf }) {
 
   return (
     <group position={conf.pos}>
-      <Fixture kind={conf.kind} matRef={matRef} />
+      <Fixture kind={conf.kind} matRef={matRef} span={conf.span} along={conf.along} />
       <pointLight
         ref={lightRef}
         position={[0, lightY, 0]}
@@ -170,7 +186,7 @@ function LightStrip({ conf }) {
     else kelvinToColor(a.color_temp_kelvin ?? 2800, color)
     for (const ref of [l1, l2]) {
       if (ref.current) {
-        ref.current.intensity = level.current * 13
+        ref.current.intensity = level.current * 8
         ref.current.color.copy(color)
         ref.current.visible = level.current > 0.004
       }
@@ -181,14 +197,23 @@ function LightStrip({ conf }) {
     }
   })
 
+  const along = conf.along || 'x'
+  const length = Array.isArray(conf.size) ? conf.size[0] : 1.2
+  const thick = Array.isArray(conf.size) ? conf.size[1] : 0.04
+  const args = along === 'z' ? [thick, 0.035, length] : [length, 0.035, thick]
+  const [x, y, z] = conf.pos
+  const spread = Math.min(length * 0.32, 0.85)
+  const p1 = along === 'z' ? [x, y - 0.08, z - spread] : [x - spread, y - 0.08, z]
+  const p2 = along === 'z' ? [x, y - 0.08, z + spread] : [x + spread, y - 0.08, z]
+
   return (
     <group>
-      <mesh position={[-5.4, 2.56, -5.28]}>
-        <boxGeometry args={[5.6, 0.05, 0.05]} />
+      <mesh position={conf.pos}>
+        <boxGeometry args={args} />
         <meshStandardMaterial ref={matRef} color="#fff2dd" emissive="#ffb066" emissiveIntensity={0} toneMapped={false} />
       </mesh>
-      <pointLight ref={l1} position={[-6.8, 2.5, -5.0]} distance={7} decay={2} intensity={0} />
-      <pointLight ref={l2} position={[-4.0, 2.5, -5.0]} distance={7} decay={2} intensity={0} />
+      <pointLight ref={l1} position={p1} distance={4.2} decay={2} intensity={0} />
+      <pointLight ref={l2} position={p2} distance={4.2} decay={2} intensity={0} />
     </group>
   )
 }
@@ -209,7 +234,7 @@ function ScreenGlow() {
       ref.current.visible = level.current > 0.01
     }
   })
-  return <pointLight ref={ref} position={[-5.4, 1.5, -4.6]} color="#8fc4ff" distance={6} decay={2} intensity={0} />
+  return <pointLight ref={ref} position={[-4.55, 1.15, -2.35]} color="#8fc4ff" distance={4.5} decay={2} intensity={0} />
 }
 
 // 室外日光：强度与色温随时间变化，窗帘因投影自然遮挡
@@ -240,10 +265,11 @@ function Daylight() {
       const target = Math.pow(day, 1.5) * 4.6
       sun.current.intensity = damp(sun.current.intensity, target, 4, dt)
       sun.current.color.copy(color)
+      // 北立面是客厅和卧室的窗，日光从北侧打进来
       sun.current.position.set(
-        Math.cos((t - 0.25) * Math.PI * 2) * -14,
-        2 + elevation * 13,
-        9 + (1 - elevation) * 5
+        Math.cos((t - 0.25) * Math.PI * 2) * 7,
+        3 + elevation * 10,
+        -10
       )
       sun.current.visible = sun.current.intensity > 0.01
     }
@@ -260,10 +286,10 @@ function Daylight() {
         castShadow
         intensity={0}
         shadow-mapSize={[2048, 2048]}
-        shadow-camera-left={-12}
-        shadow-camera-right={12}
-        shadow-camera-top={12}
-        shadow-camera-bottom={-12}
+        shadow-camera-left={-7}
+        shadow-camera-right={7}
+        shadow-camera-top={7}
+        shadow-camera-bottom={-7}
         shadow-camera-near={0.5}
         shadow-camera-far={60}
         shadow-bias={-0.0009}

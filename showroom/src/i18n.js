@@ -5,7 +5,10 @@ import { useHA } from './ha/store'
 export const STRINGS = {
   en: {
     brand_name: 'Panda Smart Home',
-    brand_sub: 'Showroom · Demo',
+    brand_sub: 'HDB 4-Room · Demo',
+    demo_note: 'Interactive demo — not a real customer installation.',
+    cta_whatsapp: 'Book a free home assessment on WhatsApp',
+    cta_message: "Hi Panda Smart Home, I'd like to book a free home assessment. I was looking at the 3D showroom.",
 
     tool_labels_on: 'Hide device labels',
     tool_labels_off: 'Show device labels',
@@ -73,7 +76,10 @@ export const STRINGS = {
 
   zh: {
     brand_name: 'Panda 智能家居',
-    brand_sub: '样板间 · 演示模式',
+    brand_sub: 'HDB 四房 · 演示',
+    demo_note: '互动演示，并非真实客户家中的安装。',
+    cta_whatsapp: '在 WhatsApp 预约免费上门评估',
+    cta_message: '你好，我想预约免费上门评估。我是从 3D 样板间过来的。',
 
     tool_labels_on: '隐藏设备标签',
     tool_labels_off: '显示设备标签',

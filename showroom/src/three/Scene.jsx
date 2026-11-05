@@ -15,19 +15,19 @@ import Decor from './Decor'
 import Hotspots from './Hotspots'
 import ExternalHouse from './ExternalHouse'
 import HdriEnvironment from './HdriEnvironment'
-import { SHELL_LAYER } from './BakedShell'
+import { SHELL_LAYER } from './layers'
 import Surroundings from './Surroundings'
 
 // 换成自己的模型：在 .env 里设置 VITE_HOUSE_MODEL=/house.glb
 const MODEL_URL = import.meta.env.VITE_HOUSE_MODEL || null
 
 export const VIEWS = {
-  overview: { name: { en: 'Overview', zh: '全屋' }, pos: [11.8, 10.4, 14.1], target: [0.2, 1.5, -1.2] },
-  living: { name: { en: 'Living', zh: '客厅' }, pos: [-7.0, 2.15, 4.0], target: [-5.2, 1.2, -4.9] },
-  bedroom: { name: { en: 'Bedroom', zh: '主卧' }, pos: [3.2, 2.4, -0.6], target: [1.3, 0.85, -4.4] },
-  second: { name: { en: 'Second', zh: '次卧' }, pos: [3.2, 2.4, 2.2], target: [1.3, 0.85, 4.8] },
-  kitchen: { name: { en: 'Kitchen', zh: '厨房' }, pos: [5.2, 2.5, -0.7], target: [7.0, 1.0, -4.6] },
-  bath: { name: { en: 'Bath', zh: '卫生间' }, pos: [5.0, 2.3, 2.6], target: [7.2, 1.2, 5.0] },
+  overview: { name: { en: 'Overview', zh: '全屋' }, pos: [7.6, 9.6, 9.8], target: [-0.2, 0.35, 0.2] },
+  living: { name: { en: 'Living', zh: '客厅' }, pos: [-2.2, 2.2, 2.35], target: [-3.7, 0.95, -2.1] },
+  bedroom: { name: { en: 'Master', zh: '主卧' }, pos: [4.6, 2.45, 0.85], target: [3.3, 0.75, -2.9] },
+  second: { name: { en: 'Bed 2', zh: '次卧' }, pos: [1.7, 2.35, 0.55], target: [0.35, 0.7, -2.9] },
+  kitchen: { name: { en: 'Kitchen', zh: '厨房' }, pos: [-1.55, 2.5, 2.4], target: [-4.15, 0.85, 3.0] },
+  bath: { name: { en: 'Bath', zh: '卫生间' }, pos: [1.7, 2.3, 1.15], target: [-0.1, 0.85, 1.25] },
 }
 
 const MOBILE_FOV = 60
@@ -125,7 +125,7 @@ export default function Scene() {
   const views = useMemo(
     () =>
       isMobile
-        ? { ...VIEWS, overview: { pos: [16.5, 15.5, 21.5], target: [0.4, 1.4, -0.8] } }
+        ? { ...VIEWS, overview: { ...VIEWS.overview, pos: [9.4, 13.2, 12.4], target: [-0.15, 0.25, 0.25] } }
         : VIEWS,
     [isMobile]
   )
@@ -136,7 +136,7 @@ export default function Scene() {
       dpr={isMobile ? [1, 1.5] : [1, 1.8]}
       gl={{ antialias: true, powerPreference: 'high-performance' }}
       camera={{
-        position: isMobile ? [16.5, 15.5, 21.5] : [11.8, 10.4, 14.1],
+        position: isMobile ? [9.4, 13.2, 12.4] : [7.6, 9.6, 9.8],
         fov: isMobile ? MOBILE_FOV : DESKTOP_FOV,
         near: 0.1,
         far: 400,
@@ -150,11 +150,11 @@ export default function Scene() {
         <HdriEnvironment url={hdriUrl} />
       </Suspense>
 
-      <ContactShadows position={[0, -0.31, 0]} opacity={0.5} scale={30} blur={2.8} far={6} resolution={512} color="#05070b" />
+      <ContactShadows position={[0, -0.31, 0.15]} opacity={0.45} scale={18} blur={2.6} far={5} resolution={512} color="#05070b" />
 
       <OrbitControls
         makeDefault
-        target={[0, 0.9, -0.2]}
+        target={[0.05, 0.55, 0.15]}
         minDistance={2.0}
         maxDistance={64}
         maxPolarAngle={Math.PI / 2.12}

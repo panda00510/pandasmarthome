@@ -6,6 +6,7 @@ import { useHA, lightLevel } from '../ha/store'
 import { kelvinToColor, rgbArrayToColor, damp } from './utils'
 import { LightmapMaterial } from './LightmapMaterial'
 import { getTextures, tiled } from './textures'
+import { SHELL_LAYER } from './layers'
 import meta from './lightmaps.json'
 import GLB from '../assets/baked/house.glb?url'
 import LM0 from '../assets/baked/lightmap_0.png?url'
@@ -14,8 +15,6 @@ import LM2 from '../assets/baked/lightmap_2.png?url'
 
 // 壳体放在 layer 1：室内那些实时点光源照不到它，否则烘焙光和实时光会叠成双份。
 // 日光和天光仍然要照到（它们没被烘焙）。
-export const SHELL_LAYER = 1
-
 // slot 0..8 依次是 atlas0.R … atlas2.B，顺序必须和烘焙时一致
 const SLOTS = meta.atlases.flatMap((a) => ['R', 'G', 'B'].map((ch) => a.channels[ch] ?? null))
 const SCALES = meta.atlases.map((a) => a.scales)

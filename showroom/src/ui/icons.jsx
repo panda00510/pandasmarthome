@@ -36,6 +36,7 @@ const PATHS = {
   expand: 'M8.5 3.5H3.5V8.5M15.5 3.5h5V8.5M8.5 20.5H3.5V15.5M15.5 20.5h5V15.5',
   collapse: 'M3.5 8.5h5V3.5M20.5 8.5h-5V3.5M3.5 15.5h5v5M20.5 15.5h-5v5',
   sliders: 'M4 6.5h10M18 6.5h2M4 12h4M12 12h8M4 17.5h10M18 17.5h2M14.5 6.5a1.6 1.6 0 1 0 3.2 0 1.6 1.6 0 0 0-3.2 0M8.5 12a1.6 1.6 0 1 0 3.2 0 1.6 1.6 0 0 0-3.2 0M14.5 17.5a1.6 1.6 0 1 0 3.2 0 1.6 1.6 0 0 0-3.2 0',
+  whatsapp: 'M5.2 18.6 3.6 21.2l2.7-1A8.4 8.4 0 1 0 5.2 18.6z',
 }
 
 export default function Icon({ name, size = 18, className = '', strokeWidth = 1.5 }) {
