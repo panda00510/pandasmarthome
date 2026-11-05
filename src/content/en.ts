@@ -161,7 +161,7 @@ export const en: Content = {
   upcoming: {
     eyebrow: 'Coming next',
     title: 'Smarter eyes and safer care, without a new camera system',
-    lead: 'Two products we are developing. They are not on sale yet. Tell us what you would use them for and we will let you know when there is something to try.',
+    lead: 'Two products we are preparing. They are not on sale yet. Tell us what you would use them for and we will let you know when there is something to try.',
     status: 'In development',
     limitsLabel: 'Worth knowing',
     items: [
