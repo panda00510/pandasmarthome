@@ -129,13 +129,45 @@ function Detail({ entity, id }) {
   }
 
   if (entity.domain === 'fan') {
+    const pct = a.percentage ?? 66
+    const current = pct >= 80 ? 100 : pct >= 50 ? 66 : 33
     return (
       <div className="dev-detail">
-        <Slider
-          label={t('ctl_airflow')} unit="%" min={10} max={100} step={10} cool
-          value={a.percentage ?? 40}
-          onChange={(v) => call('fan', 'turn_on', id, { percentage: v })}
-        />
+        <div className="ctl">
+          <div className="ctl-head"><span className="ctl-label">{t('ctl_airflow')}</span></div>
+        </div>
+        <div className="ctl seg">
+          {[[33, 'fan_low'], [66, 'fan_med'], [100, 'fan_high']].map(([value, key]) => (
+            <button
+              key={key}
+              className={current === value ? 'is-on' : ''}
+              onClick={() => call('fan', 'turn_on', id, { percentage: value })}
+            >
+              {t(key)}
+            </button>
+          ))}
+        </div>
+      </div>
+    )
+  }
+
+  if (entity.domain === 'switch' && a.auto_off_min != null) {
+    return (
+      <div className="dev-detail">
+        <div className="ctl">
+          <div className="ctl-head"><span className="ctl-label">{t('ctl_auto_off')}</span></div>
+        </div>
+        <div className="ctl seg">
+          {[15, 30, 60].map((m) => (
+            <button
+              key={m}
+              className={a.auto_off_min === m ? 'is-on' : ''}
+              onClick={() => call('switch', 'turn_on', id, { auto_off_min: m })}
+            >
+              {t('heater_min', m)}
+            </button>
+          ))}
+        </div>
       </div>
     )
   }
@@ -160,7 +192,7 @@ function Device({ id }) {
 
   const on = isOn(entity)
   const open = selected === id
-  const expandable = HAS_DETAIL.includes(entity.domain)
+  const expandable = HAS_DETAIL.includes(entity.domain) || entity.attributes?.auto_off_min != null
 
   return (
     <div className={`dev${on ? ' is-on' : ''}${open ? ' is-open' : ''}`}>
@@ -176,7 +208,7 @@ function Device({ id }) {
         </span>
         <button
           className="toggle"
-          aria-label={`${on ? t('state_off') : t('state_on')} · ${t.pick(entity.name)}`}
+          aria-label={`${entity.domain === 'lock' ? (on ? t('state_unlocked') : t('state_locked')) : (on ? t('state_off') : t('state_on'))} · ${t.pick(entity.name)}`}
           aria-pressed={on}
           onClick={(e) => { e.stopPropagation(); toggle(id) }}
         />

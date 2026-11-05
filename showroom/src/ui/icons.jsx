@@ -11,6 +11,9 @@ const PATHS = {
   tv: 'M3.5 5.5h17v11h-17zM8.5 21h7M12 16.5V21',
   power: 'M12 3.5v8M7.6 6.4a7 7 0 1 0 8.8 0',
   fan: 'M2.5 8h11a3 3 0 1 0-3-3M2.5 12h15.5a3 3 0 1 1-3 3M2.5 16h9',
+  lock: 'M8 11V8.2a4 4 0 0 1 8 0V11M6.5 11h11v9h-11z',
+  doorbell: 'M9 10.5a3 3 0 0 1 6 0c0 3.2 1.6 4.2 1.6 4.2H7.4S9 13.7 9 10.5M10.2 18.2a1.8 1.8 0 0 0 3.6 0',
+  heater: 'M8 4.5h8v15H8zM10.2 8h3.6M10.2 11.2h3.6M10.2 14.4h3.6',
   // 传感器
   thermo: 'M14 14.9V4.5a2 2 0 1 0-4 0v10.4a4 4 0 1 0 4 0z',
   droplet: 'M12 21.5a6.9 6.9 0 0 0 6.9-6.9c0-4-6.9-12.1-6.9-12.1S5.1 10.6 5.1 14.6A6.9 6.9 0 0 0 12 21.5z',
@@ -36,6 +39,7 @@ const PATHS = {
   expand: 'M8.5 3.5H3.5V8.5M15.5 3.5h5V8.5M8.5 20.5H3.5V15.5M15.5 20.5h5V15.5',
   collapse: 'M3.5 8.5h5V3.5M20.5 8.5h-5V3.5M3.5 15.5h5v5M20.5 15.5h-5v5',
   sliders: 'M4 6.5h10M18 6.5h2M4 12h4M12 12h8M4 17.5h10M18 17.5h2M14.5 6.5a1.6 1.6 0 1 0 3.2 0 1.6 1.6 0 0 0-3.2 0M8.5 12a1.6 1.6 0 1 0 3.2 0 1.6 1.6 0 0 0-3.2 0M14.5 17.5a1.6 1.6 0 1 0 3.2 0 1.6 1.6 0 0 0-3.2 0',
+  whatsapp: 'M5.2 18.6 3.6 21.2l2.7-1A8.4 8.4 0 1 0 5.2 18.6z',
 }
 
 export default function Icon({ name, size = 18, className = '', strokeWidth = 1.5 }) {
@@ -67,6 +71,12 @@ const BY_ENTITY = {
   'sensor.living_temperature': 'thermo',
   'sensor.living_humidity': 'droplet',
   'sensor.living_pm25': 'haze',
+  'switch.bath_heater': 'heater',
+  'lock.entry': 'lock',
+  'camera.entry_doorbell': 'doorbell',
+  'fan.living_ceiling': 'fan',
+  'fan.bedroom_ceiling': 'fan',
+  'fan.second_ceiling': 'fan',
 }
 
 const BY_DOMAIN = {

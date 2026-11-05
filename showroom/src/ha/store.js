@@ -53,6 +53,21 @@ function saveOverrides(v) {
 let eventSeq = 0
 const stamp = () => new Date().toLocaleTimeString('zh-CN', { hour12: false })
 
+// 储水式热水器的自动断电。时长按真实分钟计，演示里不会提前跳完。
+let heaterTimer = null
+function syncHeaterTimer(get) {
+  clearTimeout(heaterTimer)
+  heaterTimer = null
+  const e = get().entities['switch.bath_heater']
+  if (!e || e.state !== 'on') return
+  const mins = Number(e.attributes.auto_off_min)
+  if (!mins) return
+  heaterTimer = setTimeout(() => {
+    const cur = get().entities['switch.bath_heater']
+    if (cur?.state === 'on') get()._setEntity('switch.bath_heater', { state: 'off' })
+  }, mins * 60 * 1000)
+}
+
 // 深合并单个实体的 patch（state / attributes）
 function applyPatch(entity, patch) {
   return {
@@ -124,6 +139,9 @@ export const useHA = create((set, get) => ({
     if (!silent && (prev.state !== next.state || patch.attributes)) {
       get()._emit(entityId, prev.state, next.state)
     }
+    if (entityId === 'switch.bath_heater' && (prev.state !== next.state || patch.attributes?.auto_off_min != null)) {
+      syncHeaterTimer(get)
+    }
   },
 
   // ---- 等价于 HA 的 call_service，签名刻意保持一致 ----
@@ -136,17 +154,29 @@ export const useHA = create((set, get) => ({
       case 'light.turn_on':
       case 'switch.turn_on':
       case 'fan.turn_on':
+      case 'camera.turn_on':
         set_({ state: 'on', attributes: data })
         break
       case 'light.turn_off':
       case 'switch.turn_off':
       case 'fan.turn_off':
+      case 'camera.turn_off':
         set_({ state: 'off' })
         break
       case 'light.toggle':
       case 'switch.toggle':
       case 'fan.toggle':
+      case 'camera.toggle':
         set_({ state: e.state === 'on' ? 'off' : 'on' })
+        break
+      case 'lock.lock':
+        set_({ state: 'locked' })
+        break
+      case 'lock.unlock':
+        set_({ state: 'unlocked' })
+        break
+      case 'lock.toggle':
+        set_({ state: e.state === 'locked' ? 'unlocked' : 'locked' })
         break
       case 'media_player.turn_on':
         set_({ state: 'on' })
@@ -186,6 +216,7 @@ export const useHA = create((set, get) => ({
     const e = get().entities[entityId]
     if (!e) return
     if (e.domain === 'cover') return get().callService('cover', 'toggle', entityId)
+    if (e.domain === 'lock') return get().callService('lock', 'toggle', entityId)
     if (e.domain === 'climate') {
       return get().callService('climate', 'set_hvac_mode', entityId, {
         hvac_mode: e.state === 'off' ? 'cool' : 'off',
@@ -210,12 +241,20 @@ export const useHA = create((set, get) => ({
     }))
   },
 
-  reset: () => set({ entities: structuredClone(INITIAL_ENTITIES), events: [], activeScene: null, selected: null }),
+  reset: () => {
+    clearTimeout(heaterTimer)
+    heaterTimer = null
+    set({ entities: structuredClone(INITIAL_ENTITIES), events: [], activeScene: null, selected: null })
+  },
 }))
 
 // 选择器
 export const selectEntity = (id) => (s) => s.entities[id]
-export const isOn = (e) => e && e.state !== 'off' && e.state !== 'closed' && e.state !== 'unavailable'
+export const isOn = (e) => {
+  if (!e) return false
+  if (e.domain === 'lock') return e.state === 'locked'
+  return e.state !== 'off' && e.state !== 'closed' && e.state !== 'unlocked' && e.state !== 'unavailable'
+}
 
 // 灯的有效亮度 0..1
 export const lightLevel = (e) => (isOn(e) ? (e.attributes.brightness ?? 255) / 255 : 0)

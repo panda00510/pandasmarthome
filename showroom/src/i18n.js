@@ -5,7 +5,10 @@ import { useHA } from './ha/store'
 export const STRINGS = {
   en: {
     brand_name: 'Panda Smart Home',
-    brand_sub: 'Showroom · Demo',
+    brand_sub: 'HDB 4-Room · Demo',
+    demo_note: 'Interactive demo — not a real customer installation.',
+    cta_whatsapp: 'Book a free home assessment on WhatsApp',
+    cta_message: "Hi Panda Smart Home, I'd like to book a free home assessment. I was looking at the 3D showroom.",
 
     tool_labels_on: 'Hide device labels',
     tool_labels_off: 'Show device labels',
@@ -32,8 +35,14 @@ export const STRINGS = {
     ctl_colour: 'Colour',
     ctl_position: 'Position',
     ctl_target: 'Target',
-    ctl_airflow: 'Airflow',
+    ctl_airflow: 'Speed',
+    ctl_auto_off: 'Auto-off',
     ctl_room: (t) => `Room ${t}°C`,
+    fan_low: 'Low',
+    fan_med: 'Medium',
+    fan_high: 'High',
+    heater_min: (m) => `${m} min`,
+    heater_left: (m) => `off in ${m} min`,
 
     cover_open: 'Open',
     cover_half: 'Half',
@@ -68,12 +77,20 @@ export const STRINGS = {
     hvac_off: 'Off',
     hvac_cool: 'Cooling',
     hvac_heat: 'Heating',
+    hvac_dry: 'Dry',
     hvac_fan_only: 'Fan only',
+    state_locked: 'Locked',
+    state_unlocked: 'Unlocked',
+    state_live: 'Live view',
+    state_idle: 'Idle',
   },
 
   zh: {
     brand_name: 'Panda 智能家居',
-    brand_sub: '样板间 · 演示模式',
+    brand_sub: 'HDB 四房 · 演示',
+    demo_note: '互动演示，并非真实客户家中的安装。',
+    cta_whatsapp: '在 WhatsApp 预约免费上门评估',
+    cta_message: '你好，我想预约免费上门评估。我是从 3D 样板间过来的。',
 
     tool_labels_on: '隐藏设备标签',
     tool_labels_off: '显示设备标签',
@@ -100,8 +117,14 @@ export const STRINGS = {
     ctl_colour: '颜色',
     ctl_position: '开合度',
     ctl_target: '目标温度',
-    ctl_airflow: '风量',
+    ctl_airflow: '风速',
+    ctl_auto_off: '自动关闭',
     ctl_room: (t) => `室温 ${t}°C`,
+    fan_low: '低速',
+    fan_med: '中速',
+    fan_high: '高速',
+    heater_min: (m) => `${m} 分钟`,
+    heater_left: (m) => `${m} 分钟后关闭`,
 
     cover_open: '全开',
     cover_half: '一半',
@@ -136,7 +159,12 @@ export const STRINGS = {
     hvac_off: '关闭',
     hvac_cool: '制冷',
     hvac_heat: '制热',
+    hvac_dry: '除湿',
     hvac_fan_only: '送风',
+    state_locked: '已上锁',
+    state_unlocked: '已开锁',
+    state_live: '正在查看',
+    state_idle: '待机',
   },
 }
 

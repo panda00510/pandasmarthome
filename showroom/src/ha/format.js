@@ -18,10 +18,20 @@ export function stateText(e, t) {
       return e.state === 'off' ? off : `${t('hvac_' + e.state)} · ${e.attributes.temperature}°C`
     case 'media_player':
       return e.state === 'on' ? `${t('state_playing')} · ${e.attributes.source}` : t('state_standby')
-    case 'fan':
-      return e.state === 'on' ? `${on} · ${e.attributes.percentage}%` : off
+    case 'fan': {
+      if (e.state !== 'on') return off
+      const p = e.attributes.percentage ?? 0
+      const speed = p >= 80 ? t('fan_high') : p >= 50 ? t('fan_med') : t('fan_low')
+      return `${on} · ${speed}`
+    }
     case 'switch':
-      return e.state === 'on' ? on : off
+      return e.state === 'on' && e.attributes.auto_off_min
+        ? `${on} · ${t('heater_left', e.attributes.auto_off_min)}`
+        : e.state === 'on' ? on : off
+    case 'lock':
+      return e.state === 'locked' ? t('state_locked') : t('state_unlocked')
+    case 'camera':
+      return e.state === 'on' ? t('state_live') : t('state_idle')
     case 'sensor':
       return `${e.state} ${e.attributes.unit_of_measurement ?? ''}`.trim()
     default:

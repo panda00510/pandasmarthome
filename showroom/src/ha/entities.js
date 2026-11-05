@@ -2,12 +2,13 @@
 // 实体 ID / 属性名与真实 HA 保持一致，将来换成真设备时只需替换 store 的传输层。
 
 export const AREAS = {
-  living: { en: 'Living Room', zh: '客厅' },
-  bedroom: { en: 'Bedroom', zh: '主卧' },
-  second: { en: 'Second Bedroom', zh: '次卧' },
+  living: { en: 'Living & Dining', zh: '客餐厅' },
   kitchen: { en: 'Kitchen', zh: '厨房' },
-  bath: { en: 'Bathroom', zh: '卫生间' },
-  hall: { en: 'Hallway', zh: '走廊' },
+  bedroom: { en: 'Master Bedroom', zh: '主卧' },
+  second: { en: 'Common Bedroom', zh: '卧室' },
+  bath: { en: 'Common Bathroom', zh: '公共卫生间' },
+  hall: { en: 'Corridor', zh: '走廊' },
+  entry: { en: 'Foyer', zh: '玄关' },
 }
 
 export const INITIAL_ENTITIES = {
@@ -82,19 +83,51 @@ export const INITIAL_ENTITIES = {
     attributes: { source: 'HDMI 1' },
   },
   'climate.living_ac': {
-    domain: 'climate', area: 'living', name: { en: 'Air Conditioner', zh: '客厅空调' },
+    domain: 'climate', area: 'living', name: { en: 'Aircon', zh: '客厅空调' },
     state: 'cool',
-    attributes: { temperature: 24, current_temperature: 27.4, hvac_modes: ['off', 'cool', 'heat', 'fan_only'] },
+    // 分体机：制冷 / 除湿 / 送风。新加坡住宅几乎没有制热。
+    attributes: { temperature: 25, current_temperature: 27.4, hvac_modes: ['off', 'cool', 'dry', 'fan_only'] },
   },
-  'switch.floor_heating': {
-    domain: 'switch', area: 'bedroom', name: { en: 'Underfloor Heating', zh: '卧室地暖' },
+  'climate.bedroom_ac': {
+    domain: 'climate', area: 'bedroom', name: { en: 'Aircon', zh: '主卧空调' },
     state: 'off',
+    attributes: { temperature: 26, current_temperature: 28.6, hvac_modes: ['off', 'cool', 'dry', 'fan_only'] },
+  },
+  'climate.second_ac': {
+    domain: 'climate', area: 'second', name: { en: 'Aircon', zh: '卧室空调' },
+    state: 'off',
+    attributes: { temperature: 26, current_temperature: 28.4, hvac_modes: ['off', 'cool', 'dry', 'fan_only'] },
+  },
+  'fan.living_ceiling': {
+    domain: 'fan', area: 'living', name: { en: 'Ceiling Fan', zh: '客厅吊扇' },
+    state: 'off',
+    attributes: { percentage: 66 },
+  },
+  'fan.bedroom_ceiling': {
+    domain: 'fan', area: 'bedroom', name: { en: 'Ceiling Fan', zh: '主卧吊扇' },
+    state: 'off',
+    attributes: { percentage: 33 },
+  },
+  'fan.second_ceiling': {
+    domain: 'fan', area: 'second', name: { en: 'Ceiling Fan', zh: '卧室吊扇' },
+    state: 'off',
+    attributes: { percentage: 33 },
+  },
+  'switch.bath_heater': {
+    domain: 'switch', area: 'bath', name: { en: 'Storage Heater', zh: '储水式热水器' },
+    state: 'off',
+    // auto_off_min：通电后到点自己关，和浴室里常见的定时热水器一样。
+    attributes: { auto_off_min: 30 },
+  },
+  'lock.entry': {
+    domain: 'lock', area: 'entry', name: { en: 'Digital Lock', zh: '大门电子锁' },
+    state: 'locked',
     attributes: {},
   },
-  'fan.fresh_air': {
-    domain: 'fan', area: 'living', name: { en: 'Fresh Air System', zh: '新风系统' },
-    state: 'on',
-    attributes: { percentage: 40 },
+  'camera.entry_doorbell': {
+    domain: 'camera', area: 'entry', name: { en: 'Video Doorbell', zh: '可视门铃' },
+    state: 'off',
+    attributes: {},
   },
   'sensor.living_temperature': {
     domain: 'sensor', area: 'living', name: { en: 'Temperature', zh: '客厅温度' },
@@ -103,12 +136,13 @@ export const INITIAL_ENTITIES = {
   },
   'sensor.living_humidity': {
     domain: 'sensor', area: 'living', name: { en: 'Humidity', zh: '客厅湿度' },
-    state: '56',
+    // 空调开着、室温还没降到位时，新加坡室内湿度通常仍在 60% 出头。
+    state: '63',
     attributes: { unit_of_measurement: '%', device_class: 'humidity' },
   },
   'sensor.living_pm25': {
     domain: 'sensor', area: 'living', name: { en: 'PM2.5', zh: 'PM2.5' },
-    state: '12',
+    state: '14',
     attributes: { unit_of_measurement: 'µg/m³', device_class: 'pm25' },
   },
 }
@@ -131,7 +165,15 @@ export const SCENES = [
       'light.kitchen_spot': { state: 'on', attributes: { brightness: 200 } },
       'cover.living_curtain': { attributes: { current_position: 100 } },
       'media_player.living_tv': { state: 'off' },
-      'climate.living_ac': { state: 'cool', attributes: { temperature: 24 } },
+      'climate.living_ac': { state: 'cool', attributes: { temperature: 25 } },
+      'climate.bedroom_ac': { state: 'off' },
+      'climate.second_ac': { state: 'off' },
+      'fan.living_ceiling': { state: 'off' },
+      'fan.bedroom_ceiling': { state: 'off' },
+      'fan.second_ceiling': { state: 'off' },
+      'switch.bath_heater': { state: 'off' },
+      'lock.entry': { state: 'locked' },
+      'camera.entry_doorbell': { state: 'off' },
     },
   },
   {
@@ -150,7 +192,13 @@ export const SCENES = [
       'light.bedroom_bedside': { state: 'off' },
       'cover.living_curtain': { attributes: { current_position: 0 } },
       'media_player.living_tv': { state: 'on' },
-      'climate.living_ac': { state: 'cool', attributes: { temperature: 25 } },
+      'climate.living_ac': { state: 'cool', attributes: { temperature: 24 } },
+      'climate.bedroom_ac': { state: 'off' },
+      'climate.second_ac': { state: 'off' },
+      'fan.living_ceiling': { state: 'off' },
+      'fan.bedroom_ceiling': { state: 'off' },
+      'fan.second_ceiling': { state: 'off' },
+      'switch.bath_heater': { state: 'off' },
     },
   },
   {
@@ -165,6 +213,11 @@ export const SCENES = [
       'light.kitchen_spot': { state: 'on', attributes: { brightness: 255 } },
       'media_player.living_tv': { state: 'off' },
       'cover.living_curtain': { attributes: { current_position: 60 } },
+      'climate.living_ac': { state: 'cool', attributes: { temperature: 26 } },
+      'fan.living_ceiling': { state: 'on', attributes: { percentage: 33 } },
+      'fan.bedroom_ceiling': { state: 'off' },
+      'fan.second_ceiling': { state: 'off' },
+      'switch.bath_heater': { state: 'off' },
     },
   },
   {
@@ -184,8 +237,14 @@ export const SCENES = [
       'cover.living_curtain': { attributes: { current_position: 0 } },
       'cover.bedroom_curtain': { attributes: { current_position: 0 } },
       'media_player.living_tv': { state: 'off' },
-      'switch.floor_heating': { state: 'on' },
-      'climate.living_ac': { state: 'cool', attributes: { temperature: 26 } },
+      'climate.living_ac': { state: 'off' },
+      'climate.bedroom_ac': { state: 'cool', attributes: { temperature: 26 } },
+      'climate.second_ac': { state: 'off' },
+      'fan.living_ceiling': { state: 'off' },
+      'fan.bedroom_ceiling': { state: 'on', attributes: { percentage: 33 } },
+      'fan.second_ceiling': { state: 'off' },
+      'switch.bath_heater': { state: 'off' },
+      'lock.entry': { state: 'locked' },
     },
   },
   {
@@ -206,7 +265,14 @@ export const SCENES = [
       'cover.bedroom_curtain': { attributes: { current_position: 0 } },
       'media_player.living_tv': { state: 'off' },
       'climate.living_ac': { state: 'off' },
-      'switch.floor_heating': { state: 'off' },
+      'climate.bedroom_ac': { state: 'off' },
+      'climate.second_ac': { state: 'off' },
+      'fan.living_ceiling': { state: 'off' },
+      'fan.bedroom_ceiling': { state: 'off' },
+      'fan.second_ceiling': { state: 'off' },
+      'switch.bath_heater': { state: 'off' },
+      'lock.entry': { state: 'locked' },
+      'camera.entry_doorbell': { state: 'off' },
     },
   },
 ]

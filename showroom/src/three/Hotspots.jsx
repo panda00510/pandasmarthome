@@ -10,26 +10,33 @@ import { useIsMobile } from '../hooks'
 
 // 每个可控实体在 3D 空间里的锚点。开启标定模式后可拖动，坐标可导出回这张表。
 export const HOTSPOTS = [
-  { id: 'light.living_main', pos: [-5.4, 2.44, -1.6] },
-  { id: 'light.living_strip', pos: [-4.2, 2.62, -5.28] },
-  { id: 'light.dining_pendant', pos: [-4.6, 2.16, 3.3] },
-  { id: 'light.living_floor', pos: [-8.1, 1.82, 0.6] },
-  { id: 'media_player.living_tv', pos: [-5.4, 2.18, -5.2] },
-  { id: 'cover.living_curtain', pos: [-6.6, 2.66, 5.28] },
-  { id: 'climate.living_ac', pos: [-1.2, 2.5, -3.4] },
-  { id: 'fan.fresh_air', pos: [-8.87, 2.62, 2.6] },
+  { id: 'light.living_main', pos: [-3.35, 2.28, -2.15] },
+  { id: 'light.living_strip', pos: [-2.1, 2.52, -3.92] },
+  { id: 'light.dining_pendant', pos: [-3.95, 1.95, 0.35] },
+  { id: 'light.living_floor', pos: [-1.72, 1.45, -3.75] },
+  { id: 'media_player.living_tv', pos: [-4.55, 1.45, -2.35] },
+  { id: 'cover.living_curtain', pos: [-3.05, 2.28, -3.88] },
+  { id: 'climate.living_ac', pos: [-1.35, 2.22, -2.55] },
+  { id: 'fan.living_ceiling', pos: [-2.55, 2.05, -0.85] },
 
-  { id: 'light.bedroom_main', pos: [1.5, 2.44, -3.0] },
-  { id: 'light.bedroom_bedside', pos: [0.15, 0.86, -4.7] },
-  { id: 'cover.bedroom_curtain', pos: [2.2, 2.5, -5.28] },
-  { id: 'switch.floor_heating', pos: [2.9, 0.35, -1.4] },
+  { id: 'light.bedroom_main', pos: [3.5, 2.28, -2.9] },
+  { id: 'light.bedroom_bedside', pos: [2.28, 0.72, -3.62] },
+  { id: 'cover.bedroom_curtain', pos: [3.45, 2.2, -3.9] },
+  { id: 'climate.bedroom_ac', pos: [4.7, 2.16, -2.55] },
+  { id: 'fan.bedroom_ceiling', pos: [4.15, 2.0, -1.65] },
 
-  { id: 'light.second_main', pos: [1.5, 2.44, 3.5] },
-  { id: 'cover.second_curtain', pos: [2.2, 2.6, 5.28] },
+  { id: 'light.second_main', pos: [0.4, 2.28, -2.9] },
+  { id: 'cover.second_curtain', pos: [0.4, 2.2, -3.9] },
+  { id: 'climate.second_ac', pos: [-0.62, 2.16, -2.75] },
+  { id: 'fan.second_ceiling', pos: [1.05, 2.0, -1.7] },
 
-  { id: 'light.kitchen_spot', pos: [6.5, 2.44, -2.6] },
-  { id: 'light.bath_mirror', pos: [6.5, 2.05, 5.2] },
-  { id: 'light.hall_down', pos: [4.0, 2.44, 0.75] },
+  { id: 'light.kitchen_spot', pos: [-4.0, 2.32, 2.95] },
+  { id: 'light.bath_mirror', pos: [-0.08, 1.82, 1.82] },
+  { id: 'switch.bath_heater', pos: [-0.1, 1.85, 1.15] },
+  { id: 'light.hall_down', pos: [1.05, 2.32, -0.55] },
+
+  { id: 'lock.entry', pos: [2.98, 1.2, 4.15] },
+  { id: 'camera.entry_doorbell', pos: [3.2, 1.5, 4.2] },
 ]
 
 function Hotspot({ conf }) {

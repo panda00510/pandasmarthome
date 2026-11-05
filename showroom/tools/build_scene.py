@@ -79,9 +79,10 @@ def wall_segments(start, end, holes, height):
 
 
 def build_walls(defs, prefix, key="wall"):
-    H, T = plan.WALL_H, plan.WALL_T
+    H = plan.WALL_H
     out = []
     for w in defs:
+        T = w.get("thickness", plan.WALL_T)
         for i, (a, b, y0, y1) in enumerate(wall_segments(w["from"], w["to"], w.get("holes", []), H)):
             if b - a < 1e-4 or y1 - y0 < 1e-4:
                 continue
@@ -107,8 +108,8 @@ def build_shell():
     parts += build_walls(plan.EXTERIOR, "Ext")
     parts += build_walls(plan.INTERIOR, "Int")
 
-    # 客厅电视背景墙饰面
-    parts.append(add_box("TvWall", (-5.4, 1.36, -5.4), (5.0, 2.72, 0.06), "tv_wall"))
+    # 客厅电视靠西墙，薄饰面板只作烘焙遮挡，不单独当一面结构墙
+    parts.append(add_box("TvWall", (-5.12, 1.2, -2.35), (0.04, 1.5, 1.8), "tv_wall"))
     return parts
 
 

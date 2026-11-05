@@ -7,6 +7,7 @@ import Console from './ui/Console'
 import ControlPanel from './ui/ControlPanel'
 import EventLog from './ui/EventLog'
 import CalibrationBar from './ui/CalibrationBar'
+import Assess from './ui/Assess'
 import Icon from './ui/icons'
 import { useT } from './i18n'
 
@@ -31,6 +32,7 @@ export default function App() {
 
       <Brand />
       <ViewRail />
+      <Assess />
       <Console />
       <ControlPanel />
       <EventLog />
