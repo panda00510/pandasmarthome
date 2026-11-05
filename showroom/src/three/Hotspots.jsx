@@ -17,19 +17,26 @@ export const HOTSPOTS = [
   { id: 'media_player.living_tv', pos: [-4.55, 1.45, -2.35] },
   { id: 'cover.living_curtain', pos: [-3.05, 2.28, -3.88] },
   { id: 'climate.living_ac', pos: [-1.35, 2.22, -2.55] },
-  { id: 'fan.fresh_air', pos: [-4.85, 2.32, -3.55] },
+  { id: 'fan.living_ceiling', pos: [-2.55, 2.05, -0.85] },
 
   { id: 'light.bedroom_main', pos: [3.5, 2.28, -2.9] },
   { id: 'light.bedroom_bedside', pos: [2.28, 0.72, -3.62] },
   { id: 'cover.bedroom_curtain', pos: [3.45, 2.2, -3.9] },
-  { id: 'switch.floor_heating', pos: [4.35, 0.22, -2.15] },
+  { id: 'climate.bedroom_ac', pos: [4.7, 2.16, -2.55] },
+  { id: 'fan.bedroom_ceiling', pos: [4.15, 2.0, -1.65] },
 
   { id: 'light.second_main', pos: [0.4, 2.28, -2.9] },
   { id: 'cover.second_curtain', pos: [0.4, 2.2, -3.9] },
+  { id: 'climate.second_ac', pos: [-0.62, 2.16, -2.75] },
+  { id: 'fan.second_ceiling', pos: [1.05, 2.0, -1.7] },
 
   { id: 'light.kitchen_spot', pos: [-4.0, 2.32, 2.95] },
   { id: 'light.bath_mirror', pos: [-0.08, 1.82, 1.82] },
+  { id: 'switch.bath_heater', pos: [-0.1, 1.85, 1.15] },
   { id: 'light.hall_down', pos: [1.05, 2.32, -0.55] },
+
+  { id: 'lock.entry', pos: [2.98, 1.2, 4.15] },
+  { id: 'camera.entry_doorbell', pos: [3.2, 1.5, 4.2] },
 ]
 
 function Hotspot({ conf }) {
