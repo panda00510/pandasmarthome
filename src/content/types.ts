@@ -55,6 +55,17 @@ export type Content = {
     lead: string
     items: { id: string; title: string; body: string; bullets: string[] }[]
   }
+  /** Products still in development — shown as "coming next", never as on sale. */
+  upcoming: {
+    eyebrow: string
+    title: string
+    lead: string
+    status: string
+    limitsLabel: string
+    items: { id: string; title: string; body: string; bullets: string[]; limits: string }[]
+    note: string
+    cta: string
+  }
   platform: {
     eyebrow: string
     title: string

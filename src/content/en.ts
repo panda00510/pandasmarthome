@@ -158,6 +158,43 @@ export const en: Content = {
     ],
   },
 
+  upcoming: {
+    eyebrow: 'Coming next',
+    title: 'Smarter eyes and safer care, without a new camera system',
+    lead: 'Two products we are developing. They are not on sale yet. Tell us what you would use them for and we will let you know when there is something to try.',
+    status: 'In development',
+    limitsLabel: 'Worth knowing',
+    items: [
+      {
+        id: 'edge',
+        title: 'AI edge box for your existing CCTV',
+        body: 'A small box on your own network that reads the streams from cameras you already have and adds analytics. Video is processed on site rather than sent to a cloud service.',
+        bullets: [
+          'Designed for ONVIF / RTSP cameras you already own',
+          'People counting for shops, offices and entrances',
+          'Alerts for unusual events, such as movement in an area at an unexpected hour',
+          'Counts and alerts shown on the same local dashboard',
+        ],
+        limits:
+          'Which cameras work depends on their stream format, lighting and mounting angle. We check yours before promising anything.',
+      },
+      {
+        id: 'fall',
+        title: 'Fall detection without a camera',
+        body: 'A radar sensor that notices a fall and raises an alert without capturing images or sound. Meant for bathrooms and bedrooms, where a camera is not appropriate.',
+        bullets: [
+          'No video or audio recorded',
+          'Alerts to family phones or your dashboard',
+          'Planned: flag when a room has been still for unusually long',
+        ],
+        limits:
+          'Radar still senses movement and presence, and one sensor covers a limited area, so larger rooms may need several. It is an extra safety aid, not a medical device or a replacement for care. We will test it in real homes before quoting accuracy.',
+      },
+    ],
+    note: 'Counting people and monitoring spaces involves personal data. In Singapore, organisations using CCTV have duties under the PDPA, including telling people why footage is collected. We plan for this with you.',
+    cta: 'Tell us your use case',
+  },
+
   platform: {
     eyebrow: 'The platform',
     title: 'Your own system, running at home',

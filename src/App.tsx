@@ -12,6 +12,7 @@ import { Homes } from './components/sections/Homes'
 import { Platform } from './components/sections/Platform'
 import { Process } from './components/sections/Process'
 import { Solutions } from './components/sections/Solutions'
+import { Upcoming } from './components/sections/Upcoming'
 import { ValueProps } from './components/sections/ValueProps'
 import { site } from './config/site'
 import { findGuide } from './content/guides'
@@ -46,6 +47,7 @@ export default function App() {
             <Hero />
             <ValueProps />
             <Solutions />
+            <Upcoming />
             <Platform />
             <Homes />
             <Process />
