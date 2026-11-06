@@ -42,6 +42,7 @@ for (const { lang, path } of routes) {
   ]) {
     page = setMeta(page, key, value)
   }
+  if (lang === 'zh') page = page.replace('href="/feed.xml"', 'href="/zh/feed.xml"')
   if (head) page = page.replace('</head>', () => `    ${head}\n  </head>`)
   // Social scrapers need an absolute og:image; the template only has a relative one.
   if (ogImage) page = page.replaceAll('content="/og-image.png"', `content="${ogImage}"`)
@@ -61,12 +62,16 @@ const gitDate = (...paths) => {
     return today
   }
 }
-const { robots, sitemap, llms } = crawlerFiles({
+const { robots, sitemap, llms, feeds } = crawlerFiles({
   site: gitDate('src', 'index.html', ':(exclude)src/content/guides'),
   showroom: gitDate('showroom'),
 })
 await writeFile(at('dist/robots.txt'), robots)
 await writeFile(at('dist/llms.txt'), llms)
 if (sitemap) await writeFile(at('dist/sitemap.xml'), sitemap)
+if (feeds) {
+  await writeFile(at('dist/feed.xml'), feeds.en)
+  await writeFile(at('dist/zh/feed.xml'), feeds.zh)
+}
 await rm(at('dist-ssr'), { recursive: true, force: true })
 console.log(`prerendered ${routes.length} pages`)

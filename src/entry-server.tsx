@@ -134,5 +134,37 @@ ${routes
     '',
   ].join('\n')
 
-  return { robots, sitemap, llms }
+  // RSS feeds, one per language — a plain way for readers, aggregators and
+  // crawlers to pick up new guides without waiting for a recrawl.
+  const xml = (text: string) =>
+    text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+  const feed = (lang: Lang) => {
+    const self = `${site.url}${langPath(lang, 'feed.xml')}`
+    const items = guidesIn(lang)
+      .map(
+        (guide) => `    <item>
+      <title>${xml(guide.title)}</title>
+      <link>${page(lang, guidePath(guide.slug))}</link>
+      <guid isPermaLink="true">${page(lang, guidePath(guide.slug))}</guid>
+      <pubDate>${new Date(guide.published).toUTCString()}</pubDate>
+      <description>${xml(guide.description)}</description>
+    </item>`,
+      )
+      .join('\n')
+    return `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>${xml(lang === 'zh' ? zh.guides.metaTitle : en.guides.metaTitle)}</title>
+    <link>${page(lang, 'guides/')}</link>
+    <description>${xml(lang === 'zh' ? zh.guides.metaDescription : en.guides.metaDescription)}</description>
+    <language>${lang === 'zh' ? 'zh-Hans' : 'en-SG'}</language>
+    <atom:link href="${self}" rel="self" type="application/rss+xml"/>
+${items}
+  </channel>
+</rss>
+`
+  }
+  const feeds = site.url ? { en: feed('en'), zh: feed('zh') } : null
+
+  return { robots, sitemap, llms, feeds }
 }
