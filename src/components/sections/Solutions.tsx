@@ -30,6 +30,9 @@ function onPointerMove(event: PointerEvent<HTMLElement>) {
 
 /** Topic pages behind each card. */
 const PAGES: Record<string, string> = {
+  lighting: 'solutions/smart-lighting/',
+  control: 'solutions/home-control/',
+  energy: 'solutions/energy-monitoring/',
   climate: 'solutions/smart-aircon-control/',
   shades: 'solutions/motorised-curtains/',
   security: 'solutions/smart-door-locks/',
