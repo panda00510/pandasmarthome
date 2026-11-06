@@ -1,7 +1,7 @@
 import { Fragment, type ReactNode } from 'react'
 import { ArrowLeft, ArrowRight, MessageCircle } from 'lucide-react'
 import { site } from '../../config/site'
-import { guidesIn, type Guide, type Hub } from '../../content/guides'
+import { guidesIn, HUBS, type Guide } from '../../content/guides'
 import { pageHref, useI18n, type Lang } from '../../i18n/context'
 import { Button, SectionHeading } from '../ui'
 
@@ -91,6 +91,7 @@ export function GuidesIndex() {
 export function GuidePage({ guide }: { guide: Guide }) {
   const { t, lang } = useI18n()
   const isPage = guide.kind === 'page'
+  const hub = HUBS.find((name) => guide.path.startsWith(`${name}/`)) ?? null
   const others = isPage
     ? guide.related.flatMap((slug) => guidesIn(lang).filter((other) => other.slug === slug))
     : guidesIn(lang).filter((other) => other.slug !== guide.slug).slice(0, 3)
@@ -100,11 +101,11 @@ export function GuidePage({ guide }: { guide: Guide }) {
       <article className="shell pt-10 pb-16 lg:pt-14">
         <div className="mx-auto max-w-[44rem]">
           <a
-            href={pageHref(lang, isPage ? `${guide.path.split('/')[0]}/` : 'guides/')}
+            href={pageHref(lang, hub ? `${hub}/` : isPage ? '' : 'guides/')}
             className="inline-flex items-center gap-1.5 text-sm font-medium text-ink-600 hover:text-bamboo-700"
           >
             <ArrowLeft size={15} aria-hidden="true" />
-            {isPage ? t.hubs[guide.path.split('/')[0] as Hub].all : t.guides.all}
+            {hub ? t.hubs[hub].all : isPage ? t.guides.backHome : t.guides.all}
           </a>
           <h1 className="mt-6 text-[2rem] leading-[1.12] font-semibold tracking-[-0.03em] text-balance text-ink-950 sm:text-[2.75rem]">
             {guide.title}

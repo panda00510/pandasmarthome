@@ -11,7 +11,11 @@ const LANGS: { code: Lang; label: string }[] = [
 ]
 
 /** Nav items that open an index page instead of scrolling the homepage. */
-const HUB_ITEMS: Record<string, string> = { solutions: 'solutions/', homes: 'homes/' }
+const HUB_ITEMS: Record<string, string> = {
+  solutions: 'solutions/',
+  homes: 'homes/',
+  process: 'how-it-works/',
+}
 
 export function Header() {
   const { t, lang, path } = useI18n()

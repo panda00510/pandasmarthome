@@ -1,10 +1,10 @@
-import { Info } from 'lucide-react'
+import { ArrowRight, Info } from 'lucide-react'
 import curtains from '../../assets/photos/bedroom-curtains.jpg'
 import { SectionHeading } from '../ui'
-import { useI18n } from '../../i18n/context'
+import { pageHref, useI18n } from '../../i18n/context'
 
 export function Process() {
-  const { t } = useI18n()
+  const { t, lang } = useI18n()
 
   return (
     <section id="process" className="band">
@@ -55,6 +55,15 @@ export function Process() {
           <li className="ml-0 flex items-start gap-2.5 rounded-2xl bg-bamboo-50 px-5 py-4 text-sm leading-relaxed text-bamboo-900 ring-1 ring-bamboo-100 sm:ml-[3.5rem]">
             <Info size={16} className="mt-0.5 shrink-0 text-bamboo-600" aria-hidden="true" />
             {t.process.note}
+          </li>
+          <li className="sm:ml-[3.5rem]">
+            <a
+              href={pageHref(lang, 'how-it-works/')}
+              className="inline-flex items-center gap-1.5 text-sm font-semibold text-bamboo-700 hover:text-bamboo-600"
+            >
+              {t.guides.learnMore}
+              <ArrowRight size={15} aria-hidden="true" />
+            </a>
           </li>
         </ol>
       </div>

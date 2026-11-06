@@ -76,8 +76,8 @@ function parse(file: string, raw: string): Guide & { draft: boolean } {
   }
 
   const kind = file.includes('/pages/') ? 'page' : 'guide'
-  if (kind === 'page' && !/^[a-z0-9-]+\/[a-z0-9-]+\/$/.test(meta.path ?? '')) {
-    throw new Error(`${file}: a page needs "path: section/name/"`)
+  if (kind === 'page' && !/^[a-z0-9-]+(\/[a-z0-9-]+)?\/$/.test(meta.path ?? '')) {
+    throw new Error(`${file}: a page needs "path: section/name/" or "path: name/"`)
   }
 
   return {

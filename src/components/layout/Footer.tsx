@@ -15,6 +15,13 @@ const SOCIAL_LABELS: Record<string, string> = {
 const LINK = 'inline-block py-1 text-sm text-ink-700 transition-colors hover:text-bamboo-700'
 const LINK_ICON = 'inline-flex items-center gap-2 py-1 transition-colors hover:text-bamboo-700'
 
+/** Nav items that open their own page instead of scrolling the homepage. */
+const PAGE_FOR: Record<string, string> = {
+  solutions: 'solutions/',
+  homes: 'homes/',
+  process: 'how-it-works/',
+}
+
 export function Footer() {
   const { t, lang, path } = useI18n()
   const home = path ? pageHref(lang) : ''
@@ -64,7 +71,7 @@ export function Footer() {
               {t.nav.items.map((item) => (
                 <li key={item.id}>
                   <a
-                    href={item.id === 'solutions' || item.id === 'homes' ? pageHref(lang, `${item.id}/`) : `${home}#${item.id}`}
+                    href={PAGE_FOR[item.id] ? pageHref(lang, PAGE_FOR[item.id]) : `${home}#${item.id}`}
                     className={LINK}
                   >
                     {item.label}
