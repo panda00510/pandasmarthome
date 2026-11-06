@@ -63,7 +63,10 @@ export function Footer() {
             <ul className="mt-3 space-y-1">
               {t.nav.items.map((item) => (
                 <li key={item.id}>
-                  <a href={`${home}#${item.id}`} className={LINK}>
+                  <a
+                    href={item.id === 'solutions' || item.id === 'homes' ? pageHref(lang, `${item.id}/`) : `${home}#${item.id}`}
+                    className={LINK}
+                  >
                     {item.label}
                   </a>
                 </li>

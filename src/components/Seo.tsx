@@ -144,6 +144,16 @@ export function Seo() {
           author: site.url ? { '@id': `${site.url}#business` } : undefined,
           publisher: site.url ? { '@id': `${site.url}#business` } : undefined,
         },
+        guide.kind === 'page' && guide.path.startsWith('solutions/')
+          ? {
+              '@type': 'Service',
+              name: guide.title,
+              description: guide.description,
+              url: url ?? undefined,
+              provider: site.url ? { '@id': `${site.url}#business` } : undefined,
+              areaServed: { '@type': 'Country', name: 'Singapore' },
+            }
+          : null,
         guide.faq.length
           ? {
               '@type': 'FAQPage',
