@@ -9,20 +9,22 @@ export default function Assess() {
   const calibrating = useHA((s) => s.calibrating)
   if (calibrating) return null
 
-  const href = `${WHATSAPP_LINK}?text=${encodeURIComponent(t('cta_message'))}`
+  const href = WHATSAPP_LINK && `${WHATSAPP_LINK}?text=${encodeURIComponent(t('cta_message'))}`
 
   return (
     <aside className="assess float">
       <p className="assess-note">{t('demo_note')}</p>
-      <a
-        className="assess-btn"
-        href={href}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <Icon name="whatsapp" size={16} />
-        <span>{t('cta_whatsapp')}</span>
-      </a>
+      {href && (
+        <a
+          className="assess-btn"
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Icon name="whatsapp" size={16} />
+          <span>{t('cta_whatsapp')}</span>
+        </a>
+      )}
     </aside>
   )
 }
