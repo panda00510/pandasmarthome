@@ -55,6 +55,8 @@ export type Content = {
     lead: string
     items: { id: string; title: string; body: string; bullets: string[] }[]
   }
+  /** Index pages for the topic pages: /solutions/ and /homes/. */
+  hubs: Record<'solutions' | 'homes', { eyebrow: string; title: string; lead: string; all: string; metaTitle: string; metaDescription: string }>
   /** Products still in development — shown as "coming next", never as on sale. */
   upcoming: {
     eyebrow: string

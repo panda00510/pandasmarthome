@@ -4,7 +4,7 @@ description: Existing flats can be upgraded without tearing up walls. How we sur
 published: 2026-11-06
 updated: 2026-11-06
 path: homes/hdb-resale-smart-home/
-related: no-neutral-smart-switches, smart-home-without-internet, smart-aircon-control, wifi-for-smart-home
+related: upgrade-existing-home-smart, check-older-home-before-smart, no-neutral-smart-switches, smart-home-without-internet
 ---
 Most HDB flats were not built for smart switches, but most can still be upgraded. The trick is to start from what your wiring actually supports, instead of buying devices and hoping. We survey first, then pick devices that fit, and you can start with one area and extend later.
 

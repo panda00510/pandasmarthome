@@ -8,6 +8,7 @@ import { CtaBand } from './components/sections/CtaBand'
 import { Faq } from './components/sections/Faq'
 import { GuidePage, GuidesIndex, LatestGuides } from './components/sections/Guides'
 import { Hero } from './components/sections/Hero'
+import { HubPage } from './components/sections/Hub'
 import { Homes } from './components/sections/Homes'
 import { Platform } from './components/sections/Platform'
 import { Process } from './components/sections/Process'
@@ -15,7 +16,7 @@ import { Solutions } from './components/sections/Solutions'
 import { Upcoming } from './components/sections/Upcoming'
 import { ValueProps } from './components/sections/ValueProps'
 import { site } from './config/site'
-import { findGuide } from './content/guides'
+import { findGuide, hubOf } from './content/guides'
 import { useReveal } from './hooks/motion'
 import { useI18n } from './i18n/context'
 
@@ -40,6 +41,8 @@ export default function App() {
       <main id="main">
         {guide ? (
           <GuidePage guide={guide} />
+        ) : hubOf(path) ? (
+          <HubPage hub={hubOf(path)!} />
         ) : path === 'guides/' ? (
           <GuidesIndex />
         ) : (

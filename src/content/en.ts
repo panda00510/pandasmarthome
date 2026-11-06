@@ -158,6 +158,27 @@ export const en: Content = {
     ],
   },
 
+  hubs: {
+    solutions: {
+      eyebrow: 'Solutions',
+      title: 'What we design and install',
+      lead: 'Each area of the home on its own page: what we set up, what to decide first, and the questions people ask.',
+      all: 'All solutions',
+      metaTitle: 'Smart Home Solutions in Singapore | Panda Smart Home',
+      metaDescription:
+        'Smart lighting, aircon control, motorised curtains, door locks and security, home controls and energy monitoring for Singapore homes.',
+    },
+    homes: {
+      eyebrow: 'Your home',
+      title: 'Smart home plans by home type',
+      lead: 'New BTO flats, older HDB flats, condominiums and landed homes each need a different plan. Start with the one closest to yours.',
+      all: 'All home types',
+      metaTitle: 'Smart Home for HDB, BTO, Condo and Landed Homes in Singapore | Panda Smart Home',
+      metaDescription:
+        'Smart home planning for BTO flats, HDB resale and older homes, condominiums and landed houses in Singapore.',
+    },
+  },
+
   upcoming: {
     eyebrow: 'Coming next',
     title: 'Smarter eyes and safer care, without a new camera system',

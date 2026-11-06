@@ -4,7 +4,7 @@ description: 现有的组屋不用拆墙也能升级。我们怎么先看清你�
 published: 2026-11-06
 updated: 2026-11-06
 path: homes/hdb-resale-smart-home/
-related: no-neutral-smart-switches, smart-home-without-internet, smart-aircon-control, wifi-for-smart-home
+related: upgrade-existing-home-smart, check-older-home-before-smart, no-neutral-smart-switches, smart-home-without-internet
 ---
 大多数组屋当初并不是为智能开关设计的，但大多数都能升级。关键是从你的线路实际支持什么出发，而不是先买设备再碰运气。我们先做勘察，再选合适的设备，你可以先从一个区域开始，以后再扩展。
 

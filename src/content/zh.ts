@@ -157,6 +157,25 @@ export const zh: Content = {
     ],
   },
 
+  hubs: {
+    solutions: {
+      eyebrow: '解决方案',
+      title: '我们设计和安装什么',
+      lead: '家里的每一块各用一个页面讲清楚：我们做哪些设置、先要决定什么，以及大家常问的问题。',
+      all: '全部解决方案',
+      metaTitle: '新加坡智能家居解决方案｜Panda智能家居',
+      metaDescription: '为新加坡家庭提供智能灯光、空调控制、电动窗帘、门锁与安防、家居控制和用电监测。',
+    },
+    homes: {
+      eyebrow: '住宅类型',
+      title: '按住宅类型规划智能家居',
+      lead: '新 BTO、老组屋、公寓和有地住宅，各需要不同的规划。从最接近你家的那一种看起。',
+      all: '全部住宅类型',
+      metaTitle: '新加坡组屋、BTO、公寓与有地住宅智能家居｜Panda智能家居',
+      metaDescription: '为新加坡的 BTO 组屋、转售和老房子、公寓与有地住宅做智能家居规划。',
+    },
+  },
+
   upcoming: {
     eyebrow: '即将推出',
     title: '不换整套摄像头，也能更聪明、更安心',

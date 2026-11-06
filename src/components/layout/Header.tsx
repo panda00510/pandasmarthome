@@ -10,6 +10,9 @@ const LANGS: { code: Lang; label: string }[] = [
   { code: 'zh', label: '中文' },
 ]
 
+/** Nav items that open an index page instead of scrolling the homepage. */
+const HUB_ITEMS: Record<string, string> = { solutions: 'solutions/', homes: 'homes/' }
+
 export function Header() {
   const { t, lang, path } = useI18n()
   // Section anchors live on the homepage; from a guide they go back there.
@@ -65,7 +68,7 @@ export function Header() {
             return (
               <a
                 key={item.id}
-                href={`${home}#${item.id}`}
+                href={HUB_ITEMS[item.id] ? pageHref(lang, HUB_ITEMS[item.id]) : `${home}#${item.id}`}
                 aria-current={current ? 'true' : undefined}
                 className={`relative rounded-full px-3 py-2 text-[0.9rem] font-medium whitespace-nowrap transition-colors ${
                   current
@@ -131,7 +134,7 @@ export function Header() {
           {t.nav.items.map((item) => (
             <a
               key={item.id}
-              href={`${home}#${item.id}`}
+              href={HUB_ITEMS[item.id] ? pageHref(lang, HUB_ITEMS[item.id]) : `${home}#${item.id}`}
               onClick={() => setOpen(false)}
               className="rounded-xl px-3 py-3 text-base font-medium text-ink-800 transition-colors hover:bg-ink-100"
             >

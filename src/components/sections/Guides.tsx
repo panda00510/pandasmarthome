@@ -1,7 +1,7 @@
 import { Fragment, type ReactNode } from 'react'
 import { ArrowLeft, ArrowRight, MessageCircle } from 'lucide-react'
 import { site } from '../../config/site'
-import { guidesIn, type Guide } from '../../content/guides'
+import { guidesIn, type Guide, type Hub } from '../../content/guides'
 import { pageHref, useI18n, type Lang } from '../../i18n/context'
 import { Button, SectionHeading } from '../ui'
 
@@ -100,11 +100,11 @@ export function GuidePage({ guide }: { guide: Guide }) {
       <article className="shell pt-10 pb-16 lg:pt-14">
         <div className="mx-auto max-w-[44rem]">
           <a
-            href={pageHref(lang, isPage ? '' : 'guides/')}
+            href={pageHref(lang, isPage ? `${guide.path.split('/')[0]}/` : 'guides/')}
             className="inline-flex items-center gap-1.5 text-sm font-medium text-ink-600 hover:text-bamboo-700"
           >
             <ArrowLeft size={15} aria-hidden="true" />
-            {isPage ? t.guides.backHome : t.guides.all}
+            {isPage ? t.hubs[guide.path.split('/')[0] as Hub].all : t.guides.all}
           </a>
           <h1 className="mt-6 text-[2rem] leading-[1.12] font-semibold tracking-[-0.03em] text-balance text-ink-950 sm:text-[2.75rem]">
             {guide.title}

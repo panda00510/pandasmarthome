@@ -121,12 +121,19 @@ export const pagesIn = (lang: Lang) => topicPages.filter((page) => page.lang ===
 export const findGuide = (lang: Lang, path: string) =>
   everything.find((item) => item.lang === lang && item.path === path)
 
+export const HUBS = ['solutions', 'homes'] as const
+export type Hub = (typeof HUBS)[number]
+
+/** "solutions/" or "homes/" for an index page; otherwise null. */
+export const hubOf = (path: string): Hub | null => HUBS.find((hub) => path === `${hub}/`) ?? null
+
 /** Every page path below a language root, for the prerender and the sitemap. */
 export const pagePaths = [
   '',
   'guides/',
   ...guidesIn('en').map((guide) => guide.path),
   ...pagesIn('en').map((page) => page.path),
+  ...HUBS.map((hub) => `${hub}/`),
 ]
 
 /** Newest `updated` date across all guides, or null when there are none. */
@@ -142,6 +149,10 @@ export function pageMeta(lang: Lang, path: string) {
   if (guide) {
     const suffix = lang === 'zh' ? `｜${brand.nameZh}` : ` | ${brand.name}`
     return { title: guide.title + suffix, description: guide.description, guide }
+  }
+  const hub = hubOf(path)
+  if (hub) {
+    return { title: t.hubs[hub].metaTitle, description: t.hubs[hub].metaDescription, guide: null }
   }
   if (path === 'guides/') {
     return { title: t.guides.metaTitle, description: t.guides.metaDescription, guide: null }
