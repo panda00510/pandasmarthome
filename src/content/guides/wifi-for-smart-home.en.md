@@ -2,7 +2,7 @@
 title: Wi-Fi for a smart home — do you need mesh, and where should the router go?
 description: Dozens of small devices put different demands on your Wi-Fi than phones and laptops. What matters for coverage, where to place access points, and what to sort out before renovation.
 published: 2026-10-22
-updated: 2026-10-22
+updated: 2026-11-06
 ---
 Most smart home complaints that sound like "the device is bad" are really "the Wi-Fi does not reach there". A flat full of smart devices asks different things of a network than a few phones and laptops do, so it is worth planning rather than hoping the single router by the front door will cope.
 
@@ -34,6 +34,20 @@ Not every device needs to join your Wi-Fi. Battery-powered sensors, switches and
 - **Pick a clear channel** if you have a choice, and keep the router firmware up to date.
 - **Consider a separate network** for smart devices, so a cheap gadget is not sharing a network with your laptop. Check that your hub can still reach the devices before you rely on it.
 - **Note your Wi-Fi name and password** somewhere safe. Replacing a router later means re-pairing devices that were tied to the old settings.
+
+## Common questions
+
+### Do I need a mesh system for a smart home?
+
+Not necessarily. A single good router, well placed, is enough for some smaller units. Mesh nodes are easy to add but each wireless hop costs some performance, and access points connected by network cable are usually the most dependable.
+
+### Do all smart devices need Wi-Fi?
+
+No. Battery-powered sensors, switches and buttons using Zigbee or Thread connect to a hub, and only the hub needs a network connection. That keeps your router for devices that genuinely need it, such as cameras and streaming boxes.
+
+### What should I prepare during renovation?
+
+Ask for network cable runs to where you may want an access point, the TV and the hub, even if you will not use them on day one. Any fixed electrical work should be carried out by a licensed electrical worker. See how we plan [BTO flats](/homes/bto-smart-home/).
 
 ## Plan it before the renovation
 

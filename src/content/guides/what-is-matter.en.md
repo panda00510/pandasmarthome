@@ -2,7 +2,7 @@
 title: What is Matter, and should you only buy Matter devices?
 description: Matter is a shared smart home standard. What it actually changes, how Thread fits in, and what to check on the box before you buy devices for your home.
 published: 2026-09-23
-updated: 2026-09-23
+updated: 2026-11-06
 ---
 More and more smart home boxes carry the Matter logo. It is a real step forward, but it is easy to read more into it than it promises. Here is what it means in practice for someone planning a home.
 
@@ -34,6 +34,20 @@ Thread devices need a **Thread border router** on your network. Some smart speak
 - **Advanced features may stay in the brand's app.** Basic on, off, level and status are standard; extra settings such as firmware updates, calibration or special modes often still need the maker's own app.
 - **Your controller still matters.** Automations run on whichever platform you use, and platforms differ in what they support and how much they run locally.
 - **Setup codes matter.** Each device has a pairing code, usually a QR code on the device and in the box. Keep a photo of it; you may need it to re-add the device later.
+
+## Common questions
+
+### Is Matter a wireless protocol?
+
+No. Matter describes the language devices use, not the wireless link. It runs over Wi-Fi, Thread or Ethernet.
+
+### Do I need a Thread border router?
+
+Thread devices need one on your network. Some smart speakers, media boxes and hubs have one built in. Check this before buying Thread devices, otherwise they have nothing to connect to.
+
+### Should I only buy Matter devices?
+
+For new devices you expect to keep for years, Matter support is a sensible thing to prefer. It is not a reason to throw out working Zigbee or Wi-Fi devices, because a good central controller can combine them. Choose one controller for your home and check each device against it before you buy.
 
 ## Should you only buy Matter?
 

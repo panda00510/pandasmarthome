@@ -2,7 +2,7 @@
 title: Motorised curtains — what to decide before you choose a motor
 description: Track or roller, wired or battery, which protocol, and what to prepare during renovation. A practical checklist for motorised curtains in Singapore homes.
 published: 2026-09-23
-updated: 2026-09-23
+updated: 2026-11-06
 ---
 Motorised curtains are one of the smart home upgrades people notice every day: they open in the morning, close when the afternoon sun hits the west-facing windows, and shut together when you leave. Most of the decisions, though, have to be made before the motor is chosen — and some of them are much easier during a renovation than after.
 
@@ -48,6 +48,20 @@ If you already have a hub or plan to add one, choose motors it supports directly
 - **Manual pull:** the curtain can still be moved by hand if the power is off or the battery is flat.
 - **Quiet operation:** worth checking for bedrooms.
 - **Wall button:** a physical scene button beside the window for family members who do not use an app.
+
+## Common questions
+
+### Do motorised curtains need a power point?
+
+Wired motors need mains power inside or next to the curtain box, so it is best added while the ceiling and walls are open. Battery motors do not, but they need recharging from time to time.
+
+### Which protocol should I choose for curtain motors?
+
+Zigbee or Matter motors usually work with a local home controller, so they keep working in automations when the internet is down. Wi-Fi motors are simple to set up, but many rely on the manufacturer cloud app, so check whether local control is supported.
+
+### Can I motorise the curtains I already have?
+
+It depends on the covering. Side-opening curtains use a motorised track, and roller blinds use a tubular motor in the tube. In a rental, clip-on curtain robots can push a curtain along an existing rail. See our [motorised curtain solutions](/solutions/motorised-curtains/).
 
 ## What to prepare during renovation
 

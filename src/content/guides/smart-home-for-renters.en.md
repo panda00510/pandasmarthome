@@ -2,7 +2,7 @@
 title: Smart home when you rent — what you can do without touching the walls
 description: Renting in Singapore does not rule out a smart home. What works without drilling or rewiring, what needs the landlord's consent, and how to take it all with you.
 published: 2026-10-16
-updated: 2026-10-16
+updated: 2026-11-06
 ---
 Renting a flat or condo unit does not mean giving up on a smart home. It does change the rules of the game: anything you install has to come out again when you leave, and anything that touches the building needs the owner's agreement first. The good news is that a lot of useful automation needs neither.
 
@@ -36,6 +36,20 @@ Before buying anything, read what your tenancy agreement says about alterations,
 ## When you move out
 
 Remove each device from your app and hub, then factory-reset it, before you pack it or leave it for the next occupant. A device still linked to your account can keep reporting to you, or let the next person see it in theirs. If you added anything the landlord agreed to keep, hand over the manuals and make sure it is no longer tied to your account.
+
+## Common questions
+
+### Can I have a smart home in a rented flat?
+
+Yes. A lot of useful automation needs no alterations: smart bulbs, smart plugs, battery sensors, wireless scene buttons, infrared controllers and clip-on curtain robots.
+
+### What needs the landlord's consent?
+
+Replacing wall switches, the main door lock, motorised curtain tracks, ceiling-mounted devices, anything drilled into walls, and cameras facing outside your unit. Get consent in writing, with a short message that names the item.
+
+### How do I take a smart home with me when I move out?
+
+Choose a hub you own, favour open standards, keep the original parts in a labelled box, and remove each device from your app and hub and factory-reset it before you leave. See our [home control approach](/solutions/home-control/).
 
 ## Wi-Fi and the router
 

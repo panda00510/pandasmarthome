@@ -2,7 +2,7 @@
 title: Smart aircon control — IR remotes, wired adapters and what to check first
 description: Aircon runs almost every day in Singapore. The difference between infrared and wired control, the automations worth setting up, and what to confirm before you start.
 published: 2026-10-22
-updated: 2026-10-22
+updated: 2026-11-06
 ---
 In Singapore, the air-conditioner is probably the appliance a home uses most. What people want from a smart setup is usually simple: cool the room before they get home, adjust it once they are asleep, and switch everything off when the last person leaves. There are two main ways to get there, each with trade-offs.
 
@@ -36,6 +36,20 @@ Some aircon brands offer a wired or Wi-Fi adapter for the indoor unit that talks
 - Whether the IR controller can see the indoor unit directly — cabinets and decorative panels block the signal
 - Sensors on the relevant doors and windows, if you want the window pause
 - Wired adapters involve the indoor unit's ports and power, so leave the installation to your aircon installer or another qualified person
+
+## Common questions
+
+### Can I control my aircon with a smart IR controller?
+
+Most split aircons in homes use an infrared remote. A smart IR controller learns or already knows those signals and, placed where it can see the indoor unit, sends commands from an app, a schedule or an automation.
+
+### Why does the app sometimes show the wrong aircon state?
+
+Infrared is one-way. If someone changes the temperature with the original remote, or the signal is blocked, the state shown in your system can drift from reality. A room temperature sensor or a power-measuring device lets automations check the real conditions.
+
+### Is a wired adapter worth it?
+
+It gives accurate two-way state, but whether one exists depends on the brand and model. Confirm with the manufacturer or your aircon installer first, including any effect on the warranty. See our [aircon solutions](/solutions/smart-aircon-control/).
 
 ## Plan it with the rest of the home
 

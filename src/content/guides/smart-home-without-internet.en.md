@@ -2,7 +2,7 @@
 title: What still works in a smart home when the internet goes down?
 description: Local control vs cloud control, explained for Singapore homes — what keeps running during an outage, what pauses, and how to check a device before you buy.
 published: 2026-09-23
-updated: 2026-09-23
+updated: 2026-11-06
 ---
 When the fibre drops, some smart homes quietly carry on and others turn into homes where the lights only answer to an app that can no longer reach its server. Which one you get depends on a single design choice: where the decisions are made.
 
@@ -31,6 +31,20 @@ With **local control**, a controller inside your home receives the signal and ac
 1. Look for local protocols: Zigbee, Thread, Matter, or a documented local API.
 2. Check whether the device needs its own cloud account to be set up or controlled.
 3. If you already own it, switch off the router for ten minutes and see what still responds.
+
+## Common questions
+
+### Will my smart home still work if the internet goes down?
+
+On a local system, yes for wall switches, scene buttons, automations, sensors and local dashboards. Remote access, voice assistants, devices that only work through a manufacturer account, and phone notifications while you are away usually pause.
+
+### How can I check a device before I buy it?
+
+Look for local protocols such as Zigbee, Thread, Matter or a documented local API, and check whether the device needs its own cloud account. If you already own it, switch off the router for ten minutes and see what still responds.
+
+### Is a power cut the same as an internet outage?
+
+No. For short power interruptions, a small UPS on the controller and network equipment keeps the system running and avoids a cold restart.
 
 ## Power cuts are a different case
 
