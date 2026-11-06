@@ -514,6 +514,17 @@ export const en: Content = {
         'Landed property',
         'Other / not sure yet',
       ],
+      startWith: 'What would you like to start with? (optional)',
+      startWithOptions: [
+        'Select…',
+        'Lighting & scenes',
+        'Aircon & comfort',
+        'Curtains & blinds',
+        'Doors & security',
+        'Controls & dashboards',
+        'Energy & monitoring',
+        'Not sure yet, advise me',
+      ],
       message: 'What would you like to solve?',
       messagePlaceholder:
         'e.g. Aircon in two bedrooms, curtains in the living room, and one app for everything.',

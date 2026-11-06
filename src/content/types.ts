@@ -137,6 +137,8 @@ export type Content = {
       contactHelp: string
       homeType: string
       homeTypeOptions: string[]
+      startWith: string
+      startWithOptions: string[]
       message: string
       messagePlaceholder: string
       submit: string

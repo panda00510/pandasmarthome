@@ -12,7 +12,7 @@
 import { execFileSync } from 'node:child_process'
 import { readFile } from 'node:fs/promises'
 
-const KEY = '3bda083900f886a126076308efacb0f3'
+const KEY = 'bcb6ea4926494a8fb4747955901343f6'
 
 const sitemap = await readFile('dist/sitemap.xml', 'utf8').catch(() => null)
 if (!sitemap) {

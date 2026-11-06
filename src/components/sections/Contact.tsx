@@ -62,6 +62,7 @@ export function Contact() {
     const contact = ((data.get('contact') as string) ?? '').trim()
     const message = ((data.get('message') as string) ?? '').trim()
     const homeType = ((data.get('homeType') as string) ?? '').trim()
+    const startWith = ((data.get('startWith') as string) ?? '').trim()
 
     const nextErrors: Errors = {}
     if (!name) nextErrors.name = c.states.required
@@ -77,6 +78,7 @@ export function Contact() {
         `${c.form.name}: ${name}`,
         `${c.form.contact}: ${contact}`,
         `${c.form.homeType}: ${homeType || '—'}`,
+        `${c.form.startWith}: ${startWith || '—'}`,
         '',
         `${c.form.message}`,
         message,
@@ -112,6 +114,8 @@ export function Contact() {
           // Omitted rather than sent as null, so it does not show up as an
           // empty row in the notification email.
           ...(homeType ? { homeType } : {}),
+          ...(startWith ? { startWith } : {}),
+          page: window.location.pathname,
           message,
           language: lang,
           submittedAt: new Date().toISOString(),
@@ -275,30 +279,19 @@ export function Contact() {
                 required
               />
 
-              <div>
-                <label
-                  htmlFor={`${ids}-home`}
-                  className="block text-sm font-medium text-ink-800"
-                >
-                  {c.form.homeType}
-                </label>
-                <select
-                  id={`${ids}-home`}
-                  name="homeType"
-                  defaultValue=""
-                  className="field mt-2 appearance-none bg-[length:1rem] bg-[right_0.9rem_center] bg-no-repeat pr-10"
-                  style={{
-                    backgroundImage:
-                      "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23667080' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
-                  }}
-                >
-                  {c.form.homeTypeOptions.map((option, i) => (
-                    <option key={option} value={i === 0 ? '' : option}>
-                      {option}
-                    </option>
-                  ))}
-                </select>
-              </div>
+              <SelectField
+                id={`${ids}-home`}
+                name="homeType"
+                label={c.form.homeType}
+                options={c.form.homeTypeOptions}
+              />
+
+              <SelectField
+                id={`${ids}-start`}
+                name="startWith"
+                label={c.form.startWith}
+                options={c.form.startWithOptions}
+              />
 
               <Field
                 id={`${ids}-message`}
@@ -394,6 +387,43 @@ function DetailRow({
         <dt className="text-xs font-semibold tracking-wide text-ink-500 uppercase">{label}</dt>
         <dd className="mt-1 text-[0.9375rem] text-ink-800">{children}</dd>
       </div>
+    </div>
+  )
+}
+
+/** A labelled drop-down whose first option is the empty placeholder. */
+function SelectField({
+  id,
+  name,
+  label,
+  options,
+}: {
+  id: string
+  name: string
+  label: string
+  options: string[]
+}) {
+  return (
+    <div>
+      <label htmlFor={id} className="block text-sm font-medium text-ink-800">
+        {label}
+      </label>
+      <select
+        id={id}
+        name={name}
+        defaultValue=""
+        className="field mt-2 appearance-none bg-[length:1rem] bg-[right_0.9rem_center] bg-no-repeat pr-10"
+        style={{
+          backgroundImage:
+            "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23667080' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
+        }}
+      >
+        {options.map((option, i) => (
+          <option key={option} value={i === 0 ? '' : option}>
+            {option}
+          </option>
+        ))}
+      </select>
     </div>
   )
 }
