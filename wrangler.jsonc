@@ -4,8 +4,10 @@
   // Deployed by .github/workflows/deploy.yml, NOT by Cloudflare Workers Builds.
   // One build, one set of variables, two hosts — see README → Deployment.
   //
-  // There is no `main` entry: this Worker is assets-only, so requests are
-  // served straight from ./dist without running any script.
+  // The Worker only redirects non-canonical hostnames (see worker/index.js);
+  // everything else is served from ./dist through the ASSETS binding.
+  "main": "worker/index.js",
+  "vars": { "CANONICAL_HOST": "smartpanda.sg" },
   "name": "pandasmarthome",
   "compatibility_date": "2026-08-04",
   // Keeps pandasmarthome.<subdomain>.workers.dev serving. Without this an
@@ -13,6 +15,10 @@
   "workers_dev": true,
   "assets": {
     "directory": "./dist",
+    "binding": "ASSETS",
+    // Run the Worker first so the redirect applies to every path, including
+    // files that exist as assets.
+    "run_worker_first": true,
     // The site has no client-side routing, so an unknown path is a genuine
     // 404. Returning index.html instead would create soft-404s that search
     // engines index as duplicates of the homepage.
