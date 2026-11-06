@@ -2,7 +2,7 @@
 title: Planning a smart home before renovation — what to prepare in a BTO or HDB flat
 description: The cheapest moment to prepare for a smart home is before the walls are closed. A practical checklist of what to decide on switches, wiring, network points and curtains during renovation.
 published: 2026-11-05
-updated: 2026-11-05
+updated: 2026-11-06
 ---
 A smart home does not have to be built during renovation. Retrofit devices work in most existing flats. But a few things are far cheaper to settle while the walls are open and the electrician is already on site, and painful to fix afterwards. This is the short list worth deciding before your contractor starts.
 
@@ -32,6 +32,20 @@ A smart home does not have to be built during renovation. Retrofit devices work 
 
 - **Do not buy every device in advance.** Prepare the wiring and network, then choose devices once the layout is final. Products change, but wiring lasts.
 - **Fixed electrical work is for licensed people.** Wiring in walls and switch boxes should be done by a licensed electrician. Renovation rules for HDB flats and condominiums vary, so confirm with your contractor and the relevant authority before you start.
+
+## Common questions
+
+### Do I have to renovate to get a smart home?
+
+No. Retrofit devices work in most existing flats. A few things, such as neutral wires, network cables and power near the curtains, are simply cheaper to settle while the walls are open.
+
+### Can I use smart switches if there is no neutral wire?
+
+Yes. Single live-wire (no-neutral) versions exist, although they come with trade-offs. Asking for a neutral at the switch boxes you may automate gives you more choice.
+
+### Who should do the wiring?
+
+Wiring in walls and switch boxes should be done by a licensed electrician. Renovation rules for HDB flats and condominiums vary, so confirm with your contractor and the relevant authority before you start.
 
 ## A simple way to start
 

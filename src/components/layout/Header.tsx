@@ -85,6 +85,14 @@ export function Header() {
           })}
 
           <a
+            href={pageHref(lang, 'guides/')}
+            aria-current={path === 'guides/' ? 'page' : undefined}
+            className="relative rounded-full px-3 py-2 text-[0.9rem] font-medium whitespace-nowrap text-ink-600 transition-colors hover:bg-ink-100 hover:text-ink-950"
+          >
+            {t.guides.eyebrow}
+          </a>
+
+          <a
             href={showroomHref}
             className="ml-1 inline-flex items-center gap-1.5 rounded-full px-3 py-2 text-[0.9rem] font-medium whitespace-nowrap text-ink-600 transition-colors hover:bg-ink-100 hover:text-ink-950"
           >
@@ -130,6 +138,13 @@ export function Header() {
               {item.label}
             </a>
           ))}
+          <a
+            href={pageHref(lang, 'guides/')}
+            onClick={() => setOpen(false)}
+            className="rounded-xl px-3 py-3 text-base font-medium text-ink-800 transition-colors hover:bg-ink-100"
+          >
+            {t.guides.eyebrow}
+          </a>
           <a
             href={showroomHref}
             onClick={() => setOpen(false)}

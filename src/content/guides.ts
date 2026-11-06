@@ -23,6 +23,8 @@ export type Guide = {
   published: string
   updated: string
   body: string
+  /** Q&A from the "Common questions" / "常见问题" section, for FAQ structured data. */
+  faq: { q: string; a: string }[]
 }
 
 const files = import.meta.glob<string>('./guides/*.md', {
@@ -32,6 +34,23 @@ const files = import.meta.glob<string>('./guides/*.md', {
 })
 
 const DATE = /^\d{4}-\d{2}-\d{2}$/
+
+const plain = (text: string) =>
+  text.replace(/\*\*([^*]+)\*\*/g, '$1').replace(/\[([^\]]+)\]\([^)\s]+\)/g, '$1')
+
+/** "## Common questions" / "## 常见问题", then "### question" each followed by one answer paragraph. */
+function parseFaq(body: string) {
+  const section = /^## (?:Common questions|常见问题)\s*\n([\s\S]*?)(?=^## |(?![\s\S]))/m.exec(body)
+  if (!section) return []
+  return section[1]
+    .split(/^### /m)
+    .slice(1)
+    .map((entry) => {
+      const [q, ...answer] = entry.trim().split(/\n+/)
+      return { q: plain(q), a: plain(answer.join(' ')) }
+    })
+    .filter((item) => item.q && item.a)
+}
 
 function parse(file: string, raw: string): Guide & { draft: boolean } {
   const name = /\/([a-z0-9-]+)\.(en|zh)\.md$/.exec(file)
@@ -59,6 +78,7 @@ function parse(file: string, raw: string): Guide & { draft: boolean } {
     published: meta.published,
     updated: meta.updated,
     body: parts[2].trim(),
+    faq: parseFaq(parts[2]),
     draft: meta.draft === 'true',
   }
 }

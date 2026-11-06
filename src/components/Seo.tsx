@@ -144,6 +144,16 @@ export function Seo() {
           author: site.url ? { '@id': `${site.url}#business` } : undefined,
           publisher: site.url ? { '@id': `${site.url}#business` } : undefined,
         },
+        guide.faq.length
+          ? {
+              '@type': 'FAQPage',
+              mainEntity: guide.faq.map((item) => ({
+                '@type': 'Question',
+                name: item.q,
+                acceptedAnswer: { '@type': 'Answer', text: item.a },
+              })),
+            }
+          : null,
         site.url
           ? {
               '@type': 'BreadcrumbList',

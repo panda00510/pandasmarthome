@@ -2,7 +2,7 @@
 title: Fall detection without a camera — how radar sensors work and where they fall short
 description: A radar sensor can notice a fall without recording images or sound. How it works, where it fits in a Singapore home, and the limits to understand before you rely on it.
 published: 2026-11-05
-updated: 2026-11-05
+updated: 2026-11-06
 ---
 For an older family member living alone, a fall in the bathroom or bedroom is a real worry. A camera is the obvious answer, but few people want one in those rooms. Radar-based fall detection is an alternative that does not record a picture of anyone. It is a useful tool, but it is not magic, and it helps to know what it does and does not do.
 
@@ -33,6 +33,20 @@ An alert only helps if someone sees it and knows what to do.
 2. Decide what happens next: a phone call, a neighbour, a visit.
 3. Test it. Have someone simulate a fall safely, such as lying down in the room, and confirm the alert arrives.
 4. Consider a second signal, such as a sensor that notices no movement for an unusually long time in a room.
+
+## Common questions
+
+### Does a radar fall sensor record video or sound?
+
+No. It returns movement data rather than images, so it produces no video or photo and does not need a microphone.
+
+### Is a radar fall sensor a medical device?
+
+Treat it as a safety aid, not a medical device. It does not replace regular check-ins, a personal alarm the person can press, or proper care.
+
+### Can one sensor cover a whole room?
+
+Not always. A sensor covers a defined area at a given mounting height, so a larger room or a long corridor may need more than one.
 
 ## Where it fits in a smart home
 
