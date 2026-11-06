@@ -1,4 +1,4 @@
-import { ArrowRight, Check, Info, MapPin } from 'lucide-react'
+import { ArrowRight, Info, MapPin } from 'lucide-react'
 import condo from '../../assets/photos/sg-condo-marina.jpg'
 import hdb from '../../assets/photos/sg-hdb-segar.jpg'
 import landed from '../../assets/photos/sg-landed.jpg'
@@ -48,20 +48,6 @@ export function Homes() {
                   {item.title}
                 </h3>
                 <p className="mt-3 text-[0.9375rem] leading-relaxed text-ink-600">{item.body}</p>
-
-                <ul className="mt-5 space-y-2 border-t border-ink-100 pt-5">
-                  {item.bullets.map((bullet) => (
-                    <li key={bullet} className="flex items-start gap-2.5 text-sm text-ink-700">
-                      <Check
-                        size={14}
-                        strokeWidth={2.8}
-                        className="mt-[3px] shrink-0 text-bamboo-500"
-                        aria-hidden="true"
-                      />
-                      {bullet}
-                    </li>
-                  ))}
-                </ul>
                 {PAGES[item.id] ? (
                   <a
                     href={pageHref(lang, PAGES[item.id])}
@@ -75,6 +61,14 @@ export function Homes() {
             </li>
           ))}
         </ul>
+
+        <a
+          href={pageHref(lang, 'homes/')}
+          className="mt-8 inline-flex items-center gap-1.5 text-sm font-semibold text-bamboo-700 hover:text-bamboo-600"
+        >
+          {t.hubs.homes.all}
+          <ArrowRight size={15} aria-hidden="true" />
+        </a>
 
         {/* Service area — the one dark panel in this section, so "where we work" reads at a glance. */}
         <div

@@ -1,7 +1,7 @@
 import type { PointerEvent } from 'react'
 import { Blinds, Gauge, LayoutDashboard, Lightbulb, Lock, Thermometer } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
-import { ArrowRight, Check } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 import { SectionHeading } from '../ui'
 import { pageHref, useI18n } from '../../i18n/context'
 
@@ -70,20 +70,6 @@ export function Solutions() {
                   {item.title}
                 </h3>
                 <p className="mt-2.5 text-[0.9375rem] leading-relaxed text-ink-600">{item.body}</p>
-
-                <ul className="mt-5 space-y-2 border-t border-ink-100 pt-5">
-                  {item.bullets.map((bullet) => (
-                    <li key={bullet} className="flex items-start gap-2.5 text-sm text-ink-700">
-                      <Check
-                        size={14}
-                        strokeWidth={2.8}
-                        className="mt-[3px] shrink-0 text-bamboo-500"
-                        aria-hidden="true"
-                      />
-                      {bullet}
-                    </li>
-                  ))}
-                </ul>
                 {PAGES[item.id] ? (
                   <a
                     href={pageHref(lang, PAGES[item.id])}
@@ -97,6 +83,14 @@ export function Solutions() {
             )
           })}
         </ul>
+
+        <a
+          href={pageHref(lang, 'solutions/')}
+          className="mt-8 inline-flex items-center gap-1.5 text-sm font-semibold text-bamboo-700 hover:text-bamboo-600"
+        >
+          {t.hubs.solutions.all}
+          <ArrowRight size={15} aria-hidden="true" />
+        </a>
       </div>
     </section>
   )

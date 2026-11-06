@@ -1,12 +1,12 @@
-import { Check, ScanEye, WifiOff } from 'lucide-react'
+import { ArrowRight, ScanEye, WifiOff } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
-import { Button, SectionHeading } from '../ui'
-import { useI18n } from '../../i18n/context'
+import { SectionHeading } from '../ui'
+import { pageHref, useI18n } from '../../i18n/context'
 
 const ICONS: Record<string, LucideIcon> = { edge: ScanEye, fall: WifiOff }
 
 export function Upcoming() {
-  const { t } = useI18n()
+  const { t, lang } = useI18n()
   const u = t.upcoming
 
   return (
@@ -30,34 +30,18 @@ export function Upcoming() {
 
                 <h3 className="mt-5 text-lg leading-snug font-semibold text-ink-950">{item.title}</h3>
                 <p className="mt-2.5 text-[0.9375rem] leading-relaxed text-ink-600">{item.body}</p>
-
-                <ul className="mt-5 space-y-2 border-t border-ink-100 pt-5">
-                  {item.bullets.map((bullet) => (
-                    <li key={bullet} className="flex items-start gap-2.5 text-sm text-ink-700">
-                      <Check
-                        size={14}
-                        strokeWidth={2.8}
-                        className="mt-[3px] shrink-0 text-bamboo-500"
-                        aria-hidden="true"
-                      />
-                      {bullet}
-                    </li>
-                  ))}
-                </ul>
-
-                <p className="mt-5 text-sm leading-relaxed text-ink-600">
-                  <strong className="font-semibold text-ink-800">{u.limitsLabel}: </strong>
-                  {item.limits}
-                </p>
               </li>
             )
           })}
         </ul>
 
-        <p className="mt-8 max-w-3xl text-sm leading-relaxed text-ink-600">{u.note}</p>
-        <Button as="a" href="#contact" variant="primary" size="lg" className="mt-6">
-          {u.cta}
-        </Button>
+        <a
+          href={pageHref(lang, 'solutions/upcoming-products/')}
+          className="mt-8 inline-flex items-center gap-1.5 text-sm font-semibold text-bamboo-700 hover:text-bamboo-600"
+        >
+          {t.guides.learnMore}
+          <ArrowRight size={15} aria-hidden="true" />
+        </a>
       </div>
     </section>
   )
