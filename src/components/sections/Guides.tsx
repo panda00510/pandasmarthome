@@ -1,7 +1,7 @@
 import { Fragment, type ReactNode } from 'react'
 import { ArrowLeft, ArrowRight, MessageCircle } from 'lucide-react'
 import { site } from '../../config/site'
-import { guidePath, guidesIn, type Guide } from '../../content/guides'
+import { guidesIn, type Guide } from '../../content/guides'
 import { pageHref, useI18n, type Lang } from '../../i18n/context'
 import { Button, SectionHeading } from '../ui'
 
@@ -14,7 +14,7 @@ function formatDate(date: string, lang: Lang) {
 function GuideCard({ guide, lang }: { guide: Guide; lang: Lang }) {
   return (
     <a
-      href={pageHref(lang, guidePath(guide.slug))}
+      href={pageHref(lang, guide.path)}
       data-reveal
       className="card spotlight group flex flex-col p-6"
     >
@@ -90,18 +90,21 @@ export function GuidesIndex() {
 /** /guides/<slug>/ */
 export function GuidePage({ guide }: { guide: Guide }) {
   const { t, lang } = useI18n()
-  const others = guidesIn(lang).filter((other) => other.slug !== guide.slug).slice(0, 3)
+  const isPage = guide.kind === 'page'
+  const others = isPage
+    ? guide.related.flatMap((slug) => guidesIn(lang).filter((other) => other.slug === slug))
+    : guidesIn(lang).filter((other) => other.slug !== guide.slug).slice(0, 3)
 
   return (
     <>
       <article className="shell pt-10 pb-16 lg:pt-14">
         <div className="mx-auto max-w-[44rem]">
           <a
-            href={pageHref(lang, 'guides/')}
+            href={pageHref(lang, isPage ? '' : 'guides/')}
             className="inline-flex items-center gap-1.5 text-sm font-medium text-ink-600 hover:text-bamboo-700"
           >
             <ArrowLeft size={15} aria-hidden="true" />
-            {t.guides.all}
+            {isPage ? t.guides.backHome : t.guides.all}
           </a>
           <h1 className="mt-6 text-[2rem] leading-[1.12] font-semibold tracking-[-0.03em] text-balance text-ink-950 sm:text-[2.75rem]">
             {guide.title}
@@ -144,7 +147,7 @@ export function GuidePage({ guide }: { guide: Guide }) {
       {others.length ? (
         <section className="border-t border-ink-200/70 bg-paper-alt">
           <div className="shell py-16">
-            <h2 className="text-2xl font-semibold tracking-[-0.02em] text-ink-950">{t.guides.more}</h2>
+            <h2 className="text-2xl font-semibold tracking-[-0.02em] text-ink-950">{isPage ? t.guides.related : t.guides.more}</h2>
             <div className="mt-8 grid gap-5 md:grid-cols-3">
               {others.map((other) => (
                 <GuideCard key={other.slug} guide={other} lang={lang} />

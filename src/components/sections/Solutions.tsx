@@ -1,9 +1,9 @@
 import type { PointerEvent } from 'react'
 import { Blinds, Gauge, LayoutDashboard, Lightbulb, Lock, Thermometer } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
-import { Check } from 'lucide-react'
+import { ArrowRight, Check } from 'lucide-react'
 import { SectionHeading } from '../ui'
-import { useI18n } from '../../i18n/context'
+import { pageHref, useI18n } from '../../i18n/context'
 
 const ICONS: Record<string, LucideIcon> = {
   lighting: Lightbulb,
@@ -28,8 +28,15 @@ function onPointerMove(event: PointerEvent<HTMLElement>) {
   card.style.setProperty('--my', `${event.clientY - rect.top}px`)
 }
 
+/** Topic pages behind each card. */
+const PAGES: Record<string, string> = {
+  climate: 'solutions/smart-aircon-control/',
+  shades: 'solutions/motorised-curtains/',
+  security: 'solutions/smart-door-locks/',
+}
+
 export function Solutions() {
-  const { t } = useI18n()
+  const { t, lang } = useI18n()
 
   return (
     <section id="solutions" className="band">
@@ -74,6 +81,15 @@ export function Solutions() {
                     </li>
                   ))}
                 </ul>
+                {PAGES[item.id] ? (
+                  <a
+                    href={pageHref(lang, PAGES[item.id])}
+                    className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-bamboo-700 hover:text-bamboo-600"
+                  >
+                    {t.guides.learnMore}
+                    <ArrowRight size={15} aria-hidden="true" />
+                  </a>
+                ) : null}
               </li>
             )
           })}

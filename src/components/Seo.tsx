@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { brand, brandAssets } from '../config/brand'
 import { hasAddress, site, socialLinks } from '../config/site'
-import { guidePath, pageMeta } from '../content/guides'
+import { pageMeta } from '../content/guides'
 import { langPath, useI18n } from '../i18n/context'
 
 /** Upsert a `<meta>` tag by its name/property attribute. */
@@ -133,7 +133,7 @@ export function Seo() {
   const article = guide
     ? [
         {
-          '@type': 'Article',
+          '@type': guide.kind === 'page' ? 'WebPage' : 'Article',
           headline: guide.title,
           description: guide.description,
           datePublished: guide.published,
@@ -159,8 +159,10 @@ export function Seo() {
               '@type': 'BreadcrumbList',
               itemListElement: [
                 { name: lang === 'zh' ? brand.nameZh : brand.name, item: site.url + langPath(lang) },
-                { name: t.guides.eyebrow, item: site.url + langPath(lang, 'guides/') },
-                { name: guide.title, item: site.url + langPath(lang, guidePath(guide.slug)) },
+                ...(guide.kind === 'guide'
+                  ? [{ name: t.guides.eyebrow, item: site.url + langPath(lang, 'guides/') }]
+                  : []),
+                { name: guide.title, item: site.url + langPath(lang, guide.path) },
               ].map((crumb, i) => ({ '@type': 'ListItem', position: i + 1, ...crumb })),
             }
           : null,

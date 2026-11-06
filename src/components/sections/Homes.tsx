@@ -1,10 +1,10 @@
-import { Check, Info, MapPin } from 'lucide-react'
+import { ArrowRight, Check, Info, MapPin } from 'lucide-react'
 import condo from '../../assets/photos/sg-condo-marina.jpg'
 import hdb from '../../assets/photos/sg-hdb-segar.jpg'
 import landed from '../../assets/photos/sg-landed.jpg'
 import punggol from '../../assets/photos/sg-hdb-punggol.jpg'
 import { SectionHeading } from '../ui'
-import { useI18n } from '../../i18n/context'
+import { pageHref, useI18n } from '../../i18n/context'
 
 const IMAGES: Record<string, string> = {
   bto: punggol,
@@ -13,8 +13,16 @@ const IMAGES: Record<string, string> = {
   landed: landed,
 }
 
+/** Topic pages behind each card. */
+const PAGES: Record<string, string> = {
+  bto: 'homes/bto-smart-home/',
+  hdb: 'homes/hdb-resale-smart-home/',
+  condo: 'homes/condo-smart-home/',
+  landed: 'homes/landed-smart-home/',
+}
+
 export function Homes() {
-  const { t } = useI18n()
+  const { t, lang } = useI18n()
 
   return (
     <section id="homes" className="band border-t border-ink-200/70 bg-paper-alt">
@@ -54,6 +62,15 @@ export function Homes() {
                     </li>
                   ))}
                 </ul>
+                {PAGES[item.id] ? (
+                  <a
+                    href={pageHref(lang, PAGES[item.id])}
+                    className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-bamboo-700 hover:text-bamboo-600"
+                  >
+                    {t.guides.learnMore}
+                    <ArrowRight size={15} aria-hidden="true" />
+                  </a>
+                ) : null}
               </div>
             </li>
           ))}

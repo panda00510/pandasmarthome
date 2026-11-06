@@ -4,7 +4,7 @@ import { brandAssets } from './config/brand'
 import { site } from './config/site'
 import { en } from './content/en'
 import { zh } from './content/zh'
-import { guidePath, guidesIn, latestGuideUpdate, pageMeta, pagePaths } from './content/guides'
+import { guidePath, guidesIn, latestGuideUpdate, pageMeta, pagePaths, pagesIn } from './content/guides'
 import { dictionaries, langPath, type Lang } from './i18n/context'
 import { LanguageProvider } from './i18n/LanguageProvider'
 
@@ -65,7 +65,7 @@ export function crawlerFiles(dates: { site: string; showroom: string }) {
   // Home and the guides index list the newest guides, so a new guide updates them too.
   const listDate = latestGuideUpdate && latestGuideUpdate > dates.site ? latestGuideUpdate : dates.site
   const lastmod = (path: string) =>
-    guidesIn('en').find((guide) => guidePath(guide.slug) === path)?.updated ?? listDate
+    [...guidesIn('en'), ...pagesIn('en')].find((item) => item.path === path)?.updated ?? listDate
 
   // Named AI crawlers are allowed explicitly — `*` already covers them, but some
   // hosting defaults block them unless a site says otherwise.
@@ -126,6 +126,11 @@ ${routes
       guidesIn(lang).map(
         (guide) => `- [${guide.title}](${page(lang, guidePath(guide.slug))}): ${guide.description}`,
       ),
+    ),
+    '',
+    `## ${en.guides.pagesTitle}`,
+    ...LANGS.flatMap((lang) =>
+      pagesIn(lang).map((item) => `- [${item.title}](${page(lang, item.path)}): ${item.description}`),
     ),
     '',
     '## FAQ',

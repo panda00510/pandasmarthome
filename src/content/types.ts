@@ -180,6 +180,10 @@ export type Content = {
     all: string
     updated: string
     more: string
+    backHome: string
+    related: string
+    learnMore: string
+    pagesTitle: string
     ctaTitle: string
     ctaBody: string
     ctaButton: string

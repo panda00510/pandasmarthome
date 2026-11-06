@@ -16,6 +16,11 @@ import { dictionaries, type Lang } from '../i18n/context'
  * Every slug needs both languages, or the build fails.
  */
 export type Guide = {
+  /** "guide" lives under /guides/; "page" is a topic page at the path in its front matter. */
+  kind: 'guide' | 'page'
+  path: string
+  /** Guide slugs shown under a topic page. */
+  related: string[]
   slug: string
   lang: Lang
   title: string
@@ -27,7 +32,7 @@ export type Guide = {
   faq: { q: string; a: string }[]
 }
 
-const files = import.meta.glob<string>('./guides/*.md', {
+const files = import.meta.glob<string>(['./guides/*.md', './pages/*.md'], {
   query: '?raw',
   import: 'default',
   eager: true,
@@ -70,7 +75,15 @@ function parse(file: string, raw: string): Guide & { draft: boolean } {
     throw new Error(`${file}: dates must be YYYY-MM-DD`)
   }
 
+  const kind = file.includes('/pages/') ? 'page' : 'guide'
+  if (kind === 'page' && !/^[a-z0-9-]+\/[a-z0-9-]+\/$/.test(meta.path ?? '')) {
+    throw new Error(`${file}: a page needs "path: section/name/"`)
+  }
+
   return {
+    kind,
+    path: kind === 'page' ? meta.path : `guides/${name[1]}/`,
+    related: (meta.related ?? '').split(',').map((slug) => slug.trim()).filter(Boolean),
     slug: name[1],
     lang: name[2] as Lang,
     title: meta.title,
@@ -84,13 +97,16 @@ function parse(file: string, raw: string): Guide & { draft: boolean } {
 }
 
 /** Newest first. */
-export const guides: Guide[] = Object.entries(files)
+const everything: Guide[] = Object.entries(files)
   .map(([file, raw]) => parse(file, raw))
   .filter((guide) => import.meta.env.DEV || !guide.draft)
   .sort((a, b) => b.published.localeCompare(a.published) || a.slug.localeCompare(b.slug))
 
-for (const guide of guides) {
-  if (!guides.some((other) => other.slug === guide.slug && other.lang !== guide.lang)) {
+export const guides = everything.filter((item) => item.kind === 'guide')
+export const topicPages = everything.filter((item) => item.kind === 'page')
+
+for (const guide of everything) {
+  if (!everything.some((other) => other.slug === guide.slug && other.lang !== guide.lang)) {
     throw new Error(`guides/${guide.slug}: needs both .en.md and .zh.md`)
   }
 }
@@ -99,11 +115,19 @@ export const guidePath = (slug: string) => `guides/${slug}/`
 
 export const guidesIn = (lang: Lang) => guides.filter((guide) => guide.lang === lang)
 
+export const pagesIn = (lang: Lang) => topicPages.filter((page) => page.lang === lang)
+
+/** A guide or a topic page, by its path. */
 export const findGuide = (lang: Lang, path: string) =>
-  guidesIn(lang).find((guide) => guidePath(guide.slug) === path)
+  everything.find((item) => item.lang === lang && item.path === path)
 
 /** Every page path below a language root, for the prerender and the sitemap. */
-export const pagePaths = ['', 'guides/', ...guidesIn('en').map((guide) => guidePath(guide.slug))]
+export const pagePaths = [
+  '',
+  'guides/',
+  ...guidesIn('en').map((guide) => guide.path),
+  ...pagesIn('en').map((page) => page.path),
+]
 
 /** Newest `updated` date across all guides, or null when there are none. */
 export const latestGuideUpdate = guides.reduce<string | null>(
