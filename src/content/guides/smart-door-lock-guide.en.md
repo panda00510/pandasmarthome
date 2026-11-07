@@ -69,4 +69,6 @@ It should. The lock must still open with a PIN, fingerprint or key. Remote featu
 - Where the lock gets its power, and how you will know the battery is low
 - Whether you want it to work with an existing smart home platform
 
+If the lock is for a parent living at home, see [a smart home for elderly parents](/guides/smart-home-for-elderly-parents/).
+
 Choosing a lock for your door? [Tell us about your door and who needs access](/#contact) and we will suggest what is likely to suit.

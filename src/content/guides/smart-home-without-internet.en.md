@@ -50,4 +50,6 @@ No. For short power interruptions, a small UPS on the controller and network equ
 
 An internet outage and a power cut are not the same thing. For short power interruptions, a small UPS on the controller and network equipment keeps the system running and avoids a cold restart.
 
+Which platform runs locally and which relies on the cloud? See [how to choose a smart home platform](/guides/local-smart-home-vs-google-apple-smartthings/).
+
 Planning a new system? [Tell us about your home](/#contact) and we will mark which devices run locally before you buy anything.

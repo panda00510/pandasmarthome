@@ -1,5 +1,7 @@
 import { ArrowRight, Box, Check, MapPin } from 'lucide-react'
-import livingRoom from '../../assets/photos/living-room.jpg'
+import livingRoom800 from '../../assets/photos/living-room-800.webp'
+import livingRoom1200 from '../../assets/photos/living-room-1200.webp'
+import livingRoom1600 from '../../assets/photos/living-room-1600.webp'
 import { HomePanel } from '../graphics/HomePanel'
 import { Button } from '../ui'
 import { useI18n } from '../../i18n/context'
@@ -66,7 +68,9 @@ export function Hero() {
         <div className="relative mt-10 [animation-delay:240ms] animate-rise lg:mt-14">
           <div className="relative overflow-hidden rounded-panel border border-ink-200/80 shadow-lift">
             <img
-              src={livingRoom}
+              src={livingRoom1200}
+              srcSet={`${livingRoom800} 800w, ${livingRoom1200} 1200w, ${livingRoom1600} 1600w`}
+              sizes="(min-width: 1280px) 1200px, 100vw"
               alt={t.hero.imageAlt}
               width={1600}
               height={1068}

@@ -10,6 +10,7 @@
     "lint": "eslint .",
     "typecheck": "tsc -b --noEmit",
     "og": "node scripts/make-og.mjs",
+    "photos": "node scripts/make-photos.mjs",
     "predev": "node scripts/copy-credits.mjs",
     "prebuild": "node scripts/copy-credits.mjs",
     "build:all": "npm run build && (cd showroom && npm ci && npm run build) && cp -R showroom/dist dist/showroom"

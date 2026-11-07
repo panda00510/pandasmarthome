@@ -1,5 +1,5 @@
 import { ArrowRight, Info } from 'lucide-react'
-import curtains from '../../assets/photos/bedroom-curtains.jpg'
+import curtains from '../../assets/photos/bedroom-curtains.webp'
 import { SectionHeading } from '../ui'
 import { pageHref, useI18n } from '../../i18n/context'
 

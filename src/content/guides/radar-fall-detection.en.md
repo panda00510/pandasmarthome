@@ -52,4 +52,6 @@ Not always. A sensor covers a defined area at a given mounting height, so a larg
 
 Radar presence and fall sensors work well alongside the rest of a local system: a bathroom light that comes on dimly at night, a notification to the family, a door sensor that shows when someone has left. Keeping the logic on a controller in your home means the alert does not depend on a cloud service being reachable.
 
+For the wider picture of looking out for a parent at home, see [a smart home for elderly parents](/guides/smart-home-for-elderly-parents/).
+
 Thinking about care for a parent or relative at home? [Tell us about the rooms and who will receive the alerts](/#contact) and we will suggest a layout and what to test first.

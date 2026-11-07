@@ -1,8 +1,8 @@
 import { ArrowRight, Info, MapPin } from 'lucide-react'
-import condo from '../../assets/photos/sg-condo-marina.jpg'
-import hdb from '../../assets/photos/sg-hdb-segar.jpg'
-import landed from '../../assets/photos/sg-landed.jpg'
-import punggol from '../../assets/photos/sg-hdb-punggol.jpg'
+import condo from '../../assets/photos/sg-condo-marina.webp'
+import hdb from '../../assets/photos/sg-hdb-segar.webp'
+import landed from '../../assets/photos/sg-landed.webp'
+import punggol from '../../assets/photos/sg-hdb-punggol.webp'
 import { SectionHeading } from '../ui'
 import { pageHref, useI18n } from '../../i18n/context'
 

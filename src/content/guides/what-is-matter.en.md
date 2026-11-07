@@ -53,4 +53,6 @@ For new devices you expect to keep for years, Matter support is a sensible thing
 
 For new devices, Matter support is a sensible thing to prefer, especially for things you expect to keep for years. It is not a reason to throw out working Zigbee or Wi-Fi devices — a good central controller can combine all of them. What matters more is choosing one controller for your home and checking each device against it before you buy.
 
+Matter is one part of the choice. For how platforms differ in where they run, see [how to choose a smart home platform](/guides/local-smart-home-vs-google-apple-smartthings/).
+
 Planning devices for a new home or renovation? [Tell us what you already have](/#contact) and we will help you work out what fits together.

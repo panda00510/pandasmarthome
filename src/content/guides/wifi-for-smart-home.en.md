@@ -53,4 +53,6 @@ Ask for network cable runs to where you may want an access point, the TV and the
 
 If you are renovating, ask for network cable runs to the places where you may want an access point, the TV and the hub, even if you will not use them on day one. Cable inside a wall is cheap to add while the walls are open and awkward to add afterwards. Any fixed electrical work should be carried out by a licensed electrical worker.
 
+To see what keeps working when the Wi-Fi or internet drops, read [what still works without internet](/guides/smart-home-without-internet/).
+
 Not sure how well your home will be covered? [Tell us about your home](/#contact) and we will suggest where the network needs help.

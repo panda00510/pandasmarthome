@@ -55,4 +55,6 @@ It gives accurate two-way state, but whether one exists depends on the brand and
 
 Aircon automations work best alongside curtains, temperature sensors and presence sensors: closing the curtains before the afternoon sun hits means the room needs less cooling in the first place. If you are planning motorised curtains too, design them together.
 
+To see how much your aircon actually uses and which automations help, read [where the electricity goes in a Singapore home](/guides/reduce-aircon-electricity-smart-home/). Our [energy monitoring](/solutions/energy-monitoring/) page covers what we set up.
+
 Wondering how your aircon could be connected? [Tell us your aircon models and room layout](/#contact) and we will suggest whether infrared or wired control fits better.
