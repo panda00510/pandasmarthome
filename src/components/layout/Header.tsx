@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import { Menu, X, Box } from 'lucide-react'
 import { Wordmark } from '../brand/Wordmark'
 import { Button } from '../ui'
-import { useActiveSection } from '../../hooks/motion'
 import { pageHref, useI18n, type Lang } from '../../i18n/context'
 
 const LANGS: { code: Lang; label: string }[] = [
@@ -17,6 +16,8 @@ const HUB_ITEMS: Record<string, string> = {
   process: 'how-it-works/',
 }
 
+type NavLink = { key: string; label: string; href: string; current: boolean; icon?: boolean }
+
 export function Header() {
   const { t, lang, path } = useI18n()
   // Section anchors live on the homepage; from a guide they go back there.
@@ -26,7 +27,6 @@ export function Header() {
   // correct on both hosts, and ?lang carries the current language across.
   const showroomHref = `${import.meta.env.BASE_URL}showroom/?lang=${lang}`
   const [scrolled, setScrolled] = useState(false)
-  const activeSection = useActiveSection(t.nav.items.map((item) => item.id))
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8)
@@ -49,15 +49,29 @@ export function Header() {
     }
   }, [open])
 
+  // Five entries: services, your home, showroom, guides, process.
+  const byId = (id: string): NavLink => {
+    const item = t.nav.items.find((entry) => entry.id === id)!
+    const page = HUB_ITEMS[id]
+    return { key: id, label: item.label, href: pageHref(lang, page), current: path === page }
+  }
+  const links: NavLink[] = [
+    byId('solutions'),
+    byId('homes'),
+    { key: 'showroom', label: t.nav.showroom, href: showroomHref, current: false, icon: true },
+    { key: 'guides', label: t.guides.eyebrow, href: pageHref(lang, 'guides/'), current: path === 'guides/' },
+    byId('process'),
+  ]
+
   return (
     <header
       className={`sticky top-0 z-50 transition-colors duration-300 ${
         scrolled || open
-          ? 'border-b border-ink-200/70 bg-paper/85 backdrop-blur-xl'
+          ? 'border-b border-ink-200/70 bg-paper/90 backdrop-blur-xl'
           : 'border-b border-transparent'
       }`}
     >
-      <div className="shell flex h-16 items-center justify-between gap-4 lg:h-[4.5rem]">
+      <div className="shell flex h-16 items-center justify-between gap-3 lg:h-[4.5rem]">
         <a
           href={`${home}#top`}
           className="shrink-0 rounded-lg text-ink-950 transition-opacity hover:opacity-70"
@@ -66,46 +80,20 @@ export function Header() {
           <Wordmark />
         </a>
 
-        <nav aria-label="Primary" className="hidden items-center gap-0.5 xl:flex">
-          {t.nav.items.map((item) => {
-            const current = item.id === activeSection
-            return (
-              <a
-                key={item.id}
-                href={HUB_ITEMS[item.id] ? pageHref(lang, HUB_ITEMS[item.id]) : `${home}#${item.id}`}
-                aria-current={current ? 'true' : undefined}
-                className={`relative rounded-full px-3 py-2 text-[0.9rem] font-medium whitespace-nowrap transition-colors ${
-                  current
-                    ? 'text-ink-950'
-                    : 'text-ink-600 hover:bg-ink-100 hover:text-ink-950'
-                }`}
-              >
-                {item.label}
-                <span
-                  aria-hidden="true"
-                  className={`absolute inset-x-3 -bottom-0.5 h-px origin-left bg-bamboo-500 transition-transform duration-300 ${
-                    current ? 'scale-x-100' : 'scale-x-0'
-                  }`}
-                />
-              </a>
-            )
-          })}
-
-          <a
-            href={pageHref(lang, 'guides/')}
-            aria-current={path === 'guides/' ? 'page' : undefined}
-            className="relative rounded-full px-3 py-2 text-[0.9rem] font-medium whitespace-nowrap text-ink-600 transition-colors hover:bg-ink-100 hover:text-ink-950"
-          >
-            {t.guides.eyebrow}
-          </a>
-
-          <a
-            href={showroomHref}
-            className="ml-1 inline-flex items-center gap-1.5 rounded-full px-3 py-2 text-[0.9rem] font-medium whitespace-nowrap text-ink-600 transition-colors hover:bg-ink-100 hover:text-ink-950"
-          >
-            <Box size={15} aria-hidden="true" />
-            {t.nav.showroom}
-          </a>
+        <nav aria-label="Primary" className="hidden items-center gap-1 lg:flex">
+          {links.map((link) => (
+            <a
+              key={link.key}
+              href={link.href}
+              aria-current={link.current ? 'page' : undefined}
+              className={`inline-flex min-h-11 items-center gap-1.5 rounded-full px-3.5 text-[0.9375rem] font-medium whitespace-nowrap transition-colors ${
+                link.current ? 'bg-ink-100 text-ink-950' : 'text-ink-700 hover:bg-ink-100 hover:text-ink-950'
+              }`}
+            >
+              {link.icon ? <Box size={15} aria-hidden="true" /> : null}
+              {link.label}
+            </a>
+          ))}
         </nav>
 
         <div className="flex shrink-0 items-center gap-2 sm:gap-3">
@@ -121,9 +109,9 @@ export function Header() {
             aria-expanded={open}
             aria-controls="mobile-nav"
             aria-label={open ? t.a11y.closeMenu : t.a11y.openMenu}
-            className="-mr-1 inline-flex h-10 w-10 items-center justify-center rounded-full text-ink-800 transition-colors hover:bg-ink-100 xl:hidden"
+            className="-mr-1 inline-flex h-11 w-11 items-center justify-center rounded-full text-ink-800 transition-colors hover:bg-ink-100 lg:hidden"
           >
-            {open ? <X size={20} aria-hidden="true" /> : <Menu size={20} aria-hidden="true" />}
+            {open ? <X size={22} aria-hidden="true" /> : <Menu size={22} aria-hidden="true" />}
           </button>
         </div>
       </div>
@@ -132,34 +120,20 @@ export function Header() {
       <div
         id="mobile-nav"
         hidden={!open}
-        className="border-t border-ink-200/70 bg-paper/95 backdrop-blur-xl xl:hidden"
+        className="border-t border-ink-200/70 bg-paper/95 backdrop-blur-xl lg:hidden"
       >
         <nav aria-label="Primary mobile" className="shell flex flex-col gap-1 py-4">
-          {t.nav.items.map((item) => (
+          {links.map((link) => (
             <a
-              key={item.id}
-              href={HUB_ITEMS[item.id] ? pageHref(lang, HUB_ITEMS[item.id]) : `${home}#${item.id}`}
+              key={link.key}
+              href={link.href}
               onClick={() => setOpen(false)}
-              className="rounded-xl px-3 py-3 text-base font-medium text-ink-800 transition-colors hover:bg-ink-100"
+              className="inline-flex min-h-12 items-center gap-2 rounded-xl px-3 text-base font-medium text-ink-800 transition-colors hover:bg-ink-100"
             >
-              {item.label}
+              {link.icon ? <Box size={17} aria-hidden="true" /> : null}
+              {link.label}
             </a>
           ))}
-          <a
-            href={pageHref(lang, 'guides/')}
-            onClick={() => setOpen(false)}
-            className="rounded-xl px-3 py-3 text-base font-medium text-ink-800 transition-colors hover:bg-ink-100"
-          >
-            {t.guides.eyebrow}
-          </a>
-          <a
-            href={showroomHref}
-            onClick={() => setOpen(false)}
-            className="inline-flex items-center gap-2 rounded-xl px-3 py-3 text-base font-medium text-ink-800 transition-colors hover:bg-ink-100"
-          >
-            <Box size={17} aria-hidden="true" />
-            {t.nav.showroom}
-          </a>
           <Button
             as="a"
             href={`${home}#contact`}
@@ -175,20 +149,12 @@ export function Header() {
   )
 }
 
-function LangToggle({
-  lang,
-  path,
-  label,
-}: {
-  lang: Lang
-  path: string
-  label: string
-}) {
+function LangToggle({ lang, path, label }: { lang: Lang; path: string; label: string }) {
   return (
     <div
       role="group"
       aria-label={label}
-      className="flex items-center gap-0.5 rounded-full bg-ink-100 p-0.5"
+      className="flex items-center rounded-full bg-ink-100"
     >
       {LANGS.map((option) => {
         const active = option.code === lang
@@ -199,7 +165,7 @@ function LangToggle({
             aria-current={active ? 'page' : undefined}
             lang={option.code === 'zh' ? 'zh-Hans' : 'en'}
             hrefLang={option.code === 'zh' ? 'zh-Hans' : 'en'}
-            className={`rounded-full px-2.5 py-1.5 text-xs font-semibold whitespace-nowrap transition-colors ${
+            className={`inline-flex h-11 min-w-11 items-center justify-center rounded-full px-3 text-sm font-semibold whitespace-nowrap transition-colors ${
               active
                 ? 'bg-white text-ink-950 shadow-[0_1px_2px_rgb(12_15_19/0.08)]'
                 : 'text-ink-500 hover:text-ink-800'

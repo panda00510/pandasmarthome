@@ -63,6 +63,9 @@
   --color-ember-500: #d9932a;
   --color-ember-600: #b0741d;
 
+  /* Primary action colour: one deep green for every main button. */
+  --color-brand: #146b4c;
+
   --color-paper: #fbfbf9;
   --color-paper-alt: #f4f4f0;
 
@@ -87,11 +90,11 @@
   --text-hero--letter-spacing: -0.03em;
 
   /* ---- Radii & elevation ------------------------------------------------- */
-  --radius-card: 1.25rem;
-  --radius-panel: 1.75rem;
+  --radius-card: 1rem;
+  --radius-panel: 1.5rem;
 
-  --shadow-soft: 0 1px 2px rgb(12 15 19 / 0.04), 0 8px 24px -12px rgb(12 15 19 / 0.12);
-  --shadow-lift: 0 2px 4px rgb(12 15 19 / 0.05), 0 24px 48px -20px rgb(12 15 19 / 0.22);
+  --shadow-soft: 0 1px 1px rgb(12 15 19 / 0.03), 0 4px 12px -8px rgb(12 15 19 / 0.1);
+  --shadow-lift: 0 1px 2px rgb(12 15 19 / 0.04), 0 12px 24px -14px rgb(12 15 19 / 0.18);
 
   /* ---- Layout ------------------------------------------------------------ */
   --spacing-page: 1200px;
@@ -215,16 +218,16 @@
 
   /* Vertical rhythm between major sections. */
   .band {
-    padding-block: 4.5rem;
+    padding-block: 3rem;
   }
   @media (width >= 768px) {
     .band {
-      padding-block: 6rem;
+      padding-block: 5rem;
     }
   }
   @media (width >= 1280px) {
     .band {
-      padding-block: 7.5rem;
+      padding-block: 6rem;
     }
   }
 

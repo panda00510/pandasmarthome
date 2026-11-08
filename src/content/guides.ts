@@ -10,6 +10,8 @@ import { dictionaries, type Lang } from '../i18n/context'
  *   description: …          (meta description, ~150 characters)
  *   published: 2026-09-23
  *   updated: 2026-09-23     (drives the sitemap lastmod — bump it on real edits)
+ *   heading: Shorter title      (optional; shown on the page and cards while <title> stays long for search)
+ *   points: a | b | c       (optional; three short takeaways shown above the article)
  *   draft: true             (optional; drafts show in `npm run dev` only)
  *   ---
  *
@@ -24,10 +26,16 @@ export type Guide = {
   slug: string
   lang: Lang
   title: string
+  /** Visible heading: the front-matter `heading`, or the title. */
+  heading: string
   description: string
   published: string
   updated: string
   body: string
+  /** Optional "short version" bullets from the `points:` front-matter line. */
+  points: string[]
+  /** One of TOPIC_IDS; drives the filter on /guides/. */
+  topic: string
   /** Q&A from the "Common questions" / "常见问题" section, for FAQ structured data. */
   faq: { q: string; a: string }[]
 }
@@ -37,6 +45,45 @@ const files = import.meta.glob<string>(['./guides/*.md', './pages/*.md'], {
   import: 'default',
   eager: true,
 })
+
+/** Filter groups on /guides/. A guide without an entry falls under "start". */
+export const TOPIC_IDS = ['start', 'renovation', 'energy', 'care', 'security'] as const
+const TOPICS: Record<string, (typeof TOPIC_IDS)[number]> = {
+  'upgrade-existing-home-smart': 'start',
+  'smart-home-for-renters': 'start',
+  'what-is-matter': 'start',
+  'wifi-for-smart-home': 'start',
+  'smart-home-without-internet': 'start',
+  'smart-switch-or-smart-bulb': 'start',
+  'local-smart-home-vs-google-apple-smartthings': 'start',
+  'renovation-smart-home-prep': 'renovation',
+  'check-older-home-before-smart': 'renovation',
+  'no-neutral-smart-switches': 'renovation',
+  'motorised-curtains-guide': 'energy',
+  'smart-aircon-control': 'energy',
+  'reduce-aircon-electricity-smart-home': 'energy',
+  'smart-home-for-elderly-parents': 'care',
+  'radar-fall-detection': 'care',
+  'smart-home-helpers-kids-guests-access': 'care',
+  'ai-upgrade-existing-cctv': 'security',
+  'smart-door-lock-guide': 'security',
+  'water-smoke-humidity-sensors-singapore': 'security',
+  'smart-home-privacy-local-vs-cloud': 'security',
+}
+
+/** Shown first on /guides/: one main pick, then two. */
+export const FEATURED = [
+  'upgrade-existing-home-smart',
+  'renovation-smart-home-prep',
+  'local-smart-home-vs-google-apple-smartthings',
+]
+
+/** Rough reading time: ~200 English words or ~450 Chinese characters a minute. */
+export function readMinutes(guide: Guide) {
+  const text = guide.body.replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
+  const units = guide.lang === 'zh' ? text.replace(/\s/g, '').length / 450 : text.split(/\s+/).length / 200
+  return Math.max(1, Math.round(units))
+}
 
 const DATE = /^\d{4}-\d{2}-\d{2}$/
 
@@ -87,10 +134,13 @@ function parse(file: string, raw: string): Guide & { draft: boolean } {
     slug: name[1],
     lang: name[2] as Lang,
     title: meta.title,
+    heading: meta.heading || meta.title,
     description: meta.description,
     published: meta.published,
     updated: meta.updated,
     body: parts[2].trim(),
+    points: (meta.points ?? '').split('|').map((point) => point.trim()).filter(Boolean),
+    topic: TOPICS[name[1]] ?? 'start',
     faq: parseFaq(parts[2]),
     draft: meta.draft === 'true',
   }

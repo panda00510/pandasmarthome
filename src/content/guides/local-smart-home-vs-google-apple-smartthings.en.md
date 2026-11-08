@@ -1,8 +1,10 @@
 ---
 title: Google Home, Apple Home, SmartThings or a local open-source platform — how to choose
+heading: How to choose a smart home platform
 description: A plain comparison of where each smart home platform runs, what still works without the internet, and who each one suits. How to choose for a Singapore home.
 published: 2026-11-06
 updated: 2026-11-06
+points: Platforms differ most in where the brain runs: in a vendor cloud or on a device in your home. | Cloud-first platforms are easier to start; local ones keep working when the internet or a subscription goes away. | You can mix them: keep the essentials local and add voice or a familiar app on top.
 ---
 Before you buy a single device, you choose a platform: the app and brain that ties everything together. Google Home, Apple Home, SmartThings and local open-source platforms all do the same basic job, but they differ in where they run, what they need from the internet and how much effort they ask of you. This guide compares them on the points that matter in a real home.
 

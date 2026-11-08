@@ -1,10 +1,11 @@
+import { useEffect, useState } from 'react'
 import { MessageCircle } from 'lucide-react'
 import { Footer } from './components/layout/Footer'
 import { Header } from './components/layout/Header'
 import { Seo } from './components/Seo'
-import { Compatibility } from './components/sections/Compatibility'
 import { Contact } from './components/sections/Contact'
 import { CtaBand } from './components/sections/CtaBand'
+import { Deliver } from './components/sections/Deliver'
 import { Faq } from './components/sections/Faq'
 import { GuidePage, GuidesIndex, LatestGuides } from './components/sections/Guides'
 import { Hero } from './components/sections/Hero'
@@ -14,7 +15,6 @@ import { Platform } from './components/sections/Platform'
 import { Process } from './components/sections/Process'
 import { Solutions } from './components/sections/Solutions'
 import { Upcoming } from './components/sections/Upcoming'
-import { ValueProps } from './components/sections/ValueProps'
 import { site } from './config/site'
 import { findGuide, hubOf } from './content/guides'
 import { useReveal } from './hooks/motion'
@@ -24,6 +24,18 @@ export default function App() {
   const { t, lang, path } = useI18n()
   const guide = findGuide(lang, path)
   useReveal()
+
+  // The floating WhatsApp button would sit on top of the form fields, so it steps aside there.
+  const [atContact, setAtContact] = useState(false)
+  useEffect(() => {
+    const target = document.getElementById('contact')
+    if (!target) return
+    const watcher = new IntersectionObserver(([entry]) => setAtContact(entry.isIntersecting), {
+      threshold: 0.05,
+    })
+    watcher.observe(target)
+    return () => watcher.disconnect()
+  }, [path])
 
   return (
     <>
@@ -48,16 +60,15 @@ export default function App() {
         ) : (
           <>
             <Hero />
-            <ValueProps />
             <Solutions />
-            <Upcoming />
-            <Platform />
+            <Deliver />
             <Homes />
             <Process />
-            <Compatibility />
+            <Platform />
+            <CtaBand />
             <Faq />
             <LatestGuides />
-            <CtaBand />
+            <Upcoming />
             <Contact />
           </>
         )}
@@ -66,7 +77,7 @@ export default function App() {
       <Footer />
 
       {/* Floating WhatsApp shortcut, only when a number is configured. */}
-      {site.whatsappLink ? (
+      {site.whatsappLink && !atContact ? (
         <a
           href={`${site.whatsappLink}?text=${encodeURIComponent(t.contact.whatsappGreeting)}`}
           target="_blank"

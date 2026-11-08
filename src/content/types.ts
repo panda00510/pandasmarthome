@@ -63,10 +63,21 @@ export type Content = {
     title: string
     lead: string
     status: string
+    /** One-line teaser in the strip at the foot of the home page. */
+    strip: string
     limitsLabel: string
     items: { id: string; title: string; body: string; bullets: string[]; limits: string }[]
     note: string
     cta: string
+  }
+  /** "What you receive": the written records of a job, shown as illustrations. */
+  deliver: {
+    eyebrow: string
+    title: string
+    lead: string
+    items: { id: string; tag: string; title: string; body: string }[]
+    demoCta: string
+    note: string
   }
   platform: {
     eyebrow: string
@@ -74,6 +85,11 @@ export type Content = {
     lead: string
     points: { title: string; body: string }[]
     protocolsTitle: string
+    /** Three short outcomes shown beside the diagram. */
+    outcomes: string[]
+    /** Device groups on the hub diagram. */
+    nodes: string[]
+    compatLabel: string
     /** Centre of the protocol diagram — what everything connects into. */
     hubLabel: string
     protocols: { label: string; note: string }[]
@@ -109,6 +125,7 @@ export type Content = {
     disclaimer: string
   }
   faq: {
+    more: string
     eyebrow: string
     title: string
     lead: string
@@ -191,6 +208,15 @@ export type Content = {
     ctaTitle: string
     ctaBody: string
     ctaButton: string
+    /** Topic filter labels, keyed by topic id (see TOPICS in content/guides.ts). */
+    topics: Record<string, string>
+    allTopics: string
+    featured: string
+    /** "{n}" is replaced by the minutes. */
+    readMin: string
+    keyPoints: string
+    contents: string
+    showMore: string
   }
 
   footer: {
@@ -203,5 +229,7 @@ export type Content = {
     rights: string
     builtWith: string
     disclaimer: string
+    /** Plain statement about the stock photography. */
+    imageNote: string
   }
 }

@@ -1,8 +1,16 @@
-import { Fragment, type ReactNode } from 'react'
-import { ArrowLeft, ArrowRight, MessageCircle } from 'lucide-react'
+import { Fragment, useState, type ReactNode } from 'react'
+import { ArrowLeft, ArrowRight, ChevronDown, Clock, MessageCircle } from 'lucide-react'
 import { site } from '../../config/site'
-import { guidesIn, HUBS, type Guide } from '../../content/guides'
+import {
+  FEATURED,
+  guidesIn,
+  HUBS,
+  readMinutes,
+  TOPIC_IDS,
+  type Guide,
+} from '../../content/guides'
 import { pageHref, useI18n, type Lang } from '../../i18n/context'
+import { GuideFigure } from '../graphics/GuideFigures'
 import { Button, SectionHeading } from '../ui'
 
 function formatDate(date: string, lang: Lang) {
@@ -11,26 +19,52 @@ function formatDate(date: string, lang: Lang) {
   )
 }
 
-function GuideCard({ guide, lang }: { guide: Guide; lang: Lang }) {
+const minutesLabel = (template: string, guide: Guide) => template.replace('{n}', String(readMinutes(guide)))
+
+function GuideCard({
+  guide,
+  lang,
+  brief = false,
+  feature = false,
+}: {
+  guide: Guide
+  lang: Lang
+  /** Title and reading time only on a phone. */
+  brief?: boolean
+  feature?: boolean
+}) {
+  const { t } = useI18n()
   return (
     <a
       href={pageHref(lang, guide.path)}
       data-reveal
-      className="card spotlight group flex flex-col p-6"
+      className={`card group flex h-full flex-col transition-colors hover:border-bamboo-200 ${
+        feature ? 'p-5 sm:p-7' : 'p-5'
+      }`}
     >
-      <time dateTime={guide.updated} className="text-xs font-medium text-ink-500">
-        {formatDate(guide.updated, lang)}
-      </time>
-      <h3 className="mt-3 text-lg leading-snug font-semibold text-ink-950 transition-colors group-hover:text-bamboo-700">
-        {guide.title}
-      </h3>
-      <p className="mt-2 text-[0.9375rem] leading-relaxed text-ink-600">{guide.description}</p>
-      <span aria-hidden="true" className="mt-auto pt-4 text-bamboo-600">
-        <ArrowRight
-          size={17}
-          className="transition-transform group-hover:translate-x-1 motion-reduce:transition-none"
-        />
+      <span className="flex items-center gap-2 text-xs font-medium text-ink-500">
+        <span className="rounded-full bg-bamboo-50 px-2.5 py-1 text-bamboo-700 ring-1 ring-bamboo-100">
+          {t.guides.topics[guide.topic]}
+        </span>
+        <span className="inline-flex items-center gap-1">
+          <Clock size={12} aria-hidden="true" />
+          {minutesLabel(t.guides.readMin, guide)}
+        </span>
       </span>
+      <h3
+        className={`mt-3 line-clamp-3 leading-snug font-semibold text-ink-950 transition-colors group-hover:text-bamboo-700 ${
+          feature ? 'text-xl sm:text-2xl' : 'text-[1.0625rem]'
+        }`}
+      >
+        {guide.heading}
+      </h3>
+      <p
+        className={`mt-2 line-clamp-2 text-[0.9375rem] leading-relaxed text-ink-600 ${
+          brief ? 'hidden sm:block' : ''
+        } ${feature ? 'sm:line-clamp-3' : ''}`}
+      >
+        {guide.description}
+      </p>
     </a>
   )
 }
@@ -44,19 +78,24 @@ export function LatestGuides() {
   return (
     <section id="guides" className="band border-t border-ink-200/70">
       <div className="shell">
-        <div className="flex flex-wrap items-end justify-between gap-6">
-          <SectionHeading eyebrow={t.guides.eyebrow} title={t.guides.title} lead={t.guides.lead} />
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <SectionHeading
+            eyebrow={t.guides.eyebrow}
+            title={t.guides.title}
+            lead={t.guides.lead}
+            shortOnPhone
+          />
           <a
             href={pageHref(lang, 'guides/')}
-            className="inline-flex items-center gap-1.5 text-sm font-semibold text-bamboo-700 hover:text-bamboo-600"
+            className="inline-flex min-h-11 items-center gap-1.5 text-sm font-semibold text-bamboo-700 hover:text-bamboo-600"
           >
             {t.guides.all}
             <ArrowRight size={15} aria-hidden="true" />
           </a>
         </div>
-        <div className="mt-10 grid gap-5 md:grid-cols-3">
+        <div className="reveal-group mt-6 grid gap-3 md:grid-cols-3 md:gap-4 lg:mt-10">
           {latest.map((guide) => (
-            <GuideCard key={guide.slug} guide={guide} lang={lang} />
+            <GuideCard key={guide.slug} guide={guide} lang={lang} brief />
           ))}
         </div>
       </div>
@@ -64,92 +103,233 @@ export function LatestGuides() {
   )
 }
 
-/** /guides/ */
+const PAGE_SIZE = 6
+
+/** /guides/: one main pick and two more up top, then every guide with a topic filter. */
 export function GuidesIndex() {
   const { t, lang } = useI18n()
+  const all = guidesIn(lang)
+  const featured = FEATURED.flatMap((slug) => all.filter((guide) => guide.slug === slug))
+  const [topic, setTopic] = useState<string>('all')
+  const [expanded, setExpanded] = useState(false)
+
+  const shown = all.filter((guide) => topic === 'all' || guide.topic === topic)
+  const topics = TOPIC_IDS.filter((id) => all.some((guide) => guide.topic === id))
 
   return (
-    <section className="shell pt-12 pb-20 lg:pt-16 lg:pb-28">
+    <section className="shell pt-10 pb-16 lg:pt-14 lg:pb-24">
       <p className="eyebrow">
         <span aria-hidden="true" className="h-px w-6 bg-bamboo-500/50" />
         {t.guides.eyebrow}
       </p>
-      <h1 className="mt-4 max-w-3xl text-4xl leading-[1.08] font-semibold tracking-[-0.03em] text-ink-950 sm:text-5xl">
+      <h1 className="mt-3 max-w-3xl text-[2rem] leading-[1.1] font-semibold tracking-[-0.03em] text-ink-950 sm:text-5xl">
         {t.guides.title}
       </h1>
-      <p className="mt-5 max-w-2xl text-lg leading-relaxed text-ink-600">{t.guides.lead}</p>
-      <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-        {guidesIn(lang).map((guide) => (
-          <GuideCard key={guide.slug} guide={guide} lang={lang} />
+      <p className="mt-4 max-w-2xl text-base leading-relaxed text-ink-600 sm:text-lg">{t.guides.lead}</p>
+
+      {featured.length ? (
+        <div className="mt-8 grid gap-4 lg:mt-10 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]">
+          <div>
+            <p className="mb-2 text-xs font-semibold tracking-wider text-bamboo-700 uppercase">
+              {t.guides.featured}
+            </p>
+            <GuideCard guide={featured[0]} lang={lang} feature />
+          </div>
+          <div className="grid gap-4 lg:pt-6">
+            {featured.slice(1).map((guide) => (
+              <GuideCard key={guide.slug} guide={guide} lang={lang} />
+            ))}
+          </div>
+        </div>
+      ) : null}
+
+      <div role="group" aria-label={t.guides.allTopics} className="mt-10 flex flex-wrap gap-2">
+        {['all', ...topics].map((id) => (
+          <button
+            key={id}
+            type="button"
+            aria-pressed={topic === id}
+            onClick={() => {
+              setTopic(id)
+              setExpanded(false)
+            }}
+            className={`inline-flex min-h-11 cursor-pointer items-center rounded-full px-4 text-sm font-medium transition-colors ${
+              topic === id
+                ? 'bg-brand text-white'
+                : 'border border-ink-300 text-ink-700 hover:border-ink-500 hover:bg-white'
+            }`}
+          >
+            {id === 'all' ? t.guides.allTopics : t.guides.topics[id]}
+          </button>
         ))}
       </div>
+
+      <div className="mt-5 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        {shown.map((guide, i) => (
+          <div key={guide.slug} className={i >= PAGE_SIZE && !expanded ? 'hidden' : undefined}>
+            <GuideCard guide={guide} lang={lang} />
+          </div>
+        ))}
+      </div>
+
+      {shown.length > PAGE_SIZE && !expanded ? (
+        <button
+          type="button"
+          onClick={() => setExpanded(true)}
+          className="btn mt-6 h-12 cursor-pointer border border-ink-300 px-6 text-ink-900 hover:border-ink-500 hover:bg-white"
+        >
+          {t.guides.showMore}
+          <ChevronDown size={16} aria-hidden="true" />
+        </button>
+      ) : null}
     </section>
   )
 }
 
-/** /guides/<slug>/ */
+/** Headings of a Markdown body, for the contents list. */
+function headings(source: string) {
+  return source
+    .split(/\n{2,}/)
+    .filter((block) => block.startsWith('## '))
+    .map((block, i) => ({ id: `s${i + 1}`, text: block.slice(3).replace(/\*\*|\[|\]\([^)]*\)/g, '') }))
+}
+
+/** /guides/<slug>/ and the topic pages. */
 export function GuidePage({ guide }: { guide: Guide }) {
   const { t, lang } = useI18n()
   const isPage = guide.kind === 'page'
   const hub = HUBS.find((name) => guide.path.startsWith(`${name}/`)) ?? null
   const others = isPage
-    ? guide.related.flatMap((slug) => guidesIn(lang).filter((other) => other.slug === slug))
+    ? guide.related.flatMap((slug) => guidesIn(lang).filter((other) => other.slug === slug)).slice(0, 3)
     : guidesIn(lang).filter((other) => other.slug !== guide.slug).slice(0, 3)
+  const toc = isPage ? [] : headings(guide.body).filter((h) => h.text !== t.guides.related)
 
   return (
     <>
-      <article className="shell pt-10 pb-16 lg:pt-14">
-        <div className="mx-auto max-w-[44rem]">
-          <a
-            href={pageHref(lang, hub ? `${hub}/` : isPage ? '' : 'guides/')}
-            className="inline-flex items-center gap-1.5 text-sm font-medium text-ink-600 hover:text-bamboo-700"
-          >
-            <ArrowLeft size={15} aria-hidden="true" />
-            {hub ? t.hubs[hub].all : isPage ? t.guides.backHome : t.guides.all}
-          </a>
-          <h1 className="mt-6 text-[2rem] leading-[1.12] font-semibold tracking-[-0.03em] text-balance text-ink-950 sm:text-[2.75rem]">
-            {guide.title}
-          </h1>
-          <p className="mt-4 text-sm text-ink-500">
-            {t.guides.updated} <time dateTime={guide.updated}>{formatDate(guide.updated, lang)}</time>
-          </p>
-          <p className="mt-6 border-l-2 border-bamboo-500 pl-4 text-lg leading-relaxed text-ink-700">
-            {guide.description}
-          </p>
-          <div className="mt-10">
-            <Markdown source={guide.body} />
+      <article className="shell pt-8 pb-14 lg:pt-12">
+        <div className="lg:grid lg:grid-cols-[minmax(0,44rem)_14rem] lg:justify-center lg:gap-14">
+          <div className="min-w-0">
+            <a
+              href={pageHref(lang, hub ? `${hub}/` : isPage ? '' : 'guides/')}
+              className="inline-flex min-h-11 items-center gap-1.5 text-sm font-medium text-ink-600 hover:text-bamboo-700"
+            >
+              <ArrowLeft size={15} aria-hidden="true" />
+              {hub ? t.hubs[hub].all : isPage ? t.guides.backHome : t.guides.all}
+            </a>
+            <h1 className="mt-4 text-[1.875rem] leading-[1.15] font-semibold tracking-[-0.03em] text-balance text-ink-950 sm:text-[2.75rem]">
+              {guide.heading}
+            </h1>
+            {isPage ? null : (
+              <p className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-ink-500">
+                <span className="inline-flex items-center gap-1">
+                  <Clock size={13} aria-hidden="true" />
+                  {minutesLabel(t.guides.readMin, guide)}
+                </span>
+                <span>
+                  {t.guides.updated}{' '}
+                  <time dateTime={guide.updated}>{formatDate(guide.updated, lang)}</time>
+                </span>
+              </p>
+            )}
+            <p className="mt-5 border-l-2 border-bamboo-500 pl-4 text-[1.0625rem] leading-relaxed text-ink-700 sm:text-lg">
+              {guide.description}
+            </p>
+
+            {guide.points.length ? (
+              <aside className="mt-6 rounded-card bg-bamboo-50 p-5 ring-1 ring-bamboo-100">
+                <h2 className="text-sm font-semibold tracking-wide text-bamboo-800">
+                  {t.guides.keyPoints}
+                </h2>
+                <ol className="mt-3 space-y-2.5 text-base leading-relaxed text-ink-800">
+                  {guide.points.map((point, i) => (
+                    <li key={point} className="flex gap-3">
+                      <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-brand text-xs font-semibold text-white">
+                        {i + 1}
+                      </span>
+                      {point}
+                    </li>
+                  ))}
+                </ol>
+              </aside>
+            ) : null}
+
+            {toc.length > 2 ? (
+              <details className="card mt-6 lg:hidden">
+                <summary className="flex min-h-12 cursor-pointer list-none items-center justify-between px-4 text-sm font-semibold text-ink-900 [&::-webkit-details-marker]:hidden">
+                  {t.guides.contents}
+                  <ChevronDown size={16} aria-hidden="true" />
+                </summary>
+                <ol className="space-y-1 px-4 pb-4">
+                  {toc.map((h) => (
+                    <li key={h.id}>
+                      <a href={`#${h.id}`} className="block py-1.5 text-sm text-ink-700 hover:text-bamboo-700">
+                        {h.text}
+                      </a>
+                    </li>
+                  ))}
+                </ol>
+              </details>
+            ) : null}
+
+            <div className="mt-8">
+              <Markdown source={guide.body} slug={isPage ? '' : guide.slug} lang={lang} />
+            </div>
+
+            <aside className="mt-12 rounded-panel bg-ink-950 p-6 text-paper sm:p-9">
+              <h2 className="text-xl font-semibold">{t.guides.ctaTitle}</h2>
+              <p className="mt-2 leading-relaxed text-[#c7cdd2]">{t.guides.ctaBody}</p>
+              <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+                <Button as="a" href={`${pageHref(lang)}#contact`} variant="inverse">
+                  {t.guides.ctaButton}
+                  <ArrowRight size={16} aria-hidden="true" />
+                </Button>
+                {site.whatsappLink ? (
+                  <Button
+                    as="a"
+                    href={`${site.whatsappLink}?text=${encodeURIComponent(t.contact.whatsappGreeting)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="border border-white/25 bg-transparent text-paper hover:bg-white/10"
+                  >
+                    <MessageCircle size={16} aria-hidden="true" />
+                    WhatsApp
+                  </Button>
+                ) : null}
+              </div>
+            </aside>
           </div>
 
-          <aside className="mt-14 rounded-panel bg-ink-950 p-7 text-paper sm:p-9">
-            <h2 className="text-xl font-semibold">{t.guides.ctaTitle}</h2>
-            <p className="mt-2 leading-relaxed text-ink-300">{t.guides.ctaBody}</p>
-            <div className="mt-6 flex flex-wrap gap-3">
-              <Button as="a" href={`${pageHref(lang)}#contact`} variant="accent">
-                {t.guides.ctaButton}
-                <ArrowRight size={16} aria-hidden="true" />
-              </Button>
-              {site.whatsappLink ? (
-                <Button
-                  as="a"
-                  href={`${site.whatsappLink}?text=${encodeURIComponent(t.contact.whatsappGreeting)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  variant="secondary"
-                >
-                  <MessageCircle size={16} aria-hidden="true" />
-                  WhatsApp
-                </Button>
-              ) : null}
-            </div>
-          </aside>
+          {toc.length > 2 ? (
+            <nav aria-label={t.guides.contents} className="hidden lg:block">
+              <div className="sticky top-28">
+                <p className="text-xs font-semibold tracking-wider text-ink-500 uppercase">
+                  {t.guides.contents}
+                </p>
+                <ol className="mt-3 space-y-1 border-l border-ink-200">
+                  {toc.map((h) => (
+                    <li key={h.id}>
+                      <a
+                        href={`#${h.id}`}
+                        className="-ml-px block border-l border-transparent py-1.5 pl-4 text-sm leading-snug text-ink-600 hover:border-bamboo-500 hover:text-bamboo-700"
+                      >
+                        {h.text}
+                      </a>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            </nav>
+          ) : null}
         </div>
       </article>
 
       {others.length ? (
         <section className="border-t border-ink-200/70 bg-paper-alt">
-          <div className="shell py-16">
-            <h2 className="text-2xl font-semibold tracking-[-0.02em] text-ink-950">{isPage ? t.guides.related : t.guides.more}</h2>
-            <div className="mt-8 grid gap-5 md:grid-cols-3">
+          <div className="shell py-12 lg:py-16">
+            <h2 className="text-2xl font-semibold tracking-[-0.02em] text-ink-950">
+              {isPage ? t.guides.related : t.guides.more}
+            </h2>
+            <div className="mt-6 grid gap-4 md:grid-cols-3">
               {others.map((other) => (
                 <GuideCard key={other.slug} guide={other} lang={lang} />
               ))}
@@ -165,18 +345,59 @@ export function GuidePage({ guide }: { guide: Guide }) {
  * Just enough Markdown for articles: ## / ### headings, paragraphs, - and 1.
  * lists, **bold** and [links](url). Rendered as React elements, so nothing in
  * a file can inject HTML. Root-relative links ("/#contact") get the base path.
+ * An explanatory figure, when the article has one, follows its first section.
  */
-function Markdown({ source }: { source: string }) {
+function Markdown({ source, slug, lang }: { source: string; slug: string; lang: Lang }) {
+  let section = 0
   return source.split(/\n{2,}/).map((block, i) => {
     const lines = block.split('\n')
     if (block.startsWith('### ')) {
-      return <h3 key={i} className="mt-8 text-lg font-semibold text-ink-950">{inline(block.slice(4))}</h3>
+      return <h3 key={i} className="mt-7 text-lg font-semibold text-ink-950">{inline(block.slice(4))}</h3>
+    }
+    // "## 1. Title": a numbered step, drawn on a vertical timeline
+    const step = /^## (\d+)\.\s+(.*)$/.exec(block)
+    if (step) {
+      return (
+        <h2
+          key={i}
+          className="mt-8 flex items-center gap-3 text-[1.375rem] leading-snug font-semibold tracking-[-0.02em] text-ink-950"
+        >
+          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand text-[0.9375rem] font-semibold text-white tabular-nums">
+            {step[1]}
+          </span>
+          {inline(step[2])}
+        </h2>
+      )
     }
     if (block.startsWith('## ')) {
+      section += 1
       return (
-        <h2 key={i} className="mt-12 text-2xl leading-snug font-semibold tracking-[-0.02em] text-ink-950">
-          {inline(block.slice(3))}
-        </h2>
+        <Fragment key={i}>
+          {section === 2 && slug ? <GuideFigure slug={slug} lang={lang} /> : null}
+          <h2
+            id={`s${section}`}
+            className="mt-10 scroll-mt-24 text-[1.5rem] leading-snug font-semibold tracking-[-0.02em] text-ink-950"
+          >
+            {inline(block.slice(3))}
+          </h2>
+        </Fragment>
+      )
+    }
+    // "- **Label:** text" lines: a small labelled table (you bring / we deliver / you can check)
+    const labelled = lines.every((line) => /^- \*\*[^*]+:\*\* /.test(line))
+    if (labelled) {
+      return (
+        <dl key={i} className="mt-3 ml-[1.125rem] space-y-3 border-l-2 border-bamboo-200 pl-6">
+          {lines.map((line, j) => {
+            const [, label, text] = /^- \*\*([^*]+):\*\* (.*)$/.exec(line)!
+            return (
+              <div key={j}>
+                <dt className="text-xs font-semibold tracking-wider text-bamboo-700 uppercase">{label}</dt>
+                <dd className="mt-0.5 text-[1.0625rem] leading-[1.6] text-ink-700">{inline(text)}</dd>
+              </div>
+            )
+          })}
+        </dl>
       )
     }
     const list = lines.every((line) => /^- /.test(line)) ? 'ul' : lines.every((line) => /^\d+\. /.test(line)) ? 'ol' : null
@@ -185,7 +406,7 @@ function Markdown({ source }: { source: string }) {
       return (
         <List
           key={i}
-          className={`mt-5 space-y-2 pl-5 text-[1.0625rem] leading-relaxed text-ink-700 marker:text-bamboo-600 ${
+          className={`mt-4 space-y-2 pl-5 text-[1.125rem] leading-[1.65] text-ink-700 marker:text-bamboo-600 ${
             list === 'ul' ? 'list-disc' : 'list-decimal'
           }`}
         >
@@ -196,7 +417,7 @@ function Markdown({ source }: { source: string }) {
       )
     }
     return (
-      <p key={i} className="mt-5 text-[1.0625rem] leading-[1.75] text-ink-700">
+      <p key={i} className="mt-4 text-[1.125rem] leading-[1.65] text-ink-700">
         {inline(lines.join(' '))}
       </p>
     )

@@ -1,8 +1,10 @@
 ---
 title: Where the electricity goes in a Singapore home — and how monitoring and automation help with aircon use
+heading: Where the electricity goes in a Singapore home
 description: In most Singapore homes the aircon uses the most electricity. How to measure what actually runs, which automations help, and what to check on an energy label.
 published: 2026-11-06
 updated: 2026-11-06
+points: The aircon is usually the biggest single use of electricity, so measure it before automating anything. | A smart plug measures plug-in appliances; a circuit or whole-home meter goes in the distribution board and needs a licensed electrician. | Automations help where waste comes from forgetting or an open window; they do not change what a unit uses while it runs.
 ---
 In a Singapore home the aircon is usually the biggest single use of electricity, and it is also the hardest to judge by feel. You see one number at the end of the month, but not which unit ran, when, or why. Measuring first and then automating is a calmer way to cut waste than guessing.
 

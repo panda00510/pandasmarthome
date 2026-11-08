@@ -9,16 +9,16 @@ type ButtonVariant = 'primary' | 'accent' | 'secondary' | 'ghost' | 'inverse'
 type ButtonSize = 'sm' | 'md' | 'lg'
 
 const VARIANTS: Record<ButtonVariant, string> = {
-  primary: 'bg-ink-950 text-paper hover:bg-ink-800',
-  accent: 'bg-bamboo-500 text-white hover:bg-bamboo-600',
-  secondary: 'bg-white text-ink-900 border border-ink-200 hover:border-ink-400 hover:bg-ink-50',
+  primary: 'bg-brand text-white hover:bg-bamboo-800',
+  accent: 'bg-brand text-white hover:bg-bamboo-800',
+  secondary: 'bg-transparent text-ink-900 border border-ink-300 hover:border-ink-500 hover:bg-white',
   ghost: 'text-ink-700 hover:text-ink-950 hover:bg-ink-100',
   inverse: 'bg-paper text-ink-950 hover:bg-white',
 }
 
 const SIZES: Record<ButtonSize, string> = {
-  sm: 'h-9 px-4 text-sm',
-  md: 'h-11 px-5 text-[0.9375rem]',
+  sm: 'h-11 px-4 text-sm',
+  md: 'h-12 px-5 text-[0.9375rem]',
   lg: 'h-12 px-6 text-base',
 }
 
@@ -54,12 +54,15 @@ export function SectionHeading({
   lead,
   align = 'left',
   tone = 'light',
+  shortOnPhone = false,
 }: {
   eyebrow: string
   title: string
   lead?: string
   align?: 'left' | 'center'
   tone?: 'light' | 'dark'
+  /** Hide the lead paragraph below 640px so a section's heading stays short on a phone. */
+  shortOnPhone?: boolean
 }) {
   const dark = tone === 'dark'
   return (
@@ -75,7 +78,7 @@ export function SectionHeading({
         {eyebrow}
       </p>
       <h2
-        className={`mt-4 text-3xl leading-[1.12] font-semibold tracking-[-0.025em] text-balance sm:text-4xl lg:text-[2.75rem] ${
+        className={`mt-4 text-[1.75rem] leading-[1.15] font-semibold tracking-[-0.025em] text-balance sm:text-4xl lg:text-[2.5rem] ${
           dark ? 'text-paper' : 'text-ink-950'
         }`}
       >
@@ -83,9 +86,9 @@ export function SectionHeading({
       </h2>
       {lead ? (
         <p
-          className={`mt-5 text-base leading-relaxed sm:text-lg ${
-            dark ? 'text-ink-300' : 'text-ink-600'
-          }`}
+          className={`mt-4 text-base leading-relaxed sm:mt-5 sm:text-lg ${
+            shortOnPhone ? 'hidden sm:block ' : ''
+          }${dark ? 'text-[#c7cdd2]' : 'text-ink-600'}`}
         >
           {lead}
         </p>

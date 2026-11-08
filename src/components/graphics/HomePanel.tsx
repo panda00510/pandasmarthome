@@ -30,7 +30,7 @@ const clamp = (n: number) => Math.max(0, Math.min(100, n))
  * built from live DOM, so it stays sharp at any density, translates with the
  * rest of the site, and cannot be mistaken for another vendor's product UI.
  */
-export function HomePanel() {
+export function HomePanel({ compact = false }: { compact?: boolean }) {
   const { t } = useI18n()
   const panel = t.hero.panel
   const [sceneIndex, setSceneIndex] = useState(0)
@@ -44,7 +44,7 @@ export function HomePanel() {
   const humidity = useAnimatedNumber(scene.humidity)
 
   return (
-    <div className="w-[19rem] rounded-[1.375rem] border border-white/12 bg-ink-950/88 p-4 text-paper shadow-[0_24px_60px_-24px_rgb(12_15_19/0.65)] backdrop-blur-xl sm:w-[21rem]">
+    <div className={`${compact ? 'w-[17rem] sm:w-[18rem]' : 'w-[19rem] sm:w-[21rem]'} rounded-[1.25rem] border border-white/12 bg-ink-950/88 p-4 text-paper shadow-[0_24px_60px_-24px_rgb(12_15_19/0.65)] backdrop-blur-xl`}>
       <div className="flex items-start justify-between">
         <div>
           <p className="text-[0.9375rem] leading-none font-semibold">{panel.title}</p>
@@ -56,6 +56,8 @@ export function HomePanel() {
         </span>
       </div>
 
+      {compact ? null : (
+        <>
       {/* Rooms */}
       <div className="mt-4 flex flex-wrap gap-1.5" role="group" aria-label={panel.title}>
         {panel.rooms.map((room, i) => (
@@ -108,6 +110,9 @@ export function HomePanel() {
         </div>
       </div>
 
+        </>
+      )}
+
       {/* Scenes — these are the real control */}
       <ul className="mt-3 space-y-1.5">
         {panel.scenes.map((sceneCopy, i) => {
@@ -156,6 +161,7 @@ export function HomePanel() {
         })}
       </ul>
 
+      {compact ? null : (
       <p className="mt-3.5 flex items-center gap-2 text-[0.6875rem] text-ink-500">
         <Lock
           size={11}
@@ -166,6 +172,7 @@ export function HomePanel() {
         />
         {panel.status}
       </p>
+      )}
     </div>
   )
 }

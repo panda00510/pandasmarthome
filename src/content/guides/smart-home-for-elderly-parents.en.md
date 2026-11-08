@@ -1,8 +1,10 @@
 ---
 title: A smart home for elderly parents — looking out for them without cameras
+heading: A smart home for elderly parents, without cameras
 description: Make a Singapore home safer for a parent living alone or with a helper, using night lights, door and motion sensors and simple controls, with their consent.
 published: 2026-11-06
 updated: 2026-11-06
+points: Start with what worries you and what your parent is comfortable with, and agree on it together. | Night lighting, door sensors and motion sensors reassure without any camera. | A sensor cannot replace a visit, a call or proper care, and it can raise false alarms.
 ---
 When a parent is getting older, most families want two things at once: to know they are safe, and to let them live in their own home without feeling watched. Technology can help with the first without ruining the second, if you pick the right tools and talk to the person first.
 

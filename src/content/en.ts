@@ -22,15 +22,12 @@ export const en: Content = {
 
   nav: {
     items: [
-      { id: 'why', label: 'Why open' },
-      { id: 'solutions', label: 'Solutions' },
-      { id: 'platform', label: 'Platform' },
+      { id: 'solutions', label: 'Services' },
       { id: 'homes', label: 'Your home' },
       { id: 'process', label: 'How it works' },
-      { id: 'faq', label: 'FAQ' },
     ],
-    showroom: '3D Showroom',
-    cta: 'Plan your system',
+    showroom: '3D showroom',
+    cta: 'Book a consultation',
   },
 
   hero: {
@@ -39,7 +36,7 @@ export const en: Content = {
     titleLead: 'A home that answers to you,',
     titleAccent: 'not to the cloud.',
     lead: 'Lights, aircon, curtains, locks and cameras from different brands — running together on one local system you actually own.',
-    primaryCta: 'Plan your system',
+    primaryCta: 'Book a consultation',
     secondaryCta: 'See what we install',
     trust: [
       'Runs locally, keeps working offline',
@@ -48,7 +45,7 @@ export const en: Content = {
       'Documented and handed over to you',
     ],
     imageAlt:
-      'Bright modern apartment living room with large windows and contemporary furniture',
+      'Illustrative photo: modern living room with a corner sofa, curtains and track lighting',
     panel: {
       title: 'Home',
       subtitle: 'All systems normal',
@@ -184,6 +181,7 @@ export const en: Content = {
     title: 'Smarter eyes and safer care, without a new camera system',
     lead: 'Two products we are preparing. They are not on sale yet. Tell us what you would use them for and we will let you know when there is something to try.',
     status: 'In development',
+    strip: 'Two products we are preparing, not on sale yet: an AI box for existing CCTV and a camera-free fall sensor.',
     limitsLabel: 'Worth knowing',
     items: [
       {
@@ -216,6 +214,34 @@ export const en: Content = {
     cta: 'Tell us your use case',
   },
 
+  deliver: {
+    eyebrow: 'What you receive',
+    title: 'Written records you can check, not promises',
+    lead: 'Before any device is ordered, and again at handover, you get the details in writing. These are illustrations of the document types.',
+    items: [
+      {
+        id: 'scope',
+        tag: 'Before ordering',
+        title: 'Written scope and device list',
+        body: 'The rooms, devices and work we agree, in writing, before anything is ordered.',
+      },
+      {
+        id: 'plan',
+        tag: 'Before installing',
+        title: 'Network and wiring plan',
+        body: 'Where the controller, access points and cabling go, and what your wiring can support.',
+      },
+      {
+        id: 'handover',
+        tag: 'At handover',
+        title: 'Handover pack',
+        body: 'Admin credentials, a device inventory and a walkthrough, so you can run the system yourself.',
+      },
+    ],
+    demoCta: 'Explore the demo system',
+    note: 'Illustrations only. The documents for your home are written for your home.',
+  },
+
   platform: {
     eyebrow: 'The platform',
     title: 'Your own system, running at home',
@@ -239,6 +265,9 @@ export const en: Content = {
       },
     ],
     protocolsTitle: 'Protocols we work with',
+    outcomes: ['Keeps working offline', 'Mix brands freely', 'Handed over, easy to maintain'],
+    nodes: ['Lights', 'Aircon', 'Curtains'],
+    compatLabel: 'Compatibility and protocols',
     hubLabel: 'Your home',
     protocols: [
       { label: 'Matter', note: 'Cross-brand standard, local by design' },
@@ -267,7 +296,7 @@ export const en: Content = {
           'Neutral wires and deeper back boxes where needed',
           'Coordinated with your ID and electrician',
         ],
-        imageAlt: 'HDB blocks in Punggol, Singapore, with solar panels on the rooftops',
+        imageAlt: 'Illustrative photo: high-rise apartment blocks among trees',
       },
       {
         id: 'hdb',
@@ -279,7 +308,7 @@ export const en: Content = {
           'No-neutral and retrofit-friendly options',
           'Staged rollout — start with one area, extend later',
         ],
-        imageAlt: 'HDB residential blocks beside a canal near Segar LRT station, Singapore',
+        imageAlt: 'Illustrative photo: a colourful residential block beside an open lawn',
       },
       {
         id: 'condo',
@@ -292,7 +321,7 @@ export const en: Content = {
           'Wireless-first where drilling is restricted',
         ],
         imageAlt:
-          'High-rise residential towers at Marina Bay, Singapore, seen from below',
+          'Illustrative photo: condominium towers beside a river and bridge',
       },
       {
         id: 'landed',
@@ -304,7 +333,7 @@ export const en: Content = {
           'Gate, perimeter and multi-camera integration',
           'Simple physical controls alongside the app',
         ],
-        imageAlt: 'Landed houses along a quiet residential street in Singapore',
+        imageAlt: 'Illustrative photo: a modern house with terraces behind a tree',
       },
     ],
     areas: {
@@ -432,6 +461,7 @@ export const en: Content = {
   },
 
   faq: {
+    more: 'More questions',
     eyebrow: 'FAQ',
     title: 'Questions worth asking before you start',
     lead: 'The things people actually want to know, answered without marketing gloss.',
@@ -561,7 +591,7 @@ export const en: Content = {
   cta: {
     title: 'Start with a conversation, not a shopping list.',
     lead: 'The best systems begin with how a household actually lives.',
-    primary: 'Plan your system',
+    primary: 'Book a consultation',
     secondary: 'Read the FAQ',
   },
 
@@ -581,7 +611,20 @@ export const en: Content = {
     pagesTitle: 'Solutions and home types',
     ctaTitle: 'Planning a smart home?',
     ctaBody: 'Tell us about your home and we will suggest what fits, in English or Chinese.',
-    ctaButton: 'Plan your system',
+    ctaButton: 'Book a consultation',
+    topics: {
+      start: 'Getting started',
+      renovation: 'Renovation',
+      energy: 'Energy and comfort',
+      care: 'Care at home',
+      security: 'Security and safety',
+    },
+    allTopics: 'All topics',
+    featured: 'Start here',
+    readMin: '{n} min read',
+    keyPoints: 'The short version',
+    contents: 'On this page',
+    showMore: 'Show more guides',
   },
 
   footer: {
@@ -596,5 +639,7 @@ export const en: Content = {
     builtWith: 'Serving HDB, condo and landed homes across Singapore.',
     disclaimer:
       'Panda Smart Home integrates compatible third-party products through supported connection methods. Product names and trademarks belong to their respective owners. Compatibility does not imply official partnership or endorsement.',
+    imageNote:
+      'Photographs are illustrative stock images from Pexels. They are not Panda Smart Home installations or client projects.',
   },
 }

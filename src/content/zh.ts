@@ -22,15 +22,12 @@ export const zh: Content = {
 
   nav: {
     items: [
-      { id: 'why', label: '为何开放' },
-      { id: 'solutions', label: '解决方案' },
-      { id: 'platform', label: '技术平台' },
-      { id: 'homes', label: '住宅类型' },
+      { id: 'solutions', label: '服务' },
+      { id: 'homes', label: '适合你的家' },
       { id: 'process', label: '服务流程' },
-      { id: 'faq', label: '常见问题' },
     ],
     showroom: '3D 样板间',
-    cta: '规划我的系统',
+    cta: '预约咨询',
   },
 
   hero: {
@@ -39,7 +36,7 @@ export const zh: Content = {
     titleLead: '真正听你的家，',
     titleAccent: '而不是听云端的。',
     lead: '不同品牌的灯光、空调、窗帘、门锁与摄像头，在一套完全属于你的本地系统上协同运作。',
-    primaryCta: '规划我的系统',
+    primaryCta: '预约咨询',
     secondaryCta: '查看安装内容',
     trust: [
       '本地运行，断网照常工作',
@@ -47,7 +44,7 @@ export const zh: Content = {
       '开灯不需要月费订阅',
       '完整文档，系统交到你手上',
     ],
-    imageAlt: '采光良好的现代公寓客厅，配有大面积落地窗与当代家具',
+    imageAlt: '示意图：配有转角沙发、窗帘和轨道灯的现代客厅',
     panel: {
       title: '我的家',
       subtitle: '系统运行正常',
@@ -181,6 +178,7 @@ export const zh: Content = {
     title: '不换整套摄像头，也能更聪明、更安心',
     lead: '我们正在筹备两款产品，目前还没有上市。告诉我们你想用在哪里，有可以试用的版本时第一时间通知你。',
     status: '开发中',
+    strip: '我们正在筹备两款产品，尚未销售：给现有监控加 AI 的分析盒，以及不用摄像头的跌倒传感器。',
     limitsLabel: '需要知道的',
     items: [
       {
@@ -212,6 +210,34 @@ export const zh: Content = {
     cta: '说说你的使用场景',
   },
 
+  deliver: {
+    eyebrow: '你会收到什么',
+    title: '可以核对的书面记录，而不是口头承诺',
+    lead: '任何设备下单之前，以及交付时，细节都以书面形式给到你。下面是这几类文件的示意图。',
+    items: [
+      {
+        id: 'scope',
+        tag: '下单之前',
+        title: '书面范围与设备清单',
+        body: '房间、设备和工作内容，下单之前先书面确认。',
+      },
+      {
+        id: 'plan',
+        tag: '安装之前',
+        title: '网络与线路方案',
+        body: '主机、无线接入点和布线放在哪里，以及你家的线路能支持什么。',
+      },
+      {
+        id: 'handover',
+        tag: '交付时',
+        title: '交付资料包',
+        body: '管理员账号、设备清单和现场讲解，让你日后可以自己接手系统。',
+      },
+    ],
+    demoCta: '体验演示系统',
+    note: '仅为示意。你家的文件会按你家的实际情况来写。',
+  },
+
   platform: {
     eyebrow: '技术平台',
     title: '属于你的系统，运行在你家',
@@ -234,6 +260,9 @@ export const zh: Content = {
         body: '可选项，需单独配置。日常运作完全不依赖远程服务器。',
       },
     ],
+    outcomes: ['断网照常工作', '品牌自由混搭', '交付后容易维护'],
+    nodes: ['灯光', '冷气', '窗帘'],
+    compatLabel: '兼容性与协议',
     protocolsTitle: '我们支持的协议',
     hubLabel: '你的家',
     protocols: [
@@ -263,7 +292,7 @@ export const zh: Content = {
           '按需增加零线与加深底盒',
           '与室内设计师和电工协同推进',
         ],
-        imageAlt: '新加坡榜鹅的组屋，屋顶装有太阳能板',
+        imageAlt: '示意图：树丛后的高层住宅楼',
       },
       {
         id: 'hdb',
@@ -275,7 +304,7 @@ export const zh: Content = {
           '提供无零线与免改造的设备选项',
           '可分阶段实施，先做一个区域再扩展',
         ],
-        imageAlt: '新加坡 Segar 轻轨站附近、临水道的组屋建筑群',
+        imageAlt: '示意图：草坪旁的彩色住宅楼',
       },
       {
         id: 'condo',
@@ -287,7 +316,7 @@ export const zh: Content = {
           '与楼宇对讲及门禁系统共存',
           '限制打孔的场合优先采用无线方案',
         ],
-        imageAlt: '从下方仰视新加坡滨海湾的高层住宅楼',
+        imageAlt: '示意图：河边的公寓楼和桥',
       },
       {
         id: 'landed',
@@ -299,7 +328,7 @@ export const zh: Content = {
           '大门、周界与多摄像头整合',
           '在App之外保留简单的实体控制',
         ],
-        imageAlt: '新加坡安静住宅街道旁的有地住宅',
+        imageAlt: '示意图：树后带露台的现代住宅',
       },
     ],
     areas: {
@@ -427,6 +456,7 @@ export const zh: Content = {
   },
 
   faq: {
+    more: '更多问题',
     eyebrow: '常见问题',
     title: '开始之前值得问清楚的问题',
     lead: '大家真正关心的问题，不加修饰地回答。',
@@ -550,7 +580,7 @@ export const zh: Content = {
   cta: {
     title: '从一次对话开始，而不是从一张购物清单开始。',
     lead: '好的系统都始于了解一个家真实的生活方式。',
-    primary: '规划我的系统',
+    primary: '预约咨询',
     secondary: '查看常见问题',
   },
 
@@ -570,7 +600,20 @@ export const zh: Content = {
     pagesTitle: '解决方案与住宅类型',
     ctaTitle: '正在规划智能家居？',
     ctaBody: '说说你家的情况，我们用中文或英文给你合适的建议。',
-    ctaButton: '规划我的系统',
+    ctaButton: '预约咨询',
+    topics: {
+      start: '入门',
+      renovation: '装修',
+      energy: '节能与舒适',
+      care: '长辈照护',
+      security: '安防与安全',
+    },
+    allTopics: '全部主题',
+    featured: '从这里开始',
+    readMin: '{n} 分钟阅读',
+    keyPoints: '先看这几点',
+    contents: '本页目录',
+    showMore: '显示更多指南',
   },
 
   footer: {
@@ -585,5 +628,6 @@ export const zh: Content = {
     builtWith: '服务全新加坡组屋、公寓与有地住宅。',
     disclaimer:
       'Panda智能家居通过支持的连接方式集成兼容的第三方产品。相关产品名称及商标归各自所有，设备兼容不代表与相关品牌存在官方合作或认可关系。',
+    imageNote: '网站上的照片是来自 Pexels 的示意图库图片，不是 Panda 智能家居的安装现场或客户项目。',
   },
 }

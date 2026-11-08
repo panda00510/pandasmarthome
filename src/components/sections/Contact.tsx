@@ -1,5 +1,6 @@
 import { useId, useState, type FormEvent, type ReactNode } from 'react'
 import {
+  ChevronDown,
   CircleCheck,
   Info,
   Mail,
@@ -44,6 +45,10 @@ export function Contact() {
   const ids = useId()
   const [status, setStatus] = useState<Status>('idle')
   const [errors, setErrors] = useState<Errors>({})
+  // Phones show one panel at a time; wide screens show both.
+  const [tab, setTab] = useState<'form' | 'chat'>('form')
+  // The fold holds the optional question and the message, and opens itself on an error.
+  const [more, setMore] = useState(false)
 
   const enabled = MODE !== 'none'
   const c = t.contact
@@ -71,6 +76,7 @@ export function Contact() {
     if (!message) nextErrors.message = c.states.required
 
     setErrors(nextErrors)
+    if (nextErrors.message) setMore(true)
     if (Object.keys(nextErrors).length > 0) return
 
     if (MODE === 'mailto') {
@@ -134,10 +140,34 @@ export function Contact() {
       <div className="shell grid gap-10 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1fr)] lg:gap-16">
         {/* ---- Details ---------------------------------------------------- */}
         <div>
-          <SectionHeading eyebrow={c.eyebrow} title={c.title} lead={c.lead} />
+          <SectionHeading eyebrow={c.eyebrow} title={c.title} lead={c.lead} shortOnPhone />
 
+          {site.whatsappLink ? (
+            <div
+              role="tablist"
+              aria-label={c.title}
+              className="mt-6 grid grid-cols-2 gap-1 rounded-full bg-ink-100 p-1 lg:hidden"
+            >
+              {(['form', 'chat'] as const).map((id) => (
+                <button
+                  key={id}
+                  type="button"
+                  role="tab"
+                  aria-selected={tab === id}
+                  onClick={() => setTab(id)}
+                  className={`h-11 cursor-pointer rounded-full text-sm font-semibold transition-colors ${
+                    tab === id ? 'bg-white text-ink-950 shadow-soft' : 'text-ink-600'
+                  }`}
+                >
+                  {id === 'form' ? c.form.title : c.whatsappCta}
+                </button>
+              ))}
+            </div>
+          ) : null}
+
+          <div className={`${tab === 'chat' || !site.whatsappLink ? '' : 'hidden'} lg:block`}>
           {(site.whatsappLink ?? site.email) ? (
-            <div className="mt-8 flex flex-wrap gap-3">
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row lg:mt-8">
               {site.whatsappLink ? (
                 <Button
                   as="a"
@@ -145,13 +175,14 @@ export function Contact() {
                   target="_blank"
                   rel="noopener noreferrer"
                   variant="accent"
+                  size="lg"
                 >
                   <MessageCircle size={17} aria-hidden="true" />
                   {c.whatsappCta}
                 </Button>
               ) : null}
               {site.email ? (
-                <Button as="a" href={`mailto:${site.email}`} variant="secondary">
+                <Button as="a" href={`mailto:${site.email}`} variant="secondary" size="lg">
                   <Mail size={17} aria-hidden="true" />
                   {c.emailCta}
                 </Button>
@@ -214,12 +245,13 @@ export function Contact() {
             height={959}
             loading="lazy"
             decoding="async"
-            className="mt-10 hidden aspect-[16/10] w-full rounded-panel object-cover shadow-soft lg:block"
+            className="mt-8 hidden aspect-[16/7] w-full rounded-panel object-cover opacity-90 lg:block"
           />
+          </div>
         </div>
 
         {/* ---- Form ------------------------------------------------------- */}
-        <div className="card p-6 sm:p-8">
+        <div className={`card p-5 sm:p-8 ${tab === 'form' || !site.whatsappLink ? '' : 'hidden'} lg:block`}>
           <h3 className="text-lg font-semibold text-ink-950">{c.form.title}</h3>
 
           {MODE === 'none' ? (
@@ -286,22 +318,41 @@ export function Contact() {
                 options={c.form.homeTypeOptions}
               />
 
-              <SelectField
-                id={`${ids}-start`}
-                name="startWith"
-                label={c.form.startWith}
-                options={c.form.startWithOptions}
-              />
+              <details
+                open={more}
+                onToggle={(event) => setMore(event.currentTarget.open)}
+                className="group rounded-card border border-ink-200 bg-paper-alt/60"
+              >
+                <summary className="flex min-h-12 cursor-pointer list-none items-center justify-between gap-3 px-4 text-sm font-semibold text-ink-800 [&::-webkit-details-marker]:hidden">
+                  {c.form.message}
+                  <ChevronDown
+                    size={16}
+                    aria-hidden="true"
+                    className="shrink-0 text-ink-500 transition-transform duration-300 group-open:rotate-180"
+                  />
+                </summary>
+                <div className="space-y-5 px-4 pb-4">
+                  <SelectField
+                    id={`${ids}-start`}
+                    name="startWith"
+                    label={c.form.startWith}
+                    options={c.form.startWithOptions}
+                  />
 
-              <Field
-                id={`${ids}-message`}
-                name="message"
-                label={c.form.message}
-                placeholder={c.form.messagePlaceholder}
-                error={errors.message}
-                multiline
-                required
-              />
+                  <Field
+                    id={`${ids}-message`}
+                    name="message"
+                    label={c.form.message}
+                    placeholder={c.form.messagePlaceholder}
+                    error={errors.message}
+                    multiline
+                    required
+                  />
+                </div>
+              </details>
+              {errors.message && !more ? (
+                <p className="text-xs font-medium text-[#c0392b]">{errors.message}</p>
+              ) : null}
 
               <p className="text-xs leading-relaxed text-ink-500">{c.form.consent}</p>
 
