@@ -1,6 +1,6 @@
 import { ArrowRight, ChevronDown, Info, MapPin } from 'lucide-react'
 import { responsive } from '../../content/photos'
-import { SectionHeading } from '../ui'
+import { PhotoTag, SectionHeading } from '../ui'
 import { pageHref, useI18n } from '../../i18n/context'
 
 const PHOTOS: Record<string, ReturnType<typeof responsive>> = {
@@ -36,6 +36,7 @@ export function Homes() {
                   href={pageHref(lang, PAGES[item.id] ?? 'homes/')}
                   className="card group flex h-full flex-col overflow-hidden transition-colors hover:border-bamboo-200"
                 >
+                  <span className="relative block">
                   <img
                     src={photo.src}
                     srcSet={photo.srcSet}
@@ -45,8 +46,10 @@ export function Homes() {
                     height={675}
                     loading="lazy"
                     decoding="async"
-                    className="aspect-[16/10] w-full object-cover"
+                    className="block aspect-[16/10] w-full object-cover"
                   />
+                  <PhotoTag>{t.footer.imageTag}</PhotoTag>
+                  </span>
                   <span className="flex flex-1 flex-col p-4 lg:p-5">
                     <span className="eyebrow">{item.subtitle}</span>
                     <span className="mt-1.5 block text-[1rem] leading-snug font-semibold text-ink-950 lg:text-[1.0625rem]">

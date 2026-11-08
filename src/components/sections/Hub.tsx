@@ -3,7 +3,7 @@ import type { LucideIcon } from 'lucide-react'
 import { responsive } from '../../content/photos'
 import { pagesIn, type Guide, type Hub } from '../../content/guides'
 import { pageHref, useI18n, type Lang } from '../../i18n/context'
-import { SectionHeading } from '../ui'
+import { PhotoTag, SectionHeading } from '../ui'
 
 const ICONS: Record<string, LucideIcon> = {
   'solutions/smart-lighting/': Lightbulb,
@@ -37,7 +37,7 @@ export function HubPage({ hub }: { hub: Hub }) {
         {hub === 'solutions' ? (
           <SolutionsMenu items={items} lang={lang} more={t.guides.learnMore} />
         ) : (
-          <HomesMenu items={items} lang={lang} more={t.guides.learnMore} />
+          <HomesMenu items={items} lang={lang} more={t.guides.learnMore} tag={t.footer.imageTag} />
         )}
       </div>
     </section>
@@ -91,7 +91,7 @@ function SolutionsMenu({ items, lang, more }: { items: Guide[]; lang: Lang; more
   )
 }
 
-function HomesMenu({ items, lang, more }: { items: Guide[]; lang: Lang; more: string }) {
+function HomesMenu({ items, lang, more, tag }: { items: Guide[]; lang: Lang; more: string; tag: string }) {
   const main = items.filter((page) => PHOTOS[page.path])
   const older = items.find((page) => page.path === OLDER)
   return (
@@ -105,6 +105,7 @@ function HomesMenu({ items, lang, more }: { items: Guide[]; lang: Lang; more: st
                 href={pageHref(lang, page.path)}
                 className="card group flex h-full flex-col overflow-hidden transition-colors hover:border-bamboo-200"
               >
+                <span className="relative block">
                 <img
                   src={photo.src}
                   srcSet={photo.srcSet}
@@ -114,8 +115,10 @@ function HomesMenu({ items, lang, more }: { items: Guide[]; lang: Lang; more: st
                   height={675}
                   loading="lazy"
                   decoding="async"
-                  className="aspect-[16/9] w-full object-cover"
+                  className="block aspect-[16/9] w-full object-cover"
                 />
+                <PhotoTag>{tag}</PhotoTag>
+                </span>
                 <span className="flex flex-1 flex-col p-5 lg:p-6">
                   <h2 className="text-[1.125rem] leading-snug font-semibold text-ink-950">{page.title}</h2>
                   <span className="mt-2 line-clamp-3 text-[0.9375rem] leading-relaxed text-ink-600">{page.description}</span>

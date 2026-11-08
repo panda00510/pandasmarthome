@@ -1,7 +1,7 @@
 import { ArrowRight, Box, Check } from 'lucide-react'
 import { responsive } from '../../content/photos'
 import { HomePanel } from '../graphics/HomePanel'
-import { Button } from '../ui'
+import { Button, PhotoTag } from '../ui'
 import { useI18n } from '../../i18n/context'
 
 const photo = responsive('hero-living')
@@ -71,6 +71,7 @@ export function Hero() {
                 decoding="async"
                 className="aspect-[16/10] w-full object-cover"
               />
+              <PhotoTag className="right-3 bottom-3 left-auto sm:right-4 sm:bottom-4">{t.footer.imageTag}</PhotoTag>
               <a
                 href={`${import.meta.env.BASE_URL}showroom/?lang=${lang}`}
                 className="group absolute top-3 left-3 inline-flex items-center gap-2 rounded-full bg-paper px-3.5 py-2 text-[0.8125rem] font-semibold text-ink-950 shadow-lift transition-colors hover:bg-bamboo-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-paper sm:top-4 sm:left-4"

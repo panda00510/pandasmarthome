@@ -48,6 +48,17 @@ export function Button<T extends ElementType = 'button'>({
 
 /* -------------------------------------------------------------------------- */
 
+/** Corner label for stock photos. Put inside a `relative` wrapper. */
+export function PhotoTag({ children, className = '' }: { children: ReactNode; className?: string }) {
+  return (
+    <span
+      className={`pointer-events-none absolute bottom-2 left-2 z-10 rounded-full bg-ink-950/65 px-2.5 py-0.5 text-[0.6875rem] leading-5 font-medium text-white backdrop-blur-sm ${className}`}
+    >
+      {children}
+    </span>
+  )
+}
+
 export function SectionHeading({
   eyebrow,
   title,

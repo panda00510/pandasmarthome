@@ -101,7 +101,7 @@ export function Footer() {
             <h2 className="text-xs font-semibold tracking-wider text-ink-500 uppercase">
               {t.footer.contactTitle}
             </h2>
-            <ul className="mt-2 text-sm text-ink-700">
+            <ul className="mt-2 flex flex-wrap gap-x-4 text-sm text-ink-700 lg:block">
               {site.email ? (
                 <li>
                   <a href={`mailto:${site.email}`} className={LINK_ICON}>
@@ -142,31 +142,30 @@ export function Footer() {
           </div>
         </div>
 
-        {/* Legal links on one line; the disclaimers fold away but stay readable. */}
-        <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-1 border-t border-ink-200 pt-4 text-sm text-ink-600">
+        {/* Credits and legal share one row; the disclaimers fold away but stay readable. */}
+        <div className="mt-4 flex flex-wrap items-center gap-x-5 border-t border-ink-200 pt-1 text-sm text-ink-600">
           {/* Served from public/ by the prebuild copy of ASSET_SOURCES.md.
               BASE_URL keeps it correct when the site lives at a sub-path. */}
           <a
             href={import.meta.env.BASE_URL + t.footer.creditsHref}
             target="_blank"
             rel="noopener noreferrer"
-            className={LINK_ICON}
+            className={LINK_ICON + ' min-h-11'}
           >
             {t.footer.credits}
             <ExternalLink size={12} aria-hidden="true" />
           </a>
+          <details className="group open:basis-full">
+            <summary className="inline-flex min-h-11 cursor-pointer list-none items-center text-sm text-ink-600 [&::-webkit-details-marker]:hidden">
+              {t.footer.legalTitle}
+            </summary>
+            <p className="max-w-4xl text-xs leading-relaxed text-ink-500">{t.footer.disclaimer}</p>
+            <p className="mt-2 max-w-4xl text-xs leading-relaxed text-ink-500">{t.footer.imageNote}</p>
+          </details>
           {site.registrationNumber ? <span>{site.registrationNumber}</span> : null}
         </div>
 
-        <details className="group mt-2">
-          <summary className="inline-flex min-h-11 cursor-pointer list-none items-center text-xs font-medium text-ink-500 [&::-webkit-details-marker]:hidden">
-            {t.footer.legalTitle}
-          </summary>
-          <p className="max-w-4xl text-xs leading-relaxed text-ink-500">{t.footer.disclaimer}</p>
-          <p className="mt-2 max-w-4xl text-xs leading-relaxed text-ink-500">{t.footer.imageNote}</p>
-        </details>
-
-        <p className="mt-2 text-xs text-ink-500">
+        <p className="text-xs text-ink-500">
           © {year} {companyName}. {t.footer.rights}
         </p>
       </div>
