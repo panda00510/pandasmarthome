@@ -11,36 +11,55 @@ written directly from the Wikimedia Commons API at download time.
 
 ## 1. Photography
 
-All photographs come from **Wikimedia Commons** under licences that permit
-commercial use. Each file was downloaded through the Commons thumbnailer at the
-display size the site actually needs, then re-encoded once as progressive
-MozJPEG (quality 78) to cut transfer size. No cropping, colour grading or other
-creative alteration was applied.
+All photographs are illustrative stock images. **None is a Panda Smart Home
+installation or a client project**, and the site says so (footer and home-type
+section).
 
-| File | Subject / where used | Author | Licence | Source page |
+### 1a. Pexels (in use)
+
+Licensed under the [Pexels License](https://www.pexels.com/license/): free for
+commercial use, no attribution required. They are credited here anyway. Each
+photo is cropped by hand to the framing noted below and served as responsive
+WebP at 800, 1200 and 1600 px wide
+(`src/assets/photos/<name>-<width>.webp`, built by `scripts/make-photos.mjs`).
+The same record is kept in `src/content/photos.ts`.
+
+| Files | Where used | Photographer | Source page | Notes |
 | --- | --- | --- | --- | --- |
-| `src/assets/photos/living-room.jpg` | Modern apartment living room — hero | Shixart1985 | [CC BY 2.0](https://creativecommons.org/licenses/by/2.0) | [Commons](https://commons.wikimedia.org/wiki/File:Modern_living_room_with_stylish_furniture_and_a_view_of_the_outdoors_in_a_cozy_apartment_setting.jpg) |
-| `src/assets/photos/sg-hdb-punggol.jpg` | HDB blocks with rooftop solar, Punggol — "BTO & new keys" | Deoma12 | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) | [Commons](https://commons.wikimedia.org/wiki/File:Solar_Panels_on_Punggol_HDB_flats.jpg) |
-| `src/assets/photos/sg-hdb-segar.jpg` | HDB flats and canal near Segar LRT — "HDB resale" | Teojincheng | [CC0 1.0](http://creativecommons.org/publicdomain/zero/1.0/deed.en) | [Commons](https://commons.wikimedia.org/wiki/File:HDB_flats_and_canal_near_Segar_LRT_station._Singapore.jpg) |
-| `src/assets/photos/sg-condo-marina.jpg` | High-rise residential towers, Marina Bay — "Condominiums" | William Cho | [CC BY-SA 2.0](https://creativecommons.org/licenses/by-sa/2.0) | [Commons](https://commons.wikimedia.org/wiki/File:The_Sail_@_Marina_Bay,_Singapore.jpg) |
-| `src/assets/photos/sg-landed.jpg` | Landed houses, Yew Lian Park — "Landed & larger homes" | Osucheok (English Wikipedia) | Public domain | [Commons](https://commons.wikimedia.org/wiki/File:YewLianPark1.jpg) |
-| `src/assets/photos/bedroom-curtains.jpg` | Bedroom with drapes — "How it works" | Shixart1985 | [CC BY 2.0](https://creativecommons.org/licenses/by/2.0) | [Commons](https://commons.wikimedia.org/wiki/File:Cozy_modern_bedroom_with_plush_pillows_and_elegant_drapes_in_bright_daylight.jpg) |
-| `src/assets/photos/bedroom-lighting.jpg` | Layered bedroom lighting — "Get in touch" | SPL Interiors1 | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0) | [Commons](https://commons.wikimedia.org/wiki/File:Balanced_Modern_Bedroom_Design_with_Neutral_Tones_and_Layered_Lighting.jpg) |
+| `hero-living-*.webp` | Home page hero | Max Vakhtbovych | [Pexels](https://www.pexels.com/photo/modern-living-room-design-with-corner-sofa-6920439/) | Living room, 16:10 |
+| `home-bto-*.webp` | Home types: BTO & new keys | CK Seng | [Pexels](https://www.pexels.com/photo/singapore-skyline-with-high-rise-apartments-34035022/) | High-rise apartment blocks, 16:9 |
+| `home-hdb-*.webp` | Home types: HDB resale | CK Seng | [Pexels](https://www.pexels.com/photo/colorful-residential-building-in-urban-park-setting-34965019/) | Residential block beside a lawn, 16:9 |
+| `home-condo-*.webp` | Home types: condominiums | Quang Nguyen Vinh | [Pexels](https://www.pexels.com/photo/modern-condominium-located-on-riverside-in-modern-city-6416109/) | Condominium towers by a river, 16:9; location not stated, so not captioned as a place |
+| `home-landed-*.webp` | Home types: landed & larger homes | Abdullah Asad | [Pexels](https://www.pexels.com/photo/houses-with-terraces-12359215/) | Modern house with terraces, cropped from a portrait original to 16:9; location unconfirmed, **never described as Singapore** |
 
-### Attribution obligations
+A sixth candidate (Max Vakhtbovych, bedroom with window,
+[Pexels](https://www.pexels.com/photo/bedroom-interior-with-bed-against-window-in-house-6956623/))
+was approved for use only where a curtain service needs a bedroom picture. No
+page needs one yet, so it is not in the repository.
 
-* **CC BY / CC BY-SA files** require credit to the author, a licence statement
-  and a link back to the source. That is satisfied by this file, which is
-  published at `/ASSET_SOURCES.md` and linked from the site footer
-  ("Image credits & licences").
-* **ShareAlike (CC BY-SA)** only propagates to *adapted* material. The three
-  BY-SA photographs are used unmodified apart from resizing and re-encoding,
-  which is not an adaptation. **If anyone later crops, recolours or composites
-  these three images, the resulting work must be released under the same
-  ShareAlike licence** — or replace them with the CC0 / CC BY / public-domain
-  alternatives in the table above.
-* `sg-hdb-segar.jpg` (CC0) and `sg-landed.jpg` (public domain) carry no
-  attribution obligation; they are credited anyway as a courtesy.
+### 1b. Wikimedia Commons
+
+| File | Where used | Author | Licence | Source page |
+| --- | --- | --- | --- | --- |
+| `src/assets/photos/bedroom-lighting.webp` (from `.jpg`) | "Get in touch" | SPL Interiors1 | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0) | [Commons](https://commons.wikimedia.org/wiki/File:Balanced_Modern_Bedroom_Design_with_Neutral_Tones_and_Layered_Lighting.jpg) |
+
+CC BY requires credit to the author, a licence statement and a link back to the
+source. This file satisfies that; it is published at `/asset-sources.txt` and
+linked from the site footer ("Image credits & licences").
+
+### 1c. Retired photographs (record kept, files removed from the site)
+
+Replaced on 2026-11-08 by the Pexels photographs above. Their provenance stays
+in [`src/assets/photos/_credits.json`](src/assets/photos/_credits.json).
+
+| Former file | Former use | Author | Licence | Source page |
+| --- | --- | --- | --- | --- |
+| `living-room.jpg` | Hero | Shixart1985 | CC BY 2.0 | [Commons](https://commons.wikimedia.org/wiki/File:Modern_living_room_with_stylish_furniture_and_a_view_of_the_outdoors_in_a_cozy_apartment_setting.jpg) |
+| `sg-hdb-punggol.jpg` | BTO | Deoma12 | CC BY-SA 4.0 | [Commons](https://commons.wikimedia.org/wiki/File:Solar_Panels_on_Punggol_HDB_flats.jpg) |
+| `sg-hdb-segar.jpg` | HDB resale | Teojincheng | CC0 1.0 | [Commons](https://commons.wikimedia.org/wiki/File:HDB_flats_and_canal_near_Segar_LRT_station._Singapore.jpg) |
+| `sg-condo-marina.jpg` | Condominiums | William Cho | CC BY-SA 2.0 | [Commons](https://commons.wikimedia.org/wiki/File:The_Sail_@_Marina_Bay,_Singapore.jpg) |
+| `sg-landed.jpg` | Landed homes | Osucheok | Public domain | [Commons](https://commons.wikimedia.org/wiki/File:YewLianPark1.jpg) |
+| `bedroom-curtains.jpg` | How it works | Shixart1985 | CC BY 2.0 | [Commons](https://commons.wikimedia.org/wiki/File:Cozy_modern_bedroom_with_plush_pillows_and_elegant_drapes_in_bright_daylight.jpg) |
 
 ---
 
