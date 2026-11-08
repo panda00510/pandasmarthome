@@ -69,7 +69,7 @@ export default {
     const message = field('message')
     const homeType = field('homeType')
 
-    if (!name || !contact || !message) {
+    if (!name || !contact) {
       return json({ error: 'Missing required fields' }, 400, cors)
     }
 
@@ -81,7 +81,7 @@ export default {
       `<b>Home type:</b> ${esc(homeType || '—')}`,
       `<b>Language:</b> ${esc(String(body.language ?? '—'))}`,
       '',
-      esc(message),
+      message ? esc(message) : '—',
     ].join('\n')
 
     const telegram = await fetch(

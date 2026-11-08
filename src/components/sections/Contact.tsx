@@ -16,7 +16,7 @@ import { Button, SectionHeading } from '../ui'
 import { useI18n } from '../../i18n/context'
 
 type Status = 'idle' | 'submitting' | 'success' | 'mailto' | 'error'
-type Errors = { name?: string; contact?: string; message?: string }
+type Errors = { name?: string; contact?: string }
 
 /**
  * How the enquiry gets delivered.
@@ -47,8 +47,6 @@ export function Contact() {
   const [errors, setErrors] = useState<Errors>({})
   // Phones show one panel at a time; wide screens show both.
   const [tab, setTab] = useState<'form' | 'chat'>('form')
-  // The fold holds the optional question and the message, and opens itself on an error.
-  const [more, setMore] = useState(false)
 
   const enabled = MODE !== 'none'
   const c = t.contact
@@ -73,10 +71,8 @@ export function Contact() {
     if (!name) nextErrors.name = c.states.required
     if (!contact) nextErrors.contact = c.states.required
     else if (!isUsableContact(contact)) nextErrors.contact = c.states.invalidContact
-    if (!message) nextErrors.message = c.states.required
 
     setErrors(nextErrors)
-    if (nextErrors.message) setMore(true)
     if (Object.keys(nextErrors).length > 0) return
 
     if (MODE === 'mailto') {
@@ -85,9 +81,7 @@ export function Contact() {
         `${c.form.contact}: ${contact}`,
         `${c.form.homeType}: ${homeType || '—'}`,
         `${c.form.startWith}: ${startWith || '—'}`,
-        '',
-        `${c.form.message}`,
-        message,
+        ...(message ? ['', c.form.message, message] : []),
       ].join('\n')
 
       window.location.href =
@@ -319,8 +313,6 @@ export function Contact() {
               />
 
               <details
-                open={more}
-                onToggle={(event) => setMore(event.currentTarget.open)}
                 className="group rounded-card border border-ink-200 bg-paper-alt/60"
               >
                 <summary className="flex min-h-12 cursor-pointer list-none items-center justify-between gap-3 px-4 text-sm font-semibold text-ink-800 [&::-webkit-details-marker]:hidden">
@@ -344,15 +336,10 @@ export function Contact() {
                     name="message"
                     label={c.form.message}
                     placeholder={c.form.messagePlaceholder}
-                    error={errors.message}
                     multiline
-                    required
                   />
                 </div>
               </details>
-              {errors.message && !more ? (
-                <p className="text-xs font-medium text-[#c0392b]">{errors.message}</p>
-              ) : null}
 
               <p className="text-xs leading-relaxed text-ink-500">{c.form.consent}</p>
 

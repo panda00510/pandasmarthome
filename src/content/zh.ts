@@ -549,7 +549,7 @@ export const zh: Content = {
         '用电监测',
         '还没想好，请给建议',
       ],
-      message: '你最想解决什么？',
+      message: '你最想解决什么？（选填）',
       messagePlaceholder: '例如：两间卧室的空调、客厅窗帘，以及用一个App管全部。',
       submit: '发送咨询',
       submitViaEmail: '用邮件发送',
@@ -628,6 +628,7 @@ export const zh: Content = {
     builtWith: '服务全新加坡组屋、公寓与有地住宅。',
     disclaimer:
       'Panda智能家居通过支持的连接方式集成兼容的第三方产品。相关产品名称及商标归各自所有，设备兼容不代表与相关品牌存在官方合作或认可关系。',
+    imageTag: '示意图',
     imageNote: '网站上的照片是来自 Pexels 的示意图库图片，不是 Panda 智能家居的安装现场或客户项目。',
   },
 }

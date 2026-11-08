@@ -231,5 +231,7 @@ export type Content = {
     disclaimer: string
     /** Plain statement about the stock photography. */
     imageNote: string
+    /** Corner label on every stock photo. */
+    imageTag: string
   }
 }

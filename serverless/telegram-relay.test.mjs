@@ -70,6 +70,10 @@ assert.equal(sent, null, 'honeypot hit must not reach Telegram')
 // --- validation -------------------------------------------------------------
 sent = null
 res = await post({ ...valid, message: '   ' })
+assert.equal(res.status, 200, 'message is optional')
+assert.ok(sent.body.text.endsWith('—'))
+sent = null
+res = await post({ ...valid, contact: ' ' })
 assert.equal(res.status, 400)
 assert.equal(sent, null)
 

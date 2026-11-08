@@ -555,7 +555,7 @@ export const en: Content = {
         'Energy & monitoring',
         'Not sure yet, advise me',
       ],
-      message: 'What would you like to solve?',
+      message: 'What would you like to solve? (optional)',
       messagePlaceholder:
         'e.g. Aircon in two bedrooms, curtains in the living room, and one app for everything.',
       submit: 'Send enquiry',
@@ -639,6 +639,7 @@ export const en: Content = {
     builtWith: 'Serving HDB, condo and landed homes across Singapore.',
     disclaimer:
       'Panda Smart Home integrates compatible third-party products through supported connection methods. Product names and trademarks belong to their respective owners. Compatibility does not imply official partnership or endorsement.',
+    imageTag: 'Illustrative photo',
     imageNote:
       'Photographs are illustrative stock images from Pexels. They are not Panda Smart Home installations or client projects.',
   },
