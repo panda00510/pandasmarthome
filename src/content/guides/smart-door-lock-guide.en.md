@@ -2,7 +2,7 @@
 title: Smart door locks — types, backup plans and what to check before buying
 description: Retrofit or full replacement, fingerprint or PIN, and what happens when the battery dies. A practical guide to choosing a smart door lock for a Singapore home.
 published: 2026-10-28
-updated: 2026-11-06
+updated: 2026-11-08
 ---
 A smart door lock is one of the first things many people want and one of the easiest to get wrong. The door is the one place where a failed gadget locks you out of your own home, so the choice deserves more care than a light bulb. This guide covers the main types, the backup questions to ask, and how a lock fits with the rest of a smart home.
 
@@ -70,5 +70,7 @@ It should. The lock must still open with a PIN, fingerprint or key. Remote featu
 - Whether you want it to work with an existing smart home platform
 
 If the lock is for a parent living at home, see [a smart home for elderly parents](/guides/smart-home-for-elderly-parents/).
+
+If the home has a helper, children and visitors, see [who gets access to what](/guides/smart-home-helpers-kids-guests-access/).
 
 Choosing a lock for your door? [Tell us about your door and who needs access](/#contact) and we will suggest what is likely to suit.

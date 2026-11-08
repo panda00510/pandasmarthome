@@ -110,10 +110,105 @@ function AirconFigure({ lang }: { lang: Lang }) {
   )
 }
 
+/** Three card figure helper: a heading and a few lines each. */
+function Cards({ caption, cards }: { caption: string; cards: { title: string; lines: string[] }[] }) {
+  return (
+    <figure className="my-8">
+      <div role="group" aria-label={caption} className="grid gap-3 sm:grid-cols-3">
+        {cards.map((card) => (
+          <div key={card.title} className="rounded-card border border-ink-200 bg-white p-4">
+            <p className="text-[1rem] font-semibold text-ink-950">{card.title}</p>
+            <ul className="mt-2 space-y-1.5 text-sm leading-snug text-ink-700">
+              {card.lines.map((line) => (
+                <li key={line} className="flex gap-2">
+                  <span aria-hidden="true" className="mt-[0.45rem] h-1.5 w-1.5 shrink-0 rounded-full bg-bamboo-500" />
+                  {line}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+      <figcaption className="mt-3 text-sm text-ink-600">{caption}</figcaption>
+    </figure>
+  )
+}
+
+/** Where each kind of safety sensor usually goes. */
+function SensorsFigure({ lang }: { lang: Lang }) {
+  return lang === 'zh' ? (
+    <Cards
+      caption="示意图：各类传感器常见的位置。烟雾探测请按 SCDF 的指引。"
+      cards={[
+        { title: '漏水传感器', lines: ['厨房水槽下', '洗衣机后面', '热水器和冷气排水管附近'] },
+        { title: '湿度传感器', lines: ['衣柜和储物间', '通风差的卧室', '常年关着的窗户旁'] },
+        { title: '烟雾和燃气', lines: ['烟雾：按 SCDF 的指引', '燃气：用燃气炉的地方', '联网提醒只是多一道提醒'] },
+      ]}
+    />
+  ) : (
+    <Cards
+      caption="Illustration: where each kind of sensor usually goes. For smoke detection, follow SCDF guidance."
+      cards={[
+        { title: 'Leak sensors', lines: ['Under the kitchen sink', 'Behind the washing machine', 'By the water heater and aircon drain'] },
+        { title: 'Humidity sensors', lines: ['Wardrobes and storerooms', 'Bedrooms with little airflow', 'Beside a window that stays shut'] },
+        { title: 'Smoke and gas', lines: ['Smoke: follow SCDF guidance', 'Gas: where a gas stove is used', 'A connected alert is an extra alert'] },
+      ]}
+    />
+  )
+}
+
+/** Who needs what, starting from physical controls. */
+function AccessFigure({ lang }: { lang: Lang }) {
+  return lang === 'zh' ? (
+    <Cards
+      caption="示意图：一个起点，请按你家的情况调整。"
+      cards={[
+        { title: '帮佣', lines: ['墙上开关和情景按键', '个人门锁密码', '知道装了什么、记录什么'] },
+        { title: '孩子', lines: ['大按键或墙面面板', '设置和大门由成年人掌管', '提早回家时的约定'] },
+        { title: '访客', lines: ['墙上开关，不用 App', '临时门锁密码', '访客模式的默认值'] },
+      ]}
+    />
+  ) : (
+    <Cards
+      caption="Illustration: a starting point. Adjust it for your household."
+      cards={[
+        { title: 'Helper', lines: ['Wall switches and scene buttons', 'An individual door code', 'Knows what is installed and recorded'] },
+        { title: 'Children', lines: ['Large buttons or a wall panel', 'Settings and the door stay with adults', 'An agreement for coming home early'] },
+        { title: 'Visitors', lines: ['Wall switches, no app', 'A temporary door code', 'Guest-mode defaults'] },
+      ]}
+    />
+  )
+}
+
+/** What tends to stay in the home and what may leave it. */
+function PrivacyFigure({ lang }: { lang: Lang }) {
+  const zh = lang === 'zh'
+  const cols = zh
+    ? [
+        { title: '本地控制', lines: ['指令在家里的控制器上处理', '自动化在你自己的网络里运行', '更少的数据需要离开家'] },
+        { title: '云端控制', lines: ['指令常常经过厂商的服务器', '传感器数据可能存在厂商那里', '依赖网络和厂商的政策'] },
+        { title: '你来决定', lines: ['哪些数据可以离开家', '哪些设备不需要账号', '哪些功能干脆关掉'] },
+      ]
+    : [
+        { title: 'Local control', lines: ['Commands handled by a controller at home', 'Automations run on your own network', 'Less data needs to leave the house'] },
+        { title: 'Cloud control', lines: ['Commands often pass through the maker’s servers', 'Sensor data may be stored by the maker', 'Depends on the internet and the maker’s policies'] },
+        { title: 'You decide', lines: ['Which data may leave the home', 'Which devices need no account', 'Which features to switch off'] },
+      ]
+  return (
+    <Cards
+      caption={zh ? '示意图：本地和云端的差别。大多数系统两者混合。' : 'Illustration: the difference between local and cloud. Most systems mix the two.'}
+      cards={cols}
+    />
+  )
+}
+
 const FIGURES: Record<string, (props: { lang: Lang }) => ReactNode> = {
   'smart-home-for-elderly-parents': ElderlyFigure,
   'local-smart-home-vs-google-apple-smartthings': PlatformFigure,
   'reduce-aircon-electricity-smart-home': AirconFigure,
+  'water-smoke-humidity-sensors-singapore': SensorsFigure,
+  'smart-home-helpers-kids-guests-access': AccessFigure,
+  'smart-home-privacy-local-vs-cloud': PrivacyFigure,
 }
 
 export function GuideFigure({ slug, lang }: { slug: string; lang: Lang }) {

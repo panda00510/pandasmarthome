@@ -2,7 +2,7 @@
 title: Fall detection without a camera — how radar sensors work and where they fall short
 description: A radar sensor can notice a fall without recording images or sound. How it works, where it fits in a Singapore home, and the limits to understand before you rely on it.
 published: 2026-11-05
-updated: 2026-11-06
+updated: 2026-11-08
 ---
 For an older family member living alone, a fall in the bathroom or bedroom is a real worry. A camera is the obvious answer, but few people want one in those rooms. Radar-based fall detection is an alternative that does not record a picture of anyone. It is a useful tool, but it is not magic, and it helps to know what it does and does not do.
 
@@ -53,5 +53,7 @@ Not always. A sensor covers a defined area at a given mounting height, so a larg
 Radar presence and fall sensors work well alongside the rest of a local system: a bathroom light that comes on dimly at night, a notification to the family, a door sensor that shows when someone has left. Keeping the logic on a controller in your home means the alert does not depend on a cloud service being reachable.
 
 For the wider picture of looking out for a parent at home, see [a smart home for elderly parents](/guides/smart-home-for-elderly-parents/).
+
+For how a smart home handles private data, see [smart home privacy](/guides/smart-home-privacy-local-vs-cloud/).
 
 Thinking about care for a parent or relative at home? [Tell us about the rooms and who will receive the alerts](/#contact) and we will suggest a layout and what to test first.

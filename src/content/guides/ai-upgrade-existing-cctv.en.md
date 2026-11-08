@@ -2,7 +2,7 @@
 title: Adding AI to your existing CCTV — what an edge analytics box can and cannot do
 description: You do not always need to replace cameras to get people counting and smarter alerts. How an AI edge box works with existing cameras, what to check first, and the privacy duties that come with it.
 published: 2026-11-05
-updated: 2026-11-06
+updated: 2026-11-08
 ---
 If your shop, office or home already has CCTV, you may be told you need to replace it to get features like people counting or smarter alerts. Often you do not. A small AI edge box can read the video from cameras you already have and add the analytics on top. Here is what that means, and what to check before you commit.
 
@@ -53,5 +53,7 @@ In Singapore, organisations that use CCTV have duties under the PDPA, including 
 ## Where it fits in a smart home
 
 For a home, the useful version is modest: reliable alerts for the front door or a gate, a notification when a package arrives, and fewer false alarms from moving branches. Linking those alerts to the rest of a local system, such as lights that come on when someone approaches, makes them more practical.
+
+For the wider privacy picture, see [smart home privacy](/guides/smart-home-privacy-local-vs-cloud/).
 
 Wondering whether your current cameras could be upgraded? [Tell us the brand and model](/#contact) and we will check what they support before suggesting anything.

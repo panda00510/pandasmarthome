@@ -2,7 +2,7 @@
 title: What still works in a smart home when the internet goes down?
 description: Local control vs cloud control, explained for Singapore homes — what keeps running during an outage, what pauses, and how to check a device before you buy.
 published: 2026-09-23
-updated: 2026-11-06
+updated: 2026-11-08
 ---
 When the fibre drops, some smart homes quietly carry on and others turn into homes where the lights only answer to an app that can no longer reach its server. Which one you get depends on a single design choice: where the decisions are made.
 
@@ -51,5 +51,7 @@ No. For short power interruptions, a small UPS on the controller and network equ
 An internet outage and a power cut are not the same thing. For short power interruptions, a small UPS on the controller and network equipment keeps the system running and avoids a cold restart.
 
 Which platform runs locally and which relies on the cloud? See [how to choose a smart home platform](/guides/local-smart-home-vs-google-apple-smartthings/).
+
+Local control also keeps more data at home. See [smart home privacy](/guides/smart-home-privacy-local-vs-cloud/).
 
 Planning a new system? [Tell us about your home](/#contact) and we will mark which devices run locally before you buy anything.

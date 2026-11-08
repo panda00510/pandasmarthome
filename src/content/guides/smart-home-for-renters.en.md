@@ -2,7 +2,7 @@
 title: Smart home when you rent — what you can do without touching the walls
 description: Renting in Singapore does not rule out a smart home. What works without drilling or rewiring, what needs the landlord's consent, and how to take it all with you.
 published: 2026-10-16
-updated: 2026-11-06
+updated: 2026-11-08
 ---
 Renting a flat or condo unit does not mean giving up on a smart home. It does change the rules of the game: anything you install has to come out again when you leave, and anything that touches the building needs the owner's agreement first. The good news is that a lot of useful automation needs neither.
 
@@ -54,5 +54,7 @@ Choose a hub you own, favour open standards, keep the original parts in a labell
 ## Wi-Fi and the router
 
 If the router came with the unit, you may not be able to change its settings. Many smart home devices work best when they do not depend on Wi-Fi at all — a Zigbee or Thread network run from your own hub avoids crowding a shared router with dozens of gadgets.
+
+Battery sensors suit a rental. See [leak, smoke and humidity sensors](/guides/water-smoke-humidity-sensors-singapore/).
 
 Renting and not sure what is allowed in your unit? [Tell us about your home](/#contact) and we will suggest a setup you can take with you.

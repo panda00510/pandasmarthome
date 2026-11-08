@@ -2,7 +2,7 @@
 title: What to check in an older home before adding smart devices
 description: Older flats and houses often differ from new builds in switch boxes, wiring, Wi-Fi coverage and aircon. A checklist to run through before you buy anything.
 published: 2026-11-06
-updated: 2026-11-06
+updated: 2026-11-08
 ---
 An older home is not a problem for a smart home, but it is a home with surprises. The switch box that looked ordinary may have no neutral wire, the walls may block Wi-Fi, and the aircon may be older than the apps that control it. A short survey before you buy saves returns and frustration.
 
@@ -55,5 +55,7 @@ Usually not. Retrofit modules, no-neutral switches and battery sensors work with
 ## A simple way to start
 
 Spend an hour walking through the home with this list. Even a rough record makes the next step much clearer.
+
+For damp and leak-prone spots, see [leak, smoke and humidity sensors](/guides/water-smoke-humidity-sensors-singapore/).
 
 Want help surveying your home? [Tell us about your home](/#contact) and we will start with a wiring and network survey. You can also read about [upgrading an HDB resale flat](/homes/hdb-resale-smart-home/).
