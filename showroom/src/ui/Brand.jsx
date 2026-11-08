@@ -13,6 +13,8 @@ export default function Brand() {
   const setFocusMode = useHA((s) => s.setFocusMode)
   const lang = useHA((s) => s.lang)
   const setLang = useHA((s) => s.setLang)
+  // 样板间部署在 /showroom/，官网在上一级；中文回到 /zh/
+  const siteHref = lang === 'zh' ? '../zh/' : '../'
 
   return (
     <div className="brand">
@@ -25,6 +27,11 @@ export default function Brand() {
       </div>
 
       <div className="tools float">
+        <a className="tool is-back" href={siteHref} title={t('back_site')} aria-label={t('back_site')}>
+          <Icon name="exit" />
+          <span className="tool-label">{t('back_site')}</span>
+        </a>
+        <span className="tool-rule" />
         <button
           className="tool is-lang"
           onClick={() => setLang(lang === 'en' ? 'zh' : 'en')}
@@ -41,7 +48,7 @@ export default function Brand() {
           <Icon name="tag" />
         </button>
         <button
-          className={`tool${calibrating ? ' is-on' : ''}`}
+          className={`tool is-calib${calibrating ? ' is-on' : ''}`}
           onClick={() => setCalibrating(!calibrating)}
           title={t('tool_calibrate')}
         >

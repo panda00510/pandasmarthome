@@ -22,7 +22,7 @@ import Surroundings from './Surroundings'
 const MODEL_URL = import.meta.env.VITE_HOUSE_MODEL || null
 
 export const VIEWS = {
-  overview: { name: { en: 'Overview', zh: '全屋' }, pos: [7.6, 9.6, 9.8], target: [-0.2, 0.35, 0.2] },
+  overview: { name: { en: 'Overview', zh: '全屋' }, pos: [9.0, 11.3, 11.6], target: [-0.2, 0.35, 0.2] },
   // 机位都在房间内部，视线不穿实墙。客厅从餐厅一侧看向沙发，主卧靠近房门看向床。
   living: { name: { en: 'Living', zh: '客厅' }, pos: [-2.2, 2.05, 2.05], target: [-3.7, 0.9, -2.2] },
   bedroom: { name: { en: 'Master', zh: '主卧' }, pos: [4.15, 1.85, -1.5], target: [3.5, 0.75, -3.3] },
@@ -137,7 +137,7 @@ export default function Scene() {
       dpr={isMobile ? [1, 1.5] : [1, 1.8]}
       gl={{ antialias: true, powerPreference: 'high-performance' }}
       camera={{
-        position: isMobile ? [9.4, 13.2, 12.4] : [7.6, 9.6, 9.8],
+        position: isMobile ? [9.4, 13.2, 12.4] : [9.0, 11.3, 11.6],
         fov: isMobile ? MOBILE_FOV : DESKTOP_FOV,
         near: 0.1,
         far: 400,

@@ -83,7 +83,8 @@ export const useHA = create((set, get) => ({
   activeScene: null,
   selected: null,          // 当前在面板里展开的实体
   // 手机屏幕小，默认收起标签，只留发光锚点
-  showLabels: typeof window === 'undefined' ? true : !window.matchMedia('(max-width: 900px)').matches,
+  // 默认不铺满所有标签（23 个会互相压住）；选中房间时只显示该房间的几个，见 Hotspots.jsx
+  showLabels: false,
   view: 'overview',       // 相机预设视角
   sheetOpen: false,       // 手机端底部抽屉
   panelCollapsed: savedUI.panelCollapsed ?? false,  // 右侧面板收成图标条

@@ -39,12 +39,17 @@ export const HOTSPOTS = [
   { id: 'camera.entry_doorbell', pos: [3.2, 1.5, 4.2] },
 ]
 
-function Hotspot({ conf }) {
+// 视角 → 区域；选中房间时只亮出该房间前几个设备的标签
+const VIEW_AREA = { living: 'living', master: 'bedroom', bed2: 'second', kitchen: 'kitchen', bath: 'bath' }
+const ROOM_LABEL_LIMIT = 5
+
+function Hotspot({ conf, rank }) {
   const entity = useHA((s) => s.entities[conf.id])
   const toggle = useHA((s) => s.toggle)
   const setSelected = useHA((s) => s.setSelected)
   const selected = useHA((s) => s.selected)
   const showLabels = useHA((s) => s.showLabels)
+  const view = useHA((s) => s.view)
   const calibrating = useHA((s) => s.calibrating)
   const calibTarget = useHA((s) => s.calibTarget)
   const setCalibTarget = useHA((s) => s.setCalibTarget)
@@ -61,7 +66,8 @@ function Hotspot({ conf }) {
   const on = isOn(entity)
   const isCalibTarget = calibrating && calibTarget === conf.id
   const active = selected === conf.id || isCalibTarget
-  const visible = showLabels || hovered || active
+  const inRoom = VIEW_AREA[view] === entity.area && rank < ROOM_LABEL_LIMIT
+  const visible = showLabels || hovered || active || inRoom
   const pos = override ?? conf.pos
 
   // 之前这里让亮着的锚点做呼吸缩放，但小球是自发光的、会被 Bloom 拾取，
@@ -145,11 +151,15 @@ function Hotspot({ conf }) {
   )
 }
 
+// 同一区域里排第几（用实体 id 的区域前缀分组，如 light.living_main → living）
+const areaOf = (id) => id.split('.')[1].split('_')[0]
+const rankInArea = (i) => HOTSPOTS.slice(0, i).filter((other) => areaOf(other.id) === areaOf(HOTSPOTS[i].id)).length
+
 export default function Hotspots() {
   return (
     <group>
-      {HOTSPOTS.map((conf) => (
-        <Hotspot key={conf.id} conf={conf} />
+      {HOTSPOTS.map((conf, i) => (
+        <Hotspot key={conf.id} conf={conf} rank={rankInArea(i)} />
       ))}
     </group>
   )

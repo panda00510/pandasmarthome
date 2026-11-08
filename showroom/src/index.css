@@ -253,7 +253,7 @@ input[type="range"].is-cool::-webkit-slider-thumb {
 .panel {
   position: absolute;
   top: 22px; right: 24px; bottom: 24px;
-  width: 316px;
+  width: 300px;
   z-index: 12;
   display: flex; flex-direction: column;
   border-radius: var(--r-lg);
@@ -825,3 +825,41 @@ input[type="range"].is-cool::-webkit-slider-thumb {
   letter-spacing: .04em;
   font-family: var(--font-mono);
 }
+
+
+/* ===================== 排版整理 =====================
+   画布与右侧面板分栏、不再互相遮盖；手机画布约 62svh；点击区至少 44×44 */
+.tool.is-back { width: auto; padding: 0 10px; gap: 6px; font-size: 12px; text-decoration: none; }
+.tool-label { display: none; }
+
+@media (min-width: 901px) {
+  .tool.is-back .tool-label { display: inline; }
+  .canvas-layer { right: 340px; }
+  .app.is-narrow .canvas-layer { right: 130px; }
+  .app.is-focus .canvas-layer { right: 0; }
+}
+
+@media (max-width: 900px) {
+  /* 暗晕之前向右多伸出 80px，把页面撑宽了 66px；改成刚好贴到屏幕边缘 */
+  .brand::before { inset: -20px -14px -30px -14px; }
+  .brand-text { min-width: 0; }
+  .brand-text p { display: none; }
+}
+
+/* 很窄的手机上只留 logo，工具条要保证每个按钮 ≥44px */
+@media (max-width: 420px) {
+  .brand-text { display: none; }
+  .tool { width: 44px; height: 44px; }
+  .tool.is-calib { display: none; }
+  .canvas-layer { inset: 0 0 auto 0; height: 62svh; }
+  .sheet-handle { min-height: 44px; align-items: center; padding: 0; }
+  input[type="range"] {
+    height: 44px;
+    background: linear-gradient(var(--line-2), var(--line-2)) center / 100% 3px no-repeat;
+  }
+  .tool { flex: none; }
+  .tool.is-back { min-width: 44px; padding: 0; justify-content: center; }
+  .toggle::before { content: ''; position: absolute; inset: -11px -3px; }
+  .view { min-height: 48px; }
+}
+.tool.is-back { display: inline-flex; align-items: center; white-space: nowrap; }

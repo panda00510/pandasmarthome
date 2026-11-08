@@ -16,6 +16,7 @@ export const STRINGS = {
     tool_reset: 'Reset to initial state',
     tool_focus: 'Focus mode — hide the interface',
     tool_lang: '切换到中文',
+    back_site: 'Back to website',
 
     views: 'Views',
     panel_eyebrow: 'Current scene',
@@ -96,6 +97,7 @@ export const STRINGS = {
     tool_labels_off: '显示设备标签',
     tool_calibrate: '标定热点位置',
     tool_reset: '恢复初始状态',
+    back_site: '返回官网',
     tool_focus: '专注模式：隐藏界面只看房子',
     tool_lang: 'Switch to English',
 
