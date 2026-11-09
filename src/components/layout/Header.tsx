@@ -74,13 +74,13 @@ export function Header() {
       <div className="shell flex h-16 items-center justify-between gap-3 lg:h-[4.5rem]">
         <a
           href={`${home}#top`}
-          className="shrink-0 rounded-lg text-ink-950 transition-opacity hover:opacity-70"
+          className="min-w-0 rounded-lg text-ink-950 transition-opacity hover:opacity-70"
           aria-label={t.a11y.homeLink}
         >
-          <Wordmark />
+          <Wordmark className="max-w-full" />
         </a>
 
-        <nav aria-label="Primary" className="hidden items-center gap-1 lg:flex">
+        <nav aria-label={t.a11y.navPrimary} className="hidden items-center gap-1 lg:flex">
           {links.map((link) => (
             <a
               key={link.key}
@@ -122,7 +122,7 @@ export function Header() {
         hidden={!open}
         className="border-t border-ink-200/70 bg-paper/95 backdrop-blur-xl lg:hidden"
       >
-        <nav aria-label="Primary mobile" className="shell flex flex-col gap-1 py-4">
+        <nav aria-label={t.a11y.navMobile} className="shell flex flex-col gap-1 py-4">
           {links.map((link) => (
             <a
               key={link.key}
@@ -165,7 +165,7 @@ function LangToggle({ lang, path, label }: { lang: Lang; path: string; label: st
             aria-current={active ? 'page' : undefined}
             lang={option.code === 'zh' ? 'zh-Hans' : 'en'}
             hrefLang={option.code === 'zh' ? 'zh-Hans' : 'en'}
-            className={`inline-flex h-11 min-w-11 items-center justify-center rounded-full px-3 text-sm font-semibold whitespace-nowrap transition-colors ${
+            className={`inline-flex h-11 min-w-11 items-center justify-center rounded-full px-2.5 text-sm sm:px-3 font-semibold whitespace-nowrap transition-colors ${
               active
                 ? 'bg-white text-ink-950 shadow-[0_1px_2px_rgb(12_15_19/0.08)]'
                 : 'text-ink-500 hover:text-ink-800'

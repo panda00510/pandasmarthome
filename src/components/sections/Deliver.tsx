@@ -74,7 +74,7 @@ export function Deliver() {
                 <div className="w-28 shrink-0 border-r border-ink-100 bg-bamboo-50/60 p-2 sm:w-40 md:h-40 md:w-auto md:border-r-0 md:border-b md:p-3">
                   <Art />
                 </div>
-                <div className="flex flex-1 flex-col p-4 lg:p-6">
+                <div className="flex min-w-0 flex-1 flex-col p-4 lg:p-6">
                   <p className="eyebrow">{item.tag}</p>
                   <h3 className="mt-2 text-[1.0625rem] leading-snug font-semibold text-ink-950">{item.title}</h3>
                   <p className="mt-2 text-[0.9375rem] leading-relaxed text-ink-600">{item.body}</p>

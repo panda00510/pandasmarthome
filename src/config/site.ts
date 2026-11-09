@@ -77,6 +77,7 @@ export const site = {
 
   /** Service area — a factual statement about where we work, not an address. */
   serviceArea: 'Singapore',
+  serviceAreaZh: '新加坡',
 } as const
 
 /** Social links that actually have a URL, in display order. */

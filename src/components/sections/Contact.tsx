@@ -214,7 +214,7 @@ export function Contact() {
             ) : null}
 
             <DetailRow icon={<MapPin size={16} />} label={c.labels.serviceArea}>
-              {site.serviceArea}
+              {lang === 'zh' ? site.serviceAreaZh : site.serviceArea}
             </DetailRow>
           </dl>
 

@@ -834,9 +834,6 @@ input[type="range"].is-cool::-webkit-slider-thumb {
 
 @media (min-width: 901px) {
   .tool.is-back .tool-label { display: inline; }
-  .canvas-layer { right: 340px; }
-  .app.is-narrow .canvas-layer { right: 130px; }
-  .app.is-focus .canvas-layer { right: 0; }
 }
 
 @media (max-width: 900px) {

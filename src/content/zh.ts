@@ -18,6 +18,9 @@ export const zh: Content = {
     closeMenu: '关闭导航菜单',
     homeLink: 'Panda智能家居 — 返回顶部',
     languageSwitcher: '切换语言',
+    navPrimary: '主导航',
+    navMobile: '手机主导航',
+    navFooter: '页脚导航',
   },
 
   nav: {
@@ -527,7 +530,7 @@ export const zh: Content = {
       name: '称呼',
       namePlaceholder: '我们该怎么称呼你？',
       contact: '邮箱或电话',
-      contactPlaceholder: 'you@example.com 或 +65 …',
+      contactPlaceholder: '你的邮箱或手机号码',
       contactHelp: '仅用于回复本次咨询。',
       homeType: '住宅类型',
       homeTypeOptions: [

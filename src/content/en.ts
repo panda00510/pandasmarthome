@@ -18,6 +18,9 @@ export const en: Content = {
     closeMenu: 'Close navigation menu',
     homeLink: 'Panda Smart Home — back to top',
     languageSwitcher: 'Switch language',
+    navPrimary: 'Primary',
+    navMobile: 'Primary mobile',
+    navFooter: 'Footer',
   },
 
   nav: {

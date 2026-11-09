@@ -63,7 +63,7 @@ export function Footer() {
           </div>
 
           {/* Navigation: two columns on a phone so it stays short. */}
-          <nav aria-label="Footer">
+          <nav aria-label={t.a11y.navFooter}>
             <h2 className="text-xs font-semibold tracking-wider text-ink-500 uppercase">
               {t.footer.navTitle}
             </h2>
@@ -136,7 +136,7 @@ export function Footer() {
                 <li className="py-1 text-ink-500 italic">{t.contact.pendingDetails}</li>
               ) : null}
               <li className="py-1 text-ink-500">
-                {t.contact.labels.serviceArea}: {site.serviceArea}
+                {t.contact.labels.serviceArea}: {lang === 'zh' ? site.serviceAreaZh : site.serviceArea}
               </li>
             </ul>
           </div>

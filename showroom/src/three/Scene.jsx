@@ -22,7 +22,7 @@ import Surroundings from './Surroundings'
 const MODEL_URL = import.meta.env.VITE_HOUSE_MODEL || null
 
 export const VIEWS = {
-  overview: { name: { en: 'Overview', zh: '全屋' }, pos: [9.0, 11.3, 11.6], target: [-0.2, 0.35, 0.2] },
+  overview: { name: { en: 'Overview', zh: '全屋' }, pos: [10.1, 12.7, 13.0], target: [-0.2, 0.35, 0.2] },
   // 机位都在房间内部，视线不穿实墙。客厅从餐厅一侧看向沙发，主卧靠近房门看向床。
   living: { name: { en: 'Living', zh: '客厅' }, pos: [-2.2, 2.05, 2.05], target: [-3.7, 0.9, -2.2] },
   bedroom: { name: { en: 'Master', zh: '主卧' }, pos: [4.15, 1.85, -1.5], target: [3.5, 0.75, -3.3] },
@@ -33,6 +33,26 @@ export const VIEWS = {
 
 const MOBILE_FOV = 60
 const DESKTOP_FOV = 36
+
+/**
+ * The canvas fills the whole window and the side panel floats over it. The
+ * projection is shifted by half the panel's width, so the house is centred in
+ * the part of the window that is actually free instead of being cut off
+ * behind the panel (or leaving a dark column beside it).
+ */
+function ViewOffset({ isMobile }) {
+  const camera = useThree((s) => s.camera)
+  const size = useThree((s) => s.size)
+  const focus = useHA((s) => s.focusMode)
+  const collapsed = useHA((s) => s.panelCollapsed)
+  useEffect(() => {
+    const reserved = isMobile || focus ? 0 : collapsed ? 130 : 340
+    if (reserved) camera.setViewOffset(size.width, size.height, reserved / 2, 0, size.width, size.height)
+    else camera.clearViewOffset()
+    camera.updateProjectionMatrix()
+  }, [camera, size.width, size.height, isMobile, focus, collapsed])
+  return null
+}
 
 function CameraRig({ views, isMobile }) {
   const view = useHA((s) => s.view)
@@ -137,7 +157,7 @@ export default function Scene() {
       dpr={isMobile ? [1, 1.5] : [1, 1.8]}
       gl={{ antialias: true, powerPreference: 'high-performance' }}
       camera={{
-        position: isMobile ? [9.4, 13.2, 12.4] : [9.0, 11.3, 11.6],
+        position: isMobile ? [9.4, 13.2, 12.4] : [10.1, 12.7, 13.0],
         fov: isMobile ? MOBILE_FOV : DESKTOP_FOV,
         near: 0.1,
         far: 400,
@@ -165,6 +185,7 @@ export default function Scene() {
         panSpeed={0.6}
       />
       <CameraRig views={views} isMobile={isMobile} />
+      <ViewOffset isMobile={isMobile} />
 
       <EffectComposer disableNormalPass multisampling={isMobile ? 0 : 4}>
         {/* 环境光遮蔽：没有它，家具底部和墙角均匀发亮，物体像浮在地面上 */}

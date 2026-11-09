@@ -16,6 +16,9 @@ export type Content = {
     closeMenu: string
     homeLink: string
     languageSwitcher: string
+    navPrimary: string
+    navMobile: string
+    navFooter: string
   }
   nav: {
     items: NavItem[]
