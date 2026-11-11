@@ -112,6 +112,13 @@ ${routes
     '## Services',
     ...en.solutions.items.map((item) => `- ${item.title}: ${item.body}`),
     '',
+    `## Products (${en.products.status}; not in stock; indicative prices, no checkout)`,
+    en.products.lead,
+    ...en.products.items.map(
+      (item) => `- ${item.title}: ${item.body} Indicative price from S$${item.priceSgd}.`,
+    ),
+    ...en.products.finePrint.map((line) => `- ${line}`),
+    '',
     `## ${en.upcoming.eyebrow} (${en.upcoming.status}, not on sale yet)`,
     ...en.upcoming.items.map((item) => `- ${item.title}: ${item.body}`),
     '',

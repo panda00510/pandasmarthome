@@ -14,6 +14,7 @@ import { Homes } from './components/sections/Homes'
 import { Platform } from './components/sections/Platform'
 import { Process } from './components/sections/Process'
 import { Solutions } from './components/sections/Solutions'
+import { ProductsPage, ProductsStrip } from './components/sections/Products'
 import { Upcoming } from './components/sections/Upcoming'
 import { site } from './config/site'
 import { findGuide, hubOf } from './content/guides'
@@ -57,10 +58,13 @@ export default function App() {
           <HubPage hub={hubOf(path)!} />
         ) : path === 'guides/' ? (
           <GuidesIndex />
+        ) : path === 'products/' ? (
+          <ProductsPage />
         ) : (
           <>
             <Hero />
             <Solutions />
+            <ProductsStrip />
             <Deliver />
             <Homes />
             <Process />
@@ -77,7 +81,7 @@ export default function App() {
       <Footer />
 
       {/* Floating WhatsApp shortcut, only when a number is configured. */}
-      {site.whatsappLink && !atContact ? (
+      {site.whatsappLink && !atContact && path !== 'products/' ? (
         <a
           href={`${site.whatsappLink}?text=${encodeURIComponent(t.contact.whatsappGreeting)}`}
           target="_blank"

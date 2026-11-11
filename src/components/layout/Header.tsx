@@ -9,9 +9,10 @@ const LANGS: { code: Lang; label: string }[] = [
   { code: 'zh', label: '中文' },
 ]
 
-/** Nav items that open an index page instead of scrolling the homepage. */
-const HUB_ITEMS: Record<string, string> = {
+/** Nav items that open their own page instead of scrolling the homepage. */
+const PAGE_ITEMS: Record<string, string> = {
   solutions: 'solutions/',
+  products: 'products/',
   homes: 'homes/',
   process: 'how-it-works/',
 }
@@ -49,14 +50,15 @@ export function Header() {
     }
   }, [open])
 
-  // Five entries: services, your home, showroom, guides, process.
+  // Six entries: services, products, your home, showroom, guides, process.
   const byId = (id: string): NavLink => {
     const item = t.nav.items.find((entry) => entry.id === id)!
-    const page = HUB_ITEMS[id]
+    const page = PAGE_ITEMS[id]
     return { key: id, label: item.label, href: pageHref(lang, page), current: path === page }
   }
   const links: NavLink[] = [
     byId('solutions'),
+    byId('products'),
     byId('homes'),
     { key: 'showroom', label: t.nav.showroom, href: showroomHref, current: false, icon: true },
     { key: 'guides', label: t.guides.eyebrow, href: pageHref(lang, 'guides/'), current: path === 'guides/' },
@@ -71,7 +73,9 @@ export function Header() {
           : 'border-b border-transparent'
       }`}
     >
-      <div className="shell flex h-16 items-center justify-between gap-3 lg:h-[4.5rem]">
+      {/* Inline links need the full 1200px shell. Below that the wordmark
+          would shrink, so the menu button stays until then. */}
+      <div className="shell flex h-16 items-center justify-between gap-3 min-[1200px]:h-[4.5rem]">
         <a
           href={`${home}#top`}
           className="min-w-0 rounded-lg text-ink-950 transition-opacity hover:opacity-70"
@@ -80,13 +84,13 @@ export function Header() {
           <Wordmark className="max-w-full" />
         </a>
 
-        <nav aria-label={t.a11y.navPrimary} className="hidden items-center gap-1 lg:flex">
+        <nav aria-label={t.a11y.navPrimary} className="hidden items-center gap-1 min-[1200px]:flex">
           {links.map((link) => (
             <a
               key={link.key}
               href={link.href}
               aria-current={link.current ? 'page' : undefined}
-              className={`inline-flex min-h-11 items-center gap-1.5 rounded-full px-3.5 text-[0.9375rem] font-medium whitespace-nowrap transition-colors ${
+              className={`inline-flex min-h-11 items-center gap-1.5 rounded-full px-2.5 text-sm font-medium whitespace-nowrap transition-colors xl:px-3 ${
                 link.current ? 'bg-ink-100 text-ink-950' : 'text-ink-700 hover:bg-ink-100 hover:text-ink-950'
               }`}
             >
@@ -109,7 +113,7 @@ export function Header() {
             aria-expanded={open}
             aria-controls="mobile-nav"
             aria-label={open ? t.a11y.closeMenu : t.a11y.openMenu}
-            className="-mr-1 inline-flex h-11 w-11 items-center justify-center rounded-full text-ink-800 transition-colors hover:bg-ink-100 lg:hidden"
+            className="-mr-1 inline-flex h-11 w-11 items-center justify-center rounded-full text-ink-800 transition-colors hover:bg-ink-100 min-[1200px]:hidden"
           >
             {open ? <X size={22} aria-hidden="true" /> : <Menu size={22} aria-hidden="true" />}
           </button>
@@ -120,7 +124,7 @@ export function Header() {
       <div
         id="mobile-nav"
         hidden={!open}
-        className="border-t border-ink-200/70 bg-paper/95 backdrop-blur-xl lg:hidden"
+        className="border-t border-ink-200/70 bg-paper/95 backdrop-blur-xl min-[1200px]:hidden"
       >
         <nav aria-label={t.a11y.navMobile} className="shell flex flex-col gap-1 py-4">
           {links.map((link) => (

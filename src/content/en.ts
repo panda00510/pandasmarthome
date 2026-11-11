@@ -26,6 +26,7 @@ export const en: Content = {
   nav: {
     items: [
       { id: 'solutions', label: 'Services' },
+      { id: 'products', label: 'Products' },
       { id: 'homes', label: 'Your home' },
       { id: 'process', label: 'How it works' },
     ],
@@ -177,6 +178,135 @@ export const en: Content = {
       metaDescription:
         'Smart home planning for BTO flats, HDB resale and older homes, condominiums and landed houses in Singapore.',
     },
+  },
+
+  products: {
+    eyebrow: 'Products',
+    title: 'Desk devices you can plug in and use',
+    lead: 'Finished screen devices: an enclosure, an interface and firmware already installed. They are not in stock yet. The prices are indicative starting prices, confirmed on WhatsApp before you order. Stock and support are in Singapore.',
+    metaTitle: 'Desk Screen Devices to Pre-order | Panda Smart Home',
+    metaDescription:
+      'Pre-order screen-equipped desk devices in Singapore: an AI voice assistant, a Home Assistant touch panel, a 32×8 pixel clock and a weather display. Indicative prices. Not in stock yet.',
+    status: 'Pre-order / Coming soon',
+    priceLabel: 'Indicative price',
+    priceFrom: 'from {amount}',
+    illustration: 'Illustration',
+    enquire: 'Pre-order on WhatsApp',
+    enquireTemplate: "Hi Panda Smart Home, I'd like to pre-order the {product} (indicative price {price}).",
+    enquireAll:
+      "Hi Panda Smart Home, I'd like to pre-order a desk screen device (voice assistant, touch panel, pixel clock or weather display). Please tell me the timing and the price.",
+    homeTitle: 'Screen devices, ready to plug in',
+    homeLead:
+      'Four finished desk devices — a voice assistant, a touch panel, a pixel clock and a weather display. Not in stock yet: open for pre-order, with indicative prices.',
+    homeCta: 'See the products',
+    noteLabel: 'Worth knowing.',
+    points: [
+      {
+        title: 'Singapore stock and support',
+        body: 'Sold and supported from Singapore, so there is someone here to ask. This batch is not in stock yet.',
+      },
+      {
+        title: 'Pre-configured, plug in and use',
+        body: 'Enclosure, screen and firmware are already in place. These are not bare boards to assemble.',
+      },
+      {
+        title: 'Chinese and English setup guide',
+        body: 'Each device comes with a setup guide in Chinese and English.',
+      },
+      {
+        title: 'USB 5V power',
+        body: 'Powered from USB 5V. A mains power adapter is not included.',
+      },
+      {
+        title: 'Add it to an installation',
+        body: 'Any of these can be bundled with a smart home installation. Installation is quoted separately.',
+      },
+    ],
+    items: [
+      {
+        id: 'voice',
+        title: 'AI Voice Assistant Desk Device',
+        short: 'Voice assistant',
+        summary: 'A desk device that listens and replies in Chinese and English, with a screen that shows expressions.',
+        body: 'Built on an ESP32-S3 board and based on the Xiaozhi voice assistant. The enclosure, screen and firmware are already installed, and it is powered by USB-C.',
+        priceSgd: 69,
+        specs: ['ESP32-S3', 'Chinese and English voice', 'Screen with expressions', 'USB-C power'],
+        note: 'A mains power adapter is not included. The setup guide is in Chinese and English.',
+      },
+      {
+        id: 'panel',
+        title: 'Home Assistant Touch Panel',
+        short: 'Touch panel',
+        summary: 'A 4–7 inch touchscreen on a desk stand, opened onto a Home Assistant dashboard prepared for Singapore.',
+        body: 'An ESP32-S3 panel running ESPHome and LVGL, pre-configured for Home Assistant, with an NEA weather card and an LTA bus-arrival card. It needs a Home Assistant system to connect to. The desk stand is included.',
+        priceSgd: 89,
+        specs: [
+          'ESP32-S3, 4–7 inch touchscreen',
+          'ESPHome and LVGL',
+          'Works with Home Assistant',
+          'NEA weather and LTA bus arrival',
+          'Desk stand included',
+        ],
+        note: 'The size within 4–7 inches is confirmed when you enquire. Wall-mounting is an installation service, quoted separately — the price here is for the desk unit. A mains power adapter is not included.',
+      },
+      {
+        id: 'pixel',
+        title: 'Smart Pixel Clock',
+        short: 'Pixel clock',
+        summary: 'A 32×8 pixel display for the time, plus local weather, bus arrivals and notifications.',
+        body: 'An AWTRIX-style 32×8 pixel display in an enclosure, pre-flashed with Home Assistant integration. With a Home Assistant system it can show the time, local weather, bus arrivals and notifications. Powered by USB 5V.',
+        priceSgd: 65,
+        specs: [
+          '32×8 pixel display',
+          'Pre-flashed for Home Assistant',
+          'Time, local weather, bus arrivals, notifications',
+          'USB 5V power',
+        ],
+        note: 'Weather, bus and notification views need a Home Assistant system. A mains power adapter is not included.',
+      },
+      {
+        id: 'weather',
+        title: 'Desk Weather & Clock Display',
+        short: 'Weather display',
+        summary: 'A small colour screen for NEA weather, the time and a calendar.',
+        body: 'An ESP32 and a colour screen in an enclosure. It shows NEA weather, the time and a calendar, and uses Wi-Fi to load the weather. Powered by USB 5V.',
+        priceSgd: 35,
+        specs: ['ESP32 and a colour screen', 'NEA weather, time and calendar', 'USB 5V power'],
+        note: 'A mains power adapter is not included. This is a desk display, not a Home Assistant panel.',
+      },
+    ],
+    finePrint: [
+      'Not in stock. The status on every device is pre-order / coming soon. We confirm timing on WhatsApp before you commit.',
+      '“From S$X” is an indicative starting price in Singapore dollars, not a checkout price. The amount you pay is agreed before anything is ordered.',
+      'The drawings are illustrations, not photographs of finished units.',
+      'No mains power adapter is included. Each device runs on USB 5V.',
+    ],
+    preparing:
+      'The AI edge box for existing CCTV and the camera-free fall sensor are still being prepared. They are not part of this list.',
+    preparingLink: 'See what is still in preparation',
+    faqTitle: 'Before you pre-order',
+    faq: [
+      {
+        q: 'Are these in stock?',
+        a: 'No. They are open for pre-order and marked coming soon. Message us on WhatsApp and we will confirm timing before you commit to anything.',
+      },
+      {
+        q: 'Is “from S$X” the price I pay?',
+        a: 'It is an indicative starting price in Singapore dollars. The amount you pay is confirmed on WhatsApp before anything is ordered. Screen size and options can change it.',
+      },
+      {
+        q: 'Does a power adapter come in the box?',
+        a: 'No. Each device runs on USB 5V. A mains power adapter is not included.',
+      },
+      {
+        q: 'Can you install one with a smart home?',
+        a: 'Yes. Any of these can be bundled with a smart home installation, and that work is quoted separately. The touch panel can also be wall-mounted; the price on this page is for the desk unit with its stand.',
+      },
+      {
+        q: 'Are the pictures of the real product?',
+        a: 'No. They are illustrations of the kind of device, and each one is labelled as an illustration. There are no product photographs yet.',
+      },
+    ],
   },
 
   upcoming: {

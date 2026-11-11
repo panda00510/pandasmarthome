@@ -179,11 +179,51 @@ export function Seo() {
       ].filter(Boolean)
     : []
 
+  // Pre-order devices. No ratings, no stock claim — availability is PreOrder
+  // and the price is the indicative starting price.
+  const productList =
+    path === 'products/'
+      ? {
+          '@type': 'ItemList',
+          name: t.products.title,
+          itemListElement: t.products.items.map((item, index) => ({
+            '@type': 'ListItem',
+            position: index + 1,
+            item: {
+              '@type': 'Product',
+              name: item.title,
+              description: `${item.body} ${t.products.status}. ${t.products.priceLabel}.`,
+              brand: { '@type': 'Brand', name: lang === 'zh' ? brand.nameZh : brand.name },
+              offers: {
+                '@type': 'Offer',
+                priceCurrency: 'SGD',
+                price: item.priceSgd,
+                availability: 'https://schema.org/PreOrder',
+                url: url ? `${url}#${item.id}` : undefined,
+                description: t.products.priceLabel,
+              },
+            },
+          })),
+        }
+      : null
+
+  const productFaq =
+    path === 'products/'
+      ? {
+          '@type': 'FAQPage',
+          mainEntity: t.products.faq.map((item) => ({
+            '@type': 'Question',
+            name: item.q,
+            acceptedAnswer: { '@type': 'Answer', text: item.a },
+          })),
+        }
+      : null
+
   const graph = {
     '@context': 'https://schema.org',
     '@graph': [
       business,
-      ...(path === '' ? [faq] : article),
+      ...(path === '' ? [faq] : path === 'products/' ? [productList, productFaq] : article),
       {
         '@type': 'WebSite',
         '@id': site.url ? `${site.url}#website` : undefined,

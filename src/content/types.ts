@@ -60,6 +60,53 @@ export type Content = {
   }
   /** Index pages for the topic pages: /solutions/ and /homes/. */
   hubs: Record<'solutions' | 'homes', { eyebrow: string; title: string; lead: string; all: string; metaTitle: string; metaDescription: string }>
+  /**
+   * Finished screen devices open for pre-order. Not in stock yet.
+   * Prices are indicative starting prices, never a checkout price.
+   */
+  products: {
+    eyebrow: string
+    /** Page heading. */
+    title: string
+    lead: string
+    metaTitle: string
+    metaDescription: string
+    /** Shown on every product. e.g. "Pre-order / Coming soon". */
+    status: string
+    priceLabel: string
+    /** "{amount}" is replaced with "S$69". */
+    priceFrom: string
+    /** Corner label on every drawing. */
+    illustration: string
+    enquire: string
+    /** "{product}" and "{price}" are replaced. Names that product. */
+    enquireTemplate: string
+    /** WhatsApp message for the page-level button, already complete. */
+    enquireAll: string
+    homeTitle: string
+    homeLead: string
+    homeCta: string
+    noteLabel: string
+    points: { title: string; body: string }[]
+    items: {
+      id: string
+      /** Full product name, used in the WhatsApp message. */
+      title: string
+      /** Short label for jump links. */
+      short: string
+      summary: string
+      body: string
+      /** Indicative starting price in Singapore dollars. */
+      priceSgd: number
+      specs: string[]
+      note: string
+    }[]
+    finePrint: string[]
+    preparing: string
+    preparingLink: string
+    faqTitle: string
+    faq: { q: string; a: string }[]
+  }
   /** Products still in development — shown as "coming next", never as on sale. */
   upcoming: {
     eyebrow: string

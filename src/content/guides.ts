@@ -181,6 +181,7 @@ export const hubOf = (path: string): Hub | null => HUBS.find((hub) => path === `
 export const pagePaths = [
   '',
   'guides/',
+  'products/',
   ...guidesIn('en').map((guide) => guide.path),
   ...pagesIn('en').map((page) => page.path),
   ...HUBS.map((hub) => `${hub}/`),
@@ -206,6 +207,9 @@ export function pageMeta(lang: Lang, path: string) {
   }
   if (path === 'guides/') {
     return { title: t.guides.metaTitle, description: t.guides.metaDescription, guide: null }
+  }
+  if (path === 'products/') {
+    return { title: t.products.metaTitle, description: t.products.metaDescription, guide: null }
   }
   return { title: t.meta.title, description: t.meta.description, guide: null }
 }
