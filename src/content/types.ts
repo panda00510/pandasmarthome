@@ -123,6 +123,48 @@ export type Content = {
     faqTitle: string
     faq: { q: string; a: string }[]
   }
+  /**
+   * Custom software for small businesses. Prices are indicative starting
+   * prices. There is no checkout and no list of clients.
+   */
+  software: {
+    eyebrow: string
+    title: string
+    lead: string
+    metaTitle: string
+    metaDescription: string
+    whoTitle: string
+    audiences: string[]
+    points: { title: string; body: string }[]
+    priceLabel: string
+    /** "{amount}" is replaced with "S$1,200". */
+    priceFrom: string
+    /** Shown under every package price. */
+    support: string
+    packages: {
+      id: string
+      title: string
+      body: string
+      priceSgd: number
+      includes: string[]
+    }[]
+    hardwareTitle: string
+    hardwareBody: string
+    hardwareCta: string
+    processTitle: string
+    steps: { title: string; body: string }[]
+    enquire: string
+    /** Page-level WhatsApp message. Complete. */
+    enquireAll: string
+    /** "{package}" is replaced with the package name. */
+    enquireTemplate: string
+    homeTitle: string
+    homeLead: string
+    homeCta: string
+    finePrint: string[]
+    faqTitle: string
+    faq: { q: string; a: string }[]
+  }
   /** Products still in development — shown as "coming next", never as on sale. */
   upcoming: {
     eyebrow: string
