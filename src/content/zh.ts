@@ -26,6 +26,7 @@ export const zh: Content = {
   nav: {
     items: [
       { id: 'solutions', label: '服务' },
+      { id: 'products', label: '产品' },
       { id: 'homes', label: '适合你的家' },
       { id: 'process', label: '服务流程' },
     ],
@@ -174,6 +175,128 @@ export const zh: Content = {
       metaTitle: '新加坡组屋、BTO、公寓与有地住宅智能家居｜Panda智能家居',
       metaDescription: '为新加坡的 BTO 组屋、转售和老房子、公寓与有地住宅做智能家居规划。',
     },
+  },
+
+  products: {
+    eyebrow: '产品',
+    title: '插上就能用的桌面屏幕设备',
+    lead: '外壳、界面和固件都已装好的成品屏幕设备。目前还没有现货。下面的价格是参考起价，下单前在 WhatsApp 上确认。备货和支持都在新加坡。',
+    metaTitle: '可预订的桌面屏幕设备｜Panda智能家居',
+    metaDescription:
+      '预订新加坡本地支持的成品屏幕设备：AI 语音助手、Home Assistant 触控面板、32×8 像素时钟和天气钟。参考价，目前尚未现货。',
+    status: '预订中 / 即将上市',
+    priceLabel: '参考价',
+    priceFrom: '{amount} 起',
+    illustration: '示意图',
+    enquire: 'WhatsApp 预订',
+    enquireTemplate: '你好，我想预订「{product}」（参考价 {price}）。',
+    enquireAll:
+      '你好，我想预订一款桌面屏幕设备（语音助手、触控面板、像素时钟或天气钟）。请告诉我到货时间和价格。',
+    homeTitle: '插上就能用的屏幕设备',
+    homeLead: '语音助手、触控面板、像素时钟和天气钟，四款成品桌面设备。目前还没有现货，可以按参考价预订。',
+    homeCta: '查看产品',
+    noteLabel: '需要知道的：',
+    points: [
+      {
+        title: '新加坡本地备货与支持',
+        body: '在新加坡销售和支持，有人可以问。这一批目前还没有现货。',
+      },
+      {
+        title: '预配置，插上就能用',
+        body: '外壳、屏幕和固件都已装好，不是需要自己组装的裸板。',
+      },
+      {
+        title: '中英双语设置指南',
+        body: '每台都附中文和英文设置说明。',
+      },
+      {
+        title: 'USB 5V 供电',
+        body: '使用 USB 5V 供电。不附送电源适配器。',
+      },
+      {
+        title: '可搭配上门安装',
+        body: '可以和智能家居安装一起安排。安装另行报价。',
+      },
+    ],
+    items: [
+      {
+        id: 'voice',
+        title: 'AI 语音助手桌面机',
+        short: '语音助手',
+        summary: '放在桌上的设备，能听懂并回答中文和英文，屏幕上会显示表情。',
+        body: '基于 ESP32-S3，语音部分基于小智。外壳、屏幕和固件都已装好，USB-C 供电。',
+        priceSgd: 69,
+        specs: ['ESP32-S3', '中英双语语音', '带表情的屏幕', 'USB-C 供电'],
+        note: '不附送电源适配器。设置指南有中文和英文。',
+      },
+      {
+        id: 'panel',
+        title: 'Home Assistant 触控面板',
+        short: '触控面板',
+        summary: '4 到 7 寸触控屏，配桌面支架，打开就是为新加坡准备的 Home Assistant 仪表盘。',
+        body: 'ESP32-S3 面板，运行 ESPHome 与 LVGL，已为 Home Assistant 预配置，包含 NEA 天气和 LTA 巴士到站卡片。需要一套 Home Assistant 才能连上。含桌面支架。',
+        priceSgd: 89,
+        specs: [
+          'ESP32-S3，4–7 寸触控屏',
+          'ESPHome 与 LVGL',
+          '可配合 Home Assistant 使用',
+          'NEA 天气与 LTA 巴士到站',
+          '含桌面支架',
+        ],
+        note: '具体尺寸在 4–7 寸内，预订时确认。壁挂是另行报价的安装服务，这里的价格是带支架的桌面机。不附送电源适配器。',
+      },
+      {
+        id: 'pixel',
+        title: '智能像素时钟',
+        short: '像素时钟',
+        summary: '32×8 像素屏，显示时间，也可以显示本地天气、巴士到站和通知。',
+        body: 'AWTRIX 风格的 32×8 像素屏，带外壳，已预刷并可接入 Home Assistant。接上 Home Assistant 后，可以显示时间、本地天气、巴士到站和通知。USB 5V 供电。',
+        priceSgd: 65,
+        specs: ['32×8 像素屏', '已预刷，可接入 Home Assistant', '时间、本地天气、巴士到站、通知', 'USB 5V 供电'],
+        note: '天气、巴士和通知需要一套 Home Assistant。不附送电源适配器。',
+      },
+      {
+        id: 'weather',
+        title: '桌面天气与时钟',
+        short: '天气钟',
+        summary: '一块彩色小屏，显示 NEA 天气、时间和日历。',
+        body: 'ESP32 加彩色屏幕，装在外壳里。显示 NEA 天气、时间和日历，通过 Wi-Fi 获取天气。USB 5V 供电。',
+        priceSgd: 35,
+        specs: ['ESP32 与彩色屏幕', 'NEA 天气、时间与日历', 'USB 5V 供电'],
+        note: '不附送电源适配器。这是桌面显示，不是 Home Assistant 面板。',
+      },
+    ],
+    finePrint: [
+      '目前没有现货。每台的状态都是预订中 / 即将上市。下单前我们会在 WhatsApp 上确认到货时间。',
+      '「S$X 起」是新加坡元参考起价，不是结账价格。实际金额在下单前说定。',
+      '图画是示意图，不是成品照片。',
+      '不附送电源适配器。设备使用 USB 5V 供电。',
+    ],
+    preparing: '给现有监控加 AI 的分析盒，以及不用摄像头的跌倒传感器，仍在筹备，不在这份清单里。',
+    preparingLink: '查看仍在筹备的产品',
+    faqTitle: '预订之前',
+    faq: [
+      {
+        q: '现在有现货吗？',
+        a: '没有。目前开放预订，状态是即将上市。先在 WhatsApp 上问到货时间，再决定要不要订。',
+      },
+      {
+        q: '「S$X 起」就是我要付的价格吗？',
+        a: '这是新加坡元的参考起价。实际金额在 WhatsApp 上确认后才会下单。屏幕尺寸和配置不同，价格也会不同。',
+      },
+      {
+        q: '盒子里有电源适配器吗？',
+        a: '没有。设备使用 USB 5V 供电，不附送电源适配器。',
+      },
+      {
+        q: '可以和智能家居安装一起做吗？',
+        a: '可以。这四款都能搭配智能家居安装，安装另行报价。触控面板也可以壁挂；本页价格是带桌面支架的那一台。',
+      },
+      {
+        q: '这些图是实物照片吗？',
+        a: '不是。它们是这类设备的示意图，每张都标了「示意图」。目前还没有产品照片。',
+      },
+    ],
   },
 
   upcoming: {

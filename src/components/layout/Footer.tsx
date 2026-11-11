@@ -18,6 +18,7 @@ const LINK_ICON = 'inline-flex min-h-9 items-center gap-2 transition-colors hove
 /** Nav items that open their own page instead of scrolling the homepage. */
 const PAGE_FOR: Record<string, string> = {
   solutions: 'solutions/',
+  products: 'products/',
   homes: 'homes/',
   process: 'how-it-works/',
 }
