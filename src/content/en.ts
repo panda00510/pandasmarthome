@@ -186,7 +186,7 @@ export const en: Content = {
     lead: 'Finished screen devices: an enclosure, an interface and firmware already installed. They are not in stock yet. The prices are indicative starting prices, confirmed on WhatsApp before you order. Stock and support are in Singapore.',
     metaTitle: 'Desk Screen Devices to Pre-order | Panda Smart Home',
     metaDescription:
-      'Pre-order screen-equipped desk devices in Singapore: an AI voice assistant, a Home Assistant touch panel, a 32×8 pixel clock and a weather display. Indicative prices. Not in stock yet.',
+      'Pre-order screen-equipped desk devices in Singapore: an AI voice assistant, a Home Assistant touch panel, a 32×8 pixel clock and a weather display. Features can be customized. Indicative prices. Not in stock yet.',
     status: 'Pre-order / Coming soon',
     priceLabel: 'Indicative price',
     priceFrom: 'from {amount}',
@@ -198,7 +198,19 @@ export const en: Content = {
     homeTitle: 'Screen devices, ready to plug in',
     homeLead:
       'Four finished desk devices — a voice assistant, a touch panel, a pixel clock and a weather display. Not in stock yet: open for pre-order, with indicative prices.',
+    homeCustom: 'We can customize the features to what you need.',
     homeCta: 'See the products',
+    custom: {
+      eyebrow: 'Custom',
+      title: 'Custom features on request',
+      body: 'Tell us what you need — screen layout, data sources like NEA weather or bus arrivals, Home Assistant integration, languages, branding for shops or offices — and we will build it into the firmware.',
+      examples: ['Screen layout', 'NEA weather', 'Bus arrivals', 'Home Assistant', 'Languages', 'Shop or office branding'],
+      cta: 'Request customization',
+      message:
+        "Hi Panda Smart Home, I'd like custom features on a desk screen device (screen layout, data, Home Assistant, languages or branding). Here's what I need: ",
+      cardTemplate: "Hi Panda Smart Home, I'd like to customize the {product}. Here's what I need: ",
+      tag: 'Customizable',
+    },
     noteLabel: 'Worth knowing.',
     points: [
       {
@@ -289,6 +301,10 @@ export const en: Content = {
       {
         q: 'Are these in stock?',
         a: 'No. They are open for pre-order and marked coming soon. Message us on WhatsApp and we will confirm timing before you commit to anything.',
+      },
+      {
+        q: 'Can you customize the features?',
+        a: 'Yes. Tell us the screen layout, the data you want (such as NEA weather or bus arrivals), Home Assistant integration, languages, or branding for a shop or office. We confirm what can go into the firmware, and the price, on WhatsApp before you order.',
       },
       {
         q: 'Is “from S$X” the price I pay?',

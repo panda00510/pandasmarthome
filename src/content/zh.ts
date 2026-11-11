@@ -183,7 +183,7 @@ export const zh: Content = {
     lead: '外壳、界面和固件都已装好的成品屏幕设备。目前还没有现货。下面的价格是参考起价，下单前在 WhatsApp 上确认。备货和支持都在新加坡。',
     metaTitle: '可预订的桌面屏幕设备｜Panda智能家居',
     metaDescription:
-      '预订新加坡本地支持的成品屏幕设备：AI 语音助手、Home Assistant 触控面板、32×8 像素时钟和天气钟。参考价，目前尚未现货。',
+      '预订新加坡本地支持的成品屏幕设备：AI 语音助手、Home Assistant 触控面板、32×8 像素时钟和天气钟。功能可以按需求定制。参考价，目前尚未现货。',
     status: '预订中 / 即将上市',
     priceLabel: '参考价',
     priceFrom: '{amount} 起',
@@ -194,7 +194,18 @@ export const zh: Content = {
       '你好，我想预订一款桌面屏幕设备（语音助手、触控面板、像素时钟或天气钟）。请告诉我到货时间和价格。',
     homeTitle: '插上就能用的屏幕设备',
     homeLead: '语音助手、触控面板、像素时钟和天气钟，四款成品桌面设备。目前还没有现货，可以按参考价预订。',
+    homeCustom: '功能可以按你的需求定制。',
     homeCta: '查看产品',
+    custom: {
+      eyebrow: '可定制',
+      title: '支持按需求定制功能',
+      body: '屏幕界面、数据来源（如 NEA 天气、巴士到站）、Home Assistant 联动、中英文、店铺或公司品牌定制，告诉我们需求即可，我们可以做进固件。',
+      examples: ['屏幕界面', 'NEA 天气', '巴士到站', 'Home Assistant', '中英文', '店铺或公司品牌'],
+      cta: 'WhatsApp 定制咨询',
+      message: '你好，我想按需求定制一款桌面屏幕设备（界面、数据、Home Assistant、语言或品牌）。我的需求是：',
+      cardTemplate: '你好，我想按需求定制「{product}」。我的需求是：',
+      tag: '可定制',
+    },
     noteLabel: '需要知道的：',
     points: [
       {
@@ -279,6 +290,10 @@ export const zh: Content = {
       {
         q: '现在有现货吗？',
         a: '没有。目前开放预订，状态是即将上市。先在 WhatsApp 上问到货时间，再决定要不要订。',
+      },
+      {
+        q: '功能可以按需求改吗？',
+        a: '可以。告诉我屏幕界面、想显示的数据（比如 NEA 天气或巴士到站）、Home Assistant 联动、语言，或店铺和公司的品牌。哪些能做进固件、价格是多少，下单前在 WhatsApp 上确认。',
       },
       {
         q: '「S$X 起」就是我要付的价格吗？',

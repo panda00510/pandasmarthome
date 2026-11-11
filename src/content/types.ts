@@ -85,8 +85,24 @@ export type Content = {
     enquireAll: string
     homeTitle: string
     homeLead: string
+    /** One line on the home strip: features can be customized. */
+    homeCustom: string
     homeCta: string
     noteLabel: string
+    /** Prominent "we build features to order" block. No price is stated. */
+    custom: {
+      eyebrow: string
+      title: string
+      body: string
+      examples: string[]
+      cta: string
+      /** WhatsApp message for the page banner. Complete. */
+      message: string
+      /** "{product}" is replaced with the device name. */
+      cardTemplate: string
+      /** Short tag on every product card. */
+      tag: string
+    }
     points: { title: string; body: string }[]
     items: {
       id: string
