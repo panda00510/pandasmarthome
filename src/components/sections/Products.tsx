@@ -29,6 +29,14 @@ function StatusPill({ children }: { children: string }) {
   )
 }
 
+function CustomTag({ children }: { children: string }) {
+  return (
+    <span className="inline-flex max-w-full rounded-full bg-bamboo-50 px-2 py-1 text-left text-[0.6875rem] leading-4 font-semibold text-bamboo-800 ring-1 ring-bamboo-200 sm:px-2.5">
+      {children}
+    </span>
+  )
+}
+
 /** Homepage band: four devices, each linking to its block on the products page. */
 export function ProductsStrip() {
   const { t, lang } = useI18n()
@@ -47,6 +55,7 @@ export function ProductsStrip() {
             <ArrowRight size={15} aria-hidden="true" />
           </a>
         </div>
+        <p className="mt-3 max-w-3xl text-sm font-semibold text-bamboo-800">{p.homeCustom}</p>
 
         <ul className="reveal-group mt-8 grid grid-cols-2 gap-3 lg:mt-12 lg:grid-cols-4 lg:gap-4">
           {p.items.map((item) => (
@@ -62,7 +71,10 @@ export function ProductsStrip() {
                   <PhotoTag>{p.illustration}</PhotoTag>
                 </span>
                 <span className="flex min-w-0 flex-1 flex-col p-3 sm:p-4">
-                  <StatusPill>{p.status}</StatusPill>
+                  <span className="flex flex-wrap gap-1.5">
+                    <StatusPill>{p.status}</StatusPill>
+                    <CustomTag>{p.custom.tag}</CustomTag>
+                  </span>
                   <span className="mt-2 text-[0.9375rem] leading-snug font-semibold text-ink-950 group-hover:text-bamboo-800">
                     {item.title}
                   </span>
@@ -99,6 +111,37 @@ export function ProductsPage() {
           <div className="mt-5">
             <StatusPill>{p.status}</StatusPill>
           </div>
+
+          <aside id="customize" className="mt-8 scroll-mt-28 rounded-panel border border-bamboo-200 bg-bamboo-50 px-5 py-6 sm:px-7 sm:py-7">
+            <p className="eyebrow">{p.custom.eyebrow}</p>
+            <h2 className="mt-3 max-w-3xl text-[1.45rem] leading-snug font-semibold tracking-[-0.02em] text-ink-950 sm:text-[1.75rem]">
+              {p.custom.title}
+            </h2>
+            <p className="mt-3 max-w-3xl text-base leading-relaxed text-ink-700">{p.custom.body}</p>
+            <ul className="mt-4 flex flex-wrap gap-2">
+              {p.custom.examples.map((example) => (
+                <li
+                  key={example}
+                  className="rounded-full bg-white px-3 py-1.5 text-[0.8125rem] font-medium text-ink-800 ring-1 ring-bamboo-200"
+                >
+                  {example}
+                </li>
+              ))}
+            </ul>
+            <div className="mt-5">
+              <Button
+                as="a"
+                href={whatsappHref(p.custom.message)}
+                target="_blank"
+                rel="noopener noreferrer"
+                size="lg"
+                className="w-full sm:w-auto"
+              >
+                <MessageCircle size={18} aria-hidden="true" />
+                {p.custom.cta}
+              </Button>
+            </div>
+          </aside>
 
           <div className="mt-6">
             <Button
@@ -145,6 +188,7 @@ export function ProductsPage() {
             {p.items.map((item) => {
               const price = formatPrice(p.priceFrom, item.priceSgd)
               const message = p.enquireTemplate.replaceAll('{product}', item.title).replaceAll('{price}', price)
+              const customMessage = p.custom.cardTemplate.replaceAll('{product}', item.title)
               return (
                 <li key={item.id}>
                   <article id={item.id} className="card scroll-mt-28 overflow-hidden">
@@ -158,7 +202,10 @@ export function ProductsPage() {
                         <PhotoTag>{p.illustration}</PhotoTag>
                       </figure>
                       <div className="p-5 sm:p-7 lg:p-8">
-                        <StatusPill>{p.status}</StatusPill>
+                        <div className="flex flex-wrap gap-2">
+                          <StatusPill>{p.status}</StatusPill>
+                          <CustomTag>{p.custom.tag}</CustomTag>
+                        </div>
                         <h2 className="mt-3 text-[1.35rem] leading-snug font-semibold tracking-[-0.02em] text-ink-950 sm:text-[1.6rem]">
                           {item.title}
                         </h2>
@@ -187,18 +234,32 @@ export function ProductsPage() {
                               {price}
                             </span>
                           </p>
-                          <Button
-                            as="a"
-                            href={whatsappHref(message)}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            size="lg"
-                            className="w-full sm:w-auto"
-                            aria-label={`${p.enquire}: ${item.title}`}
-                          >
-                            <MessageCircle size={18} aria-hidden="true" />
-                            {p.enquire}
-                          </Button>
+                          <div className="flex w-full flex-col gap-2 sm:w-auto sm:items-stretch">
+                            <Button
+                              as="a"
+                              href={whatsappHref(message)}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              size="lg"
+                              className="w-full sm:w-auto"
+                              aria-label={`${p.enquire}: ${item.title}`}
+                            >
+                              <MessageCircle size={18} aria-hidden="true" />
+                              {p.enquire}
+                            </Button>
+                            <Button
+                              as="a"
+                              href={whatsappHref(customMessage)}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              variant="secondary"
+                              size="lg"
+                              className="w-full sm:w-auto"
+                              aria-label={`${p.custom.cta}: ${item.title}`}
+                            >
+                              {p.custom.cta}
+                            </Button>
+                          </div>
                         </div>
                       </div>
                     </div>

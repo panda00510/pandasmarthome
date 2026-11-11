@@ -114,6 +114,7 @@ ${routes
     '',
     `## Products (${en.products.status}; not in stock; indicative prices, no checkout)`,
     en.products.lead,
+    `${en.products.custom.title}: ${en.products.custom.body}`,
     ...en.products.items.map(
       (item) => `- ${item.title}: ${item.body} Indicative price from S$${item.priceSgd}.`,
     ),
