@@ -27,6 +27,7 @@ export const en: Content = {
     items: [
       { id: 'solutions', label: 'Services' },
       { id: 'products', label: 'Products' },
+      { id: 'software', label: 'Software' },
       { id: 'homes', label: 'Your home' },
       { id: 'process', label: 'How it works' },
     ],
@@ -321,6 +322,120 @@ export const en: Content = {
       {
         q: 'Are the pictures of the real product?',
         a: 'No. They are illustrations of the kind of device, and each one is labelled as an illustration. There are no product photographs yet.',
+      },
+    ],
+  },
+
+  software: {
+    eyebrow: 'Software',
+    title: 'Custom software for small businesses',
+    lead: 'Practical systems for shops and one-person businesses in Singapore. Built one-to-one, with the price written down before any work starts, and support in Chinese or English.',
+    metaTitle: 'Custom Software for Small Businesses in Singapore | Panda Smart Home',
+    metaDescription:
+      'Booking, inventory, WhatsApp bots and simple internal tools for Singapore shops and small businesses. Indicative prices from S$600. One-to-one, in English or Chinese.',
+    whoTitle: 'Who this is for',
+    audiences: [
+      'Shops',
+      'Food and beverage',
+      'Salons',
+      'Tuition centres',
+      'Clinics',
+      'Cleaning and moving',
+      'Carousell and Shopee sellers',
+      'Freelancers',
+    ],
+    points: [
+      {
+        title: 'One-to-one',
+        body: 'You work with the person who designs and builds the system. There is no account team in between.',
+      },
+      {
+        title: 'Transparent pricing',
+        body: 'The quote says what is included, and what is not, before the build starts. The figures on this page are starting prices.',
+      },
+      {
+        title: 'Chinese and English',
+        body: 'The conversation, the system and the handover notes can be in either language.',
+      },
+    ],
+    priceLabel: 'Indicative price',
+    priceFrom: 'from {amount}',
+    support: 'Includes 3 months of basic support. The final quote depends on scope.',
+    packages: [
+      {
+        id: 'booking',
+        title: 'Booking, scheduling and membership',
+        body: 'A calendar for appointments and memberships, with reminders on WhatsApp. It can stay in sync with a calendar you already use, where that calendar allows it.',
+        priceSgd: 1200,
+        includes: ['Appointments and memberships', 'Calendar sync', 'WhatsApp reminders'],
+      },
+      {
+        id: 'inventory',
+        title: 'Inventory and simple ordering',
+        body: 'Stock counts, a simple way to take orders, and reports you can read. It is a small system for one shop, not a full retail suite.',
+        priceSgd: 1800,
+        includes: ['Stock counts', 'Simple POS or ordering', 'Reports'],
+      },
+      {
+        id: 'bot',
+        title: 'WhatsApp or Telegram bot, with AI replies',
+        body: 'A bot that answers common questions, takes bookings and sends notifications. What it is allowed to answer is written in the plan before it is built.',
+        priceSgd: 800,
+        includes: ['FAQ replies', 'Bookings', 'Notifications'],
+      },
+      {
+        id: 'tool',
+        title: 'Simple website, dashboard or internal tool',
+        body: 'A small site, a dashboard, or a tool for a job you repeat. The quote lists exactly what it includes.',
+        priceSgd: 600,
+        includes: ['Website, dashboard or internal tool', 'Scope written in the quote'],
+      },
+      {
+        id: 'roster',
+        title: 'Staff rostering, attendance and workflows',
+        body: 'Shifts, attendance and the routine steps between them, so the same checklist is not copied by hand.',
+        priceSgd: 1000,
+        includes: ['Rosters', 'Attendance', 'Routine workflows'],
+      },
+    ],
+    hardwareTitle: 'Screens as well as software',
+    hardwareBody:
+      'A system can be paired with the screen devices on the products page — a menu screen, a queue display or an information screen — so the shop gets software and a screen built for it. Those devices are still on pre-order.',
+    hardwareCta: 'See the screen devices',
+    processTitle: 'How a job runs',
+    steps: [
+      { title: 'Chat on WhatsApp', body: 'Tell us what the business does and what is still done by hand.' },
+      { title: 'Free requirement review', body: 'We write a short plan of what the system should do. The review has no charge.' },
+      { title: 'Quote', body: 'A price for the agreed scope, including 3 months of basic support.' },
+      { title: 'Build', body: 'The system is built to that plan. A change of scope is quoted before it is added.' },
+      { title: 'Handover and support', body: 'You get the system, how to use it, and 3 months of basic support.' },
+    ],
+    enquire: 'I need a custom system',
+    enquireAll:
+      "Hi Panda Smart Home, I need a custom system for my small business. Here's what I need: ",
+    enquireTemplate: "Hi Panda Smart Home, I need a custom system: {package}. Here's what I need: ",
+    homeTitle: 'Custom software for small businesses',
+    homeLead:
+      'Booking, inventory, WhatsApp bots and simple internal tools for shops and freelancers. Indicative prices, quoted before any build.',
+    homeCta: 'See the packages',
+    finePrint: [
+      '“From S$X” is an indicative starting price in Singapore dollars. What you pay depends on scope and is agreed before work starts.',
+      'Each package includes 3 months of basic support. Later changes are quoted separately.',
+      'These are starting points. If the job is smaller or larger than a package, the quote says so.',
+    ],
+    faqTitle: 'Before you ask for a quote',
+    faq: [
+      {
+        q: 'Is this a smart home installation?',
+        a: 'No. This page is software for a small business. Smart home installation is a separate service.',
+      },
+      {
+        q: 'Is the price on the card what I pay?',
+        a: 'It is a starting price. The quote depends on what the system has to do, and it is agreed before work starts. Each package includes 3 months of basic support.',
+      },
+      {
+        q: 'Can a screen in the shop be part of it?',
+        a: 'Yes. A menu screen, a queue display or an information screen can be part of the job. Those devices are listed on the products page and are still on pre-order.',
       },
     ],
   },

@@ -19,6 +19,7 @@ const LINK_ICON = 'inline-flex min-h-9 items-center gap-2 transition-colors hove
 const PAGE_FOR: Record<string, string> = {
   solutions: 'solutions/',
   products: 'products/',
+  software: 'software/',
   homes: 'homes/',
   process: 'how-it-works/',
 }

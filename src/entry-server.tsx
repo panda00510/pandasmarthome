@@ -120,6 +120,12 @@ ${routes
     ),
     ...en.products.finePrint.map((line) => `- ${line}`),
     '',
+    `## ${en.software.title} (indicative starting prices, quoted before work starts)`,
+    en.software.lead,
+    ...en.software.packages.map(
+      (item) => `- ${item.title}: ${item.body} Indicative price from S$${item.priceSgd}. ${en.software.support}`,
+    ),
+    '',
     `## ${en.upcoming.eyebrow} (${en.upcoming.status}, not on sale yet)`,
     ...en.upcoming.items.map((item) => `- ${item.title}: ${item.body}`),
     '',

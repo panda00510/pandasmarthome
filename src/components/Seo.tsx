@@ -219,11 +219,56 @@ export function Seo() {
         }
       : null
 
+  // Starting prices for custom software. No client list and no ratings.
+  const softwareList =
+    path === 'software/'
+      ? {
+          '@type': 'ItemList',
+          name: t.software.title,
+          itemListElement: t.software.packages.map((item, index) => ({
+            '@type': 'ListItem',
+            position: index + 1,
+            item: {
+              '@type': 'Service',
+              name: item.title,
+              description: `${item.body} ${t.software.support}`,
+              provider: site.url ? { '@id': `${site.url}#business` } : undefined,
+              areaServed: { '@type': 'Country', name: 'Singapore' },
+              offers: {
+                '@type': 'Offer',
+                priceCurrency: 'SGD',
+                price: item.priceSgd,
+                url: url ? `${url}#${item.id}` : undefined,
+                description: t.software.priceLabel,
+              },
+            },
+          })),
+        }
+      : null
+
+  const softwareFaq =
+    path === 'software/'
+      ? {
+          '@type': 'FAQPage',
+          mainEntity: t.software.faq.map((item) => ({
+            '@type': 'Question',
+            name: item.q,
+            acceptedAnswer: { '@type': 'Answer', text: item.a },
+          })),
+        }
+      : null
+
   const graph = {
     '@context': 'https://schema.org',
     '@graph': [
       business,
-      ...(path === '' ? [faq] : path === 'products/' ? [productList, productFaq] : article),
+      ...(path === ''
+        ? [faq]
+        : path === 'products/'
+          ? [productList, productFaq]
+          : path === 'software/'
+            ? [softwareList, softwareFaq]
+            : article),
       {
         '@type': 'WebSite',
         '@id': site.url ? `${site.url}#website` : undefined,

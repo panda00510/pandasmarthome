@@ -13,6 +13,7 @@ const LANGS: { code: Lang; label: string }[] = [
 const PAGE_ITEMS: Record<string, string> = {
   solutions: 'solutions/',
   products: 'products/',
+  software: 'software/',
   homes: 'homes/',
   process: 'how-it-works/',
 }
@@ -50,7 +51,7 @@ export function Header() {
     }
   }, [open])
 
-  // Six entries: services, products, your home, showroom, guides, process.
+  // Seven entries: services, products, software, your home, showroom, guides, process.
   const byId = (id: string): NavLink => {
     const item = t.nav.items.find((entry) => entry.id === id)!
     const page = PAGE_ITEMS[id]
@@ -59,6 +60,7 @@ export function Header() {
   const links: NavLink[] = [
     byId('solutions'),
     byId('products'),
+    byId('software'),
     byId('homes'),
     { key: 'showroom', label: t.nav.showroom, href: showroomHref, current: false, icon: true },
     { key: 'guides', label: t.guides.eyebrow, href: pageHref(lang, 'guides/'), current: path === 'guides/' },
@@ -84,13 +86,13 @@ export function Header() {
           <Wordmark className="max-w-full" />
         </a>
 
-        <nav aria-label={t.a11y.navPrimary} className="hidden items-center gap-1 min-[1200px]:flex">
+        <nav aria-label={t.a11y.navPrimary} className="hidden items-center gap-0.5 min-[1200px]:flex">
           {links.map((link) => (
             <a
               key={link.key}
               href={link.href}
               aria-current={link.current ? 'page' : undefined}
-              className={`inline-flex min-h-11 items-center gap-1.5 rounded-full px-2.5 text-sm font-medium whitespace-nowrap transition-colors xl:px-3 ${
+              className={`inline-flex min-h-11 items-center gap-1 rounded-full px-2 text-sm font-medium whitespace-nowrap transition-colors ${
                 link.current ? 'bg-ink-100 text-ink-950' : 'text-ink-700 hover:bg-ink-100 hover:text-ink-950'
               }`}
             >
