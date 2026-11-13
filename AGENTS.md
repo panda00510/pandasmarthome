@@ -87,3 +87,44 @@ node worker/index.test.mjs                           # 站点 Worker 自检
 
 英文，祈使句标题，常带范围前缀（`Signage: …`、`SEO: …`、`Showroom: …`）；
 正文说明做了什么和为什么，具体数字与取舍写清楚。只在被要求时提交 / 推送。
+
+## 待站长处理（2026-11-13 记；办完一项删一项）
+
+站长说这些下次再做。开工前先问站长要处理哪几项，不要自己编内容去填。
+本仓库是公开的，这里只记可以公开的事项。
+
+**配置（GitHub 仓库 → Settings → Variables，改完重跑部署）**
+- 转化统计：设 `VITE_PLAUSIBLE_DOMAIN`（先在 Plausible 注册该站点）或 `VITE_GA_MEASUREMENT_ID`。
+  未配置时不加载任何统计脚本。启用 GA 或更换表单服务后，同步改 `/privacy/` 并更新其 `updated` 日期。
+- 公司信息：`VITE_COMPANY_NAME` / `_ZH`、`VITE_COMPANY_REGISTRATION_NO`、`VITE_OFFICE_ADDRESS_*`。
+  配好后自动显示在 `/about/`、`/privacy/` 底部和 JSON-LD 里。
+- 品牌邮箱，以及是否单设个人数据请求邮箱（现在用 `VITE_CONTACT_EMAIL`）。
+
+**需要站长提供的真实素材**
+- `/about/`：成立时间、团队介绍、真实照片。
+- 真实安装现场照片（替换首页户型卡片的图库图）、客户评价、Google Business Profile。
+- 预购设备的实物照片、运费、退货政策——齐了才恢复 Product 结构化标记（见 `Seo.tsx` 注释）；
+  有真实评价后再加 review / aggregateRating。
+- Panda Signage 的管理后台或门牌真实截图（现在是线稿示意图）。
+- "新加坡智能家居多少钱"这篇指南需要真实价格区间才能写。
+
+**需要站长确认或决定**
+- 确认或调整参考起步价：硬件定制 S$150 / S$350 / S$800；Panda Signage 部署 S$800、
+  每加一块屏 S$60、会议室门牌 S$400。
+- Panda Signage：是否提供代为托管（页面写"按项目评估"）；除 Android 11+ 外还能宣称支持哪些平台、
+  有无实测过的播放盒型号；交付时是否给源码。
+- 表单统计口径：走邮件客户端兜底也记为 `contact_form_submit`（带 `method: mailto`）；
+  只想统计真正提交成功的话，删 `Contact.tsx` 里那一行。
+- 隐私政策请律师或 PDPA 专业人士过目（跨境传输、撤回同意的处理时限两处尤其要看）。
+
+**需要站长亲自操作**
+- Search Console：商家信息报告点"验证修复"；Google 和 Bing 各重新提交 sitemap。
+  "备用网页（有适当的规范标记）"是正常现象，不用处理。
+- 通读 2026-11-13 发布的 5 篇指南、各指南开头的要点，以及硬件定制 / 信息屏 / 关于我们的中文文案。
+  HDB 装修那篇里 "Directory of Renovation Contractors" 的中文名是自译，需核对。
+- 另一台电脑若有未推送的本地改动：先 `git pull`，有冲突再处理。
+
+**技术尾项（不急）**
+- 指南每篇文章没有单独的分享图（共用一张）；样板间只有英文分享图。
+- 样板间再次访问约 1.8 秒离开加载屏，目标 1.5 秒。
+- 未上 CSP；上的时候按 README "Conversion events" 一节放行统计域名。
