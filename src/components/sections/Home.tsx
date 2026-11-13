@@ -3,6 +3,7 @@ import { Custom } from './Custom'
 import { Faq } from './Faq'
 import { Hero } from './Hero'
 import { Homes } from './Homes'
+import { Planner } from './Planner'
 import { Platform } from './Platform'
 import { Process } from './Process'
 import { Solutions } from './Solutions'
@@ -20,6 +21,7 @@ export function HomePage() {
       <Platform />
       <Faq />
       <Upcoming />
+      <Planner />
       <Contact />
     </>
   )

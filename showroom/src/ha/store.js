@@ -404,22 +404,33 @@ export const useHA = create((set, get) => ({
   activateScene: (sceneId) => {
     const scene = SCENES.find((s) => s.id === sceneId)
     if (!scene) return
-    for (const [entityId, patch] of Object.entries(scene.states)) {
-      get()._setEntity(entityId, patch, { silent: true })
+    // 整个场景一次写进 store（面板与 3D 只重渲一轮），之后再按变化逐个跑联动（门锁、扫地机的定时器等）
+    const before = get().entities
+    const entities = { ...before }
+    for (const [id, patch] of Object.entries(scene.states)) {
+      if (!before[id]) continue   // 户型里没有这个设备
+      const pos = patch.attributes?.current_position
+      // 窗帘只写了开合度时，状态跟着开合度走（0 = closed），磁贴才不会把合上的窗帘显示成"开"
+      entities[id] = applyPatch(before[id], before[id].domain === 'cover' && patch.state === undefined && pos !== undefined
+        ? { ...patch, state: pos > 0 ? 'open' : 'closed' } : patch)
     }
     // 离家时还有窗开着：事件流里给一条提醒（演示逻辑，相当于 HA 里的一条 notify 自动化）
     const openWindows = sceneId === 'scene.away'
-      ? Object.entries(get().entities).filter(([, e]) => e.attributes?.device_class === 'window' && e.state === 'on').map(([id]) => id)
+      ? Object.entries(entities).filter(([, e]) => e.attributes?.device_class === 'window' && e.state === 'on').map(([id]) => id)
       : []
     set((s) => ({
+      entities,
       activeScene: sceneId,
       ...(scene.timeOfDay !== undefined ? { timeOfDay: scene.timeOfDay } : null),
       events: [
-        ...openWindows.map((id) => ({ id: ++eventSeq, time: stamp(), entityId: id, from: '-', to: 'still open!', name: s.entities[id].name, isScene: true, isWarn: true })),
+        ...openWindows.map((id) => ({ id: ++eventSeq, time: stamp(), entityId: id, from: '-', to: 'still open!', name: entities[id].name, isScene: true, isWarn: true })),
         { id: ++eventSeq, time: stamp(), entityId: sceneId, from: '-', to: 'activated', name: scene.name, isScene: true },
         ...s.events,
       ].slice(0, 60),
     }))
+    for (const id of Object.keys(scene.states)) {
+      if (before[id] && before[id] !== entities[id]) automations(get, id, before[id], entities[id])
+    }
   },
 
   reset: () => {

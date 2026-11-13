@@ -44,7 +44,7 @@ export function Seo() {
   const { title, description, guide } = pageMeta(lang, path)
   const url = site.url ? site.url + langPath(lang, path) : undefined
   // Per-page share card; same lookup as the prerender (entry-server.tsx).
-  const card = ogImageFor(lang, path)
+  const card = ogImageFor(lang, path, guide?.kind === 'guide' ? guide.heading : undefined)
   // Stable node ids so the graph's pieces reference each other.
   const id = (node: string) => (url ? `${url}#${node}` : undefined)
   const ref = (node: string) => (url ? { '@id': `${url}#${node}` } : undefined)

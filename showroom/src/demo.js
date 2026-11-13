@@ -2,10 +2,11 @@ import { useHA } from './ha/store'
 import { PLANS } from './plans'
 
 // 自动演示脚本：一份数据。每步可带 view（plans/*.json 的视角 key）、scene（SCENES 的 id）、
-// timeOfDay（不写就用场景自带的）、字幕 key（i18n.js）、停留毫秒。三个户型都有 overview / living / bedroom 视角。
+// off（先「全部关闭」）、timeOfDay（不写就用场景自带的）、字幕 key（i18n.js）、停留毫秒。三个户型都有 overview / living / bedroom 视角。
+// 第一步就要有看得见的变化：天色转入傍晚、灯渐灭（约 1.4 s），下一步「回家」再把灯和窗帘打开。
 export const STEPS = [
-  { view: 'overview', timeOfDay: 0.55, caption: 'demo_s_intro', ms: 3500 },
-  { view: 'overview', scene: 'scene.home', caption: 'demo_s_home', ms: 5000 },
+  { view: 'overview', off: true, timeOfDay: 0.8, caption: 'demo_s_intro', ms: 2500 },
+  { view: 'overview', scene: 'scene.home', timeOfDay: 0.8, caption: 'demo_s_home', ms: 3000 },
   { view: 'living', caption: 'demo_s_living', ms: 3500 },
   { view: 'living', scene: 'scene.movie', caption: 'demo_s_movie', ms: 6000 },
   { view: 'bedroom', caption: 'demo_s_bedroom', ms: 3500 },
@@ -53,6 +54,7 @@ function clear() {
 function tweenTime(from, to) {
   const set = useHA.getState().setTimeOfDay
   if (reducedMotion() || Math.abs(to - from) < 0.005) return set(to)
+  set(from)   // activateScene 已经把时间跳到场景自带的时刻，先拉回起点，免得闪一帧
   const t0 = performance.now()
   const tick = (now) => {
     const k = Math.min(1, (now - t0) / 1400)
@@ -74,6 +76,7 @@ function run(i) {
     // 面板跟到同一个房间标签：镜头里看不到的设备（如主卧吊扇、空调）在磁贴上能看到状态变化
     s.setPanelTab(PLANS[s.planId].views[st.view]?.area ?? 'home')
   }
+  if (st.off) s.allOff()
   if (st.scene) s.activateScene(st.scene)
   tweenTime(from, st.timeOfDay ?? useHA.getState().timeOfDay)
   timer = setTimeout(() => run(i + 1), st.ms)

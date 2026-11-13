@@ -56,36 +56,36 @@ const files = import.meta.glob<string>(['./guides/*.md', './pages/*.md'], {
 })
 const bodies = import.meta.glob<string>(['./guides/*.md', './pages/*.md'], { query: '?raw', import: 'default' })
 
-/** Filter groups on /guides/. A guide without an entry falls under "start". */
-export const TOPIC_IDS = ['start', 'renovation', 'energy', 'care', 'security', 'business'] as const
+/** Filter groups on /guides/. A guide without an entry falls under "devices". */
+export const TOPIC_IDS = ['renovation', 'devices', 'platforms', 'business'] as const
 const TOPICS: Record<string, (typeof TOPIC_IDS)[number]> = {
-  'upgrade-existing-home-smart': 'start',
-  'smart-home-for-renters': 'start',
-  'what-is-matter': 'start',
-  'wifi-for-smart-home': 'start',
-  'smart-home-without-internet': 'start',
-  'smart-switch-or-smart-bulb': 'start',
-  'local-smart-home-vs-google-apple-smartthings': 'start',
   'renovation-smart-home-prep': 'renovation',
-  'check-older-home-before-smart': 'renovation',
-  'no-neutral-smart-switches': 'renovation',
-  'motorised-curtains-guide': 'energy',
-  'smart-aircon-control': 'energy',
-  'reduce-aircon-electricity-smart-home': 'energy',
-  'smart-home-for-elderly-parents': 'care',
-  'radar-fall-detection': 'care',
-  'smart-home-helpers-kids-guests-access': 'care',
-  'ai-upgrade-existing-cctv': 'security',
-  'smart-door-lock-guide': 'security',
-  'water-smoke-humidity-sensors-singapore': 'security',
-  'smart-home-privacy-local-vs-cloud': 'security',
   'bto-key-collection-smart-home-timeline': 'renovation',
   'smart-home-during-hdb-renovation': 'renovation',
+  'check-older-home-before-smart': 'renovation',
   'condo-smart-home-upgrade-cost-factors': 'renovation',
-  'singapore-humidity-mould-aircon-dry-mode-automation': 'security',
-  'esp32-ai-voice-assistant-what-it-can-do': 'start',
+  'upgrade-existing-home-smart': 'renovation',
+  'smart-switch-or-smart-bulb': 'devices',
+  'no-neutral-smart-switches': 'devices',
+  'motorised-curtains-guide': 'devices',
+  'smart-aircon-control': 'devices',
+  'reduce-aircon-electricity-smart-home': 'devices',
+  'singapore-humidity-mould-aircon-dry-mode-automation': 'devices',
+  'smart-door-lock-guide': 'devices',
+  'water-smoke-humidity-sensors-singapore': 'devices',
+  'radar-fall-detection': 'devices',
+  'smart-home-for-elderly-parents': 'devices',
+  'smart-home-helpers-kids-guests-access': 'devices',
+  'smart-home-for-renters': 'devices',
+  'what-is-matter': 'platforms',
+  'wifi-for-smart-home': 'platforms',
+  'smart-home-without-internet': 'platforms',
+  'local-smart-home-vs-google-apple-smartthings': 'platforms',
+  'smart-home-privacy-local-vs-cloud': 'platforms',
   'digital-signage-small-office-shop-singapore': 'business',
   'custom-esp32-device-or-off-the-shelf': 'business',
+  'esp32-ai-voice-assistant-what-it-can-do': 'business',
+  'ai-upgrade-existing-cctv': 'business',
 }
 
 /** Shown first on /guides/: one main pick, then two. */
@@ -156,7 +156,7 @@ function parse(file: string, raw: string): Guide & { draft: boolean } {
     minutes: Number(meta.minutes),
     body: parts[2].trim(),
     points: (meta.points ?? '').split('|').map((point) => point.trim()).filter(Boolean),
-    topic: TOPICS[name[1]] ?? 'start',
+    topic: TOPICS[name[1]] ?? 'devices',
     faq: parseFaq(parts[2]),
     draft: meta.draft === 'true',
   }

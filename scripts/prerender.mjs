@@ -4,6 +4,7 @@
  * Runs after `vite build --ssr src/entry-server.tsx` (see the build script).
  */
 import { execFileSync } from 'node:child_process'
+import { existsSync } from 'node:fs'
 import { mkdir, readFile, rm, writeFile } from 'node:fs/promises'
 import { fileURLToPath } from 'node:url'
 
@@ -44,7 +45,12 @@ function setMeta(page, key, value) {
 }
 
 for (const { lang, path } of [...routes, ...notFoundRoutes]) {
-  const { html, head, notFound, ogImage, meta } = render(lang, path)
+  // A guide without its own card yet (needs `npm run og` on macOS) keeps the Guides card.
+  const { html, head, notFound, ogImage, meta } = render(lang, path, (src) => {
+    if (existsSync(at(`public${src}`))) return true
+    console.warn(`prerender: ${src} missing, using the section card — run \`npm run og\` on macOS`)
+    return false
+  })
   let page = template
     .replace('<html lang="en">', `<html lang="${meta.htmlLang}">`)
     .replace(/<title>[^<]*<\/title>/, () => `<title>${attr(meta.title)}</title>`)

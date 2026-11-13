@@ -4,6 +4,7 @@
  *   public/og-image.svg -> public/og-image.png      (1200x630 social card)
  *   public/favicon.svg  -> public/apple-touch-icon.png, icon-192.png, icon-512.png
  *   src/config/ogImages.ts -> public/og/<key>-<lang>.png (per-page cards, macOS only)
+ *   src/content/guides/*.md -> public/og/guides/<slug>-<lang>.jpg (per-guide cards, macOS only)
  *
  * Social platforms (Facebook, LinkedIn, X, WhatsApp) and iOS home screens do
  * not accept SVG, so these PNGs are what the meta tags and web manifest point
@@ -11,7 +12,7 @@
  *
  * `sharp` is a devDependency only — it never ships in the browser bundle.
  */
-import { readFile, writeFile } from 'node:fs/promises'
+import { mkdir, readdir, readFile, rm, writeFile } from 'node:fs/promises'
 import { fileURLToPath } from 'node:url'
 import sharp from 'sharp'
 
@@ -99,8 +100,7 @@ for (const [name, size] of [
 if (process.platform !== 'darwin') {
   console.warn('og/*.png             skipped: per-page cards are rendered on macOS only (PingFang SC)')
 } else {
-  const { OG_CARDS, ogImagePath } = await import('../src/config/ogImages.ts')
-  const { mkdir } = await import('node:fs/promises')
+  const { OG_CARDS, GUIDE_EYEBROW, guideImagePath, ogImagePath } = await import('../src/config/ogImages.ts')
   await mkdir(at('og'), { recursive: true })
 
   const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;')
@@ -201,5 +201,67 @@ if (process.platform !== 'darwin') {
           .toBuffer(),
       )
     }
+  }
+
+  // --- Per-guide cards: public/og/guides/<slug>-<lang>.jpg ------------------
+  // The headline is the guide's own front matter (`heading`, else `title`),
+  // read straight from the Markdown so ogImages.ts stays self-contained and the
+  // text is never retyped. Pango (sharp's text input) wraps it with the real
+  // font metrics; the size steps down until it fits above the accent bar.
+  // Chinese has no spaces, so each punctuation-delimited phrase is kept whole
+  // when it fits on a line (no "红 / 外遥控" splits).
+  // JPEG, not PNG: a full-width headline over the gradient pushes a 256-colour
+  // palette PNG to 55–75 KB and leaves visible quantisation blotches in the
+  // glow; mozjpeg q82 is ~35 KB and clean.
+  // The folder is rebuilt each run, so a deleted guide loses its card.
+  const guidesDir = fileURLToPath(new URL('../src/content/guides/', import.meta.url))
+  await rm(at('og/guides'), { recursive: true, force: true })
+  await mkdir(at('og/guides'), { recursive: true })
+  const PANGO = { en: 'Helvetica Neue Bold', zh: 'PingFang SC Semibold' }
+  const BOX = { left: 88, top: 238, width: 652, height: 282 } // 1x; ends above the accent bar at y 540
+  const headline = async (lang, heading, size, keepPhrases) => {
+    // A no-break space keeps " — " at the end of a line, never at the start of the next.
+    let markup = esc(heading).replace(/>/g, '&gt;').replace(/ —/g, '\u00a0—')
+    if (keepPhrases) markup = markup.replace(/[^，。、？！：；—]+[，。、？！：；—]*/g, (p) => `<span allow_breaks="false">${p}</span>`)
+    // Rendered at 2x (dpi 144) like the SVG layer, so `size` is the 1x pixel size.
+    return sharp({
+      text: {
+        text: `<span foreground="#fbfbf9"${lang === 'en' ? ' letter_spacing="-1600"' : ''}>${markup}</span>`,
+        font: `${PANGO[lang]} ${size}`,
+        width: 2 * BOX.width,
+        dpi: 144,
+        rgba: true,
+        wrap: 'word',
+        spacing: Math.round(size * 0.12),
+      },
+    }).png().toBuffer({ resolveWithObject: true })
+  }
+  const fits = ({ info }) => info.width <= 2 * BOX.width && info.height <= 2 * BOX.height
+
+  for (const file of (await readdir(guidesDir)).sort()) {
+    const [, slug, lang] = /^([a-z0-9-]+)\.(en|zh)\.md$/.exec(file) ?? []
+    if (!slug) continue
+    const front = /^---\n([\s\S]*?)\n---/.exec((await readFile(guidesDir + file, 'utf8')).replace(/\r\n/g, '\n'))?.[1] ?? ''
+    const meta = Object.fromEntries(front.split('\n').map((l) => [l.slice(0, l.indexOf(':')).trim(), l.slice(l.indexOf(':') + 1).trim()]))
+    if (meta.draft === 'true') continue
+    const heading = meta.heading || meta.title
+    if (!heading) throw new Error(`${file}: no heading or title`)
+
+    let text
+    for (const keepPhrases of lang === 'zh' ? [true, false] : [false]) {
+      for (const size of [54, 50, 46, 42]) {
+        text = await headline(lang, heading, size, keepPhrases)
+        if (fits(text)) break
+      }
+      if (fits(text)) break
+    }
+    if (!fits(text)) throw new Error(`${file}: heading too long for the share card`)
+
+    const base = await sharp(Buffer.from(card(lang, 'guides', { eyebrow: GUIDE_EYEBROW[lang], lines: [], sub: [] })), { density: 144 }).png().toBuffer()
+    const composed = await sharp(base).composite([{ input: text.data, left: 2 * BOX.left, top: 2 * BOX.top }]).png().toBuffer()
+    await write(
+      guideImagePath(slug, lang).slice(1),
+      await sharp(composed).resize(1200, 630, { fit: 'fill' }).jpeg({ quality: 82, mozjpeg: true }).toBuffer(),
+    )
   }
 }

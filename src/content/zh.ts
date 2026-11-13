@@ -14,6 +14,7 @@ export const zh: Content = {
 
   a11y: {
     skipToContent: '跳到主要内容',
+    quickActions: '快捷操作',
     openMenu: '打开导航菜单',
     closeMenu: '关闭导航菜单',
     homeLink: 'Panda智能家居 — 返回顶部',
@@ -1225,14 +1226,12 @@ export const zh: Content = {
     ctaBody: '说说你家的情况，我们用中文或英文给你合适的建议。',
     ctaButton: '预约咨询',
     topics: {
-      start: '入门',
-      renovation: '装修',
-      energy: '节能与舒适',
-      care: '长辈照护',
-      security: '安防与安全',
-      business: '商用与定制',
+      renovation: '装修前',
+      devices: '设备选型',
+      platforms: '协议与平台',
+      business: '信息屏与定制',
     },
-    allTopics: '全部主题',
+    allTopics: '全部指南',
     featured: '从这里开始',
     readMin: '{n} 分钟阅读',
     keyPoints: '先看这几点',
@@ -1365,6 +1364,106 @@ export const zh: Content = {
       'Panda智能家居通过支持的连接方式集成兼容的第三方产品。相关产品名称及商标归各自所有，设备兼容不代表与相关品牌存在官方合作或认可关系。',
     imageTag: '示意图',
     imageNote: '网站上的照片是来自 Pexels 的示意图库图片，不是 Panda 智能家居的安装现场或客户项目。',
+  },
+
+  planner: {
+    navLabel: '需求小问卷',
+    eyebrow: '需求小问卷',
+    title: '不知道从哪里开始？',
+    lead: '三个小问题，帮你列出值得先聊的设备类别。这只是讨论的起点，不是报价。',
+    homeLabel: '户型',
+    homes: [
+      {
+        id: 'hdb',
+        label: 'HDB / BTO 组屋',
+        note: '如果正在装修：开关位置、零线和网络点位要在封墙前定好，见{link}。',
+        path: 'renovation-checklist/',
+        linkLabel: '装修前清单',
+      },
+      {
+        id: 'condo',
+        label: '公寓',
+        note: '换门、固定布线和外立面相关的改动可能受 MCST 规定约束，动工前先问管理处，见{link}。',
+        path: 'guides/condo-smart-home-upgrade-cost-factors/',
+        linkLabel: '公寓升级的费用因素',
+      },
+      {
+        id: 'landed',
+        label: '有地住宅',
+        note: '房子有好几层时，选设备前值得逐个房间检查 Wi-Fi 覆盖，见{link}。',
+        path: 'guides/wifi-for-smart-home/',
+        linkLabel: '智能家居的 Wi-Fi',
+      },
+    ],
+    roomsLabel: '卧室数量',
+    rooms: [
+      { id: '1-2', label: '1–2 间卧室' },
+      { id: '3', label: '3 间卧室' },
+      { id: '4+', label: '4 间或以上卧室' },
+    ],
+    prioritiesLabel: '最在意什么',
+    prioritiesHelp: '可多选。',
+    priorities: [
+      {
+        id: 'lighting',
+        label: '灯光',
+        picks: [{ group: 'switches-lighting', reason: '灯光：墙面开关照样可以用手按，合适的灯再配调光器或智能灯泡。' }],
+      },
+      {
+        id: 'aircon',
+        label: '空调与舒适',
+        picks: [
+          { group: 'hubs-gateways', reason: '空调：红外控制器让空调按时间表和场景运行，不用改动空调本身。' },
+          { group: 'sensors', reason: '舒适：温湿度传感器让空调或除湿机根据房间情况自动调整。' },
+        ],
+      },
+      {
+        id: 'curtains',
+        label: '窗帘与卷帘',
+        picks: [{ group: 'curtains-locks-security', reason: '窗帘：每条轨道或卷帘一个电机；用电线还是电池，取决于附近有没有插座。' }],
+      },
+      {
+        id: 'security',
+        label: '门锁与安防',
+        picks: [
+          { group: 'curtains-locks-security', reason: '门锁与安防：带备用开门方式的电子锁、可视门铃、本地录像的摄像头。' },
+          { group: 'sensors', reason: '安防：门窗传感器告诉你哪里没关好。' },
+        ],
+      },
+      {
+        id: 'safety',
+        label: '漏水与烟雾',
+        picks: [{ group: 'sensors', reason: '安全：在水管和电器附近装漏水传感器，再加烟雾报警器。' }],
+      },
+      {
+        id: 'care',
+        label: '照顾长辈',
+        picks: [
+          { group: 'sensors', reason: '照护：存在雷达和人体传感器不用摄像头也能察觉活动。' },
+          { group: 'switches-lighting', reason: '照护：夜里去洗手间时自动亮起的夜灯。' },
+        ],
+      },
+      {
+        id: 'voice',
+        label: '语音与 AI',
+        picks: [{ group: 'hubs-gateways', reason: '语音：语音控制经由主机，用哪个语音助手值得先聊清楚。' }],
+      },
+      {
+        id: 'energy',
+        label: '用电情况',
+        picks: [{ group: 'hubs-gateways', reason: '用电：智能插座和电量计让你看清电到底用在哪里。' }],
+      },
+    ],
+    hubReason: '这一切的基础：本地主机在你自己的网络里运行全屋，断网也照常工作。',
+    submit: '列出我的起步清单',
+    incomplete: '请选择户型、卧室数量，以及至少一项最在意的内容。',
+    resultTitle: '值得先聊的设备类别',
+    disclaimer: '这只是讨论的起点，不是报价。具体型号和数量取决于你家的布线、墙体和已有的设备。',
+    learnMore: '了解更多',
+    whatsappCta: '用 WhatsApp 发送',
+    formCta: '用下方表单咨询',
+    message: '你好，Panda智能家居，我在网站上填了需求小问卷。户型：{home}，{rooms}。最在意：{priorities}。我想进一步了解：',
+    join: '、',
   },
 
   whatsapp: {

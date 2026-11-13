@@ -11,13 +11,48 @@ const MOVED = {
 // Security headers on every served file. Set here rather than in
 // public/_headers because with run_worker_first the response comes from this
 // Worker, and _headers is not guaranteed to apply to Worker responses.
-// CSP is deliberately left out for now (inline JSON-LD and the showroom).
 const HEADERS = {
   'Strict-Transport-Security': 'max-age=31536000',
   'X-Content-Type-Options': 'nosniff',
   'Referrer-Policy': 'strict-origin-when-cross-origin',
   'Permissions-Policy': 'camera=(), microphone=(), geolocation=(), payment=()',
 }
+
+// Content-Security-Policy, one for the site and one for the showroom build.
+// The prerendered pages carry no inline scripts (JSON-LD is data, not run), so
+// scripts are 'self' only. Styles allow 'unsafe-inline' for the style=""
+// attributes in the prerendered markup. Hosts that are only used when a
+// variable is set are listed so turning them on needs no Worker change:
+// Plausible (default plausible.io), Google Analytics 4, Cloudflare Web
+// Analytics, and the Web3Forms endpoint. A different VITE_FORM_ENDPOINT (e.g.
+// the Telegram relay Worker) or VITE_PLAUSIBLE_SRC host must be added here.
+const ANALYTICS_SCRIPT = 'https://static.cloudflareinsights.com https://plausible.io https://www.googletagmanager.com'
+const ANALYTICS_CONNECT =
+  'https://cloudflareinsights.com https://plausible.io https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com'
+const COMMON = "default-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; media-src 'self'"
+const CSP = {
+  site: [
+    COMMON,
+    `script-src 'self' ${ANALYTICS_SCRIPT}`,
+    "style-src 'self' 'unsafe-inline'",
+    "font-src 'self'",
+    "img-src 'self' data: https://*.google-analytics.com https://*.googletagmanager.com",
+    `connect-src 'self' https://api.web3forms.com ${ANALYTICS_CONNECT}`,
+  ].join('; '),
+  // showroom/index.html: Google Fonts, an inline <style>, and one onload=""
+  // handler (allowed by hash; the self-check recomputes it from the file).
+  // three.js loads textures from data: URIs and may use blob: URLs.
+  showroom: [
+    COMMON,
+    `script-src 'self' 'unsafe-hashes' 'sha256-1jAmyYXcRq6zFldLe/GCgIDJBiOONdXjTLgEFMDnDSM=' ${ANALYTICS_SCRIPT}`,
+    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+    "font-src 'self' https://fonts.gstatic.com",
+    "img-src 'self' data: blob:",
+    `connect-src 'self' data: blob: ${ANALYTICS_CONNECT}`,
+    "worker-src 'self' blob:",
+  ].join('; '),
+}
+export const cspFor = (pathname) => (pathname.startsWith('/showroom/') ? CSP.showroom : CSP.site)
 
 // Fingerprinted build output (Vite adds an 8-character content hash, e.g.
 // /assets/index-BwUq34Iy.js, /showroom/assets/map-Cdt_Hm5s.webp). A changed
@@ -61,6 +96,7 @@ export default {
     }
     const res = new Response(asset.body, asset)
     for (const [name, value] of Object.entries(HEADERS)) res.headers.set(name, value)
+    res.headers.set('Content-Security-Policy', cspFor(url.pathname))
     if (res.ok && HASHED.test(url.pathname)) res.headers.set('Cache-Control', IMMUTABLE)
     return res
   },

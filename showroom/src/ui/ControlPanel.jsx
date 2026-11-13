@@ -352,7 +352,7 @@ function HomePage({ envIds, onCount, total }) {
           >
             <Icon name={SCENE_ICON[sc.id]} size={22} className="tile-icon" />
             <span className="tile-name">{t.pick(sc.name)}</span>
-            <span className="tile-state">{t('scene_tap')}</span>
+            <span className="tile-state">{t.pick(sc.hint)}</span>
           </button>
         ))}
         <button className="tile tile-main is-alloff" onClick={allOff}>

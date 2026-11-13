@@ -12,8 +12,8 @@ export const STRINGS = {
     cta_message: (layout, area) => `Hi Panda Smart Home, I tried the 3D showroom with the ${layout} (${area} m²) layout and would like a home assessment. My home is: `,
 
     demo_watch: 'Watch demo',
-    demo_s_intro: 'A smart HDB flat — every room, run from one panel',
-    demo_s_home: 'Home — lights and aircon come on as you arrive',
+    demo_s_intro: 'Evening in a smart HDB flat — every room runs from one panel',
+    demo_s_home: 'Home — one tap: lights, curtains and aircon come on',
     demo_s_living: 'Living room — lights, curtains and TV, one tap each',
     demo_s_movie: 'Movie — curtains close, lights dim, the TV comes on',
     demo_s_bedroom: 'Master bedroom — bedside lamp, aircon and ceiling fan',
@@ -140,7 +140,6 @@ export const STRINGS = {
     time_of_day: 'Time of day',
     tabs_label: 'Rooms',
     tile_adjust: 'Adjust',
-    scene_tap: 'Scene',
     all_off: 'All off',
   },
 
@@ -153,8 +152,8 @@ export const STRINGS = {
     cta_message: (layout, area) => `你好，我在 3D 样板间看了 ${layout}（${area} ㎡）的方案，想预约上门评估。我家的情况：`,
 
     demo_watch: '观看演示',
-    demo_s_intro: '一套智能组屋：每个房间，一块面板全部掌控',
-    demo_s_home: '回家：进门时灯和空调自动打开',
+    demo_s_intro: '傍晚的智能组屋：每个房间，一块面板全部掌控',
+    demo_s_home: '回家：一键打开灯、窗帘和空调',
     demo_s_living: '客厅：灯、窗帘、电视，各一下就好',
     demo_s_movie: '观影：窗帘合上、灯光调暗、电视打开',
     demo_s_bedroom: '主卧：床头灯、空调和吊扇',
@@ -281,7 +280,6 @@ export const STRINGS = {
     time_of_day: '时间',
     tabs_label: '房间',
     tile_adjust: '调节',
-    scene_tap: '场景',
     all_off: '全部关闭',
   },
 }

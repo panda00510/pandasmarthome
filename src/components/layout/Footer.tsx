@@ -32,8 +32,9 @@ export function Footer() {
   const year = new Date().getFullYear()
   const companyName = lang === 'zh' ? site.companyNameZh : site.companyName
 
+  // max-sm:pb: room under the footer for the phone quick-action bar (App.tsx).
   return (
-    <footer className="bg-ink-950 text-ink-300">
+    <footer className="bg-ink-950 text-ink-300 max-sm:pb-[calc(4rem+env(safe-area-inset-bottom))] print:pb-0">
       <div className="shell pt-12 pb-8 lg:pt-16 lg:pb-10">
         <div className="grid gap-10 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_minmax(0,1fr)] lg:gap-12">
           {/* Brand */}
@@ -105,6 +106,11 @@ export function Footer() {
               <li>
                 <a href={pageHref(lang, 'glossary/')} className={LINK}>
                   {t.glossary.navLabel}
+                </a>
+              </li>
+              <li>
+                <a href={`${home}#plan`} className={LINK}>
+                  {t.planner.navLabel}
                 </a>
               </li>
               <li>

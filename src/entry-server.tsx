@@ -70,7 +70,7 @@ export const notFoundRoutes = LANGS.map((lang) => ({ lang, path: '404/' }))
  * the canonical links, in the right language. The browser re-renders on load,
  * so nothing here needs to hydrate.
  */
-export function render(lang: Lang, path: string) {
+export function render(lang: Lang, path: string, hasOgImage: (src: string) => boolean = () => true) {
   const html = renderToString(
     <LanguageProvider lang={lang} path={path}>
       <App />
@@ -80,7 +80,10 @@ export function render(lang: Lang, path: string) {
   const { title, description, guide } = pageMeta(lang, path)
   const url = (l: Lang) => `${site.url}${langPath(l, path)}`
   const notFound = !pagePaths.includes(path)
-  const card = ogImageFor(lang, path)
+  // A guide's own card exists once `npm run og` has run on a Mac (cards are
+  // committed, CI never draws them); until then it keeps the Guides card.
+  const own = guide?.kind === 'guide' ? ogImageFor(lang, path, guide.heading) : null
+  const card = own && hasOgImage(own.src) ? own : ogImageFor(lang, path)
 
   const head = site.url && !notFound
     ? [

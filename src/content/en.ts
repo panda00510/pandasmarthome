@@ -14,6 +14,7 @@ export const en: Content = {
 
   a11y: {
     skipToContent: 'Skip to main content',
+    quickActions: 'Quick actions',
     openMenu: 'Open navigation menu',
     closeMenu: 'Close navigation menu',
     homeLink: 'Panda Smart Home — back to top',
@@ -1272,14 +1273,12 @@ export const en: Content = {
     ctaBody: 'Tell us about your home and we will suggest what fits, in English or Chinese.',
     ctaButton: 'Book a consultation',
     topics: {
-      start: 'Getting started',
-      renovation: 'Renovation',
-      energy: 'Energy and comfort',
-      care: 'Care at home',
-      security: 'Security and safety',
-      business: 'Business and custom',
+      renovation: 'Before renovation',
+      devices: 'Choosing devices',
+      platforms: 'Protocols and platforms',
+      business: 'Signage and custom builds',
     },
-    allTopics: 'All topics',
+    allTopics: 'All guides',
     featured: 'Start here',
     readMin: '{n} min read',
     keyPoints: 'The short version',
@@ -1432,6 +1431,106 @@ export const en: Content = {
     imageTag: 'Illustrative photo',
     imageNote:
       'Photographs are illustrative stock images from Pexels. They are not Panda Smart Home installations or client projects.',
+  },
+
+  planner: {
+    navLabel: 'Plan starter',
+    eyebrow: 'Plan starter',
+    title: 'Not sure where to start?',
+    lead: 'Three quick questions. You get the groups of devices worth talking about for your home — a starting point to discuss, not a quote.',
+    homeLabel: 'Your home',
+    homes: [
+      {
+        id: 'hdb',
+        label: 'HDB / BTO flat',
+        note: 'Renovating? Switch positions, neutral wires and network points are settled before the walls close: {link}.',
+        path: 'renovation-checklist/',
+        linkLabel: 'the renovation checklist',
+      },
+      {
+        id: 'condo',
+        label: 'Condo',
+        note: 'Door changes, fixed wiring and anything on the façade may fall under your MCST rules, so check with management first: {link}.',
+        path: 'guides/condo-smart-home-upgrade-cost-factors/',
+        linkLabel: 'what affects a condo upgrade',
+      },
+      {
+        id: 'landed',
+        label: 'Landed home',
+        note: 'Over several floors, Wi-Fi coverage is worth checking room by room before choosing devices: {link}.',
+        path: 'guides/wifi-for-smart-home/',
+        linkLabel: 'Wi-Fi for a smart home',
+      },
+    ],
+    roomsLabel: 'Bedrooms',
+    rooms: [
+      { id: '1-2', label: '1–2 bedrooms' },
+      { id: '3', label: '3 bedrooms' },
+      { id: '4+', label: '4 or more bedrooms' },
+    ],
+    prioritiesLabel: 'What matters most',
+    prioritiesHelp: 'Pick as many as you like.',
+    priorities: [
+      {
+        id: 'lighting',
+        label: 'Lighting',
+        picks: [{ group: 'switches-lighting', reason: 'Lighting: wall switches that still work by hand, with dimmers or smart bulbs where they suit the light.' }],
+      },
+      {
+        id: 'aircon',
+        label: 'Aircon and comfort',
+        picks: [
+          { group: 'hubs-gateways', reason: 'Aircon: an infrared controller puts the aircon on schedules and scenes without changing the unit.' },
+          { group: 'sensors', reason: 'Comfort: temperature and humidity sensors let the aircon or a dehumidifier react to the room.' },
+        ],
+      },
+      {
+        id: 'curtains',
+        label: 'Curtains and blinds',
+        picks: [{ group: 'curtains-locks-security', reason: 'Curtains: a motor per track or blind; wired or battery depends on whether there is a power point nearby.' }],
+      },
+      {
+        id: 'security',
+        label: 'Door and security',
+        picks: [
+          { group: 'curtains-locks-security', reason: 'Door and security: a digital lock with a backup way in, a video doorbell, cameras that record locally.' },
+          { group: 'sensors', reason: 'Security: door and window contacts tell you what was left open.' },
+        ],
+      },
+      {
+        id: 'safety',
+        label: 'Leaks and smoke',
+        picks: [{ group: 'sensors', reason: 'Safety: water-leak sensors where pipes and appliances are, and smoke alarms.' }],
+      },
+      {
+        id: 'care',
+        label: 'An elderly parent',
+        picks: [
+          { group: 'sensors', reason: 'Care: presence radar and motion sensors notice activity without a camera.' },
+          { group: 'switches-lighting', reason: 'Care: night lights that come on by themselves on the way to the toilet.' },
+        ],
+      },
+      {
+        id: 'voice',
+        label: 'Voice and AI',
+        picks: [{ group: 'hubs-gateways', reason: 'Voice: voice control goes through the hub, so which assistant you use is worth talking through.' }],
+      },
+      {
+        id: 'energy',
+        label: 'Electricity use',
+        picks: [{ group: 'hubs-gateways', reason: 'Energy: smart plugs and energy meters show what actually uses the electricity.' }],
+      },
+    ],
+    hubReason: 'Underneath it all: a local hub runs the home on your own network, so it keeps working without the internet.',
+    submit: 'Show my starting list',
+    incomplete: 'Pick your home, the number of bedrooms and at least one thing that matters.',
+    resultTitle: 'Device groups to discuss',
+    disclaimer: 'A starting point to discuss, not a quote. Models and quantities depend on your wiring, your walls and what you already own.',
+    learnMore: 'Learn more',
+    whatsappCta: 'Send this on WhatsApp',
+    formCta: 'Ask us with the form below',
+    message: "Hi Panda Smart Home, I used the plan starter on your site. Home: {home}, {rooms}. What matters most: {priorities}. I'd like to discuss: ",
+    join: ', ',
   },
 
   whatsapp: {

@@ -12,6 +12,8 @@ export type Content = {
   }
   a11y: {
     skipToContent: string
+    /** The phone-only bar fixed to the bottom of the screen. */
+    quickActions: string
     openMenu: string
     closeMenu: string
     homeLink: string
@@ -524,6 +526,38 @@ export type Content = {
     imageNote: string
     /** Corner label on every stock photo. */
     imageTag: string
+  }
+  /**
+   * Homepage "plan starter" (components/sections/Planner.tsx): three questions
+   * that point at device groups from products.install. Never prices or quantities.
+   */
+  planner: {
+    /** Footer link label. */
+    navLabel: string
+    eyebrow: string
+    title: string
+    lead: string
+    homeLabel: string
+    homes: { id: string; label: string; /** Shown with the result; "{link}" becomes a link to `path` labelled linkLabel. */ note: string; path: string; linkLabel: string }[]
+    roomsLabel: string
+    rooms: { id: string; label: string }[]
+    prioritiesLabel: string
+    prioritiesHelp: string
+    /** Each priority points at one or more products.install group ids, with the line shown under that group. */
+    priorities: { id: string; label: string; picks: { group: string; reason: string }[] }[]
+    /** Always listed under the hubs-gateways group. */
+    hubReason: string
+    submit: string
+    incomplete: string
+    resultTitle: string
+    disclaimer: string
+    learnMore: string
+    whatsappCta: string
+    /** Used when no WhatsApp number is configured: a link to the form below. */
+    formCta: string
+    /** "{home}", "{rooms}", "{priorities}" are the visitor's choices (labels joined by `join`). Nothing else goes in. */
+    message: string
+    join: string
   }
   /** Opening WhatsApp line per page (src/lib/whatsapp.ts). Says where the visitor came from, never who they are. */
   whatsapp: {

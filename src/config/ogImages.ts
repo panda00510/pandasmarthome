@@ -4,9 +4,12 @@
  * One table drives both sides: `npm run og` (scripts/make-og.mjs) renders each
  * card to public/og/<key>-<lang>.png, and the prerender and <Seo> point each
  * page at its card through `ogImageFor`. A page is matched by the first
- * segment of its path, so /solutions/smart-lighting/ shares the Solutions card
- * and every guide shares the Guides card. Anything unmatched — and the English
- * homepage — falls back to the default /og-image.png.
+ * segment of its path, so /solutions/smart-lighting/ shares the Solutions card.
+ * Guides are the exception: each has its own card, public/og/guides/<slug>-<lang>.jpg,
+ * whose headline make-og.mjs reads from the guide's Markdown front matter
+ * (`heading`, else `title`) — callers pass the same heading for the alt text.
+ * Anything unmatched — and the English homepage — falls back to the default
+ * /og-image.png.
  *
  * Self-contained on purpose: make-og.mjs imports this file directly with
  * Node's type stripping, so it must not import anything else.
@@ -133,12 +136,20 @@ export const OG_CARDS: Record<Key, { en?: OgCard; zh?: OgCard }> = {
     },
   },
   showroom: {
-    // The showroom is a separate build with one index.html, so English only.
+    // The showroom is a separate build with one index.html that carries the
+    // English card. The Chinese card is drawn but not referenced yet: crawlers
+    // do not run JS, so it needs its own URL with zh meta tags (not built yet).
     en: {
       eyebrow: '3D SHOWROOM',
       lines: ['Walk through a', 'smart HDB flat'],
       sub: ['Interactive 3-, 4- and 5-room layouts.', 'Try lights, curtains, aircon and locks.'],
       alt: 'Panda Smart Home — interactive 3D smart home showroom',
+    },
+    zh: {
+      eyebrow: '3D 样板间',
+      lines: ['走进一套', '智能组屋'],
+      sub: ['三房、四房、五房户型互动切换，', '体验灯光、窗帘、空调与门锁。'],
+      alt: 'Panda智能家居 — 互动 3D 智能家居样板间',
     },
   },
   guides: {
@@ -171,11 +182,27 @@ export const OG_CARDS: Record<Key, { en?: OgCard; zh?: OgCard }> = {
   },
 }
 
+/** Eyebrow on every per-guide card. */
+export const GUIDE_EYEBROW = { en: 'GUIDE', zh: '指南' }
+
 /** Root-relative path of the card PNG for a key and language. */
 export const ogImagePath = (key: string, lang: 'en' | 'zh') => `/og/${key}-${lang}.png`
 
-/** The card for a page, or null to use the default /og-image.png. */
-export function ogImageFor(lang: 'en' | 'zh', path: string): { src: string; alt?: string } | null {
+/** Root-relative path of a guide's own card (JPEG; see make-og.mjs). */
+export const guideImagePath = (slug: string, lang: 'en' | 'zh') => `/og/guides/${slug}-${lang}.jpg`
+
+/**
+ * The card for a page, or null to use the default /og-image.png. For a guide
+ * (guides/<slug>/) pass its visible heading to get the guide's own card.
+ */
+export function ogImageFor(lang: 'en' | 'zh', path: string, guideHeading?: string): { src: string; alt?: string } | null {
+  const slug = /^guides\/([a-z0-9-]+)\/$/.exec(path)?.[1]
+  if (slug && guideHeading) {
+    return {
+      src: guideImagePath(slug, lang),
+      alt: `${lang === 'zh' ? 'Panda智能家居' : 'Panda Smart Home'} — ${guideHeading}`,
+    }
+  }
   const key = (path.split('/')[0] || 'home') as Key
   const card = OG_CARDS[key]?.[lang]
   return card ? { src: ogImagePath(key, lang), alt: card.alt } : null

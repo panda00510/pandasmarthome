@@ -5,7 +5,8 @@
  *   -> CDP screencast (headed Chromium, real GPU) -> ffmpeg
  *   -> public/media/showroom-demo.{mp4,webm} + showroom-demo-poster.webp
  *
- * The clip is the end of demo step "come home" -> push into the living room ->
+ * The clip is demo step "come home" (evening, lights and curtains come on) ->
+ * fly into the living room (over the walls, see showroom/src/three/cameraPath.js) ->
  * "movie" (curtains close, lights dim, TV on). It is cut on the step changes the
  * demo writes into its (hidden) caption box, so it follows showroom/src/demo.js
  * if the timings change. Run on macOS, then look at the
@@ -30,16 +31,12 @@ const out = join(root, 'public/media')
 const PORT = 4178
 const W = 1280
 const H = 720
-// Cut points, in seconds relative to the start of the demo's "living room" step.
-const HOLD = 4 // overview with the lights on before the push-in
-const A_END = 0.5 // end of segment A: the push-in has started, the wall is not in frame yet
-const B_START = 1.2 // start of segment B: the camera is through the wall
-const XFADE = 0.4
 const FADE = 0.3 // fade in/out at the loop point
+const LEAD = 0.7 // seconds of the dark flat before "home": the lights coming on is the first thing that happens
 // Encoder settings. Budget: mp4 <= 1.2 MB, webm <= 900 KB, poster <= 60 KB.
-const X264 = ['-c:v', 'libx264', '-preset', 'veryslow', '-crf', process.env.CRF_H264 ?? '23', '-profile:v', 'high', '-pix_fmt', 'yuv420p', '-movflags', '+faststart']
-const VP9 = ['-c:v', 'libvpx-vp9', '-b:v', '0', '-crf', process.env.CRF_VP9 ?? '34', '-deadline', 'good', '-cpu-used', '1', '-row-mt', '1', '-pix_fmt', 'yuv420p']
-const POSTER_AT = Number(process.env.POSTER_AT ?? 5.2) // seconds into the clip: living room, lamps on, before the movie
+const X264 = ['-c:v', 'libx264', '-preset', 'veryslow', '-crf', process.env.CRF_H264 ?? '26', '-profile:v', 'high', '-pix_fmt', 'yuv420p', '-movflags', '+faststart']
+const VP9 = ['-c:v', 'libvpx-vp9', '-b:v', '0', '-crf', process.env.CRF_VP9 ?? '41', '-deadline', 'good', '-cpu-used', '1', '-row-mt', '1', '-pix_fmt', 'yuv420p']
+const POSTER_AT = Number(process.env.POSTER_AT ?? 6.6) // seconds into the clip: living room, lamps on, before the movie
 const POSTER_Q = Number(process.env.POSTER_Q ?? 80)
 const SCALE = process.env.SCALE ?? `${W}:${H}`
 
@@ -120,24 +117,17 @@ cdp.on('Page.screencastFrame', async ({ data, metadata, sessionId }) => {
 await page.goto(url)
 await cdp.send('Page.startScreencast', { format: 'jpeg', quality: 95, maxWidth: W, maxHeight: H })
 
-// Steps: 0 intro, 1 home, 2 living, 3 movie, 4 bedroom. Record until 4 starts.
+// Steps: 0 intro (dusk, lights off), 1 home, 2 living, 3 movie, 4 bedroom. Record until 4 starts.
 await page.waitForFunction(() => window.__steps.some((s) => s.i === 4), null, { timeout: 120_000 })
 await cdp.send('Page.stopScreencast')
 const steps = await page.evaluate(() => window.__steps)
 await browser.close()
 stop()
 
-// The demo's camera flies from the overview into the living room straight through
-// a wall (~0.6 s of tiles filling the frame). Cut that out with a short dissolve:
-//   A = overview, lights on, the start of the push-in   [living - HOLD, living + A_END]
-//   B = living room, then the movie scene in full       [living + B_START, bedroom]
-const living = steps.find((s) => s.i === 2).t
-const from = living - HOLD
+// One continuous take: just before "home" -> "bedroom" starts.
+const from = steps.find((s) => s.i === 1).t - LEAD
 const to = steps.find((s) => s.i === 4).t
-const aEnd = HOLD + A_END
-const bStart = HOLD + B_START
-const span = to - from
-const dur = aEnd + (span - bStart) - XFADE
+const dur = to - from
 
 const clip = frames.filter((f) => f.t >= from - 0.2 && f.t <= to)
 const fps = clip.length / (clip.at(-1).t - clip[0].t)
@@ -159,11 +149,9 @@ await writeFile(listFile, list.join('\n'))
 await mkdir(out, { recursive: true })
 const f = (n) => n.toFixed(3)
 const graph = [
-  `[0]fps=30,scale=${SCALE}:flags=lanczos:out_range=tv,format=yuv420p,split[x][y]`,
-  `[x]trim=0:${f(aEnd)},setpts=PTS-STARTPTS[a]`,
-  `[y]trim=${f(bStart)}:${f(span)},setpts=PTS-STARTPTS[b]`,
-  `[a][b]xfade=transition=fade:duration=${XFADE}:offset=${f(aEnd - XFADE)},fade=t=in:st=0:d=${FADE},fade=t=out:st=${f(dur - FADE)}:d=${FADE}[v]`,
-].join(';')
+  `[0]fps=30,scale=${SCALE}:flags=lanczos:out_range=tv,format=yuv420p,trim=0:${f(dur)},setpts=PTS-STARTPTS`,
+  `fade=t=in:st=0:d=${FADE},fade=t=out:st=${f(dur - FADE)}:d=${FADE}[v]`,
+].join(',')
 const input = ['-f', 'concat', '-safe', '0', '-i', listFile, '-filter_complex', graph, '-map', '[v]', '-an']
 run([...input, ...X264, join(out, 'showroom-demo.mp4')])
 const pass = join(dir, 'vp9')

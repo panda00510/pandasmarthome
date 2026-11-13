@@ -18,6 +18,7 @@ import HdriEnvironment from './HdriEnvironment'
 // 256×128 的小 HDRI（由 Poly Haven 1K 原图盒式下采样）：环境光只管漫反射与反射，背景是纯色，低清足够
 import hdriUrl from '../assets/hdri/studio_small_09_256.hdr?url'
 import Surroundings from './Surroundings'
+import { flightPath, flightSeconds, easeInOut } from './cameraPath'
 import { startTextures, startProceduralTextures } from './materials'
 
 // 换成自己的模型：在 .env 里设置 VITE_HOUSE_MODEL=/house.glb
@@ -48,12 +49,11 @@ function ViewOffset({ isMobile }) {
   return null
 }
 
-function CameraRig({ views, isMobile }) {
+function CameraRig({ views, isMobile, wallH }) {
   const view = useHA((s) => s.view)
   const setView = useHA((s) => s.setView)
   const controls = useThree((s) => s.controls)
   const camera = useThree((s) => s.camera)
-  const p = useMemo(() => new Vector3(), [])
   const t = useMemo(() => new Vector3(), [])
   // 减少动态：切视角直接到位，不做长缓动（视角条与自动演示都走这里）
   const reduce = useMedia('(prefers-reduced-motion: reduce)')
@@ -72,23 +72,32 @@ function CameraRig({ views, isMobile }) {
     return () => controls.removeEventListener('start', onStart)
   }, [controls, setView])
 
+  // 每次换视角从当前机位起飞一段航线（cameraPath.js：先升过墙顶、再落进房间，不穿墙），到位后不再接管相机
+  const fly = useRef(null)
   useFrame((_, dt) => {
-    if (!view || !controls) return
     const v = views[view]
-    if (!v) return
-    const k = reduce ? 1 : 1 - Math.exp(-3.2 * dt)
-    p.set(...v.pos)
-    t.set(...v.target)
-    camera.position.lerp(p, k)
-    controls.target.lerp(t, k)
-    controls.update()
-    // 房间视角可以给更广的视场角（小房间里 36° 只看得到一张床）；手机本来就是 60°
-    const base = isMobile ? MOBILE_FOV : DESKTOP_FOV
-    const fov = Math.max(base, v.fov ?? base)
-    if (Math.abs(camera.fov - fov) > 0.05) {
-      camera.fov += (fov - camera.fov) * k
-      camera.updateProjectionMatrix()
+    if (!v || !controls) {
+      fly.current = null   // 访客拖动后再点同一个视角，要重新起飞
+      return
     }
+    let f = fly.current
+    if (!f || f.v !== v || f.m !== isMobile) {
+      const path = flightPath(camera.position.toArray(), v.pos, wallH)
+      // 房间视角可以给更广的视场角（小房间里 36° 只看得到一张床）；手机本来就是 60°
+      const base = isMobile ? MOBILE_FOV : DESKTOP_FOV
+      f = fly.current = {
+        v, m: isMobile, path, k: 0, dur: reduce ? 0 : flightSeconds(path.meters),
+        t0: controls.target.clone(), fov0: camera.fov, fov1: Math.max(base, v.fov ?? base),
+      }
+    }
+    if (f.k >= 1) return
+    f.k = f.dur ? Math.min(1, f.k + dt / f.dur) : 1
+    const e = easeInOut(f.k)
+    camera.position.set(...f.path.at(e))
+    controls.target.lerpVectors(f.t0, t.set(...v.target), e)
+    controls.update()
+    camera.fov = f.fov0 + (f.fov1 - f.fov0) * e
+    camera.updateProjectionMatrix()
   })
   return null
 }
@@ -250,7 +259,7 @@ export default function Scene() {
         dampingFactor={0.08}
         panSpeed={0.6}
       />
-      <CameraRig views={views} isMobile={isMobile} />
+      <CameraRig views={views} isMobile={isMobile} wallH={plan.wallH} />
       <ViewOffset isMobile={isMobile} />
 
       <EffectComposer ref={(c) => (composerRef = c)} disableNormalPass multisampling={isMobile ? 0 : 4}>

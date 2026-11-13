@@ -1,5 +1,7 @@
 import assert from 'node:assert/strict'
-import worker from './index.js'
+import { createHash } from 'node:crypto'
+import { readFileSync } from 'node:fs'
+import worker, { cspFor } from './index.js'
 
 const env = { CANONICAL_HOST: 'smartpanda.sg', ASSETS: { fetch: () => new Response('asset') } }
 const get = (url) => worker.fetch(new Request(url), env)
@@ -78,3 +80,31 @@ for (const path of ['/assets/gone-AAAAAAAA.js', '/missing.webp', '/zh/missing.pn
   assert.equal(await res.text(), '', path)
 }
 console.log('404 page ok')
+
+// Content-Security-Policy: the site and the showroom each get their own, on every response.
+const site = (await get('https://smartpanda.sg/zh/guides/x/')).headers.get('content-security-policy')
+const room = (await get('https://smartpanda.sg/showroom/')).headers.get('content-security-policy')
+assert.equal(site, cspFor('/'))
+assert.equal(room, cspFor('/showroom/assets/x.js'))
+assert.notEqual(site, room)
+for (const csp of [site, room]) {
+  for (const part of ["default-src 'self'", "object-src 'none'", "base-uri 'self'", "form-action 'self'", 'frame-ancestors']) {
+    assert.ok(csp.includes(part), part)
+  }
+  assert.doesNotMatch(csp, /script-src[^;]*'unsafe-(inline|eval)'/)
+}
+assert.match(site, /connect-src[^;]*https:\/\/api\.web3forms\.com/)
+assert.match(room, /font-src[^;]*https:\/\/fonts\.gstatic\.com/)
+// Every page stays free of inline scripts (JSON-LD is data and is fine), so 'self' holds.
+const source = (file) => readFileSync(new URL(`../${file}`, import.meta.url), 'utf8')
+for (const tag of source('index.html').match(/<script\b[^>]*>/g)) {
+  assert.match(tag, /\bsrc=|application\/ld\+json/, `inline script in index.html: ${tag}`)
+}
+// The showroom's onload="" handlers must each be allowed by hash.
+const handlers = [...source('showroom/index.html').matchAll(/\son[a-z]+="([^"]*)"/g)].map((m) => m[1])
+assert.ok(handlers.length > 0)
+for (const code of handlers) {
+  const hash = createHash('sha256').update(code).digest('base64')
+  assert.ok(room.includes(`'sha256-${hash}'`), `showroom handler not in CSP: ${code} (sha256-${hash})`)
+}
+console.log('csp ok')

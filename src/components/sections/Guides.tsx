@@ -78,11 +78,22 @@ export function GuidesIndex() {
   const { t, lang } = useI18n()
   const all = guidesIn(lang)
   const featured = FEATURED.flatMap((slug) => all.filter((guide) => guide.slug === slug))
-  const [topic, setTopic] = useState<string>('all')
+  // The prerender has no window, so its HTML lists every guide; a #topic in the
+  // address narrows the list once the browser renders (createRoot, no hydration).
+  const [topic, setTopic] = useState<string>(() => {
+    const id = typeof window === 'undefined' ? '' : window.location.hash.slice(1)
+    return (TOPIC_IDS as readonly string[]).includes(id) ? id : 'all'
+  })
   const [expanded, setExpanded] = useState(false)
 
   const shown = all.filter((guide) => topic === 'all' || guide.topic === topic)
   const topics = TOPIC_IDS.filter((id) => all.some((guide) => guide.topic === id))
+
+  const choose = (id: string) => {
+    setTopic(id)
+    setExpanded(false)
+    history.replaceState(null, '', id === 'all' ? window.location.pathname + window.location.search : `#${id}`)
+  }
 
   return (
     <section className="shell pt-10 pb-16 lg:pt-14 lg:pb-24">
@@ -121,10 +132,7 @@ export function GuidesIndex() {
             key={id}
             type="button"
             aria-pressed={topic === id}
-            onClick={() => {
-              setTopic(id)
-              setExpanded(false)
-            }}
+            onClick={() => choose(id)}
             className={`inline-flex min-h-11 cursor-pointer items-center rounded-full px-4 text-sm font-medium transition-colors ${
               topic === id
                 ? 'bg-brand text-white'

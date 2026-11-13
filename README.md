@@ -113,17 +113,22 @@ and `lang`; nothing from the form and nothing about the visitor is ever sent.
 
 | Event | When | Extra props |
 | --- | --- | --- |
-| `whatsapp_click` | any `wa.me` link | `source`: `floating`, `contact`, `hero`, `footer`, `products`, `hardware`, `signage`, `software`, `guide`, `solution`, `home`, `page` (anything else), or `data-track-source` |
+| `whatsapp_click` | any `wa.me` link | `source`: `floating`, `contact`, `hero`, `footer`, `products`, `hardware`, `signage`, `software`, `guide`, `solution`, `home`, `plan` (plan starter), `bar` (phone bottom bar), `page` (anything else), or `data-track-source` |
 | `email_click` / `tel_click` | any `mailto:` / `tel:` link | — |
 | `showroom_open` | any link to `/showroom/` | — |
 | `nav_cta_click` | the header "Book a consultation" button | — |
 | `lang_switch` | the EN / 中文 toggle | `to` |
 | `contact_form_submit` | the form was accepted by the endpoint, or handed to the mail app | `method`: `endpoint` / `mailto` |
 | `contact_form_error` | the endpoint rejected or failed | — |
+| `plan_starter_complete` | the homepage plan starter ("Show my starting list") | `home`: `hdb` / `condo` / `landed`; `rooms`: `1-2` / `3` / `4+`; `priorities`: comma-separated ids (`lighting`, `aircon`, `curtains`, `security`, `safety`, `care`, `voice`, `energy`) |
 
-The site sends no CSP header, so nothing needs allow-listing; if one is
-added, include the Plausible script host and/or `www.googletagmanager.com`
-plus the matching `connect-src`.
+The Worker sends a Content-Security-Policy (see "Deployment") that already
+allows Plausible (`plausible.io`), GA4, Cloudflare Web Analytics and the
+Web3Forms endpoint. **A custom `VITE_PLAUSIBLE_SRC` host, or a
+`VITE_FORM_ENDPOINT` other than Web3Forms (such as the Telegram relay
+Worker), must be added to `script-src` / `connect-src` in `worker/index.js`
+first** — otherwise the browser blocks it, the enquiry form fails quietly,
+and the weekly server-side form check will not notice.
 
 ### The enquiry form
 
@@ -277,6 +282,7 @@ plan without making any request; CI runs it next to the Worker self-checks.
 AGENTS.md            working rules for coding agents (Claude Code / Codex), in Chinese
 public/              favicon, social card, app icons, manifest
   og/                per-page share cards, <key>-<lang>.png (npm run og, committed)
+    guides/          one card per guide, <slug>-<lang>.jpg (npm run og, committed)
   media/             showroom clip + poster (scripts/record-showroom.mjs, committed)
 scripts/make-og.mjs  rasterises the brand SVGs into PNGs (npm run og)
 scripts/prerender.mjs  writes one static HTML file per page into dist/
@@ -318,6 +324,7 @@ src/
       Home.tsx       the homepage, section by section
       NotFound.tsx   the 404 page
       Glossary.tsx   the /glossary/ page (+ its DefinedTermSet JSON-LD)
+      Planner.tsx    homepage "plan starter": three questions → device groups from products.install (copy in content `planner`)
     ui.tsx           Button, SectionHeading, Chip, PhotoTag
     Seo.tsx          head sync + JSON-LD structured data
   entry-server.tsx   prerender entry: routes, sitemap, robots, llms.txt
@@ -389,10 +396,19 @@ Each main page has its own 1200×630 card in `public/og/<key>-<lang>.png`
 How it works, the Chinese homepage, and an English one for the showroom).
 The text, `og:image:alt` and the lookup live in `src/config/ogImages.ts`;
 the prerender and `Seo.tsx` both use `ogImageFor(lang, path)`, matched on the
-first path segment, so `/solutions/…` sub-pages and every guide share their
-section's card. Anything unmatched, and the English homepage, falls back to
-`/og-image.png`. The showroom's card is referenced directly in
-`showroom/index.html`.
+first path segment, so `/solutions/…` sub-pages share their section's card.
+Anything unmatched, and the English homepage, falls back to `/og-image.png`.
+The showroom's card is referenced directly in `showroom/index.html`;
+`showroom-zh.png` is generated but not used yet (link previews need a
+distinct Chinese URL such as `/showroom/zh/`, which does not exist).
+
+Every guide has its own card, `public/og/guides/<slug>-<lang>.jpg`.
+`npm run og` draws it from the guide's `heading` (or `title`) front matter,
+wrapping and shrinking the title to fit; Chinese titles break at
+punctuation. These are JPEG (~30–36 KB each) because palette PNGs went over
+60 KB and banded in the glow. A guide without a card falls back to the
+Guides card and the build prints a warning. **Re-run `npm run og` after
+adding a guide or changing a heading**, look at the new card, and commit.
 
 **The cards are generated locally on macOS and committed — CI never renders
 them.** The Chinese cards use PingFang SC, which Ubuntu runners do not have;
@@ -403,8 +419,9 @@ each changed PNG to check for overflow and missing glyphs, then commit it
 
 ### Showroom clip
 
-The homepage showroom band plays a 12 s loop recorded from the showroom's own
-auto demo (come home → push into the living room → movie scene):
+The homepage showroom band plays a 13 s loop recorded from the showroom's own
+auto demo (dark flat → come home, lights on → fly into the living room over
+the walls → movie scene):
 `public/media/showroom-demo.mp4` (H.264, ≤ 1.2 MB), `showroom-demo.webm`
 (VP9, ≤ 900 KB) and `showroom-demo-poster.webp` (≤ 60 KB), all 1280×720,
 30 fps, no audio. Like the share cards they are **recorded locally on macOS
@@ -416,14 +433,13 @@ node scripts/record-showroom.mjs   # builds showroom/, serves it on :4178, recor
 
 The script opens `?plan=4room&demo=1&clean=1` (`clean=1` is focus mode without
 hotspots or the exit button) in a headed Chromium, captures it with the
-DevTools screencast, cuts on the demo's step changes (and dissolves over the
-moment the camera flies through a wall), then encodes with ffmpeg. It needs
+DevTools screencast, cuts on the demo's step changes into one continuous take, then encodes with ffmpeg. It needs
 no npm dependency: Playwright is taken from the repo if installed, else from
 the npx cache that the Playwright MCP server leaves (run
 `npx --yes @playwright/mcp@latest --help` once if it is missing), or from
 `PLAYWRIGHT_CORE=/path/to/playwright-core`; Chromium from
 `~/Library/Caches/ms-playwright` (or `CHROMIUM=`). Quality knobs:
-`CRF_H264` (23), `CRF_VP9` (34), `POSTER_AT` (5.2 s), `POSTER_Q` (80),
+`CRF_H264` (26), `CRF_VP9` (41), `POSTER_AT` (6.6 s), `POSTER_Q` (80),
 `SCALE` (`1280:720`). Re-record whenever the showroom's look or demo changes,
 then watch the clip and check the sizes it prints.
 
@@ -595,8 +611,12 @@ missing files with HTML too. GitHub Pages serves the root `404.html` by
 itself (in English; a `/zh/…` miss turns Chinese once the script runs). The
 script does the
 host and moved-page 301s and adds the security headers (HSTS,
-`X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy`) to every
-response — in code rather than `public/_headers`, because with
+`X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy` and a
+Content-Security-Policy) to every response. The CSP is enforced, exists only
+on Cloudflare (the Pages mirror has no Worker), and `/showroom/` gets its own
+policy with Google Fonts and a hash for the one `onload` handler in
+`showroom/index.html` (the self-check recomputes that hash). To roll back,
+rename the header to `Content-Security-Policy-Report-Only`. All of this is in code rather than `public/_headers`, because with
 `run_worker_first` the response comes from the Worker. Self-check:
 `node worker/index.test.mjs`.
 

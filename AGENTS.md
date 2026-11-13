@@ -40,6 +40,7 @@ npm run og                                           # 重新生成 favicon / �
 node serverless/telegram-relay.test.mjs              # 中转 Worker 自检
 node worker/index.test.mjs                           # 站点 Worker 自检
 node scripts/check-form.mjs --dry                    # 每周表单自检的解析自测（不发请求）
+(cd showroom && node src/three/cameraPath.test.mjs)  # 样板间镜头不穿墙自检（三个户型）
 ```
 
 ## 部署
@@ -56,12 +57,15 @@ node scripts/check-form.mjs --dry                    # 每周表单自检的解�
 - 指南 / 专题页是 `src/content/guides/`、`src/content/pages/` 下的 `<slug>.en.md` + `.zh.md`，两种语言都必须有。
 - 术语表词条在 `src/content/glossary.en.ts` / `glossary.zh.ts`（只在 /glossary/ 加载；两边 id 必须一致、链接必须是站内真实页面，构建会检查）。每条只复述指南里已有的说法。
 - 所有 wa.me 链接走 `src/lib/whatsapp.ts`；各页预填开场白在 content 的 `whatsapp` 块，不带访客个人信息。
+- 首页需求小问卷的文案在 content 的 `planner` 块；只指向 `products.install` 的设备类别，不写价格、数量；WhatsApp 消息只带访客的选择。
+- 指南分类（装修前 / 设备选型 / 协议与平台 / 信息屏与定制）在 `src/content/guides.ts` 的 `TOPICS`，新指南要登记。
 - 例外：分享卡的文字与 alt 在 `src/config/ogImages.ts`（生成脚本要直接 import，必须自包含）。
 
 ## 红线
 
 - **不编造**价格、库存、客户、评价、案例、认证、奖项、合作关系、成立时间、联系方式。要加就带证据、有意识地加。
 - 联系方式只来自 `VITE_*` 环境变量；没配就不显示，绝不放占位值。
+- Worker 发 CSP（`worker/index.js`）。换表单端点（如 Telegram 中转）或统计脚本域名前，**先在 CSP 里放行**，否则表单会静默失败，每周自检也发现不了。
 - `VITE_*` 会被内联进前端包，**绝不放密钥**。`VITE_FORM_ACCESS_KEY` 是公开提交 key，例外。
 - Telegram bot token 只在 Worker 里，前端永远不直接调 Telegram API。
 - 结构化数据不写虚假 `review` / `aggregateRating`。
@@ -73,7 +77,7 @@ node scripts/check-form.mjs --dry                    # 每周表单自检的解�
 - bamboo 绿是唯一强调色；`ember` 只用于灯光 / 舒适度语境。设计令牌全在 `src/index.css`。
 - 熊猫标识几何**只在** `src/components/brand/pandaPath.ts`；favicon、og-image.svg、分享卡都由 `npm run og` 从它生成，别手抄 path、别手改 `public/favicon.svg`。熊猫只用于 logo / favicon / 分享卡。
 - 图库照片必须标明 illustrative（`PhotoTag` + alt 以 "Illustrative photo" 开头），不能冒充本公司案例。
-- 分享卡（`public/og/*.png`）在 macOS 本机生成并**提交入库**，CI 不生成（Ubuntu 无苹方，中文会缺字）。改后逐张看图，每张 ≤ 60 KB。
+- 分享卡（`public/og/*.png`）在 macOS 本机生成并**提交入库**，CI 不生成（Ubuntu 无苹方，中文会缺字）。改后逐张看图，每张 ≤ 60 KB。每篇指南另有一张 `public/og/guides/<slug>-<lang>.jpg`，由 `npm run og` 从 front matter 的标题生成；新增指南或改标题后要重跑并提交。
 
 ## 样板间约定（详见 showroom/README.md）
 
@@ -131,11 +135,12 @@ node scripts/check-form.mjs --dry                    # 每周表单自检的解�
 - 通读 2026-11-13 发布的 5 篇指南、各指南开头的要点，以及硬件定制 / 信息屏 / 关于我们的中文文案。
   HDB 装修那篇里 "Directory of Renovation Contractors" 的中文名是自译，需核对。
 - 通读 2026-11-13 新增的两篇指南（信息屏选型、ESP32 定制还是买现成）和可打印清单 `/renovation-checklist/`（打印一次看看效果）。
+- 通读 2026-11-13 新增的首页需求小问卷（content 的 `planner` 块，中英文）并在手机上试一次；核对指南的四个分类是否合理。
 - 通读 2026-11-13 新增的术语表 `/glossary/`（中英 40 条）与各页 WhatsApp 预填开场白（content 的 `whatsapp` 块）。
 - 另一台电脑若有未推送的本地改动：先 `git pull`，有冲突再处理。
 
 **技术尾项（不急）**
 - Dependabot 的 PR（`.github/dependabot.yml`）需要站长或 Claude 审核合并；合并即部署，先等 CI 通过。deploy.yml 里 `actions/checkout@v4`、`actions/setup-node@v4` 的 Node 20 弃用提示留给 Dependabot 提升级 PR。
-- 指南每篇文章没有单独的分享图（共用一张）；样板间只有英文分享图。
+- 样板间中文分享图 `public/og/showroom-zh.png` 已生成但未启用：需要一个独立的中文地址（如 `/showroom/zh/`，改 `build:all`、样板间语言判断和 5 处链接）。
+- 首页短片后半段（约 8 秒）停在观影场景不动，可再剪短或加一个镜头。
 - 样板间再次访问约 1.8 秒离开加载屏，目标 1.5 秒。
-- 未上 CSP；上的时候按 README "Conversion events" 一节放行统计域名。

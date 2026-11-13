@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
-import { MessageCircle } from 'lucide-react'
+import { Box, MessageCircle } from 'lucide-react'
 import { Footer } from './components/layout/Footer'
 import { Header } from './components/layout/Header'
 import { Seo } from './components/Seo'
 import { NotFound } from './components/sections/NotFound'
 import { findGuide, hubOf, pagePaths, type Guide } from './content/guides'
+import { Button } from './components/ui'
 import { useReveal } from './hooks/motion'
 import { useI18n } from './i18n/context'
 import { pageWhatsappMessage, whatsappHref } from './lib/whatsapp'
@@ -28,6 +29,16 @@ export default function App() {
     watcher.observe(target)
     return () => watcher.disconnect()
   }, [path])
+
+  // Phones: a bottom bar once the first screen has scrolled away (CSS hides it from 640px and in print).
+  const [pastFirstScreen, setPastFirstScreen] = useState(false)
+  useEffect(() => {
+    const check = () => setPastFirstScreen(window.scrollY > window.innerHeight)
+    check()
+    window.addEventListener('scroll', check, { passive: true })
+    return () => window.removeEventListener('scroll', check)
+  }, [])
+  const bar = pastFirstScreen && !atContact && !notFound
 
   return (
     <>
@@ -57,13 +68,31 @@ export default function App() {
           rel="noopener noreferrer"
           aria-label={t.contact.whatsappCta}
           data-track-source="floating"
-          className="fixed right-4 bottom-4 z-40 inline-flex size-14 items-center justify-center gap-2 rounded-full bg-[#25d366] text-ink-950 shadow-lift transition-transform motion-safe:hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink-950 motion-reduce:transition-none sm:right-6 sm:bottom-6 sm:size-auto sm:px-5 sm:py-3.5"
+          className={`${bar ? 'max-sm:hidden ' : ''}fixed right-4 bottom-4 z-40 inline-flex size-14 items-center justify-center gap-2 rounded-full bg-[#25d366] text-ink-950 shadow-lift transition-transform motion-safe:hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink-950 motion-reduce:transition-none sm:right-6 sm:bottom-6 sm:size-auto sm:px-5 sm:py-3.5`}
         >
           <MessageCircle size={24} aria-hidden="true" />
           <span aria-hidden="true" className="hidden text-sm font-semibold sm:inline">
             {t.contact.whatsappCta}
           </span>
         </a>
+      ) : null}
+
+      {bar ? (
+        <nav
+          aria-label={t.a11y.quickActions}
+          className="fixed inset-x-0 bottom-0 z-40 flex gap-2 border-t border-ink-200 bg-paper/95 px-4 pt-2 pb-[calc(0.5rem+env(safe-area-inset-bottom))] backdrop-blur-sm sm:hidden print:hidden"
+        >
+          {whatsapp ? (
+            <Button as="a" href={whatsapp} target="_blank" rel="noopener noreferrer" data-track-source="bar" size="sm" className="flex-1">
+              <MessageCircle size={16} aria-hidden="true" />
+              WhatsApp
+            </Button>
+          ) : null}
+          <Button as="a" href={`${import.meta.env.BASE_URL}showroom/?lang=${lang}`} variant="secondary" size="sm" className="flex-1 bg-paper">
+            <Box size={16} aria-hidden="true" />
+            {t.nav.showroom}
+          </Button>
+        </nav>
       ) : null}
     </>
   )
