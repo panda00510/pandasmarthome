@@ -303,6 +303,14 @@ export function Seo() {
               itemOffered: { '@type': 'Service', name: group.title, description: group.body },
             })),
           },
+          // Indicative starting prices per level of custom, as on the page.
+          offers: t.hardware.tiers.map((tier) => ({
+            '@type': 'Offer',
+            name: tier.title,
+            description: tier.body,
+            priceCurrency: 'SGD',
+            priceSpecification: { '@type': 'PriceSpecification', priceCurrency: 'SGD', minPrice: tier.priceSgd },
+          })),
         }
       : null
 

@@ -206,7 +206,10 @@ export type Content = {
     groupsTitle: string
     groups: { id: string; title: string; body: string; items: string[] }[]
     tiersTitle: string
-    tiers: { title: string; body: string }[]
+    /** `priceSgd` is an indicative starting price, shown as "from S$X". */
+    tiers: { title: string; body: string; priceSgd: number }[]
+    tierPriceLabel: string
+    tierPriceFrom: string
     /** Prototype / small-batch and IMDA note under the tiers. */
     tiersNote: string
     processTitle: string

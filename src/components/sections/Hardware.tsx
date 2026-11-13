@@ -165,6 +165,12 @@ export function HardwarePage() {
                   {tier.title}
                 </h3>
                 <p className="mt-2 text-[0.9375rem] leading-relaxed text-ink-600">{tier.body}</p>
+                <p className="mt-5 border-t border-ink-200/70 pt-4">
+                  <span className="block text-xs font-semibold tracking-wide text-ink-500 uppercase">{h.tierPriceLabel}</span>
+                  <span className="numeral mt-1 block text-[1.375rem] font-semibold tracking-[-0.02em] text-ink-950">
+                    {h.tierPriceFrom.replaceAll('{amount}', `S$${tier.priceSgd.toLocaleString('en-SG')}`)}
+                  </span>
+                </p>
               </li>
             ))}
           </ol>

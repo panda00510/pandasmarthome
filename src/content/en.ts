@@ -516,16 +516,21 @@ export const en: Content = {
       {
         title: 'New firmware or interface for an existing device',
         body: 'Keep the hardware you have and change what it does or how it looks.',
+        priceSgd: 150,
       },
       {
         title: 'Off-the-shelf board with custom firmware',
         body: 'A proven development board with firmware written for the job.',
+        priceSgd: 350,
       },
       {
         title: 'A prototype from scratch',
         body: 'When nothing existing fits: a prototype designed around the job, tried and revised with you.',
+        priceSgd: 800,
       },
     ],
+    tierPriceLabel: 'Indicative price',
+    tierPriceFrom: 'from {amount}',
     tiersNote:
       'These are prototypes and one-off custom builds, not certified mass-produced products. If a device with a radio transmitter is to be sold commercially, IMDA requirements apply; we assess that once you have confirmed how the device will be used.',
     processTitle: 'How a build runs',
@@ -538,7 +543,7 @@ export const en: Content = {
     ],
     priceTitle: 'Pricing',
     priceBody:
-      'Every build is different, so there is no list price. Any starting figure we mention is indicative; the price you pay is written in the quote before work starts.',
+      'Custom builds start from S$150 for new firmware on a device you already have, S$350 for an off-the-shelf board with custom firmware, and S$800 for a prototype from scratch. These are indicative starting prices; parts, enclosure and scope change the total, and the price you pay is written in the quote before work starts.',
     pairTitle: 'Device and software together',
     pairBody:
       'A device can come with the software around it: a back office, a mini-program or a dashboard. Both sides are designed, quoted and handed over together.',
