@@ -50,6 +50,6 @@ Wiring in walls and switch boxes should be done by a licensed electrician. Renov
 
 ## A simple way to start
 
-Walk through each room and note three things: where you want control, where you need power, and where you need a network cable. That one page gives your contractor and your smart home designer the same picture.
+Walk through each room and note three things: where you want control, where you need power, and where you need a network cable. That one page gives your contractor and your smart home designer the same picture. Our [printable renovation checklist](/renovation-checklist/) is that page, ready to fill in.
 
 Planning a renovation and unsure what to prepare? [Tell us your flat type and layout](/#contact) and we will help you build a checklist for your contractor.

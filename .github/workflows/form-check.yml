@@ -1,0 +1,44 @@
+name: Weekly form check
+
+# Checks that the LIVE enquiry form can still reach its backend, so a broken
+# form service does not go unnoticed for weeks. What it requests, and why none
+# of it lands in the inbox by default: scripts/check-form.mjs and README
+# "Weekly form check". A failed run is the alert: GitHub emails it (see README).
+
+on:
+  schedule:
+    # Monday 09:00 Singapore time (UTC+8, no daylight saving) = Monday 01:00 UTC.
+    # Scheduled runs can start some minutes late when Actions is busy.
+    - cron: '0 1 * * 1'
+  workflow_dispatch:
+    inputs:
+      real_submit:
+        description: 'Also send one real "[Automated check]" submission (emails the inbox)'
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Check the live form, pages and WhatsApp link
+        env:
+          SITE_URL: ${{ vars.VITE_SITE_URL || 'https://smartpanda.sg' }}
+          # Expected values; the script compares them with what the live bundle contains.
+          EXPECTED_ENDPOINT: ${{ vars.VITE_FORM_ENDPOINT }}
+          EXPECTED_WHATSAPP: ${{ vars.VITE_WHATSAPP_NUMBER }}
+          # Off unless the run was started with real_submit ticked, or the
+          # repository variable FORM_CHECK_REAL_SUBMIT is "true".
+          REAL_SUBMIT: ${{ inputs.real_submit && 'true' || vars.FORM_CHECK_REAL_SUBMIT }}
+          FORM_ACCESS_KEY: ${{ vars.VITE_FORM_ACCESS_KEY }}
+        run: node scripts/check-form.mjs

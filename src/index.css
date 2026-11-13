@@ -448,3 +448,64 @@
     transform: none;
   }
 }
+
+/* ---- Printable checklist (/renovation-checklist/) ------------------------
+   A4 portrait, black on white. Only the sheet prints: header, footer, the
+   floating WhatsApp button and the skip link are hidden. */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 12mm 12mm 14mm;
+  }
+  body:has(.checklist) {
+    background: #fff;
+  }
+  body:has(.checklist) #root > :not(main) {
+    display: none !important;
+  }
+  .checklist {
+    max-width: none;
+    padding: 0;
+    font-size: 9.5pt;
+    color: #000;
+  }
+  .checklist,
+  .checklist * {
+    color: #000 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    print-color-adjust: exact;
+  }
+  .checklist h1 {
+    margin-top: 0;
+    font-size: 17pt;
+  }
+  .checklist p,
+  .checklist td,
+  .checklist th,
+  .checklist li {
+    font-size: 9.5pt;
+  }
+  .checklist a {
+    text-decoration: none;
+  }
+  .checklist tr,
+  .checklist .final,
+  .checklist li {
+    break-inside: avoid;
+  }
+  .checklist thead {
+    display: table-header-group;
+  }
+  .checklist tr,
+  .checklist .write-in,
+  .checklist dd {
+    border-color: #777 !important;
+  }
+  .checklist .final {
+    border: 1px solid #777;
+  }
+  .checklist input[type='checkbox'] {
+    accent-color: #000;
+  }
+}

@@ -10,6 +10,7 @@ import CalibrationBar from './ui/CalibrationBar'
 import Assess from './ui/Assess'
 import Loader from './ui/Loader'
 import PlanSwitch from './ui/PlanSwitch'
+import Demo from './ui/Demo'
 import Icon from './ui/icons'
 import { useT } from './i18n'
 
@@ -41,6 +42,7 @@ export default function App() {
       <ViewRail />
       <Assess />
       <Console />
+      <Demo />
       <ControlPanel />
       <EventLog />
       <CalibrationBar />

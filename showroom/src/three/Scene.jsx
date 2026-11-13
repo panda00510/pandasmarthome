@@ -5,7 +5,7 @@ import { EffectComposer, Bloom, Vignette, N8AO, ToneMapping } from '@react-three
 import { ToneMappingMode } from 'postprocessing'
 import { Vector3, Color, Fog } from 'three'
 import { useHA, usePlan } from '../ha/store'
-import { useIsMobile } from '../hooks'
+import { useIsMobile, useMedia } from '../hooks'
 import Shell from './Shell'
 import Furniture from './Furniture'
 import Fixtures from './Fixtures'
@@ -55,6 +55,8 @@ function CameraRig({ views, isMobile }) {
   const camera = useThree((s) => s.camera)
   const p = useMemo(() => new Vector3(), [])
   const t = useMemo(() => new Vector3(), [])
+  // 减少动态：切视角直接到位，不做长缓动（视角条与自动演示都走这里）
+  const reduce = useMedia('(prefers-reduced-motion: reduce)')
 
   // 竖屏画幅窄得多，换更大的视场角才装得下整套户型
   useEffect(() => {
@@ -74,7 +76,7 @@ function CameraRig({ views, isMobile }) {
     if (!view || !controls) return
     const v = views[view]
     if (!v) return
-    const k = 1 - Math.exp(-3.2 * dt)
+    const k = reduce ? 1 : 1 - Math.exp(-3.2 * dt)
     p.set(...v.pos)
     t.set(...v.target)
     camera.position.lerp(p, k)

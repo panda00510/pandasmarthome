@@ -57,7 +57,7 @@ const files = import.meta.glob<string>(['./guides/*.md', './pages/*.md'], {
 const bodies = import.meta.glob<string>(['./guides/*.md', './pages/*.md'], { query: '?raw', import: 'default' })
 
 /** Filter groups on /guides/. A guide without an entry falls under "start". */
-export const TOPIC_IDS = ['start', 'renovation', 'energy', 'care', 'security'] as const
+export const TOPIC_IDS = ['start', 'renovation', 'energy', 'care', 'security', 'business'] as const
 const TOPICS: Record<string, (typeof TOPIC_IDS)[number]> = {
   'upgrade-existing-home-smart': 'start',
   'smart-home-for-renters': 'start',
@@ -84,6 +84,8 @@ const TOPICS: Record<string, (typeof TOPIC_IDS)[number]> = {
   'condo-smart-home-upgrade-cost-factors': 'renovation',
   'singapore-humidity-mould-aircon-dry-mode-automation': 'security',
   'esp32-ai-voice-assistant-what-it-can-do': 'start',
+  'digital-signage-small-office-shop-singapore': 'business',
+  'custom-esp32-device-or-off-the-shelf': 'business',
 }
 
 /** Shown first on /guides/: one main pick, then two. */
@@ -227,6 +229,7 @@ export const pagePaths = [
   'software/',
   'custom-hardware/',
   'signage/',
+  'renovation-checklist/',
   ...guidesIn('en').map((guide) => guide.path),
   ...pagesIn('en').map((page) => page.path),
   ...HUBS.map((hub) => `${hub}/`),
@@ -269,6 +272,9 @@ export function pageMeta(lang: Lang, path: string) {
   }
   if (path === 'signage/') {
     return { title: t.signage.metaTitle, description: t.signage.metaDescription, guide: null }
+  }
+  if (path === 'renovation-checklist/') {
+    return { title: t.checklist.metaTitle, description: t.checklist.metaDescription, guide: null }
   }
   if (path && !pagePaths.includes(path)) {
     return { title: t.notFound.metaTitle, description: t.notFound.metaDescription, guide: null }

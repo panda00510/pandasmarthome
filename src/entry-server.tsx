@@ -8,6 +8,7 @@ import { zh } from './content/zh'
 import { fillGuideBodies, findGuide, guidePath, guidesIn, latestGuideUpdate, pageMeta, pagePaths, pagesIn } from './content/guides'
 import { dictionaries, langPath, type Lang } from './i18n/context'
 import { LanguageProvider } from './i18n/LanguageProvider'
+import * as Checklist from './components/sections/Checklist'
 import * as Guides from './components/sections/Guides'
 import * as Hardware from './components/sections/Hardware'
 import * as Home from './components/sections/Home'
@@ -20,7 +21,7 @@ import { viewFiles, viewOf, views } from './views'
 // The browser loads copy, page chunks and article bodies on demand (main.tsx);
 // the prerender has everything up front, so render() stays synchronous.
 Object.assign(dictionaries, { en, zh })
-Object.assign(views, { guides: Guides, hardware: Hardware, home: Home, hub: Hub, products: Products, signage: Signage, software: Software })
+Object.assign(views, { checklist: Checklist, guides: Guides, hardware: Hardware, home: Home, hub: Hub, products: Products, signage: Signage, software: Software })
 fillGuideBodies(
   Object.fromEntries(
     Object.entries(

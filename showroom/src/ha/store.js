@@ -217,6 +217,7 @@ export const useHA = create((set, get) => ({
   sceneReady: false,       // 场景出了第一帧；加载屏据此淡出，切户型时重置
   panelTab: 'home',        // 触摸屏面板当前标签：home 或区域 key
   load: { done: 0, total: 0 },   // 加载屏进度：场景块 + HDRI + 贴图，按文件计
+  demo: { status: 'idle', step: 0 },   // 自动演示：idle / running / end / control，由 src/demo.js 驱动
 
   setSelected: (id) => set({ selected: id }),
   setShowLabels: (v) => set({ showLabels: v }),

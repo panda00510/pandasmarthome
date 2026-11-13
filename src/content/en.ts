@@ -1276,6 +1276,7 @@ export const en: Content = {
       energy: 'Energy and comfort',
       care: 'Care at home',
       security: 'Security and safety',
+      business: 'Business and custom',
     },
     allTopics: 'All topics',
     featured: 'Start here',
@@ -1286,6 +1287,120 @@ export const en: Content = {
     companyTitle: 'Company details',
     companyName: 'Name',
     registration: 'Registration no. (UEN)',
+  },
+
+  checklist: {
+    metaTitle: 'Printable Smart Home Renovation Checklist | Panda Smart Home',
+    metaDescription:
+      'A one-page list for your ID and electrician: control, power and network for each room, plus five checks before the walls and ceilings close.',
+    eyebrow: 'Printable checklist',
+    title: 'Smart home checklist before renovation',
+    lead: 'Give this page to your ID or contractor and your electrician: one row per room for control, power and network, filled in before the wiring quote and checked again before the walls and ceilings close.',
+    print: 'Print or save as PDF',
+    printNote: 'Tick the boxes on paper. Nothing you tick on screen is saved.',
+    fields: ['Home / unit', 'ID or contractor', 'Electrical worker', 'Date'],
+    columns: {
+      room: 'Room',
+      control: 'Control: switches, neutral wires, buttons',
+      power: 'Power: points for curtains, door, hub',
+      network: 'Network: LAN points, access points',
+    },
+    rows: [
+      {
+        room: 'Living and dining',
+        control: [
+          'Switch positions where people reach for the light',
+          'Neutral wire at each switch box you may automate',
+          'Scene button beside the window for the curtains',
+          'Aircon: controller can see the indoor unit, or a wired adapter',
+        ],
+        power: ['Power point at the curtain box (wired motor)', 'Power where the hub or access point will sit'],
+        network: ['LAN cable to the TV and the hub', 'Access point location'],
+      },
+      {
+        room: 'Master bedroom',
+        control: [
+          'Switches on both sides of the bed',
+          'Neutral wire at each switch box you may automate',
+          'Aircon: controller can see the indoor unit',
+        ],
+        power: [
+          'Power point at the curtain box (wired motor)',
+          'Curtain box deep enough for track, motor and a second layer',
+        ],
+        network: ['Wi-Fi checked with a phone where devices will sit', 'LAN cable if an access point goes here'],
+      },
+      {
+        room: 'Other bedrooms and study',
+        control: [
+          'Bedside switch position',
+          'Neutral wire at each switch box you may automate',
+          'Aircon: controller can see the indoor unit',
+        ],
+        power: ['Power point at the curtain box (wired motor)'],
+        network: ['LAN cable to the study', 'Wi-Fi checked where devices will sit'],
+      },
+      {
+        room: 'Kitchen',
+        control: ['Switch positions', 'Neutral wire at each switch box you may automate'],
+        power: [],
+        network: ['Wi-Fi checked where devices will sit'],
+      },
+      {
+        room: 'Bathrooms',
+        control: ['Switch positions', 'Neutral wire at each switch box you may automate'],
+        power: [],
+        network: [],
+      },
+      {
+        room: 'Entrance and main door',
+        control: [
+          'Switch at the entrance',
+          'Smart lock: door material, thickness and existing lock checked',
+          'Mechanical key override kept',
+          'A place to mount the door sensor',
+        ],
+        power: ['Power point near the main door'],
+        network: ['Wi-Fi checked at the door (metal doors weaken it)'],
+      },
+      {
+        room: 'Service yard',
+        control: ['Switch positions'],
+        power: [],
+        network: ['Network point: can it go where coverage reaches the bedrooms?'],
+      },
+      {
+        room: 'Distribution board and data point',
+        control: [
+          'Fixed wiring by a licensed electrical worker',
+          'Resale flat: existing wiring checked before new work',
+        ],
+        power: ['Space in the board for circuit-level energy monitoring'],
+        network: ['Router out in the open, not shut in a cupboard', 'Wired connection for the hub'],
+      },
+    ],
+    finalTitle: 'Check again before the walls and ceilings close',
+    final: [
+      'Every switch box, cable and power point is where this list says',
+      'LAN cables are labelled at both ends',
+      'Curtain box depth confirmed for any motorised track',
+      'Access panels left for anything above the ceiling; hubs and power supplies can be reached',
+      'The aircon controller can still see each indoor unit once the cabinets are in',
+    ],
+    notes: [
+      "Fixed electrical work is for a licensed electrical worker. Renovation rules for HDB flats and condominiums vary: read HDB's current guidelines, and ask your contractor which works need a permit.",
+      'Prepare the wiring and network first; choose devices once the layout is final.',
+      'Whatever you choose, a wall switch should still work as a plain switch if the app, hub or internet is down.',
+    ],
+    sourcesTitle: 'Where this list comes from',
+    sources: [
+      { label: 'Planning a smart home before renovation', path: 'guides/renovation-smart-home-prep/' },
+      { label: 'Smart home during an HDB renovation', path: 'guides/smart-home-during-hdb-renovation/' },
+      { label: 'Smart switches without a neutral wire', path: 'guides/no-neutral-smart-switches/' },
+      { label: 'Wi-Fi for a smart home', path: 'guides/wifi-for-smart-home/' },
+      { label: 'Motorised curtains', path: 'guides/motorised-curtains-guide/' },
+      { label: 'Smart door locks', path: 'guides/smart-door-lock-guide/' },
+    ],
   },
 
   notFound: {

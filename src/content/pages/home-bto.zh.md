@@ -2,7 +2,7 @@
 title: BTO 组屋的智能家居规划
 description: 墙还没封上的时候，是准备智能家居最省事的时间。我们在 BTO 户型里会看哪些地方，以及怎么和你的室内设计师、电工配合。
 published: 2026-11-06
-updated: 2026-11-06
+updated: 2026-11-13
 path: homes/bto-smart-home/
 related: renovation-smart-home-prep, no-neutral-smart-switches, wifi-for-smart-home, motorised-curtains-guide
 ---
@@ -38,4 +38,4 @@ related: renovation-smart-home-prep, no-neutral-smart-switches, wifi-for-smart-h
 
 把户型图和你想控制的东西发给我们，我们整理成一份简短的清单，供你去和装修队沟通。
 
-正在规划 BTO 装修？[说说你家的户型和布局](/zh/#contact)，我们帮你列一份给装修队的清单。想看更详细的清单，可以读[装修前怎么为智能家居做准备](/zh/guides/renovation-smart-home-prep/)。
+正在规划 BTO 装修？[说说你家的户型和布局](/zh/#contact)，我们帮你列一份给装修队的清单。想看更详细的清单，可以读[装修前怎么为智能家居做准备](/zh/guides/renovation-smart-home-prep/)，或[打印一页清单](/zh/renovation-checklist/)交给设计师和电工。

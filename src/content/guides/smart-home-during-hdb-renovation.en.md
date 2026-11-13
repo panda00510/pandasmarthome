@@ -77,6 +77,6 @@ Choose the approach, not every product. Knowing whether you want motorised curta
 
 ## A simple way to start
 
-Write one page per room with three lines: control, power, network. Give it to your ID before the wiring quote and check it again before the ceilings close.
+Write one page per room with three lines: control, power, network. Give it to your ID before the wiring quote and check it again before the ceilings close. You can [print our one-page checklist](/renovation-checklist/) and fill it in.
 
 Renovating an HDB flat? [Tell us your flat type and renovation stage](/#contact) and we will help you prepare a list your contractor can work from.

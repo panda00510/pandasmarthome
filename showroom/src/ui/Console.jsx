@@ -2,6 +2,7 @@ import { useHA } from '../ha/store'
 import { useT } from '../i18n'
 import { useIsMobile } from '../hooks'
 import Icon from './icons'
+import { DemoButton } from './Demo'
 
 const clock = (t) => {
   const total = Math.round(t * 24 * 60)
@@ -10,7 +11,7 @@ const clock = (t) => {
   return `${h}:${m}`
 }
 
-// 场景按钮已移到右侧触摸屏面板的首页，这里只留时间轴
+// 场景按钮已移到右侧触摸屏面板的首页，这里是"观看演示"按钮 + 时间轴
 export default function Console() {
   const t = useT()
   const timeOfDay = useHA((s) => s.timeOfDay)
@@ -21,6 +22,7 @@ export default function Console() {
 
   return (
     <div className={`console float${hidden ? ' is-hidden' : ''}`} aria-hidden={hidden}>
+      <DemoButton />
       <div className="clock">
         <Icon name="sun" size={15} />
         <input

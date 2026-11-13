@@ -24,7 +24,7 @@ Panda Smart Home（Panda智能家居）的双语静态营销站，线上 <https:
 ## 目录与两个构建
 
 - `src/`：主站。`content/`（全部文案）、`config/`（brand / site / ogImages）、`components/`、`entry-server.tsx`（预渲染入口、sitemap、robots、llms.txt）
-- `scripts/`：`prerender.mjs`（每页每语言一份静态 HTML）、`make-og.mjs`（品牌 PNG 与分享图）、`indexnow.mjs`
+- `scripts/`：`prerender.mjs`（每页每语言一份静态 HTML）、`make-og.mjs`（品牌 PNG 与分享图）、`indexnow.mjs`、`check-form.mjs`（线上表单每周自检，`.github/workflows/form-check.yml`，见 README "Weekly form check"）
 - `worker/`：Cloudflare Worker（301 跳转 + 安全头），`wrangler.jsonc`
 - `serverless/telegram-relay.js`：可选的表单 → Telegram 中转 Worker
 - `showroom/`：独立 Vite 项目（JS），不参与主站 lint / typecheck；产物不入库
@@ -39,6 +39,7 @@ npm run build:all && npm run preview                 # 本地看主站 + 样板�
 npm run og                                           # 重新生成 favicon / 图标 / 分享图（仅 macOS 生成分享卡）
 node serverless/telegram-relay.test.mjs              # 中转 Worker 自检
 node worker/index.test.mjs                           # 站点 Worker 自检
+node scripts/check-form.mjs --dry                    # 每周表单自检的解析自测（不发请求）
 ```
 
 ## 部署
@@ -99,6 +100,8 @@ node worker/index.test.mjs                           # 站点 Worker 自检
 - 公司信息：`VITE_COMPANY_NAME` / `_ZH`、`VITE_COMPANY_REGISTRATION_NO`、`VITE_OFFICE_ADDRESS_*`。
   配好后自动显示在 `/about/`、`/privacy/` 底部和 JSON-LD 里。
 - 品牌邮箱，以及是否单设个人数据请求邮箱（现在用 `VITE_CONTACT_EMAIL`）。
+- 每周表单自检（周一 09:00 新加坡时间）：确认 GitHub 通知设置里 Actions 失败邮件是开着的。想验证 access key 仍有效可设
+  `FORM_CHECK_REAL_SUBMIT=true`（每周多一封邮件；Web3Forms 免费版可能拒绝服务端提交，见 README）。
 
 **需要站长提供的真实素材**
 - `/about/`：成立时间、团队介绍、真实照片。
@@ -107,6 +110,8 @@ node worker/index.test.mjs                           # 站点 Worker 自检
   有真实评价后再加 review / aggregateRating。
 - Panda Signage 的管理后台或门牌真实截图（现在是线稿示意图）。
 - "新加坡智能家居多少钱"这篇指南需要真实价格区间才能写。
+- 内容日历（`SEO_GEO_PLAN.md` §6）每篇所需材料：HDB 主门改动规定的官方出处、门牌真实截图与日历对接答复、
+  WhatsApp Business API 方案等。缺材料的那篇顺延，不编。
 
 **需要站长确认或决定**
 - 确认或调整参考起步价：硬件定制 S$150 / S$350 / S$800；Panda Signage 部署 S$800、
@@ -122,6 +127,7 @@ node worker/index.test.mjs                           # 站点 Worker 自检
   "备用网页（有适当的规范标记）"是正常现象，不用处理。
 - 通读 2026-11-13 发布的 5 篇指南、各指南开头的要点，以及硬件定制 / 信息屏 / 关于我们的中文文案。
   HDB 装修那篇里 "Directory of Renovation Contractors" 的中文名是自译，需核对。
+- 通读 2026-11-13 新增的两篇指南（信息屏选型、ESP32 定制还是买现成）和可打印清单 `/renovation-checklist/`（打印一次看看效果）。
 - 另一台电脑若有未推送的本地改动：先 `git pull`，有冲突再处理。
 
 **技术尾项（不急）**

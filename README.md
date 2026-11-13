@@ -30,6 +30,7 @@ The dev server prints a local URL (default <http://localhost:5173>).
 | `npm run lint` | ESLint (flat config, typescript-eslint + React Hooks rules) |
 | `npm run typecheck` | TypeScript only, no emit |
 | `npm run og` | Regenerate `og-image.png` and the app icons from the brand SVGs |
+| `node scripts/check-form.mjs --dry` | Self-test of the weekly live form check (no requests); see [Weekly form check](#weekly-form-check) |
 
 Run `npm run lint && npm run typecheck && npm run build` before deploying.
 
@@ -217,6 +218,56 @@ The endpoint must send permissive CORS headers for the site's origin.
 The form validates name, contact (email **or** phone, ≥ 8 digits) and message
 before sending, and includes a hidden honeypot field named `company` — treat
 any submission where it is non-empty as spam.
+
+#### Weekly form check
+
+A form whose backend quietly broke looks exactly like a quiet week.
+`.github/workflows/form-check.yml` runs `scripts/check-form.mjs` against the
+**live** site every Monday at 09:00 Singapore time (`0 1 * * 1`, i.e. 01:00 UTC;
+scheduled runs can start a little late), and on demand from Actions → Weekly
+form check → Run workflow. It checks what is deployed, not the repo config:
+
+1. `/` and `/zh/` return 200 and show neither "Form endpoint not configured"
+   nor "Contact details to be confirmed" (or the Chinese equivalents); the
+   endpoint inlined from `VITE_FORM_ENDPOINT` can be read out of the page's JS
+   chunks and equals the repository variable.
+2. The endpoint answers a CORS preflight (`OPTIONS`, `Origin:
+   https://smartpanda.sg`, `Access-Control-Request-Method: POST`) with a 2xx
+   that allows the origin — a 4xx here is only a warning, because Web3Forms
+   refused this non-browser preflight with 403 when the check was written
+   while browsers submit normally — and a **deliberately invalid** POST — no
+   `access_key`, honeypots `company` and `botcheck` filled — with a
+   structured rejection (4xx, or JSON `success: false`). With no key the
+   service has no inbox to deliver to, so this never sends mail. A 5xx, a
+   timeout or a DNS failure fails the check; so does a 2xx that accepts it.
+3. `/showroom/` is 200, a made-up path is 404, and the homepage has the
+   `wa.me` link when `VITE_WHATSAPP_NUMBER` is set.
+
+**A failed run is the alert.** GitHub sends notifications for a scheduled
+workflow to the person who created it, or who last changed its `cron` line
+(normally the owner, who pushes it), according to their Settings →
+Notifications → Actions choice — keep email for failed workflows on. GitHub
+also disables schedules in a public repo after 60 days without repository
+activity; re-enable it from the Actions tab.
+
+**Optional real submission.** The steps above prove the service is up, not
+that the access key still works. Set the repository variable
+`FORM_CHECK_REAL_SUBMIT=true` (or tick *real_submit* on a manual run) and the
+check also sends one real submission titled "[Automated check] Enquiry form
+OK — smartpanda.sg", using the key from the live bundle. Off by default: on
+it means **one email every Monday**. Web3Forms documents that server-side
+submissions need a paid plan and an IP safelist, and GitHub's runner IPs
+change, so on the free plan expect this step to fail with a 403; test the key
+from a browser instead (submit the form yourself).
+
+**When it fails**, the log says what in English and Chinese. Typical causes:
+a `VITE_*` variable changed without a redeploy (re-run Deploy); the form
+service is down (check its status page, then submit the form yourself); the
+key was revoked or the domain lock changed (Web3Forms dashboard). Re-run the
+workflow once fixed.
+
+`node scripts/check-form.mjs --dry` runs the parser self-test and prints the
+plan without making any request; CI runs it next to the Worker self-checks.
 
 ---
 
@@ -568,6 +619,11 @@ Body in Markdown.
   `llms.txt` and pings IndexNow.
 * Same rules as the rest of the site: no invented prices, statistics, customer
   stories or awards.
+* The printable checklist at `/renovation-checklist/` is not Markdown (the
+  renderer has no tables or checkboxes): it is a small view,
+  `src/components/sections/Checklist.tsx`, with its copy in `content/en.ts` /
+  `zh.ts` (`checklist`) and its `@media print` rules at the end of
+  `src/index.css`. Every line restates one of the guides it links to.
 
 ---
 

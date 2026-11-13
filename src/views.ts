@@ -16,6 +16,7 @@ const loaders = {
   software: () => import('./components/sections/Software'),
   hardware: () => import('./components/sections/Hardware'),
   signage: () => import('./components/sections/Signage'),
+  checklist: () => import('./components/sections/Checklist'),
 }
 
 export type View = keyof typeof loaders
@@ -29,6 +30,7 @@ export const viewFiles: Record<View, string> = {
   software: 'src/components/sections/Software.tsx',
   hardware: 'src/components/sections/Hardware.tsx',
   signage: 'src/components/sections/Signage.tsx',
+  checklist: 'src/components/sections/Checklist.tsx',
 }
 
 export const views: { [K in View]?: Awaited<ReturnType<(typeof loaders)[K]>> } = {}
@@ -44,6 +46,7 @@ const PAGES: Record<string, View> = {
   'software/': 'software',
   'custom-hardware/': 'hardware',
   'signage/': 'signage',
+  'renovation-checklist/': 'checklist',
 }
 
 /** Which chunk a page needs; null for an unknown address (the 404 view is in the main bundle). */

@@ -2,7 +2,7 @@
 title: Smart home planning for BTO flats in Singapore
 description: The cheapest time to prepare a smart home is before the walls are closed. What we check in a BTO layout, and how we plan it with your interior designer and electrician.
 published: 2026-11-06
-updated: 2026-11-06
+updated: 2026-11-13
 path: homes/bto-smart-home/
 related: renovation-smart-home-prep, no-neutral-smart-switches, wifi-for-smart-home, motorised-curtains-guide
 ---
@@ -38,4 +38,4 @@ Scope and pricing are quoted after a site assessment. We do not publish package 
 
 Send us your floor plan and what you want to control. We will turn it into a short list of what to ask your contractor for.
 
-Planning a BTO renovation? [Tell us your flat type and layout](/#contact) and we will help you build a checklist for your contractor. For a longer checklist, read [what to prepare before renovation](/guides/renovation-smart-home-prep/).
+Planning a BTO renovation? [Tell us your flat type and layout](/#contact) and we will help you build a checklist for your contractor. For a longer checklist, read [what to prepare before renovation](/guides/renovation-smart-home-prep/), or [print the one-page checklist](/renovation-checklist/) for your ID and electrician.

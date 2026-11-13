@@ -126,14 +126,20 @@ Matter 选题已有 `what-is-matter`，没有重复写。
 
 ## 6. 内容日历（3 个月，每两周 1 篇，中英同发）
 
-| 周 | 选题 | 业务线 |
-| --- | --- | --- |
-| 2026-11 第 4 周 | Home Assistant 触控面板：现成产品和定制 ESP32 面板怎么选 | 硬件定制 |
-| 2026-12 第 2 周 | 组屋主门智能锁：HDB 防火门的注意事项（需先核实官方规定） | 安装 |
-| 2026-12 第 4 周 | 有地住宅的网络和多层覆盖规划 | 安装 |
-| 2027-01 第 2 周 | ESP32 定制设备从需求到交付：要准备什么、怎么验收 | 硬件定制 |
-| 2027-01 第 4 周 | 小店用 WhatsApp 自动回复 / 预约：什么时候值得定制 | 软件定制 |
-| 2027-02 第 2 周 | 太阳能 / EV 充电桩家庭的能耗监测 | 安装 |
+已发布文章的日期不回改；`updated` 只在有实质修改时才动。下表"计划日期"是目标发布日，没拿到"需要站长提供"一栏的材料就顺延，不拿编造的内容去填。
+
+| 计划日期 | 选题（暂定英文标题） | 目标关键词 | 业务线 | 需要站长提供 | 状态 |
+| --- | --- | --- | --- | --- | --- |
+| 2026-11-13 | Digital signage for a small office or shop in Singapore: what you actually need（`digital-signage-small-office-shop-singapore`） | digital signage Singapore、small business digital signage、信息屏 新加坡 | Panda Signage | — | **已发布** |
+| 2026-11-13 | Custom ESP32 device or off-the-shelf gadget: how to decide（`custom-esp32-device-or-off-the-shelf`） | custom ESP32 device Singapore、ESP32 定制开发 新加坡 | 硬件定制 | — | **已发布** |
+| 2026-11-27 | Home Assistant touch panels: buy one or build an ESP32 panel? | Home Assistant touch panel、ESP32 touch panel Singapore、Home Assistant 触控面板 | 硬件定制 | 能做的屏幕尺寸 / 已用过的开发板型号（可选：实物照片） | 计划 |
+| 2026-12-11 | Smart locks on an HDB main door: what to check first | HDB digital lock、HDB main door smart lock、组屋 智能门锁 | 智能家居安装 | HDB / SCDF 关于主门（防火门）改动的现行规定原文链接——没有官方出处就不写 | 计划 |
+| 2026-12-25 | Meeting room booking panels: what to check before you buy | meeting room booking display Singapore、room booking panel、会议室门牌 | Panda Signage | 门牌真实截图（替换线稿）；能否对接 Google / Outlook 日历的确切答复（页面现写"按项目评估"） | 计划 |
+| 2027-01-08 | Wi-Fi and network planning for a landed home over several floors | landed house Wi-Fi Singapore、multi-storey home network、有地住宅 网络 | 智能家居安装 | 无（通用知识即可写）；可选：真实布线照片 | 计划 |
+| 2027-01-22 | WhatsApp replies and bookings for a small shop: when custom is worth it | WhatsApp booking bot Singapore、SME booking system、小店 预约系统 定制 | 软件定制 | 是否使用 WhatsApp Business API 及其费用由谁承担；有无可演示的样例 | 计划 |
+| 2027-02-05 | How much does a smart home cost in Singapore? | smart home cost Singapore、新加坡智能家居 多少钱 | 智能家居安装 | **真实价格区间**（按户型或房间） | 待素材；没拿到就换成备选题"太阳能 / EV 充电桩家庭的能耗监测"（无需额外素材） |
+
+另：2026-11-13 上线了可打印的装修前清单页 `/renovation-checklist/`（不是文章，内容全部来自已有指南），已从两篇装修指南和 /homes/bto-smart-home/ 内链。
 
 每篇的要求：开头 2–3 句直接回答；`points:` 三要点；`## Common questions` 3–4 问；3 个以上内链；不写编造的数字和规定。已有文章每季度复核一次，有实质修改再改 `updated`。
 

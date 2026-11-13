@@ -940,3 +940,72 @@ input[type="range"].is-cool::-webkit-slider-thumb {
 /* 标题完整显示，挤的时候让旁边的设备计数先省略 */
 .panel-heading .panel-title { flex: none; max-width: 100%; }
 .panel-heading .panel-sub { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* ===================== 自动演示：按钮 + 字幕 / 结束卡片 =====================
+   按钮在底部时间轴左侧；字幕在时间轴正上方，同一套深色玻璃。 */
+.demo-btn {
+  display: flex; align-items: center; gap: 7px;
+  padding: 0 14px; min-height: 44px;
+  font-size: 12px; font-weight: 500; letter-spacing: .02em; white-space: nowrap;
+  color: var(--text-2);
+  transition: background .16s, color .16s;
+}
+.demo-btn:hover { background: rgba(240, 226, 205, .06); color: var(--text); }
+.demo-btn.is-on { color: var(--brand); background: rgba(88, 193, 145, .1); }
+.demo-btn .icon { fill: currentColor; }
+
+.demo-cap {
+  position: absolute;
+  bottom: 84px;
+  left: 216px; right: 364px;
+  z-index: 13;
+  display: flex; justify-content: center;
+  pointer-events: none;
+}
+.app.is-narrow .demo-cap { right: 106px; }
+.app.is-focus .demo-cap { opacity: 0; }
+.demo-card {
+  pointer-events: auto;
+  max-width: 520px;
+  padding: 10px 16px 9px;
+  border-radius: var(--r-lg);
+  display: flex; flex-direction: column; align-items: center; gap: 7px;
+  text-align: center;
+  animation: demo-in .3s ease-out;
+}
+@keyframes demo-in { from { opacity: 0; transform: translateY(6px); } }
+.demo-text { margin: 0; font-size: 13.5px; line-height: 1.4; color: var(--text); }
+.demo-dots { display: flex; gap: 5px; }
+.demo-dots i { width: 5px; height: 5px; border-radius: 50%; background: rgba(240, 226, 205, .2); }
+.demo-dots i.is-past { background: rgba(88, 193, 145, .45); }
+.demo-dots i.is-on { background: var(--brand); width: 14px; border-radius: 3px; }
+.demo-card.is-end { gap: 10px; padding: 12px 14px; }
+.demo-actions { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+.demo-act {
+  display: inline-flex; align-items: center; gap: 7px;
+  min-height: 40px; padding: 0 14px;
+  border-radius: var(--r-md);
+  border: 1px solid var(--line-2);
+  font-size: 12.5px; font-weight: 500; color: var(--text-2);
+  text-decoration: none;
+}
+.demo-act:hover { color: var(--text); background: rgba(240, 226, 205, .06); }
+.demo-act.is-primary { background: #1c7a52; border-color: transparent; color: #f3fff8; font-weight: 600; }
+.demo-act.is-primary:hover { background: #22915f; }
+
+@media (max-width: 1180px) and (min-width: 901px) {
+  .demo-cap { left: 106px; }
+}
+
+@media (max-width: 900px) {
+  /* 手机：按钮与时间轴同一行，字幕在时间轴上方、底部抽屉之上 */
+  .console { flex-direction: row; }
+  .console { width: auto; }
+  .console .clock { flex: 1; min-width: 0; gap: 8px; border-top: 0; border-left: 1px solid var(--line); padding: 0 12px 0 10px; }
+  .console .time-range { width: auto; min-width: 0; flex: 1; }
+  .console .clock-time { font-size: 18px; min-width: 46px; }
+  .demo-btn { padding: 0 12px; }
+  .demo-cap { left: 12px; right: 12px; bottom: 206px; }
+  .demo-card { max-width: none; }
+  .demo-text { font-size: 12.5px; }
+}

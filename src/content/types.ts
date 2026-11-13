@@ -469,6 +469,32 @@ export type Content = {
     registration: string
   }
 
+  /**
+   * /renovation-checklist/: a printable one-page list for the ID and electrician.
+   * Every item restates a guide (sources lists them); no new technical claims.
+   */
+  checklist: {
+    metaTitle: string
+    metaDescription: string
+    eyebrow: string
+    title: string
+    /** One sentence: who to hand the page to. */
+    lead: string
+    print: string
+    /** Under the button: nothing is saved, tick on paper. */
+    printNote: string
+    /** Blank write-in fields at the top of the sheet. */
+    fields: string[]
+    columns: { room: string; control: string; power: string; network: string }
+    rows: { room: string; control: string[]; power: string[]; network: string[] }[]
+    finalTitle: string
+    final: string[]
+    /** Short reminders printed under the lists. */
+    notes: string[]
+    sourcesTitle: string
+    sources: { label: string; path: string }[]
+  }
+
   /** Page shown for an unknown address (served with HTTP 404, noindex). */
   notFound: {
     metaTitle: string

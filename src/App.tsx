@@ -97,6 +97,10 @@ function Page({ path, guide }: { path: string; guide: Guide | undefined }) {
     const { SignagePage } = v.signage!
     return <SignagePage />
   }
+  if (view === 'checklist') {
+    const { ChecklistPage } = v.checklist!
+    return <ChecklistPage />
+  }
   const { HomePage } = v.home!
   return <HomePage />
 }
