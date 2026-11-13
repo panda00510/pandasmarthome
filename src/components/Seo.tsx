@@ -204,8 +204,12 @@ export function Seo() {
       ].filter(Boolean)
     : []
 
-  // Pre-order devices. No ratings, no stock claim — availability is PreOrder
-  // and the price is the indicative starting price.
+  // Pre-order devices, listed by name only. They are deliberately NOT marked
+  // up as Product + Offer: nothing can be bought on this site, there are no
+  // product photos, and no shipping or returns policy yet, so Google's
+  // merchant-listing checks (image, shippingDetails, hasMerchantReturnPolicy,
+  // review, aggregateRating) can only fail. Restore Product markup when real
+  // photos and those policies exist.
   const productList =
     path === 'products/'
       ? {
@@ -214,20 +218,9 @@ export function Seo() {
           itemListElement: t.products.items.map((item, index) => ({
             '@type': 'ListItem',
             position: index + 1,
-            item: {
-              '@type': 'Product',
-              name: item.title,
-              description: `${item.body} ${t.products.status}. ${t.products.priceLabel}.`,
-              brand: { '@type': 'Brand', name: lang === 'zh' ? brand.nameZh : brand.name },
-              offers: {
-                '@type': 'Offer',
-                priceCurrency: 'SGD',
-                price: item.priceSgd,
-                availability: 'https://schema.org/PreOrder',
-                url: url ? `${url}#${item.id}` : undefined,
-                description: t.products.priceLabel,
-              },
-            },
+            name: item.title,
+            description: `${item.body} ${t.products.status}. ${t.products.priceLabel}.`,
+            url: url ? `${url}#${item.id}` : undefined,
           })),
         }
       : null
