@@ -60,7 +60,7 @@ jobs:
           # date, and IndexNow compares against the previously deployed commit.
           fetch-depth: 0
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           # 22, not 20: wrangler 4 refuses to run on anything older, and
           # Node 20 is now deprecated on Actions runners. Vite 8 is happy on
