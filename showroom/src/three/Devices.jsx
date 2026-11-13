@@ -5,6 +5,7 @@ import { Color, DoubleSide } from 'three'
 import { useHA, isOn, usePlan } from '../ha/store'
 import { damp, kelvinToColor } from './utils'
 import { getMat } from './materials'
+import { shadowDirty } from './shadowBus'
 
 // 原则：只有 light 域的实体可以"发光照明"。其他设备的开 / 关反馈是它自己真实的样子 ——
 // 导风板、叶片、门扇、屏幕、毫米级指示灯。指示灯一律 meshBasic + 颜色值压在 Bloom 阈值以下，
@@ -84,6 +85,7 @@ function CeilingFan({ id, position }) {
     const target = isOn(e) ? (e.attributes.percentage ?? 66) / 100 : 0
     spd.current = damp(spd.current, target, 2.2, dt)
     if (blades.current) blades.current.rotation.y += spd.current * dt * 7.5
+    if (spd.current > 0.01) shadowDirty(position[0], position[1], position[2])
   })
 
   return (
@@ -175,7 +177,9 @@ function LaundryRack({ position, rotation, len = 1.6 }) {
     const cover = ent('cover.yard_rack')
     const fan = ent('fan.yard_rack_dry')
     const light = ent('light.yard_rack')
-    h.current = damp(h.current, (cover?.attributes.current_position ?? 100) / 100, 1.6, dt)
+    const hTarget = (cover?.attributes.current_position ?? 100) / 100
+    h.current = damp(h.current, hTarget, 1.6, dt)
+    if (Math.abs(h.current - hTarget) > 0.002) shadowDirty(position[0], position[1] - 0.5, position[2])
     if (bars.current) bars.current.position.y = -0.12 - (1 - h.current) * DROP
     spin.current = damp(spin.current, isOn(fan) ? 1 : 0, 2, dt)
     if (fanRef.current) fanRef.current.rotation.z += spin.current * dt * 14
@@ -293,6 +297,7 @@ function RobotVacuum({ position, path }) {
       s.x += (dx / d) * step
       s.z += (dz / d) * step
       s.heading = Math.atan2(dx, dz)
+      shadowDirty(s.x, 0.05, s.z)
     }
     if (body.current) {
       body.current.position.set(s.x, 0, s.z)

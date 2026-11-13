@@ -96,6 +96,33 @@ function plugWatts(get) {
   }
 }
 
+// ---- 湿度演示模拟：除湿机 / 空调除湿运行时读数缓慢下降（有下限），关了慢慢回升 ----
+// 每 2 秒走一小步，静默更新（不刷事件流）；实体上带 simulated: true，界面标注"演示模拟"。
+const AMBIENT_RH = 72          // 新加坡室内不开空调时的常见湿度
+const LIVING_RH = { dry: 50, cool: 58 }
+let humTimer = null
+function startHumiditySim(get) {
+  if (humTimer) return
+  const approach = (cur, target, down, up) => (cur > target ? Math.max(target, cur - down) : Math.min(target, cur + up))
+  humTimer = setInterval(() => {
+    const s = get()
+    const dh = s.entities['humidifier.bedroom_dehumidifier']
+    if (dh) {
+      const a = dh.attributes
+      const target = dh.state === 'on' ? Math.max(a.humidity, a.min_humidity) : AMBIENT_RH
+      const next = Math.round(approach(a.current_humidity, target, 0.5, 0.3) * 10) / 10
+      if (next !== a.current_humidity) s._setEntity('humidifier.bedroom_dehumidifier', { attributes: { current_humidity: next } }, { silent: true })
+    }
+    const rh = s.entities['sensor.living_humidity']
+    if (rh) {
+      const ac = s.entities['climate.living_ac']?.state
+      const cur = rh.attributes.value ?? Number(rh.state)
+      const next = Math.round(approach(cur, LIVING_RH[ac] ?? 63, 0.3, 0.2) * 10) / 10
+      if (next !== cur) s._setEntity('sensor.living_humidity', { state: String(Math.round(next)), attributes: { value: next } }, { silent: true })
+    }
+  }, 2000)
+}
+
 function automations(get, id, prev, next) {
   const s = get()
   const ent = (x) => get().entities[x]
@@ -125,7 +152,10 @@ function automations(get, id, prev, next) {
   }
 
   // 走廊：开了"有人自动开灯"时，人体存在传感器联动筒灯；人走 6 s 后熄灭
-  if (id === 'binary_sensor.hall_motion' && changed && ent('input_boolean.hall_auto')?.state === 'on') {
+  // 只认"人"：毫米波存在传感器靠呼吸 / 微动判断，扫地机这类贴地移动物体不算（source 由传感器上报）。
+  // 演示里扫地机的路径不经过走廊；就算经过，source 不是 person 也不会点亮走廊灯。
+  if (id === 'binary_sensor.hall_motion' && changed && ent('input_boolean.hall_auto')?.state === 'on'
+    && (next.state === 'off' || next.attributes.source === 'person')) {
     setE('light.hall_down', { state: next.state === 'on' ? 'on' : 'off' })
   }
   if (id === 'binary_sensor.hall_motion' && next.state === 'on') {
@@ -186,6 +216,7 @@ export const useHA = create((set, get) => ({
   timeOfDay: 0.62,         // 0=午夜 0.5=正午，驱动窗外日光
   sceneReady: false,       // 场景出了第一帧；加载屏据此淡出，切户型时重置
   panelTab: 'home',        // 触摸屏面板当前标签：home 或区域 key
+  load: { done: 0, total: 0 },   // 加载屏进度：场景块 + HDRI + 贴图，按文件计
 
   setSelected: (id) => set({ selected: id }),
   setShowLabels: (v) => set({ showLabels: v }),
@@ -215,6 +246,8 @@ export const useHA = create((set, get) => ({
   setTimeOfDay: (v) => set({ timeOfDay: v }),
   setSceneReady: (v) => set({ sceneReady: v }),
   setPanelTab: (v) => set({ panelTab: v }),
+  loadStart: (n = 1) => set((s) => ({ load: { ...s.load, total: s.load.total + n } })),
+  loadDone: (n = 1) => set((s) => ({ load: { ...s.load, done: s.load.done + n } })),
 
   // 首页"全部关闭"：灯、电视、空调、风扇、热水器、除湿机、晾衣架照明 / 风干；扫地机回充。门锁、窗帘、插座不动。
   allOff: () => {
@@ -290,7 +323,9 @@ export const useHA = create((set, get) => ({
         break
       // 演示用：模拟有人经过（真实 HA 里传感器状态不能被调用，这里只是让访客能触发联动）
       case 'binary_sensor.simulate':
-        set_({ state: 'on' })
+        // 人体：模拟有人经过；门窗磁：模拟开 / 关窗（真实 HA 里传感器只能上报，这里只为演示联动）
+        if (e.attributes.device_class === 'window') set_({ state: e.state === 'on' ? 'off' : 'on' })
+        else set_({ state: 'on', attributes: { source: 'person' } })
         break
       case 'lock.lock':
         set_({ state: 'locked' })
@@ -343,7 +378,9 @@ export const useHA = create((set, get) => ({
     if (e.domain === 'vacuum') return get().callService('vacuum', e.state === 'docked' ? 'start' : 'return_to_base', entityId)
     if (e.domain === 'binary_sensor') {
       // 门磁跟着门锁走；人体传感器可以"模拟有人经过"；烟雾 / 漏水只读
-      if (entityId === 'binary_sensor.hall_motion') return get().callService('binary_sensor', 'simulate', entityId)
+      if (entityId === 'binary_sensor.hall_motion' || e.attributes.device_class === 'window') {
+        return get().callService('binary_sensor', 'simulate', entityId)
+      }
       return
     }
     if (e.domain === 'climate') {
@@ -360,10 +397,15 @@ export const useHA = create((set, get) => ({
     for (const [entityId, patch] of Object.entries(scene.states)) {
       get()._setEntity(entityId, patch, { silent: true })
     }
+    // 离家时还有窗开着：事件流里给一条提醒（演示逻辑，相当于 HA 里的一条 notify 自动化）
+    const openWindows = sceneId === 'scene.away'
+      ? Object.entries(get().entities).filter(([, e]) => e.attributes?.device_class === 'window' && e.state === 'on').map(([id]) => id)
+      : []
     set((s) => ({
       activeScene: sceneId,
       ...(scene.timeOfDay !== undefined ? { timeOfDay: scene.timeOfDay } : null),
       events: [
+        ...openWindows.map((id) => ({ id: ++eventSeq, time: stamp(), entityId: id, from: '-', to: 'still open!', name: s.entities[id].name, isScene: true, isWarn: true })),
         { id: ++eventSeq, time: stamp(), entityId: sceneId, from: '-', to: 'activated', name: scene.name, isScene: true },
         ...s.events,
       ].slice(0, 60),
@@ -393,6 +435,8 @@ export const useHA = create((set, get) => ({
     })
   },
 }))
+
+if (typeof window !== 'undefined') startHumiditySim(useHA.getState)
 
 // 选择器
 export const selectEntity = (id) => (s) => s.entities[id]

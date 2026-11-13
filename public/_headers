@@ -1,5 +1,9 @@
 /assets/*
   Cache-Control: public, max-age=31536000, immutable
 
+# 3D 样板间的构建产物（JS / CSS / 贴图 / HDRI 文件名都带内容 hash）
+/showroom/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
 /asset-sources.txt
   Content-Type: text/plain; charset=utf-8

@@ -129,6 +129,15 @@ export const INITIAL_ENTITIES = {
     // auto_lock：门关上后自动反锁（新加坡常见的 Samsung / Yale 电子锁都有）
     attributes: { auto_lock: true },
   },
+  // 门窗磁：客厅窗 / 推拉门、主卧窗。主卧窗初始是开着的，离家场景会提醒
+  'binary_sensor.living_window': {
+    domain: 'binary_sensor', area: 'living', name: { en: 'Window Contact', zh: '客厅窗磁' },
+    state: 'off', attributes: { device_class: 'window' },
+  },
+  'binary_sensor.master_window': {
+    domain: 'binary_sensor', area: 'bedroom', name: { en: 'Window Contact', zh: '主卧窗磁' },
+    state: 'on', attributes: { device_class: 'window' },
+  },
   'binary_sensor.entry_door': {
     domain: 'binary_sensor', area: 'entry', name: { en: 'Door Contact', zh: '大门门磁' },
     state: 'off',
@@ -212,7 +221,7 @@ export const INITIAL_ENTITIES = {
   // ---- 主卧：除湿机（新加坡常年湿度 70%+）----
   'humidifier.bedroom_dehumidifier': {
     domain: 'humidifier', area: 'bedroom', name: { en: 'Dehumidifier', zh: '除湿机' },
-    state: 'off', attributes: { device_class: 'dehumidifier', humidity: 55, current_humidity: 72, min_humidity: 40, max_humidity: 70 },
+    state: 'off', attributes: { device_class: 'dehumidifier', humidity: 55, current_humidity: 72, min_humidity: 40, max_humidity: 70, simulated: true },
   },
 
   // ---- 智能插座（带功率计量）----
@@ -242,7 +251,8 @@ export const INITIAL_ENTITIES = {
     domain: 'sensor', area: 'living', name: { en: 'Humidity', zh: '客厅湿度' },
     // 空调开着、室温还没降到位时，新加坡室内湿度通常仍在 60% 出头。
     state: '63',
-    attributes: { unit_of_measurement: '%', device_class: 'humidity' },
+    // 读数由 store.js 的湿度演示模拟驱动（空调除湿 / 制冷时缓慢下降）
+    attributes: { unit_of_measurement: '%', device_class: 'humidity', value: 63, simulated: true },
   },
   'sensor.living_pm25': {
     domain: 'sensor', area: 'living', name: { en: 'PM2.5', zh: 'PM2.5' },

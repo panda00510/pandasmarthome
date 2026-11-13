@@ -1,4 +1,4 @@
-import { lazy, Suspense, useMemo } from 'react'
+import { useMemo } from 'react'
 import { PlaneGeometry } from 'three'
 import { RoundedBox } from '@react-three/drei'
 import { usePlan } from '../ha/store'
@@ -6,11 +6,9 @@ import { getMat, metersUV } from './materials'
 import ProceduralShell from './ProceduralShell'
 import EntryDoor from './EntryDoor'
 
-// 只有 plan.gi === 'baked' 且贴图与当前户型同时烘过才挂烘焙壳体。
-// 动态导入，避免把上一版户型的 glb / lightmap 打进默认包并画错墙。
-const BakedShell = lazy(() => import('./BakedShell'))
-
-// 墙体与地面：gi=baked 时用 Blender 壳体，否则按 plans/<户型>.json 实时生成（ProceduralShell）。
+// 墙体与地面按 plans/<户型>.json 实时生成（ProceduralShell）。
+// 上一版 198 ㎡ 户型的 Blender 烘焙壳体（BakedShell + lightmap）已从运行时删除，现行户型全是 gi=realtime；
+// 需要时从 git 历史（51d4033 之前）取回，烘焙脚本仍在 tools/。
 // 这里另外补玻璃、门扇、地台、地毯。
 
 const SILL = { color: '#d8d2c8', roughness: 0.4 }   // 窗台石
@@ -193,13 +191,7 @@ export default function Shell() {
         <meshStandardMaterial color="#cdc7bd" roughness={0.95} />
       </mesh>
 
-      {PLAN.gi === 'baked' ? (
-        <Suspense fallback={null}>
-          <BakedShell />
-        </Suspense>
-      ) : (
-        <ProceduralShell />
-      )}
+      <ProceduralShell />
 
       {holes.filter((h) => h.glass).map((g, i) => (
         <Glass key={i} {...g} />

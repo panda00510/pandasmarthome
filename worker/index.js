@@ -19,6 +19,14 @@ const HEADERS = {
   'Permissions-Policy': 'camera=(), microphone=(), geolocation=(), payment=()',
 }
 
+// Fingerprinted build output (Vite adds an 8-character content hash, e.g.
+// /assets/index-BwUq34Iy.js, /showroom/assets/map-Cdt_Hm5s.webp). A changed
+// file gets a new name, so these can be cached forever. Set here as well as in
+// public/_headers so it holds even if _headers is not applied to Worker
+// responses; anything without a hash keeps the platform default.
+const HASHED = /^\/(?:showroom\/)?assets\/[^/]+-[A-Za-z0-9_-]{8}\.[a-z0-9]+$/
+const IMMUTABLE = 'public, max-age=31536000, immutable'
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url)
@@ -38,6 +46,7 @@ export default {
     const asset = await env.ASSETS.fetch(request)
     const res = new Response(asset.body, asset)
     for (const [name, value] of Object.entries(HEADERS)) res.headers.set(name, value)
+    if (res.ok && HASHED.test(url.pathname)) res.headers.set('Cache-Control', IMMUTABLE)
     return res
   },
 }

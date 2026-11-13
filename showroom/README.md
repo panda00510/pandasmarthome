@@ -42,10 +42,11 @@ public_html/showroom/
 ├── .htaccess
 ├── index.html
 ├── assets/
-│   ├── index-xxxx.js          ~1.6 MB（gzip 后 ~480 KB）
-│   ├── map/normal/rough-xxxx.webp   CC0 材质贴图，合计约 1.9 MB（按需懒加载）
+│   ├── index-xxxx.js + react-xxxx.js   首屏 UI，合计 gzip 约 90 KB
+│   ├── Scene / r3f / three-xxxx.js     3D 场景，懒加载，合计 gzip 约 390 KB
+│   ├── map/normal/rough-xxxx.webp      CC0 材质贴图，合计约 1.9 MB（首帧之后才挂上）
 │   ├── index-xxxx.css
-│   └── studio_small_09_1k-xxxx.hdr   1.5 MB
+│   └── studio_small_09_256-xxxx.hdr    128 KB
 ├── models/sofa_03.glb          888 KB
 ├── favicon.svg
 └── icons.svg
@@ -133,7 +134,8 @@ npm run dev
 | 空调 / 吊扇 / 热水器 | 分体空调（导风板 + 淡气流 + 毫米级运行灯）、三档吊扇、公卫与主卫储水式热水器（定时关闭） |
 | 门锁 / 门磁 | 开锁 → 门向内打开（门磁 `binary_sensor.entry_door` on）→ 6 s 后关门 → 1.5 s 后自动反锁；锁面指示点：锁=红、开=绿；每一步都进事件流 |
 | 新加坡特色设备 | 服务阳台智能晾衣架（升降 cover + 风干 fan + 照明 light）、洗衣机旁漏水传感器、厨房烟雾燃气报警、主卧除湿机（humidifier）、扫地机器人（vacuum，按路径清扫后回充） |
-| 自动化演示 | 走廊人体存在传感器 +「有人自动开灯」开关；电视柜 / 书桌智能插座带功率读数；首页「当前功率」按设备状态推算（标注为演示估算） |
+| 自动化演示 | 走廊人体存在传感器 +「有人自动开灯」开关（只认 source=person，扫地机不会点亮走廊灯）；电视柜 / 书桌智能插座带功率读数；首页「当前功率」按设备状态推算（标注为演示估算） |
+| 门窗磁 / 湿度模拟 | 客厅窗、主卧窗磁（只读，点 3D 热点可模拟开关窗；离家场景下有窗未关，事件流会提醒）；除湿机 / 空调除湿运行时湿度读数缓慢下降、关了慢慢回升（标注"演示模拟"） |
 | 场景 | 回家 / 观影 / 用餐 / 睡眠 / 离家，一键切换整屋状态与时间氛围（在右侧面板「首页」页） |
 | 控制面板 | 墙装触摸屏式：顶部房间标签（切标签相机缓动到该房间）+ 两列大磁贴，点一下开关，右上角「调节」展开内联滑块；只读传感器是虚线小状态条 |
 | 加载屏 | `index.html` 里纯 CSS 的品牌加载屏（JS 执行前就可见），React 接管后盖到场景真正出第一帧再 400 ms 淡出；有贴图下载时显示真实的文件计数进度 |
@@ -168,7 +170,7 @@ npm run dev
 
 | 资源 | 用途 | 原始 | 成品 |
 |---|---|---|---|
-| `studio_small_09_1k.hdr` | 环境光照（IBL） | 1.5 MB | 内联进单文件构建 |
+| `studio_small_09_1k.hdr` | 环境光照（IBL） | 1.5 MB | 盒式下采样成 `studio_small_09_256.hdr`（256×128，128 KB）；1K 原图已从仓库移除 |
 | `sofa_03` glTF (2K) | 沙发模型（默认关闭） | 1.7 MB | `public/models/sofa_03.glb` 888 KB |
 
 ### 一个值得记下的结论
@@ -181,7 +183,7 @@ npm run dev
 
 ### HDRI 接入的坑
 
-没用 drei 的 `<Environment files=...>` —— 它靠**文件扩展名**挑 loader，而单文件构建会把 HDRI 内联成 base64 data URI，没有扩展名可认，直接抛 `Unrecognized file extension`。改成自己走 `RGBELoader` + `PMREMGenerator`（`src/three/HdriEnvironment.jsx`），两种形式都能加载。
+没用 drei 的 `<Environment files=...>` —— 它靠**文件扩展名**挑 loader，而单文件构建会把 HDRI 内联成 base64 data URI，没有扩展名可认，直接抛 `Unrecognized file extension`。改成自己走 `HDRLoader` + `PMREMGenerator`（`src/three/HdriEnvironment.jsx`），两种形式都能加载。环境光只用于漫反射和反射、背景本来就是纯色，256×128 足够，体积从 1.6 MB 降到 128 KB。
 
 HDRI 本身是固定的白天环境，所以 `scene.environmentIntensity` 要跟着昼夜曲线走，否则夜里怎么关灯屋里都是亮的。接入 HDRI 后半球光和环境光也得相应压下去（从 0.95 降到 0.16），否则整个场景过曝。
 
@@ -215,6 +217,18 @@ npx gltf-transform prune step2.glb public/models/sofa_03.glb
 - 合成器会关掉渲染器的 tone mapping，所以后处理末尾补了一道 `ToneMapping(AgX)`；Bloom 阈值 1.0，只有灯罩会起光晕。
 - **只有 light 域可以"发光"**：热点标记、设备指示灯、电视画面全部压在 Bloom 阈值以下，不照亮环境。
 - `ContactShadows` 只算一帧；DPR 桌面 ≤1.75、手机 ≤1.5。
+- **阴影按需更新**（`src/three/shadowBus.js`）：门扇、吊扇、窗帘、扫地机、晾衣架动的时候，只让照得到它的那几盏投影灯重画阴影（连续动画每 3 帧一次），停了就不再画。
+
+## 首屏加载
+
+打点（`performance.mark`）：`sr:js` → `sr:chunk`（3D 块到达）→ `sr:canvas` → `sr:compiled` → `sr:first-frame` → `sr:loader-gone`。
+
+1. **代码分割**：UI 外壳（React + 面板 + 加载屏）先出，gzip 约 90 KB；three / R3F / drei / 后处理是懒加载的 3D 块（`src/sceneChunk.js` 一启动就开始下载）。`vite.config.js` 把 react、three、r3f 各自成块，利于长期缓存。
+2. **HDRI 预加载**：`main.jsx` 用 `<link rel=preload as=fetch>` 与 3D 块并行下载。
+3. **预编译 shader**：整屋挂好、首帧之前用 `renderer.compileAsync`（KHR_parallel_shader_compile）后台编译，期间 Canvas 不渲染（`frameloop='never'`）。编译时渲染目标切到后处理输入缓冲，shader 变体与实际渲染一致；阴影类型显式写 PCF（r18x 渲染时会把 PCFSoft 换成 PCF，预编译时不换，键对不上会整批重编）。生产环境关掉 `debug.checkShaderErrors`（它在 ANGLE-Metal 上每个 shader 首次使用都同步等驱动）。
+4. **贴图不挡首帧**：材质一出生就带 1×1 占位贴图（槽位与最终一致，换真贴图不重编译）；图片用 `createImageBitmap` 后台线程解码，首帧之后每帧挂一集。
+5. **字体**：Google Fonts 改为 `preload` + `onload` 切换，不再阻塞首屏渲染。
+6. **缓存**：线上带 hash 的 `/showroom/assets/*` 由 `public/_headers` 和 `worker/index.js` 双重设置 `immutable`。
 
 ## 程序化建模
 
@@ -235,9 +249,9 @@ npx gltf-transform prune step2.glb public/models/sofa_03.glb
 
 ### 光照
 
-现行三个户型（`plans/*.json` 里 `gi: "realtime"`）用实时点光源加一层很弱的天光。上一版 198 ㎡ 户型烘好的 lightmap 和壳体对不上新墙，所以运行时不再套那三张贴图，避免墙和光斑错位。重烘并确认贴图与对应户型 JSON 一致后，把 `gi` 改回 `"baked"` 即可重新挂上 `BakedShell`。
+现行三个户型（`plans/*.json` 里 `gi: "realtime"`）用实时点光源加一层很弱的天光。上一版 198 ㎡ 户型烘好的 lightmap 和壳体对不上新墙，运行时的烘焙壳体（`BakedShell`、`LightmapMaterial`、`src/assets/baked/`）已经删除，不再进打包；要重新用烘焙 GI，从 git 历史（提交 51d4033 及之前）取回这几个文件，按 `tools/` 重烘与现行户型一致的贴图。
 
-## 已经做了：全屋 Blender 烘焙 GI（上一版户型）
+## 历史：全屋 Blender 烘焙 GI（上一版户型，运行时代码已移除）
 
 整套户型的静态壳体（墙、地面）吃的都是 Blender Cycles 烘出来的全局光照。
 九盏灯分三张贴图，每张的 R/G/B 各存一盏灯的完整 GI，运行时按开关状态加权求和 ——
@@ -282,6 +296,7 @@ src/
     materials.js   材质唯一定义处 + 贴图加载（图片 / 程序化回退）
     textures.js    程序化纹理（回退用）、挂画
     EntryDoor.jsx  大门：门扇开合 + 电子锁锁体
+    shadowBus.js   阴影按需更新（动画期间只重画附近投影灯的阴影）
     Scene.jsx      Canvas 组装、相机预设、后处理
     ExternalHouse.jsx  外部 glTF 模型加载（可选）
   ui/
@@ -295,6 +310,7 @@ src/
     CalibrationBar.jsx 标定面板
     icons.jsx      线性 SVG 图标集
   hooks.js       媒体查询（区分手机与桌面）
+  sceneChunk.js  3D 场景懒加载入口（启动即下载，计入加载屏进度）
 ```
 
 ## 增加一个设备

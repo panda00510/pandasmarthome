@@ -24,7 +24,7 @@ export default function EventLog() {
         <div className="log-list">
           {events.length === 0 && <div className="log-empty">{t('log_empty')}</div>}
           {events.map((ev) => (
-            <div className="log-row" key={ev.id}>
+            <div className={`log-row${ev.isWarn ? ' is-warn' : ''}`} key={ev.id}>
               <span className="log-time">{ev.time}</span>
               <span className="log-entity">{ev.entityId}</span>
               <span className="log-delta">{ev.isScene ? ev.to : `${ev.from}→${ev.to}`}</span>

@@ -1,6 +1,6 @@
-import { useEffect } from 'react'
+import { lazy, Suspense, useEffect } from 'react'
 import { useHA } from './ha/store'
-import Scene from './three/Scene'
+import { loadScene } from './sceneChunk'
 import Brand from './ui/Brand'
 import ViewRail from './ui/ViewRail'
 import Console from './ui/Console'
@@ -12,6 +12,8 @@ import Loader from './ui/Loader'
 import PlanSwitch from './ui/PlanSwitch'
 import Icon from './ui/icons'
 import { useT } from './i18n'
+
+const Scene = lazy(loadScene)
 
 export default function App() {
   const t = useT()
@@ -29,7 +31,9 @@ export default function App() {
   return (
     <div className={`app${focusMode ? ' is-focus' : ''}${collapsed ? ' is-narrow' : ''}`}>
       <div className="canvas-layer">
-        <Scene />
+        <Suspense fallback={null}>
+          <Scene />
+        </Suspense>
       </div>
 
       <Brand />

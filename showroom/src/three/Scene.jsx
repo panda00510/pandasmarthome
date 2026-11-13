@@ -1,11 +1,10 @@
-import { Suspense, useEffect, useMemo, useRef } from 'react'
+import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { OrbitControls, ContactShadows } from '@react-three/drei'
 import { EffectComposer, Bloom, Vignette, N8AO, ToneMapping } from '@react-three/postprocessing'
 import { ToneMappingMode } from 'postprocessing'
 import { Vector3, Color, Fog } from 'three'
 import { useHA, usePlan } from '../ha/store'
-import hdriUrl from '../assets/hdri/studio_small_09_1k.hdr?url'
 import { useIsMobile } from '../hooks'
 import Shell from './Shell'
 import Furniture from './Furniture'
@@ -16,7 +15,8 @@ import Decor from './Decor'
 import Hotspots from './Hotspots'
 import ExternalHouse from './ExternalHouse'
 import HdriEnvironment from './HdriEnvironment'
-import { SHELL_LAYER } from './layers'
+// 256×128 的小 HDRI（由 Poly Haven 1K 原图盒式下采样）：环境光只管漫反射与反射，背景是纯色，低清足够
+import hdriUrl from '../assets/hdri/studio_small_09_256.hdr?url'
 import Surroundings from './Surroundings'
 import { startTextures, startProceduralTextures } from './materials'
 
@@ -60,7 +60,6 @@ function CameraRig({ views, isMobile }) {
   useEffect(() => {
     camera.fov = isMobile ? MOBILE_FOV : DESKTOP_FOV
     camera.updateProjectionMatrix()
-    camera.layers.enable(SHELL_LAYER)   // 否则烘焙壳体不可见
   }, [camera, isMobile])
 
   // 用户一旦手动操作就退出预设视角
@@ -126,9 +125,37 @@ function FirstFrame() {
   const n = useRef(0)
   useFrame(() => {
     if (++n.current !== 2) return
+    performance.mark('sr:first-frame')
     useHA.getState().setSceneReady(true)
     startProceduralTextures()
   })
+  return null
+}
+
+// 预编译：HDRI 与整屋都挂好、首帧之前，用 renderer.compileAsync（KHR_parallel_shader_compile）
+// 在后台把所有材质的 shader 编完，期间 Canvas 不渲染（frameloop='never'），主线程不被同步编译卡死，
+// 加载屏的 CSS 动画一直在动。编译时把渲染目标切到后处理的输入缓冲：场景实际是画进那里的，
+// tone mapping / 输出色彩空间这些 shader 变体才和真正渲染时一致，首帧不会再编一遍。
+let composerRef = null
+function Precompile({ onDone }) {
+  const gl = useThree((s) => s.gl)
+  const scene = useThree((s) => s.scene)
+  const camera = useThree((s) => s.camera)
+  useEffect(() => {
+    let alive = true
+    const rt = composerRef?.inputBuffer ?? null
+    const prev = gl.getRenderTarget()
+    gl.setRenderTarget(rt)
+    const p = gl.compileAsync(scene, camera)
+    gl.setRenderTarget(prev)
+    p.then(() => {
+      performance.mark('sr:compiled')
+      if (alive) onDone()
+    })
+    return () => {
+      alive = false
+    }
+  }, [gl, scene, camera, onDone])
   return null
 }
 
@@ -163,6 +190,10 @@ function World() {
 export default function Scene() {
   const isMobile = useIsMobile()
   const plan = usePlan()
+  const planId = useHA((s) => s.planId)
+  // 每个户型编译完才开始渲染；切户型时停帧（加载屏盖着），编完再继续
+  const [compiledFor, setCompiledFor] = useState(null)
+  const onCompiled = useCallback(() => setCompiledFor(planId), [planId])
   const views = useMemo(
     () =>
       isMobile && plan.views.overview.mobile
@@ -174,10 +205,17 @@ export default function Scene() {
 
   return (
     <Canvas
-      shadows
+      frameloop={compiledFor === planId ? 'always' : 'never'}
+      // PCF：three r18x 已把 PCFSoft 当作 PCF 处理，但只在渲染时替换 —— 预编译时还是 PCFSoft，
+      // shader 键对不上，首帧会把所有材质再编一遍。直接写明 PCF。
+      shadows="percentage"
       dpr={isMobile ? [1, 1.5] : [1, 1.75]}
       gl={{ antialias: true, powerPreference: 'high-performance' }}
       onCreated={(state) => {
+        performance.mark('sr:canvas')
+        // three 默认每个 shader 首次使用时都查一遍编译 / 链接日志（getProgramInfoLog），
+        // 在 ANGLE-Metal 上这一步会同步等驱动，冷启动首帧因此卡 0.5–2 s。只在开发环境检查。
+        state.gl.debug.checkShaderErrors = import.meta.env.DEV
         startTextures(state.gl)
         // 仅开发环境：给截图 / 排查脚本一个拿相机的入口，生产构建会被摇树掉
         if (import.meta.env.DEV) window.__r3f = state.get
@@ -193,8 +231,9 @@ export default function Scene() {
 
       <Suspense fallback={null}>
         <World />
-        {/* 环境光照来自 Poly Haven 的 CC0 HDRI（1K），给所有材质提供真实的反射与柔光 */}
+        {/* 环境光照来自 Poly Haven 的 CC0 HDRI（下采样到 256×128），给所有材质提供反射与柔光 */}
         <HdriEnvironment url={hdriUrl} />
+        <Precompile key={planId} onDone={onCompiled} />
       </Suspense>
 
 
@@ -212,7 +251,7 @@ export default function Scene() {
       <CameraRig views={views} isMobile={isMobile} />
       <ViewOffset isMobile={isMobile} />
 
-      <EffectComposer disableNormalPass multisampling={isMobile ? 0 : 4}>
+      <EffectComposer ref={(c) => (composerRef = c)} disableNormalPass multisampling={isMobile ? 0 : 4}>
         {/* 环境光遮蔽：没有它，家具底部和墙角均匀发亮，物体像浮在地面上 */}
         <N8AO
           aoRadius={0.55}

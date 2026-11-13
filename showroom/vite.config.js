@@ -13,6 +13,18 @@ export default defineConfig(({ mode }) => {
       outDir: single ? 'dist-single' : 'dist',
       chunkSizeWarningLimit: 4000,
       ...(single ? { assetsInlineLimit: 100_000_000, cssCodeSplit: false } : null),
+      // three 单独成块（版本少变、缓存命中高）；R3F / drei / 后处理另成一块。都随 3D 场景懒加载，不在首屏 JS 里。
+      rollupOptions: single ? undefined : {
+        output: {
+          advancedChunks: {
+            groups: [
+              { name: 'react', test: /node_modules[\\/](react|react-dom|scheduler|zustand)[\\/]/, priority: 30 },
+              { name: 'three', test: /node_modules[\\/]three[\\/]/, priority: 20 },
+              { name: 'r3f', test: /node_modules[\\/](@react-three|postprocessing|n8ao|three-stdlib|maath|camera-controls|troika|@monogrid|@use-gesture|its-fine|suspend-react)/, priority: 10 },
+            ],
+          },
+        },
+      },
     },
   }
 })

@@ -339,6 +339,8 @@ input[type="range"].is-cool::-webkit-slider-thumb {
 .env-value { font-family: var(--font-display); font-size: 26px; line-height: 1; font-variant-numeric: tabular-nums; }
 .env-value i { font-style: normal; font-size: 10px; color: var(--text-2); margin-left: 2px; font-family: var(--font-body); }
 .env-label { font-size: 10.5px; color: var(--text-3); }
+.env-sim { font-style: normal; opacity: .7; }
+.log-row.is-warn .log-delta, .log-row.is-warn .log-entity { color: #e07a64; }
 .panel-body .energy { margin-top: 12px; }
 .panel-body::-webkit-scrollbar { width: 9px; }
 .panel-body::-webkit-scrollbar-thumb {

@@ -162,7 +162,7 @@ used if a file fails to load.
 | `veneer` | Cabinets, TV console, tables (greyscale) | Oak Veneer 01 | Jenelle van Heerden | CC0 | [Poly Haven](https://polyhaven.com/a/oak_veneer_01) | 1.83 × 1.83 m |
 | `quartz` | Kitchen worktops | Marble 012 | Lennart Demes (ambientCG) | CC0 | [ambientCG](https://ambientcg.com/view?id=Marble012) | ~1 × 1 m (no published size) |
 
-The HDRI `studio_small_09_1k.hdr` and the `sofa_03` model are Poly Haven CC0
+The HDRI `studio_small_09_256.hdr` (downsampled from the 1K original) and the `sofa_03` model are Poly Haven CC0
 assets recorded in `showroom/README.md`.
 
 ---

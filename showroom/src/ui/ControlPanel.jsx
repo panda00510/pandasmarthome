@@ -322,7 +322,10 @@ function HomePage({ envIds, onCount, total }) {
         {envIds.map((id, i) => (
           <div className="env-item" key={id}>
             <span className="env-value">{env[i]}<i>{entities[id].attributes.unit_of_measurement}</i></span>
-            <span className="env-label">{t(ENV[entities[id].attributes.device_class])}</span>
+            <span className="env-label">
+              {t(ENV[entities[id].attributes.device_class])}
+              {entities[id].attributes.simulated && <em className="env-sim"> · {t('sim_tag')}</em>}
+            </span>
           </div>
         ))}
       </div>

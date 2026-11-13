@@ -5,6 +5,7 @@ import { useHA } from '../ha/store'
 import { getMat } from './materials'
 import { damp } from './utils'
 import { DoorFrame, DoorLeaf } from './Shell'
+import { shadowDirty } from './shadowBus'
 
 // 组屋大门：门扇跟着门磁 binary_sensor.entry_door 开合（向屋内开），
 // 电子锁锁体装在门扇内侧，随门一起转；锁面毫米级指示点：上锁红、开锁绿（不发光照明、不进 Bloom）。
@@ -19,8 +20,13 @@ export default function EntryDoor(props) {
   const base = props.axis === 'x' ? Math.PI / 2 : 0
 
   useFrame((_, dt) => {
-    a.current = damp(a.current, door?.state === 'on' ? OPEN_ANGLE : 0, 2.6, dt)
+    const target = door?.state === 'on' ? OPEN_ANGLE : 0
+    a.current = damp(a.current, target, 2.6, dt)
     if (leaf.current) leaf.current.rotation.y = base + a.current
+    if (Math.abs(a.current - target) > 0.001) {
+      const mid = (props.from + props.to) / 2
+      shadowDirty(props.axis === 'x' ? mid : props.at, 1, props.axis === 'x' ? props.at : mid)
+    }
   })
 
   const len = props.to - props.from - 0.04

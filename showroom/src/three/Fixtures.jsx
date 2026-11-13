@@ -2,10 +2,10 @@ import { useEffect, useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { Color, DoubleSide, AdditiveBlending, CanvasTexture } from 'three'
 import { MOBILE_QUERY } from '../hooks'
+import { registerShadowLight, flushShadows } from './shadowBus'
 import { useHA, lightLevel, usePlan } from '../ha/store'
 import { kelvinToColor, rgbArrayToColor, damp } from './utils'
 import { latheGeometry, PROFILES } from './shapes'
-import { SHELL_LAYER } from './layers'
 
 // 竖向渐隐（上亮下暗）的小贴图，给灯槽洗墙光用
 function washGradient() {
@@ -76,13 +76,23 @@ function useStaticShadow(ref, enabled) {
     light.castShadow = true
     light.shadow.autoUpdate = false
     light.shadow.needsUpdate = true      // 第一帧就要分配阴影贴图，否则 shader 里的阴影采样器拿不到纹理
+    const unregister = registerShadowLight(light)
     let n = 0
     let id = requestAnimationFrame(function tick() {
       if (++n < 3) id = requestAnimationFrame(tick)
       else light.shadow.needsUpdate = true
     })
-    return () => cancelAnimationFrame(id)
+    return () => {
+      cancelAnimationFrame(id)
+      unregister()
+    }
   }, [ref, enabled])
+}
+
+// 每帧最后：把这一帧里动过的物体附近的投影灯标记为需要重画阴影（见 shadowBus.js）
+function ShadowFlush() {
+  useFrame(flushShadows)
+  return null
 }
 
 // 灯光渐变的跟手程度：12 ≈ 90% 在 0.2 s 内到位，仍保留一点柔和
@@ -330,13 +340,6 @@ function Daylight() {
   const amb = useRef()
   const color = useMemo(() => new Color(), [])
 
-  // 壳体在 layer 1，客厅那三盏点光源照不到它（避免和烘焙光叠加），
-  // 但日光和天光必须照到，否则白天窗边不亮。
-  useEffect(() => {
-    sun.current?.layers.enable(SHELL_LAYER)
-    hemi.current?.layers.enable(SHELL_LAYER)
-    amb.current?.layers.enable(SHELL_LAYER)
-  }, [])
 
   useFrame((_, dt) => {
     // 6:00 日出 / 18:00 日落，映射到 0..1
@@ -390,6 +393,7 @@ export default function Fixtures() {
   const shadows = useMemo(() => pickShadowLamps(plan.lamps), [plan])
   return (
     <group>
+      <ShadowFlush />
       {LAMPS.filter((c) => c.kind !== 'strip').map((conf) => (
         <Lamp key={conf.id} conf={conf} shadow={shadows.has(conf.id)} />
       ))}

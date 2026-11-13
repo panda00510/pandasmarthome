@@ -4,6 +4,7 @@ import { PlaneGeometry } from 'three'
 import { useHA, usePlan } from '../ha/store'
 import { damp } from './utils'
 import { getMat } from './materials'
+import { shadowDirty } from './shadowBus'
 
 const FOLDS = 7        // 褶皱数
 const SEGMENTS = 40    // 横向细分，够画出圆滑的波
@@ -41,6 +42,7 @@ function Curtain({ entityId, x0, x1, z, top = 2.45, bottom = 0.04, color = '#e6d
     // 停稳后不再每帧重算顶点和法线
     if (Math.abs(amp - (left.current?.userData.amp ?? -1)) < 1e-5) return
     if (left.current) left.current.userData.amp = amp
+    shadowDirty((x0 + x1) / 2, top / 2, z)
 
     const panels = [
       [left, geoL, x0 + w / 2],

@@ -31,3 +31,14 @@ for (const [from, to] of [
 }
 assert.equal((await get(`https://smartpanda.sg${neu}`)).status, 200)
 console.log('moved pages ok')
+
+// Fingerprinted assets (site and showroom) are cached forever; everything else is not.
+for (const path of ['/assets/index-BwUq34Iy.js', '/showroom/assets/map-Cdt_Hm5s.webp', '/showroom/assets/studio_small_09_256-EdhX6uNv.hdr']) {
+  assert.equal((await get(`https://smartpanda.sg${path}`)).headers.get('cache-control'), 'public, max-age=31536000, immutable', path)
+}
+for (const path of ['/', '/showroom/', '/showroom/index.html', '/showroom/favicon.svg', '/assets/logo.svg']) {
+  assert.equal((await get(`https://smartpanda.sg${path}`)).headers.get('cache-control'), null, path)
+}
+const missing = await worker.fetch(new Request('https://smartpanda.sg/showroom/assets/gone-AAAAAAAA.js'), { ...env, ASSETS: { fetch: () => new Response('nope', { status: 404 }) } })
+assert.equal(missing.headers.get('cache-control'), null)
+console.log('cache headers ok')
