@@ -1,4 +1,4 @@
-import { ChevronDown, MessageCircle } from 'lucide-react'
+import { ChevronDown, Cpu, DoorClosed, Lightbulb, MessageCircle, Radar, type LucideIcon } from 'lucide-react'
 import { ProductArt } from '../graphics/ProductFigures'
 import { Button, PhotoTag } from '../ui'
 import { site } from '../../config/site'
@@ -11,6 +11,13 @@ import { pageHref, useI18n } from '../../i18n/context'
  */
 
 /** Business WhatsApp. A configured number wins; otherwise the published line. */
+const INSTALL_ICONS: Record<string, LucideIcon> = {
+  'switches-lighting': Lightbulb,
+  sensors: Radar,
+  'curtains-locks-security': DoorClosed,
+  'hubs-gateways': Cpu,
+}
+
 const PREORDER_WHATSAPP = site.whatsappLink ?? 'https://wa.me/6580676515'
 
 function formatPrice(template: string, amount: number) {
@@ -115,6 +122,14 @@ export function ProductsPage() {
                 </a>
               </li>
             ))}
+            <li>
+              <a
+                href="#smart-home-devices"
+                className="inline-flex min-h-11 items-center rounded-full border border-bamboo-200 bg-bamboo-50 px-3.5 text-sm font-medium text-bamboo-800 transition-colors hover:border-bamboo-300"
+              >
+                {p.install.title} ↓
+              </a>
+            </li>
           </ul>
 
           <ul className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -214,6 +229,60 @@ export function ProductsPage() {
               )
             })}
           </ul>
+        </div>
+      </section>
+
+      <section id="smart-home-devices" className="band scroll-mt-24 border-t border-ink-200/70 bg-paper-alt">
+        <div className="shell">
+          <p className="eyebrow">{p.install.eyebrow}</p>
+          <h2 className="mt-4 max-w-3xl text-[1.75rem] leading-[1.15] font-semibold tracking-[-0.025em] text-ink-950 sm:text-4xl">
+            {p.install.title}
+          </h2>
+          <p className="mt-4 max-w-3xl text-lg leading-relaxed text-ink-600">{p.install.lead}</p>
+          <ul className="mt-10 grid gap-4 sm:grid-cols-2">
+            {p.install.groups.map((group) => {
+              const Icon = INSTALL_ICONS[group.id] ?? Cpu
+              return (
+                <li key={group.id}>
+                  <article id={group.id} className="card flex h-full scroll-mt-28 flex-col p-5 sm:p-6">
+                    <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-bamboo-50 text-bamboo-700 ring-1 ring-bamboo-100">
+                      <Icon size={20} aria-hidden="true" />
+                    </span>
+                    <h3 className="mt-4 text-[1.2rem] leading-snug font-semibold tracking-[-0.02em] text-ink-950">
+                      {group.title}
+                    </h3>
+                    <p className="mt-2 text-[0.9375rem] leading-relaxed text-ink-600">{group.body}</p>
+                    <ul className="mt-4 space-y-1.5 text-[0.9375rem] leading-relaxed text-ink-800">
+                      {group.items.map((item) => (
+                        <li key={item} className="flex gap-2.5">
+                          <span className="mt-[0.6em] h-1 w-1 shrink-0 rounded-full bg-bamboo-600" aria-hidden="true" />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                    <a
+                      href={pageHref(lang, group.path)}
+                      className="mt-auto inline-flex min-h-11 items-center pt-4 text-sm font-semibold text-bamboo-700 hover:text-bamboo-600"
+                    >
+                      {p.install.learn} →
+                    </a>
+                  </article>
+                </li>
+              )
+            })}
+          </ul>
+          <p className="mt-6 max-w-3xl text-sm leading-relaxed text-ink-600">{p.install.note}</p>
+          <Button
+            as="a"
+            href={whatsappHref(p.install.message)}
+            target="_blank"
+            rel="noopener noreferrer"
+            size="lg"
+            className="mt-6 w-full sm:w-auto"
+          >
+            <MessageCircle size={18} aria-hidden="true" />
+            {p.install.cta}
+          </Button>
         </div>
       </section>
 

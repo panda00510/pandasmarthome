@@ -117,6 +117,29 @@ export type Content = {
       specs: string[]
       note: string
     }[]
+    /**
+     * Smart home devices supplied and installed as part of a plan. No brand,
+     * model, price or stock claim: these are quoted with the plan.
+     */
+    install: {
+      eyebrow: string
+      title: string
+      lead: string
+      /** Why no prices are shown. */
+      note: string
+      cta: string
+      /** WhatsApp message for the section button. Complete. */
+      message: string
+      learn: string
+      groups: {
+        id: string
+        title: string
+        body: string
+        items: string[]
+        /** Site path of the page that explains this area. */
+        path: string
+      }[]
+    }
     finePrint: string[]
     preparing: string
     preparingLink: string

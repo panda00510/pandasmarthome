@@ -150,6 +150,10 @@ ${routes
     ),
     ...en.products.finePrint.map((line) => `- ${line}`),
     '',
+    `### ${en.products.install.title} (no list prices; quoted as part of a plan)`,
+    en.products.install.lead,
+    ...en.products.install.groups.map((group) => `- ${group.title}: ${group.items.join('; ')}.`),
+    '',
     `## ${en.software.title} (indicative starting prices, quoted before work starts)`,
     en.software.lead,
     ...en.software.packages.map(
