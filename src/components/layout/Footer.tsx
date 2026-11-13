@@ -3,6 +3,7 @@ import { Wordmark } from '../brand/Wordmark'
 import { formattedAddress, hasAnyContactDetail, site, socialLinks } from '../../config/site'
 import { pageHref, useI18n } from '../../i18n/context'
 import { pageWhatsappMessage, whatsappHref } from '../../lib/whatsapp'
+import { showroomHref } from '../../lib/showroom'
 
 const SOCIAL_LABELS: Record<string, string> = {
   instagram: 'Instagram',
@@ -94,7 +95,7 @@ export function Footer() {
                 </a>
               </li>
               <li>
-                <a href={`${import.meta.env.BASE_URL}showroom/?lang=${lang}`} className={LINK}>
+                <a href={showroomHref(lang)} className={LINK}>
                   {t.nav.showroom}
                 </a>
               </li>

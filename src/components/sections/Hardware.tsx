@@ -12,6 +12,7 @@ import {
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { ProductArt } from '../graphics/ProductFigures'
+import { ProjectBrief } from '../ProjectBrief'
 import { Button, PhotoTag, SectionHeading } from '../ui'
 import { enquiryHref } from '../../lib/whatsapp'
 import { pageHref, useI18n } from '../../i18n/context'
@@ -194,6 +195,8 @@ export function HardwarePage() {
           </ol>
         </div>
       </section>
+
+      <ProjectBrief brief={h.brief} id="hardware" />
 
       {/* Pricing, and the cross-link to custom software */}
       <section className="border-t border-ink-200/70">

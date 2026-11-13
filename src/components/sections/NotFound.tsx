@@ -1,6 +1,7 @@
 import { ArrowRight } from 'lucide-react'
 import { Button } from '../ui'
 import { pageHref, useI18n } from '../../i18n/context'
+import { showroomHref } from '../../lib/showroom'
 
 /**
  * Shown for any address that is not a page. The prerender writes it to
@@ -13,7 +14,7 @@ export function NotFound() {
   const links = [
     { label: label('solutions'), href: pageHref(lang, 'solutions/') },
     { label: label('products'), href: pageHref(lang, 'products/') },
-    { label: t.nav.showroom, href: `${import.meta.env.BASE_URL}showroom/?lang=${lang}` },
+    { label: t.nav.showroom, href: showroomHref(lang) },
     { label: t.notFound.contact, href: `${pageHref(lang)}#contact` },
   ]
 

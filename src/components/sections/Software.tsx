@@ -1,5 +1,6 @@
 import { ArrowRight, CalendarClock, ChevronDown, LayoutDashboard, MessageCircle, Package, Users } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
+import { ProjectBrief } from '../ProjectBrief'
 import { Button } from '../ui'
 import { enquiryHref } from '../../lib/whatsapp'
 import { pageHref, useI18n } from '../../i18n/context'
@@ -182,6 +183,8 @@ export function SoftwarePage() {
           </ol>
         </div>
       </section>
+
+      <ProjectBrief brief={s.brief} id="software" />
 
       <section className="border-t border-ink-200/70">
         <div className="shell py-8 lg:py-10">

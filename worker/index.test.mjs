@@ -2,6 +2,7 @@ import assert from 'node:assert/strict'
 import { createHash } from 'node:crypto'
 import { readFileSync } from 'node:fs'
 import worker, { cspFor } from './index.js'
+import { toZh } from '../showroom/tools/zhPage.js'
 
 const env = { CANONICAL_HOST: 'smartpanda.sg', ASSETS: { fetch: () => new Response('asset') } }
 const get = (url) => worker.fetch(new Request(url), env)
@@ -101,8 +102,12 @@ for (const tag of source('index.html').match(/<script\b[^>]*>/g)) {
   assert.match(tag, /\bsrc=|application\/ld\+json/, `inline script in index.html: ${tag}`)
 }
 // The showroom's onload="" handlers must each be allowed by hash.
-const handlers = [...source('showroom/index.html').matchAll(/\son[a-z]+="([^"]*)"/g)].map((m) => m[1])
+const onHandlers = (html) => [...html.matchAll(/\son[a-z]+="([^"]*)"/g)].map((m) => m[1])
+const handlers = onHandlers(source('showroom/index.html'))
 assert.ok(handlers.length > 0)
+// The Chinese copy (/showroom/zh/, built by showroom/tools/zhPage.js) keeps them byte-identical and gets the same policy.
+assert.deepEqual(onHandlers(toZh(source('showroom/index.html'))), handlers)
+assert.equal((await get('https://smartpanda.sg/showroom/zh/')).headers.get('content-security-policy'), room)
 for (const code of handlers) {
   const hash = createHash('sha256').update(code).digest('base64')
   assert.ok(room.includes(`'sha256-${hash}'`), `showroom handler not in CSP: ${code} (sha256-${hash})`)

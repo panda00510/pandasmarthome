@@ -10,6 +10,7 @@ import { useReveal } from './hooks/motion'
 import { useI18n } from './i18n/context'
 import { pageWhatsappMessage, whatsappHref } from './lib/whatsapp'
 import { viewOf, views } from './views'
+import { showroomHref } from './lib/showroom'
 
 export default function App() {
   const { t, lang, path } = useI18n()
@@ -88,7 +89,7 @@ export default function App() {
               WhatsApp
             </Button>
           ) : null}
-          <Button as="a" href={`${import.meta.env.BASE_URL}showroom/?lang=${lang}`} variant="secondary" size="sm" className="flex-1 bg-paper">
+          <Button as="a" href={showroomHref(lang)} variant="secondary" size="sm" className="flex-1 bg-paper">
             <Box size={16} aria-hidden="true" />
             {t.nav.showroom}
           </Button>

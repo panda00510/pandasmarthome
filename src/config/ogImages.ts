@@ -137,8 +137,8 @@ export const OG_CARDS: Record<Key, { en?: OgCard; zh?: OgCard }> = {
   },
   showroom: {
     // The showroom is a separate build with one index.html that carries the
-    // English card. The Chinese card is drawn but not referenced yet: crawlers
-    // do not run JS, so it needs its own URL with zh meta tags (not built yet).
+    // English card. Crawlers do not run JS, so the Chinese card is used by a
+    // second page, /showroom/zh/, written by showroom/tools/zhPage.js.
     en: {
       eyebrow: '3D SHOWROOM',
       lines: ['Walk through a', 'smart HDB flat'],

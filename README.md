@@ -113,7 +113,7 @@ and `lang`; nothing from the form and nothing about the visitor is ever sent.
 
 | Event | When | Extra props |
 | --- | --- | --- |
-| `whatsapp_click` | any `wa.me` link | `source`: `floating`, `contact`, `hero`, `footer`, `products`, `hardware`, `signage`, `software`, `guide`, `solution`, `home`, `plan` (plan starter), `bar` (phone bottom bar), `page` (anything else), or `data-track-source` |
+| `whatsapp_click` | any `wa.me` link | `source`: `floating`, `contact`, `hero`, `footer`, `products`, `hardware`, `signage`, `software`, `guide`, `solution`, `home`, `plan` (plan starter), `bar` (phone bottom bar), `hardware-brief`, `software-brief` (project briefs), `page` (anything else), or `data-track-source` |
 | `email_click` / `tel_click` | any `mailto:` / `tel:` link | — |
 | `showroom_open` | any link to `/showroom/` | — |
 | `nav_cta_click` | the header "Book a consultation" button | — |
@@ -121,6 +121,8 @@ and `lang`; nothing from the form and nothing about the visitor is ever sent.
 | `contact_form_submit` | the form was accepted by the endpoint, or handed to the mail app | `method`: `endpoint` / `mailto` |
 | `contact_form_error` | the endpoint rejected or failed | — |
 | `plan_starter_complete` | the homepage plan starter ("Show my starting list") | `home`: `hdb` / `condo` / `landed`; `rooms`: `1-2` / `3` / `4+`; `priorities`: comma-separated ids (`lighting`, `aircon`, `curtains`, `security`, `safety`, `care`, `voice`, `energy`) |
+| `hardware_brief_complete` | the project brief on /custom-hardware/ | `device`, `connect`, `quantity` (`one` / `batch`), `timing` (`none` / `months` / `date`); option ids, comma-separated where multi-select |
+| `software_brief_complete` | the project brief on /software/ | `need`, `users`, `connect`, `timing`; option ids only |
 
 The Worker sends a Content-Security-Policy (see "Deployment") that already
 allows Plausible (`plausible.io`), GA4, Cloudflare Web Analytics and the
@@ -131,6 +133,14 @@ first** — otherwise the browser blocks it, the enquiry form fails quietly,
 and the weekly server-side form check will not notice.
 
 ### The enquiry form
+
+The homepage plan starter can pre-fill this form (home type, "start with"
+when there is a one-to-one match, and the message) through an in-memory
+window event — nothing is stored or put in the URL. It never touches name or
+contact, and never overwrites what the visitor typed: with text already in
+the message field the summary is appended once. The option mapping is by
+index into `contact.form.*Options` in `Planner.tsx`; keep it in step when
+reordering those options.
 
 The form has three modes, picked automatically:
 
@@ -324,7 +334,9 @@ src/
       Home.tsx       the homepage, section by section
       NotFound.tsx   the 404 page
       Glossary.tsx   the /glossary/ page (+ its DefinedTermSet JSON-LD)
-      Planner.tsx    homepage "plan starter": three questions → device groups from products.install (copy in content `planner`)
+      Planner.tsx    homepage "plan starter": three questions → device groups from products.install (copy in content `planner`); its form button pre-fills the enquiry form
+    Choices.tsx      pill radio / checkbox groups shared by the plan starter and the briefs
+    ProjectBrief.tsx the project brief on /custom-hardware/ and /software/ (copy in content `hardware.brief` / `software.brief`)
     ui.tsx           Button, SectionHeading, Chip, PhotoTag
     Seo.tsx          head sync + JSON-LD structured data
   entry-server.tsx   prerender entry: routes, sitemap, robots, llms.txt
@@ -399,8 +411,11 @@ the prerender and `Seo.tsx` both use `ogImageFor(lang, path)`, matched on the
 first path segment, so `/solutions/…` sub-pages share their section's card.
 Anything unmatched, and the English homepage, falls back to `/og-image.png`.
 The showroom's card is referenced directly in `showroom/index.html`;
-`showroom-zh.png` is generated but not used yet (link previews need a
-distinct Chinese URL such as `/showroom/zh/`, which does not exist).
+`showroom-zh.png` is used by `/showroom/zh/`, a second HTML page the showroom
+build writes (`showroom/tools/zhPage.js`): the same app with Chinese meta
+tags and `<base href="../">`. Both pages carry reciprocal hreflang and are in
+the sitemap. Chinese pages link to it through `showroomHref()` in
+`src/lib/showroom.ts`; old `/showroom/?lang=zh` links still work.
 
 Every guide has its own card, `public/og/guides/<slug>-<lang>.jpg`.
 `npm run og` draws it from the guide's `heading` (or `title`) front matter,
@@ -615,7 +630,8 @@ host and moved-page 301s and adds the security headers (HSTS,
 Content-Security-Policy) to every response. The CSP is enforced, exists only
 on Cloudflare (the Pages mirror has no Worker), and `/showroom/` gets its own
 policy with Google Fonts and a hash for the one `onload` handler in
-`showroom/index.html` (the self-check recomputes that hash). To roll back,
+`showroom/index.html` (the self-check recomputes that hash, and checks the
+generated `/showroom/zh/` copy keeps the handler byte-identical). To roll back,
 rename the header to `Content-Security-Policy-Report-Only`. All of this is in code rather than `public/_headers`, because with
 `run_worker_first` the response comes from the Worker. Self-check:
 `node worker/index.test.mjs`.

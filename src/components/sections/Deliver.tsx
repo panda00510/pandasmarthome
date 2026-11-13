@@ -1,5 +1,6 @@
 import { ArrowRight } from 'lucide-react'
 import { useI18n } from '../../i18n/context'
+import { showroomHref } from '../../lib/showroom'
 
 /**
  * "What you receive": the three written records of a job, drawn as simple
@@ -75,7 +76,7 @@ export function DeliverStrip() {
           <p className="mt-1 text-xs text-ink-500">{d.note}</p>
         </div>
         <a
-          href={`${import.meta.env.BASE_URL}showroom/?lang=${lang}`}
+          href={showroomHref(lang)}
           className="inline-flex min-h-11 shrink-0 items-center gap-1.5 text-sm font-semibold text-bamboo-700 hover:text-bamboo-600"
         >
           {d.demoCta}

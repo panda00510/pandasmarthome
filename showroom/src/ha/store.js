@@ -46,8 +46,16 @@ function saveUI(v) {
 
 const savedUI = loadUI()
 
-// 官网用 ?lang=zh 切语言，样板间跟着同一个参数走 ——
-// 从官网带着语言跳过来，不会莫名其妙切回英文。URL 参数优先于上次的选择。
+// 语言优先级：?lang=zh|en > 地址是 …/zh/（中文页，见 tools/zhPage.js）> 上次的选择 > 英文。
+// 旧链接 /showroom/?lang=zh 照样是中文。
+function pathLang() {
+  try {
+    return /\/zh\/(?:index\.html)?$/.test(window.location.pathname) ? 'zh' : null
+  } catch {
+    return null
+  }
+}
+
 function initialLang() {
   try {
     const q = new URLSearchParams(window.location.search).get('lang')
@@ -55,7 +63,20 @@ function initialLang() {
   } catch {
     // 某些嵌入环境读不到 location，退回已保存的选择
   }
-  return savedUI.lang ?? 'en'
+  return pathLang() ?? savedUI.lang ?? 'en'
+}
+
+// 切语言时只改地址栏的 ?lang=（不换路径、不刷新）：和本页默认语言一致就去掉，否则写上。
+// 这样复制出去的链接、刷新后的页面都是当前语言；路径不动，相对路径的资源和链接不受影响。
+function writeLangToURL(lang) {
+  try {
+    const url = new URL(window.location.href)
+    if (lang === (pathLang() ?? 'en')) url.searchParams.delete('lang')
+    else url.searchParams.set('lang', lang)
+    window.history.replaceState(window.history.state, '', url)
+  } catch {
+    // sandbox iframe 里 replaceState 可能被拒，忽略
+  }
 }
 
 function loadOverrides() {
@@ -239,6 +260,7 @@ export const useHA = create((set, get) => ({
   setFocusMode: (v) => set({ focusMode: v }),
   setLang: (v) => {
     saveUI({ ...loadUI(), lang: v })
+    writeLangToURL(v)
     set({ lang: v })
   },
   setCalibrating: (v) => set({ calibrating: v, calibTarget: null, showLabels: v ? true : get().showLabels }),

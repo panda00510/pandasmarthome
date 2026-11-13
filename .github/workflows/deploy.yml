@@ -92,6 +92,8 @@ jobs:
       - run: node worker/index.test.mjs
       # Parser self-test only; the live check runs weekly in form-check.yml.
       - run: node scripts/check-form.mjs --dry
+      # Showroom camera moves stay clear of walls on every plan (plain Node, no install).
+      - run: node showroom/src/three/cameraPath.test.mjs
 
       # --- Build 1: GitHub Pages -------------------------------------------
       # A project page is served from /<repo>/, so the bundle needs a matching

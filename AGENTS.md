@@ -45,7 +45,7 @@ node scripts/check-form.mjs --dry                    # 每周表单自检的解�
 
 ## 部署
 
-- PR（含 Dependabot 每周一开的依赖更新 PR）由 `.github/workflows/ci.yml` 检查：lint、typecheck、三个自检、主站与样板间构建，不部署、不用密钥。合并到 `main` 即部署，合并前等 CI 通过。
+- PR（含 Dependabot 每周一开的依赖更新 PR）由 `.github/workflows/ci.yml` 检查：lint、typecheck、四个自检（含样板间镜头不穿墙）、主站与样板间构建，不部署、不用密钥。合并到 `main` 即部署，合并前等 CI 通过。
 - 推 `main` → `.github/workflows/deploy.yml` 一次运行同时发布 **GitHub Pages**（副本，`BASE_PATH=/pandasmarthome/`）与 **Cloudflare**（根路径，canonical）。CI 先跑 lint、typecheck、两个 Worker 自检，并检查 `VITE_*` 是否真的进了包。
 - canonical 是 `https://smartpanda.sg`（`VITE_SITE_URL`）；www 与旧 workers.dev 地址由 Worker 301。
 - **不要用 Cloudflare Workers Builds**（必须保持断开），否则两条流水线互相覆盖。原因见 README「Why not Cloudflare Workers Builds」。
@@ -57,6 +57,7 @@ node scripts/check-form.mjs --dry                    # 每周表单自检的解�
 - 指南 / 专题页是 `src/content/guides/`、`src/content/pages/` 下的 `<slug>.en.md` + `.zh.md`，两种语言都必须有。
 - 术语表词条在 `src/content/glossary.en.ts` / `glossary.zh.ts`（只在 /glossary/ 加载；两边 id 必须一致、链接必须是站内真实页面，构建会检查）。每条只复述指南里已有的说法。
 - 所有 wa.me 链接走 `src/lib/whatsapp.ts`；各页预填开场白在 content 的 `whatsapp` 块，不带访客个人信息。
+- 定制页需求单的文案在 `hardware.brief` / `software.brief`；选项只能是页面已写明的能力，不写价格、交期。
 - 首页需求小问卷的文案在 content 的 `planner` 块；只指向 `products.install` 的设备类别，不写价格、数量；WhatsApp 消息只带访客的选择。
 - 指南分类（装修前 / 设备选型 / 协议与平台 / 信息屏与定制）在 `src/content/guides.ts` 的 `TOPICS`，新指南要登记。
 - 例外：分享卡的文字与 alt 在 `src/config/ogImages.ts`（生成脚本要直接 import，必须自包含）。
@@ -84,6 +85,7 @@ node scripts/check-form.mjs --dry                    # 每周表单自检的解�
 - 每个户型一份 `showroom/src/plans/*.json`，是该户型的唯一数据源，在 `plans/index.js` 登记。
 - 材质只在 `showroom/src/three/materials.js` 定义，组件用 `getMat()` 取共享材质。
 - 只有 `light` 域设备才表现为发光 / 照亮环境；其他指示灯、屏幕都压在 Bloom 阈值以下。
+- 中文地址是 `/showroom/zh/`，由样板间构建生成（`showroom/tools/zhPage.js`）；站内链接统一用 `src/lib/showroom.ts` 的 `showroomHref()`；样板间里切语言只改 `?lang=`。
 
 ## 验证习惯
 
@@ -135,12 +137,12 @@ node scripts/check-form.mjs --dry                    # 每周表单自检的解�
 - 通读 2026-11-13 发布的 5 篇指南、各指南开头的要点，以及硬件定制 / 信息屏 / 关于我们的中文文案。
   HDB 装修那篇里 "Directory of Renovation Contractors" 的中文名是自译，需核对。
 - 通读 2026-11-13 新增的两篇指南（信息屏选型、ESP32 定制还是买现成）和可打印清单 `/renovation-checklist/`（打印一次看看效果）。
+- 通读 2026-11-14 新增的硬件 / 软件定制需求单（content 的 `hardware.brief` / `software.brief`，中英文），确认选项与你实际接的活一致（数量只列了“1 台”和“几台（2–10 台）”）。
 - 通读 2026-11-13 新增的首页需求小问卷（content 的 `planner` 块，中英文）并在手机上试一次；核对指南的四个分类是否合理。
 - 通读 2026-11-13 新增的术语表 `/glossary/`（中英 40 条）与各页 WhatsApp 预填开场白（content 的 `whatsapp` 块）。
 - 另一台电脑若有未推送的本地改动：先 `git pull`，有冲突再处理。
 
 **技术尾项（不急）**
 - Dependabot 的 PR（`.github/dependabot.yml`）需要站长或 Claude 审核合并；合并即部署，先等 CI 通过。deploy.yml 里 `actions/checkout@v4`、`actions/setup-node@v4` 的 Node 20 弃用提示留给 Dependabot 提升级 PR。
-- 样板间中文分享图 `public/og/showroom-zh.png` 已生成但未启用：需要一个独立的中文地址（如 `/showroom/zh/`，改 `build:all`、样板间语言判断和 5 处链接）。
 - 首页短片后半段（约 8 秒）停在观影场景不动，可再剪短或加一个镜头。
 - 样板间再次访问约 1.8 秒离开加载屏，目标 1.5 秒。

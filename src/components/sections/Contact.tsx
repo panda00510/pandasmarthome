@@ -1,4 +1,4 @@
-import { useId, useState, type FormEvent, type ReactNode } from 'react'
+import { useEffect, useId, useRef, useState, type FormEvent, type ReactNode } from 'react'
 import { flushSync } from 'react-dom'
 import {
   ChevronDown,
@@ -36,6 +36,14 @@ const MODE: 'post' | 'mailto' | 'none' = site.formEndpoint
     ? 'mailto'
     : 'none'
 
+/**
+ * Window event the plan starter fires to fill this form (in memory only:
+ * nothing goes into storage or the URL). Values are option labels from
+ * contact.form; an empty string means "no honest match, leave it".
+ */
+export const CONTACT_PREFILL = 'contact-prefill'
+export type ContactPrefill = { homeType: string; startWith: string; message: string }
+
 /** Accepts either an email address or a phone number with at least 8 digits. */
 function isUsableContact(value: string): boolean {
   const trimmed = value.trim()
@@ -53,6 +61,40 @@ export function Contact() {
 
   const enabled = MODE !== 'none'
   const c = t.contact
+  const formRef = useRef<HTMLFormElement>(null)
+  // What the last prefill wrote into each field. A field is only replaced while
+  // it still holds exactly that (or is empty); anything the visitor typed or
+  // picked is kept, and a new summary is appended below their own message.
+  const prefilled = useRef<Partial<ContactPrefill>>({})
+
+  useEffect(() => {
+    function onPrefill(event: Event) {
+      const form = formRef.current
+      if (!form) return
+      const detail = (event as CustomEvent<ContactPrefill>).detail
+      for (const name of ['homeType', 'startWith', 'message'] as const) {
+        const field = form.elements.namedItem(name) as HTMLSelectElement | HTMLTextAreaElement | null
+        if (!field) continue
+        const current = field.value.trim()
+        const untouched = !current || current === (prefilled.current[name] ?? '').trim()
+        if (untouched) {
+          field.value = detail[name]
+          prefilled.current[name] = field.value
+        } else if (name === 'message' && !current.includes(detail.message.trim())) {
+          // Appended text is not recorded, so a later prefill can never replace what the visitor wrote.
+          field.value = `${field.value.trimEnd()}\n\n${detail.message}`
+          prefilled.current.message = undefined
+        }
+      }
+      // The message sits in a collapsed <details>; on phones the form may be the hidden tab.
+      form.querySelector('details')?.setAttribute('open', '')
+      flushSync(() => setTab('form'))
+      document.getElementById('contact')?.scrollIntoView()
+      form.querySelector<HTMLElement>('[name="name"]')?.focus({ preventScroll: true })
+    }
+    window.addEventListener(CONTACT_PREFILL, onPrefill)
+    return () => window.removeEventListener(CONTACT_PREFILL, onPrefill)
+  }, [])
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -135,6 +177,7 @@ export function Contact() {
       setStatus('success')
       track('contact_form_submit', { method: 'endpoint' })
       form.reset()
+      prefilled.current = {}
     } catch {
       setStatus('error')
       track('contact_form_error')
@@ -284,7 +327,7 @@ export function Contact() {
             </p>
           ) : null}
 
-          <form onSubmit={onSubmit} noValidate className="mt-6 space-y-5">
+          <form ref={formRef} onSubmit={onSubmit} noValidate className="mt-6 space-y-5">
             <fieldset disabled={!enabled || status === 'submitting'} className="space-y-5">
               {/* Honeypot — visually and programmatically hidden from people. */}
               <input

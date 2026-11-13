@@ -8,6 +8,16 @@
 
 界面默认英文，右上角第一个按钮一键切中文，选择存 localStorage。
 
+**两个地址**：`/showroom/`（英文）与 `/showroom/zh/`（中文）。`npm run build` 用 `tools/zhPage.js`（Vite 插件）
+从英文 `index.html` 多产出一份 `dist/zh/index.html`：只换 `<html lang>`、标题、描述、canonical / og:url、
+分享卡（`/og/showroom-zh.png` 及 alt）、`og:locale`，并加 `<base href="../">`，让 `./assets/…`、favicon、
+`../zh/` 等相对地址仍按 `/showroom/` 解析（根路径与 `/pandasmarthome/` 镜像都成立）。JS / CSS 两页共用。
+两页互标 hreflang（en / zh-Hans / x-default），各自 canonical 指向自己。英文页 `<head>` 改了结构、插件里的
+替换对不上时构建直接报错；`onload=""` 处理器两页逐字节相同（Worker 的 CSP 按哈希放行，`worker/index.test.mjs` 会核对）。
+
+语言优先级：`?lang=` > 路径是 `…/zh/` > 上次的选择 > 英文。旧链接 `/showroom/?lang=zh` 仍是中文。
+切换按钮不换路径、不刷新，只用 `replaceState` 改 `?lang=`：与本页默认语言（`/zh/` 为中文，否则英文）一致就去掉，否则写上。
+
 - 界面字符串在 `src/i18n.js`
 - 设备名 / 区域名 / 场景名跟着数据走，写在 `src/ha/entities.js` 里，形如 `{ en: 'Ceiling Light', zh: '客厅主灯' }`
 - 组件里用 `const t = useT()`，界面串用 `t('key')`，数据里的双语字段用 `t.pick(value)`
@@ -114,7 +124,7 @@ Blender 脚本（`tools/plan.py`，`PLAN=3room` 选户型）读同一份。
 | 参数 | 作用 |
 |---|---|
 | `?plan=3room` / `4room` / `5room` | 打开指定户型 |
-| `?lang=zh` / `en` | 界面语言（优先于上次的选择） |
+| `?lang=zh` / `en` | 界面语言（优先于路径和上次的选择）；切语言时自动写入 / 去掉 |
 | `?demo=1` | 加载屏消失后直接开始自动演示（忽略减少动态与本会话已打断的记录） |
 | `?demo=0` | 禁用自动开始，只留「观看演示」按钮 |
 | `?clean=1` | 录屏用的干净画面：以专注模式打开，且不画 3D 热点、不显示退出按钮（Esc 仍可退出）。官网首页的样板间短片就是用 `?plan=4room&demo=1&clean=1` 录的，见仓库根 README「Showroom clip」与 `scripts/record-showroom.mjs` |

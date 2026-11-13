@@ -1,22 +1,11 @@
-import { useState, type ReactNode } from 'react'
+import { useState, type MouseEvent } from 'react'
 import { ArrowRight, MessageCircle } from 'lucide-react'
+import { Choice, Choices } from '../Choices'
 import { Button, SectionHeading } from '../ui'
+import { CONTACT_PREFILL, type ContactPrefill } from './Contact'
 import { pageHref, useI18n } from '../../i18n/context'
 import { track } from '../../lib/track'
 import { whatsappHref } from '../../lib/whatsapp'
-
-const PILL =
-  'inline-flex min-h-11 cursor-pointer items-center rounded-full border border-ink-300 px-4 text-sm font-medium text-ink-700 transition-colors hover:border-ink-500 hover:bg-white has-checked:border-brand has-checked:bg-brand has-checked:text-white has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-ink-950'
-
-function Choices({ legend, help, children }: { legend: string; help?: string; children: ReactNode }) {
-  return (
-    <fieldset>
-      <legend className="text-sm font-semibold text-ink-900">{legend}</legend>
-      {help ? <p className="mt-1 text-sm text-ink-600">{help}</p> : null}
-      <div className="mt-3 flex flex-wrap gap-2">{children}</div>
-    </fieldset>
-  )
-}
 
 /**
  * Homepage "plan starter": home type, bedrooms and priorities point at the
@@ -50,6 +39,16 @@ export function Planner() {
     .replace('{rooms}', p.rooms.find((option) => option.id === rooms)?.label ?? '')
     .replace('{priorities}', chosen.map((priority) => priority.label).join(p.join))
   const whatsapp = whatsappHref(message)
+  // Contact form options are in the same order in both languages: index into contact.form.*Options.
+  // Only honest one-to-one matches; "HDB / BTO" could be either form option, so it stays unset.
+  const formOptions = t.contact.form
+  const homeIndex: Record<string, number> = { condo: 3, landed: 4 }
+  const startIndex: Record<string, number> = { lighting: 1, aircon: 2, curtains: 3, security: 4, energy: 6 }
+  const formPrefill: ContactPrefill = {
+    homeType: formOptions.homeTypeOptions[homeIndex[home]] ?? '',
+    startWith: picked.length === 1 ? (formOptions.startWithOptions[startIndex[picked[0]]] ?? '') : '',
+    message,
+  }
   const [noteBefore, noteAfter] = (homeOption?.note ?? '').split('{link}')
 
   return (
@@ -68,34 +67,30 @@ export function Planner() {
         >
           <Choices legend={p.homeLabel}>
             {p.homes.map((option) => (
-              <label key={option.id} className={PILL}>
-                <input type="radio" name="plan-home" value={option.id} className="sr-only" checked={home === option.id} onChange={() => setHome(option.id)} />
+              <Choice key={option.id} type="radio" name="plan-home" value={option.id} checked={home === option.id} onChange={() => setHome(option.id)}>
                 {option.label}
-              </label>
+              </Choice>
             ))}
           </Choices>
           <Choices legend={p.roomsLabel}>
             {p.rooms.map((option) => (
-              <label key={option.id} className={PILL}>
-                <input type="radio" name="plan-rooms" value={option.id} className="sr-only" checked={rooms === option.id} onChange={() => setRooms(option.id)} />
+              <Choice key={option.id} type="radio" name="plan-rooms" value={option.id} checked={rooms === option.id} onChange={() => setRooms(option.id)}>
                 {option.label}
-              </label>
+              </Choice>
             ))}
           </Choices>
           <Choices legend={p.prioritiesLabel} help={p.prioritiesHelp}>
             {p.priorities.map((option) => (
-              <label key={option.id} className={PILL}>
-                <input
-                  type="checkbox"
-                  value={option.id}
-                  className="sr-only"
-                  checked={picked.includes(option.id)}
-                  onChange={(event) =>
-                    setPicked(event.target.checked ? [...picked, option.id] : picked.filter((id) => id !== option.id))
-                  }
-                />
+              <Choice
+                key={option.id}
+                type="checkbox"
+                name="plan-priorities"
+                value={option.id}
+                checked={picked.includes(option.id)}
+                onChange={(checked) => setPicked(checked ? [...picked, option.id] : picked.filter((id) => id !== option.id))}
+              >
                 {option.label}
-              </label>
+              </Choice>
             ))}
           </Choices>
 
@@ -142,17 +137,25 @@ export function Planner() {
                   </p>
                 ) : null}
                 <p className="mt-4 text-sm text-ink-600">{p.disclaimer}</p>
-                <div className="mt-5">
+                <div className="mt-5 flex flex-col gap-3 sm:flex-row">
                   {whatsapp ? (
                     <Button as="a" href={whatsapp} target="_blank" rel="noopener noreferrer" data-track-source="plan">
                       <MessageCircle size={18} aria-hidden="true" />
                       {p.whatsappCta}
                     </Button>
-                  ) : (
-                    <Button as="a" href="#contact" variant="secondary">
-                      {p.formCta}
-                    </Button>
-                  )}
+                  ) : null}
+                  {/* Hands the same summary to the contact form below; Contact.tsx moves focus to the name field. */}
+                  <Button
+                    as="a"
+                    href="#contact"
+                    variant="secondary"
+                    onClick={(event: MouseEvent) => {
+                      event.preventDefault()
+                      window.dispatchEvent(new CustomEvent<ContactPrefill>(CONTACT_PREFILL, { detail: formPrefill }))
+                    }}
+                  >
+                    {p.formCta}
+                  </Button>
                 </div>
               </div>
             ) : null}

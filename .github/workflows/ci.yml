@@ -37,6 +37,8 @@ jobs:
       - run: node serverless/telegram-relay.test.mjs
       - run: node worker/index.test.mjs
       - run: node scripts/check-form.mjs --dry
+      # Showroom camera moves stay clear of walls on every plan (plain Node, no install).
+      - run: node showroom/src/three/cameraPath.test.mjs
       - name: Build the site
         env:
           VITE_SITE_URL: https://smartpanda.sg

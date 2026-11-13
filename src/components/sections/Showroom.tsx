@@ -3,6 +3,7 @@ import { ArrowRight, Pause, Play } from 'lucide-react'
 import { Button } from '../ui'
 import { useI18n } from '../../i18n/context'
 import type { Content } from '../../content/types'
+import { showroomHref } from '../../lib/showroom'
 
 const clip = `${import.meta.env.BASE_URL}media/showroom-demo`
 const noop = () => () => {}
@@ -16,7 +17,7 @@ const noop = () => () => {}
 export function Showroom() {
   const { t, lang } = useI18n()
   const s = t.showroom
-  const href = `${import.meta.env.BASE_URL}showroom/?lang=${lang}`
+  const href = showroomHref(lang)
 
   return (
     <section id="showroom" className="band relative isolate overflow-hidden border-t border-white/[0.06] bg-ink-950 text-paper">
@@ -55,7 +56,7 @@ export function Showroom() {
               {s.plans.map((plan) => (
                 <li key={plan.id} className="flex-1 sm:flex-none">
                   <a
-                    href={`${href}&plan=${plan.id}`}
+                    href={showroomHref(lang, plan.id)}
                     className="inline-flex min-h-11 w-full items-center justify-center rounded-full px-3.5 text-[0.8125rem] font-medium text-ink-200 ring-1 ring-white/15 transition-colors hover:bg-white/8 hover:text-paper hover:ring-white/30"
                   >
                     {plan.label}

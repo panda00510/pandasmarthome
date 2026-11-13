@@ -4,6 +4,7 @@ import { Wordmark } from '../brand/Wordmark'
 import { Button } from '../ui'
 import { pagePaths } from '../../content/guides'
 import { pageHref, useI18n, type Lang } from '../../i18n/context'
+import { showroomHref } from '../../lib/showroom'
 
 const LANGS: { code: Lang; label: string }[] = [
   { code: 'en', label: 'EN' },
@@ -26,9 +27,7 @@ export function Header() {
   // Section anchors live on the homepage; from a guide they go back there.
   const home = path ? pageHref(lang) : ''
   const [open, setOpen] = useState(false)
-  // The showroom is a separate build served from /showroom/. BASE_URL keeps it
-  // correct on both hosts, and ?lang carries the current language across.
-  const showroomHref = `${import.meta.env.BASE_URL}showroom/?lang=${lang}`
+  const showroom = showroomHref(lang)
   const [scrolled, setScrolled] = useState(false)
 
   useEffect(() => {
@@ -76,7 +75,7 @@ export function Header() {
   const links: NavLink[] = [
     byId('solutions'),
     byId('homes'),
-    { key: 'showroom', label: t.nav.showroom, href: showroomHref, current: false, icon: true },
+    { key: 'showroom', label: t.nav.showroom, href: showroom, current: false, icon: true },
     { key: 'guides', label: t.guides.eyebrow, href: pageHref(lang, 'guides/'), current: path === 'guides/' },
     byId('process'),
   ]

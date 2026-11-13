@@ -190,6 +190,8 @@ export type Content = {
     homeTitle: string
     homeLead: string
     homeCta: string
+    /** Project brief near the end of the page (components/ProjectBrief.tsx). */
+    brief: Brief
     finePrint: string[]
     faqTitle: string
     faq: { q: string; a: string }[]
@@ -255,6 +257,8 @@ export type Content = {
     homeTitle: string
     homeLead: string
     homeCta: string
+    /** Project brief near the end of the page (components/ProjectBrief.tsx). */
+    brief: Brief
     finePrint: string[]
     faqTitle: string
     faq: { q: string; a: string }[]
@@ -588,3 +592,27 @@ export type Content = {
 /** One glossary entry: `id` is its stable #anchor; `links` are 1–2 page paths ("guides/what-is-matter/"), labelled with that page's heading. */
 export type GlossaryTerm = { id: string; term: string; body: string; links: string[] }
 export type Glossary = { groups: { id: string; title: string; terms: GlossaryTerm[] }[] }
+
+/**
+ * Short brief on the custom hardware / software pages: a few questions whose
+ * answers become a WhatsApp message. Choices only — no prices, no lead times.
+ */
+export type Brief = {
+  eyebrow: string
+  title: string
+  lead: string
+  /** `id`s are tracking props (the event carries option ids only); `short` (with its colon) labels the answer in the message. */
+  questions: { id: string; label: string; short: string; help?: string; multiple?: boolean; options: { id: string; label: string }[] }[]
+  submit: string
+  incomplete: string
+  summaryTitle: string
+  disclaimer: string
+  whatsappCta: string
+  /** Used only when no WhatsApp number is configured but an email is. */
+  emailCta: string
+  emailSubject: string
+  /** "{answers}" becomes one "short + labels" part per question, joined by `sep`; labels joined by `join`. Nothing else goes in. */
+  message: string
+  sep: string
+  join: string
+}

@@ -157,10 +157,17 @@ ${routes
   </url>`,
   )
   .join('\n')}
-  <url>
-    <loc>${site.url}/showroom/</loc>
+${['/showroom/', '/showroom/zh/']
+  .map(
+    (loc) => `  <url>
+    <loc>${site.url}${loc}</loc>
     <lastmod>${dates.showroom}</lastmod>
-  </url>
+    <xhtml:link rel="alternate" hreflang="en" href="${site.url}/showroom/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="${site.url}/showroom/zh/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="${site.url}/showroom/"/>
+  </url>`,
+  )
+  .join('\n')}
 </urlset>
 `
     : null
@@ -193,7 +200,7 @@ ${routes
         return `- [${title}](${page('en', path)}) (中文: ${page('zh', path)}): ${description}`
       }),
     site.url
-      ? `- [Interactive 3D HDB show flat](${site.url}/showroom/) (中文: ${site.url}/showroom/?lang=zh): a browser demo of a smart HDB flat — tap lights, curtains and aircon to see what each control does.`
+      ? `- [Interactive 3D HDB show flat](${site.url}/showroom/) (中文: ${site.url}/showroom/zh/): a browser demo of a smart HDB flat — tap lights, curtains and aircon to see what each control does.`
       : '',
     site.url ? `- Full text of every guide: ${site.url}/llms-full.txt` : '',
     '',
