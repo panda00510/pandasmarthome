@@ -697,7 +697,26 @@ export const zh: Content = {
       { title: '交付与培训', body: '教会你的团队更新内容、会议预约和应急插播。' },
     ],
     priceTitle: '价格',
-    priceBody: '按屏数、地点数和部署方式书面报价。没有固定价目表，报价里会写清包含哪些内容，开工前确认。',
+    priceBody: '以上为参考起步价。屏幕和播放盒不包含在内，由我们代为托管另行报价。实际价格以开工前的书面报价为准。',
+    priceLabel: '参考价',
+    priceFrom: '{amount} 起',
+    prices: [
+      {
+        title: '单个地点的部署',
+        body: '安装在你的服务器上，接入最多 5 块屏，做好第一批模板，并培训一次。',
+        priceSgd: 800,
+      },
+      {
+        title: '每增加一块屏',
+        body: '把播放器接入系统，分配到地点和模板。',
+        priceSgd: 60,
+      },
+      {
+        title: '会议室门牌',
+        body: '配置会议室预约，做好门牌和会议列表屏模板，并教会同事怎么预约。',
+        priceSgd: 400,
+      },
+    ],
     relatedTitle: '可以一起做',
     related: [
       {

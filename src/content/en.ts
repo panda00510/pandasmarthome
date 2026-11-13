@@ -736,7 +736,26 @@ export const en: Content = {
     ],
     priceTitle: 'Pricing',
     priceBody:
-      'Quoted in writing, based on the number of screens, the number of sites and how it is deployed. There is no fixed price list; the quote sets out what is included before work starts.',
+      'These are indicative starting prices. Screens and player boxes are not included, and hosting by us is quoted separately. The price you pay is written in the quote before work starts.',
+    priceLabel: 'Indicative price',
+    priceFrom: 'from {amount}',
+    prices: [
+      {
+        title: 'Setup for one site',
+        body: 'Installed on your server, with up to 5 screens connected, your first templates and a training session.',
+        priceSgd: 800,
+      },
+      {
+        title: 'Each additional screen',
+        body: 'Adding a player to the system and assigning it to a site and a template.',
+        priceSgd: 60,
+      },
+      {
+        title: 'Meeting room door panels',
+        body: 'Room booking set up, door panel and room list templates, and staff shown how to book.',
+        priceSgd: 400,
+      },
+    ],
     relatedTitle: 'Goes well with',
     related: [
       {

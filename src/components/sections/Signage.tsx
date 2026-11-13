@@ -184,10 +184,26 @@ export function SignagePage() {
 
       <section className="border-t border-ink-200/70 bg-paper-alt">
         <div className="shell py-12 lg:py-20">
-          <div className="card flex flex-col gap-6 p-6 sm:p-8 lg:flex-row lg:items-center lg:justify-between">
+          <h2 className="text-[1.75rem] leading-[1.15] font-semibold tracking-[-0.025em] text-ink-950 sm:text-4xl">
+            {s.priceTitle}
+          </h2>
+          <ul className="mt-8 grid gap-4 lg:grid-cols-3">
+            {s.prices.map((item) => (
+              <li key={item.title} className="card flex flex-col p-6">
+                <h3 className="text-[1.125rem] leading-snug font-semibold tracking-[-0.015em] text-ink-950">{item.title}</h3>
+                <p className="mt-2 text-[0.9375rem] leading-relaxed text-ink-600">{item.body}</p>
+                <p className="mt-auto pt-5">
+                  <span className="block text-xs font-semibold tracking-wide text-ink-500 uppercase">{s.priceLabel}</span>
+                  <span className="numeral mt-1 block text-[1.375rem] font-semibold tracking-[-0.02em] text-ink-950">
+                    {s.priceFrom.replaceAll('{amount}', `S$${item.priceSgd.toLocaleString('en-SG')}`)}
+                  </span>
+                </p>
+              </li>
+            ))}
+          </ul>
+          <div className="card mt-4 flex flex-col gap-6 p-6 sm:p-8 lg:flex-row lg:items-center lg:justify-between">
             <div className="max-w-2xl">
-              <h2 className="text-[1.5rem] leading-snug font-semibold tracking-[-0.025em] text-ink-950">{s.priceTitle}</h2>
-              <p className="mt-3 flex items-start gap-2.5 text-[0.9375rem] leading-relaxed text-ink-600">
+              <p className="flex items-start gap-2.5 text-[0.9375rem] leading-relaxed text-ink-600">
                 <Info size={16} className="mt-1 shrink-0 text-ink-500" aria-hidden="true" />
                 {s.priceBody}
               </p>

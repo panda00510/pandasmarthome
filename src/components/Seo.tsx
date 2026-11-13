@@ -338,6 +338,14 @@ export function Seo() {
               itemOffered: { '@type': 'Service', name: group.title, description: group.body },
             })),
           },
+          // Indicative starting prices, as on the page.
+          offers: t.signage.prices.map((item) => ({
+            '@type': 'Offer',
+            name: item.title,
+            description: item.body,
+            priceCurrency: 'SGD',
+            priceSpecification: { '@type': 'PriceSpecification', priceCurrency: 'SGD', minPrice: item.priceSgd },
+          })),
         }
       : null
 

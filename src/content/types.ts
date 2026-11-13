@@ -278,6 +278,10 @@ export type Content = {
     steps: { title: string; body: string }[]
     priceTitle: string
     priceBody: string
+    /** Indicative starting prices, shown as "from S$X". */
+    priceLabel: string
+    priceFrom: string
+    prices: { title: string; body: string; priceSgd: number }[]
     relatedTitle: string
     /** `id` picks the link target: hardware, software or home. */
     related: { id: string; title: string; body: string; cta: string }[]
