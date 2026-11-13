@@ -1,15 +1,13 @@
 import { ArrowRight, CalendarClock, ChevronDown, LayoutDashboard, MessageCircle, Package, Users } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { Button } from '../ui'
-import { site } from '../../config/site'
+import { enquiryHref } from '../../lib/whatsapp'
 import { pageHref, useI18n } from '../../i18n/context'
 
 /**
  * Custom software for small businesses. Prices are indicative starting prices.
  * The only action is a WhatsApp message. No client list and no reviews.
  */
-
-const PREORDER_WHATSAPP = site.whatsappLink ?? 'https://wa.me/6580676515'
 
 const ICONS: Record<string, LucideIcon> = {
   booking: CalendarClock,
@@ -21,10 +19,6 @@ const ICONS: Record<string, LucideIcon> = {
 
 function formatPrice(template: string, amount: number) {
   return template.replaceAll('{amount}', `S$${amount.toLocaleString('en-SG')}`)
-}
-
-function whatsappHref(message: string) {
-  return `${PREORDER_WHATSAPP}?text=${encodeURIComponent(message)}`
 }
 
 export function SoftwarePage() {
@@ -47,7 +41,7 @@ export function SoftwarePage() {
           <div className="mt-6">
             <Button
               as="a"
-              href={whatsappHref(s.enquireAll)}
+              href={enquiryHref(s.enquireAll)}
               target="_blank"
               rel="noopener noreferrer"
               size="lg"
@@ -114,7 +108,7 @@ export function SoftwarePage() {
                       <p className="mt-1 text-sm leading-relaxed text-ink-600">{s.support}</p>
                       <Button
                         as="a"
-                        href={whatsappHref(message)}
+                        href={enquiryHref(message)}
                         target="_blank"
                         rel="noopener noreferrer"
                         size="lg"

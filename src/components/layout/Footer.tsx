@@ -2,6 +2,7 @@ import { ExternalLink, Mail, MessageCircle, Phone } from 'lucide-react'
 import { Wordmark } from '../brand/Wordmark'
 import { formattedAddress, hasAnyContactDetail, site, socialLinks } from '../../config/site'
 import { pageHref, useI18n } from '../../i18n/context'
+import { pageWhatsappMessage, whatsappHref } from '../../lib/whatsapp'
 
 const SOCIAL_LABELS: Record<string, string> = {
   instagram: 'Instagram',
@@ -12,8 +13,8 @@ const SOCIAL_LABELS: Record<string, string> = {
   xiaohongshu: '小红书',
 }
 
-const LINK = 'inline-flex min-h-9 items-center text-sm text-ink-300 transition-colors hover:text-paper'
-const LINK_ICON = 'inline-flex min-h-9 items-center gap-2 transition-colors hover:text-paper'
+const LINK = 'inline-flex min-h-11 items-center text-sm text-ink-300 transition-colors hover:text-paper'
+const LINK_ICON = 'inline-flex min-h-11 items-center gap-2 transition-colors hover:text-paper'
 const HEAD = 'text-xs font-semibold tracking-[0.14em] text-ink-400 uppercase'
 
 /** Nav items that open their own page instead of scrolling the homepage. */
@@ -39,7 +40,7 @@ export function Footer() {
           <div>
             <a
               href={`${home}#top`}
-              className="inline-block rounded-lg text-paper transition-opacity hover:opacity-70"
+              className="inline-flex min-h-11 items-center rounded-lg text-paper transition-opacity hover:opacity-70"
               aria-label={t.a11y.homeLink}
             >
               <Wordmark />
@@ -54,7 +55,7 @@ export function Footer() {
                       href={url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex min-h-9 items-center gap-1 text-sm text-ink-300 transition-colors hover:text-paper"
+                      className="inline-flex min-h-11 items-center gap-1 text-sm text-ink-300 transition-colors hover:text-paper"
                     >
                       {SOCIAL_LABELS[key] ?? key}
                       <ExternalLink size={12} aria-hidden="true" />
@@ -102,6 +103,11 @@ export function Footer() {
                 </a>
               </li>
               <li>
+                <a href={pageHref(lang, 'glossary/')} className={LINK}>
+                  {t.glossary.navLabel}
+                </a>
+              </li>
+              <li>
                 <a href={`${home}#faq`} className={LINK}>
                   {t.faq.eyebrow}
                 </a>
@@ -139,7 +145,7 @@ export function Footer() {
               {site.whatsappLink ? (
                 <li>
                   <a
-                    href={site.whatsappLink}
+                    href={whatsappHref(pageWhatsappMessage(t, lang, path))!}
                     target="_blank"
                     rel="noopener noreferrer"
                     className={LINK_ICON}

@@ -1,7 +1,7 @@
 import { ChevronDown, Cpu, DoorClosed, Lightbulb, MessageCircle, Radar, type LucideIcon } from 'lucide-react'
 import { ProductArt } from '../graphics/ProductFigures'
 import { Button, PhotoTag } from '../ui'
-import { site } from '../../config/site'
+import { enquiryHref } from '../../lib/whatsapp'
 import { pageHref, useI18n } from '../../i18n/context'
 
 /**
@@ -10,7 +10,6 @@ import { pageHref, useI18n } from '../../i18n/context'
  * message that names the device.
  */
 
-/** Business WhatsApp. A configured number wins; otherwise the published line. */
 const INSTALL_ICONS: Record<string, LucideIcon> = {
   'switches-lighting': Lightbulb,
   sensors: Radar,
@@ -18,14 +17,8 @@ const INSTALL_ICONS: Record<string, LucideIcon> = {
   'hubs-gateways': Cpu,
 }
 
-const PREORDER_WHATSAPP = site.whatsappLink ?? 'https://wa.me/6580676515'
-
 function formatPrice(template: string, amount: number) {
   return template.replaceAll('{amount}', `S$${amount}`)
-}
-
-function whatsappHref(message: string) {
-  return `${PREORDER_WHATSAPP}?text=${encodeURIComponent(message)}`
 }
 
 function StatusPill({ children }: { children: string }) {
@@ -84,7 +77,7 @@ export function ProductsPage() {
             <div className="mt-5">
               <Button
                 as="a"
-                href={whatsappHref(p.custom.message)}
+                href={enquiryHref(p.custom.message)}
                 target="_blank"
                 rel="noopener noreferrer"
                 size="lg"
@@ -99,7 +92,7 @@ export function ProductsPage() {
           <div className="mt-6">
             <Button
               as="a"
-              href={whatsappHref(p.enquireAll)}
+              href={enquiryHref(p.enquireAll)}
               target="_blank"
               rel="noopener noreferrer"
               size="lg"
@@ -198,7 +191,7 @@ export function ProductsPage() {
                           <div className="flex w-full flex-col gap-2 sm:w-auto sm:items-stretch">
                             <Button
                               as="a"
-                              href={whatsappHref(message)}
+                              href={enquiryHref(message)}
                               target="_blank"
                               rel="noopener noreferrer"
                               size="lg"
@@ -210,7 +203,7 @@ export function ProductsPage() {
                             </Button>
                             <Button
                               as="a"
-                              href={whatsappHref(customMessage)}
+                              href={enquiryHref(customMessage)}
                               target="_blank"
                               rel="noopener noreferrer"
                               variant="secondary"
@@ -274,7 +267,7 @@ export function ProductsPage() {
           <p className="mt-6 max-w-3xl text-sm leading-relaxed text-ink-600">{p.install.note}</p>
           <Button
             as="a"
-            href={whatsappHref(p.install.message)}
+            href={enquiryHref(p.install.message)}
             target="_blank"
             rel="noopener noreferrer"
             size="lg"

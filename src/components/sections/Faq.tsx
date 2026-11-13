@@ -80,7 +80,7 @@ function LatestGuides() {
               <ArrowRight
                 size={15}
                 aria-hidden="true"
-                className="mt-0.5 shrink-0 text-ink-400 transition-transform group-hover:translate-x-0.5 group-hover:text-bamboo-700 motion-reduce:transition-none"
+                className="mt-0.5 shrink-0 text-ink-400 transition-transform motion-safe:group-hover:translate-x-0.5 group-hover:text-bamboo-700 motion-reduce:transition-none"
               />
             </a>
           </li>

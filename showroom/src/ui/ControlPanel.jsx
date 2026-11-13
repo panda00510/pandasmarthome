@@ -20,6 +20,7 @@ function Slider({ label, value, unit = '', min, max, step = 1, cool, onChange })
         min={min} max={max} step={step} value={value}
         onChange={(e) => onChange(Number(e.target.value))}
         aria-label={label}
+        aria-valuetext={`${value}${unit === 'K' ? ' K' : unit}`}
       />
     </div>
   )
@@ -62,6 +63,7 @@ function Detail({ entity, id }) {
                   key={key}
                   title={t(key)}
                   aria-label={t(key)}
+                  aria-pressed={String(a.rgb_color) === String(rgb)}
                   className={`swatch${String(a.rgb_color) === String(rgb) ? ' is-on' : ''}`}
                   style={{ background: `rgb(${rgb.join(',')})` }}
                   onClick={() => call('light', 'turn_on', id, { rgb_color: rgb })}
@@ -89,6 +91,7 @@ function Detail({ entity, id }) {
             <button
               key={key}
               className={a.current_position === p ? 'is-on' : ''}
+              aria-pressed={a.current_position === p}
               onClick={() => call('cover', 'set_cover_position', id, { position: p })}
             >
               {t(key)}
@@ -107,12 +110,12 @@ function Detail({ entity, id }) {
           <div className="stepper">
             <button
               onClick={() => call('climate', 'set_temperature', id, { temperature: Math.max(16, a.temperature - 1) })}
-              aria-label={t('ctl_target')}
+              aria-label={t('ctl_dec', t('ctl_target'))}
             >−</button>
-            <span className="stepper-value">{a.temperature}<i>°C</i></span>
+            <span className="stepper-value" aria-live="polite">{a.temperature}<i>°C</i></span>
             <button
               onClick={() => call('climate', 'set_temperature', id, { temperature: Math.min(30, a.temperature + 1) })}
-              aria-label={t('ctl_target')}
+              aria-label={t('ctl_inc', t('ctl_target'))}
             >+</button>
             <span className="stepper-note">{t('ctl_room', a.current_temperature)}</span>
           </div>
@@ -122,6 +125,7 @@ function Detail({ entity, id }) {
             <button
               key={m}
               className={entity.state === m ? 'is-on' : ''}
+              aria-pressed={entity.state === m}
               onClick={() => call('climate', 'set_hvac_mode', id, { hvac_mode: m })}
             >
               {t('hvac_' + m)}
@@ -145,6 +149,7 @@ function Detail({ entity, id }) {
             <button
               key={key}
               className={current === value ? 'is-on' : ''}
+              aria-pressed={current === value}
               onClick={() => call('fan', 'turn_on', id, { percentage: value })}
             >
               {t(key)}
@@ -166,6 +171,7 @@ function Detail({ entity, id }) {
             <button
               key={m}
               className={a.auto_off_min === m ? 'is-on' : ''}
+              aria-pressed={a.auto_off_min === m}
               onClick={() => call('switch', 'turn_on', id, { auto_off_min: m })}
             >
               {t('heater_min', m)}
@@ -182,9 +188,9 @@ function Detail({ entity, id }) {
         <div className="ctl">
           <div className="ctl-head"><span className="ctl-label">{t('ctl_humidity')}</span></div>
           <div className="stepper">
-            <button onClick={() => call('humidifier', 'set_humidity', id, { humidity: Math.max(a.min_humidity, a.humidity - 5) })} aria-label={t('ctl_humidity')}>−</button>
-            <span className="stepper-value">{a.humidity}<i>%</i></span>
-            <button onClick={() => call('humidifier', 'set_humidity', id, { humidity: Math.min(a.max_humidity, a.humidity + 5) })} aria-label={t('ctl_humidity')}>+</button>
+            <button onClick={() => call('humidifier', 'set_humidity', id, { humidity: Math.max(a.min_humidity, a.humidity - 5) })} aria-label={t('ctl_dec', t('ctl_humidity'))}>−</button>
+            <span className="stepper-value" aria-live="polite">{a.humidity}<i>%</i></span>
+            <button onClick={() => call('humidifier', 'set_humidity', id, { humidity: Math.min(a.max_humidity, a.humidity + 5) })} aria-label={t('ctl_inc', t('ctl_humidity'))}>+</button>
             <span className="stepper-note">{t('ctl_now', a.current_humidity)}</span>
           </div>
         </div>
@@ -196,8 +202,8 @@ function Detail({ entity, id }) {
     return (
       <div className="dev-detail">
         <div className="ctl seg">
-          <button className={entity.state === 'cleaning' ? 'is-on' : ''} onClick={() => call('vacuum', 'start', id)}>{t('vac_start')}</button>
-          <button className={entity.state !== 'cleaning' ? 'is-on' : ''} onClick={() => call('vacuum', 'return_to_base', id)}>{t('vac_dock')}</button>
+          <button className={entity.state === 'cleaning' ? 'is-on' : ''} aria-pressed={entity.state === 'cleaning'} onClick={() => call('vacuum', 'start', id)}>{t('vac_start')}</button>
+          <button className={entity.state !== 'cleaning' ? 'is-on' : ''} aria-pressed={entity.state !== 'cleaning'} onClick={() => call('vacuum', 'return_to_base', id)}>{t('vac_dock')}</button>
         </div>
       </div>
     )
@@ -248,6 +254,7 @@ const Tile = memo(function Tile({ id }) {
           <button
             className="tile-more"
             aria-expanded={open}
+            aria-controls={`adj-${id}`}
             aria-label={`${t('tile_adjust')} · ${t.pick(entity.name)}`}
             onClick={() => setSelected(open ? null : id)}
           >
@@ -256,7 +263,7 @@ const Tile = memo(function Tile({ id }) {
         )}
       </div>
       {open && (
-        <div className="tile-adjust" role="group" aria-label={t.pick(entity.name)}>
+        <div className="tile-adjust" id={`adj-${id}`} role="group" aria-label={t.pick(entity.name)}>
           <Detail entity={entity} id={id} />
         </div>
       )}
@@ -278,8 +285,14 @@ const SensorTile = memo(function SensorTile({ id }) {
         <span className="stile-name">{t.pick(entity.name)}</span>
         <span className="stile-state">{stateText(entity, t)}</span>
       </span>
-      {entity.attributes.device_class === 'occupancy' && (
-        <button className="stile-btn" onClick={() => call('binary_sensor', 'simulate', id)}>{t('sim_walk')}</button>
+      {(entity.attributes.device_class === 'occupancy' || entity.attributes.device_class === 'window') && (
+        <button
+          className="stile-btn"
+          onClick={() => call('binary_sensor', 'simulate', id)}
+          aria-label={`${entity.attributes.device_class === 'window' ? t('sim_window') : t('sim_walk')} · ${t.pick(entity.name)}`}
+        >
+          {entity.attributes.device_class === 'window' ? t('sim_window') : t('sim_walk')}
+        </button>
       )}
     </div>
   )
@@ -392,10 +405,11 @@ export default function ControlPanel() {
     if (v) setView(v)
   }
   const onTabKey = (e) => {
-    const step = { ArrowRight: 1, ArrowLeft: -1 }[e.key]
-    if (!step) return
+    const i = tabs.indexOf(current)
+    const to = { ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: tabs.length - 1 }[e.key]
+    if (to === undefined) return
     e.preventDefault()
-    const next = tabs[(tabs.indexOf(current) + step + tabs.length) % tabs.length]
+    const next = tabs[(to + tabs.length) % tabs.length]
     choose(next)
     tabRefs.current[next]?.focus()
   }
@@ -405,17 +419,18 @@ export default function ControlPanel() {
     const entities = useHA.getState().entities
     return (
       <aside className="rail float">
-        <button className="rail-btn is-expand" onClick={() => setPanelCollapsed(false)} title={t('panel_expand')}>
+        <button className="rail-btn is-expand" onClick={() => setPanelCollapsed(false)} title={t('panel_expand')} aria-label={t('panel_expand')} aria-expanded={false}>
           <Icon name="sliders" size={17} />
         </button>
-        <span className="rail-rule" />
+        <span className="rail-rule" aria-hidden="true" />
         {controllable.map(({ id, on }) => (
           <button
             key={id}
             className={`rail-btn${on ? ' is-on' : ''}`}
             onClick={() => toggle(id)}
             title={`${t.pick(entities[id].name)} · ${stateText(entities[id], t)}`}
-            aria-label={`${on ? t('state_off') : t('state_on')} · ${t.pick(entities[id].name)}`}
+            aria-label={t.pick(entities[id].name)}
+            aria-pressed={on}
           >
             <Icon name={iconFor(id, entities[id].domain)} size={17} />
           </button>
@@ -451,6 +466,7 @@ export default function ControlPanel() {
               onClick={() => setPanelCollapsed(true)}
               title={t('panel_collapse')}
               aria-label={t('panel_collapse')}
+              aria-expanded={true}
             >
               <Icon name="chevron" size={14} />
             </button>
@@ -476,7 +492,8 @@ export default function ControlPanel() {
         </div>
       </div>
 
-      <div className="panel-body" role="tabpanel" id="panel-tabpanel" aria-labelledby={`tab-${current}`}>
+      {/* 手机抽屉收起时，面板内容在屏幕外：inert 让它不进 Tab 顺序、不被读屏读到 */}
+      <div className="panel-body" role="tabpanel" id="panel-tabpanel" aria-labelledby={`tab-${current}`} inert={isMobile && !open}>
         {current === 'home' ? (
           <HomePage envIds={envIds} onCount={onCount} total={controllable.length} />
         ) : (

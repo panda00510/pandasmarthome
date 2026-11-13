@@ -13,15 +13,13 @@ import {
 import type { LucideIcon } from 'lucide-react'
 import { ProductArt } from '../graphics/ProductFigures'
 import { Button, PhotoTag, SectionHeading } from '../ui'
-import { site } from '../../config/site'
+import { enquiryHref } from '../../lib/whatsapp'
 import { pageHref, useI18n } from '../../i18n/context'
 
 /**
  * Custom ESP32 AI / IoT hardware. Prototypes and one-off builds; no client
  * list, no lead times, no prices. The only action is a WhatsApp message.
  */
-
-const WHATSAPP = site.whatsappLink ?? 'https://wa.me/6580676515'
 
 const ICONS: Record<string, LucideIcon> = {
   voice: Mic,
@@ -63,7 +61,7 @@ function HeroDevices({ tag }: { tag: string }) {
 export function HardwarePage() {
   const { t, lang } = useI18n()
   const h = t.hardware
-  const enquireHref = `${WHATSAPP}?text=${encodeURIComponent(h.enquireAll)}`
+  const enquireHref = enquiryHref(h.enquireAll)
 
   return (
     <>

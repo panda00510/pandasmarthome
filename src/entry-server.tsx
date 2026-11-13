@@ -9,6 +9,9 @@ import { fillGuideBodies, findGuide, guidePath, guidesIn, latestGuideUpdate, pag
 import { dictionaries, langPath, type Lang } from './i18n/context'
 import { LanguageProvider } from './i18n/LanguageProvider'
 import * as Checklist from './components/sections/Checklist'
+import * as Glossary from './components/sections/Glossary'
+import { glossary as glossaryEn } from './content/glossary.en'
+import { glossary as glossaryZh } from './content/glossary.zh'
 import * as Guides from './components/sections/Guides'
 import * as Hardware from './components/sections/Hardware'
 import * as Home from './components/sections/Home'
@@ -21,7 +24,7 @@ import { viewFiles, viewOf, views } from './views'
 // The browser loads copy, page chunks and article bodies on demand (main.tsx);
 // the prerender has everything up front, so render() stays synchronous.
 Object.assign(dictionaries, { en, zh })
-Object.assign(views, { checklist: Checklist, guides: Guides, hardware: Hardware, home: Home, hub: Hub, products: Products, signage: Signage, software: Software })
+Object.assign(views, { checklist: Checklist, glossary: { ...Glossary, glossaries: { en: glossaryEn, zh: glossaryZh } }, guides: Guides, hardware: Hardware, home: Home, hub: Hub, products: Products, signage: Signage, software: Software })
 fillGuideBodies(
   Object.fromEntries(
     Object.entries(
@@ -31,6 +34,13 @@ fillGuideBodies(
 )
 
 const LANGS: Lang[] = ['en', 'zh']
+
+// Glossary: both languages list the same ids, and every link goes to a real page.
+const termIds = (glossary: typeof glossaryEn) => glossary.groups.flatMap((group) => group.terms.map((term) => term.id)).join()
+if (termIds(glossaryEn) !== termIds(glossaryZh)) throw new Error('glossary.en.ts and glossary.zh.ts list different terms')
+for (const term of [glossaryEn, glossaryZh].flatMap((glossary) => glossary.groups.flatMap((group) => group.terms))) {
+  for (const path of term.links) if (!pagePaths.includes(path)) throw new Error(`glossary #${term.id}: no page at ${path}`)
+}
 
 /** Every page to prerender: each path in each language. */
 export const routes = LANGS.flatMap((lang) => pagePaths.map((path) => ({ lang, path })))
@@ -46,6 +56,7 @@ export function pageModules(lang: Lang, path: string) {
   return [
     `src/content/${lang}.ts`,
     ...(view ? [viewFiles[view]] : []),
+    ...(view === 'glossary' ? [`src/content/glossary.${lang}.ts`] : []),
     ...(guide ? [`src/content/${guide.file.slice(2)}?raw`] : []),
   ]
 }
@@ -236,6 +247,11 @@ ${routes
     `## ${en.guides.pagesTitle}`,
     ...LANGS.flatMap((lang) =>
       pagesIn(lang).map((item) => `- [${item.title}](${page(lang, item.path)}): ${item.description}`),
+    ),
+    '',
+    `## ${en.glossary.title} (${site.url ? page('en', 'glossary/') : 'glossary'})`,
+    ...glossaryEn.groups.flatMap((group) =>
+      group.terms.map((term) => `- ${term.term}: ${term.body.slice(0, term.body.search(/\.(\s|$)/) + 1)}`),
     ),
     '',
     '## FAQ',

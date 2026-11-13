@@ -251,6 +251,15 @@
       transform 0.2s var(--ease-out-soft),
       box-shadow 0.2s var(--ease-out-soft);
   }
+  /* A 320px screen (or 400% zoom) is narrower than some full-width labels:
+     let them wrap instead of pushing the page sideways. */
+  @media (width < 360px) {
+    .btn {
+      white-space: normal;
+      text-align: center;
+      line-height: 1.2;
+    }
+  }
   .btn:active {
     transform: translateY(1px);
   }
@@ -263,7 +272,8 @@
   .field {
     width: 100%;
     border-radius: 0.875rem;
-    border: 1px solid var(--color-ink-200);
+    /* ink-400: a field's outline is its only boundary on a white card (3.2:1, WCAG 1.4.11). */
+    border: 1px solid var(--color-ink-400);
     background: #fff;
     padding: 0.75rem 0.9375rem;
     font-size: 0.9375rem;
@@ -273,7 +283,7 @@
       box-shadow 0.2s var(--ease-out-soft);
   }
   .field::placeholder {
-    color: var(--color-ink-400);
+    color: var(--color-ink-500);
   }
   .field:focus {
     outline: none;
@@ -444,7 +454,8 @@
 }
 @media (prefers-reduced-motion: reduce) {
   a.card:hover,
-  .card.spotlight:hover {
+  .card.spotlight:hover,
+  .btn:active {
     transform: none;
   }
 }

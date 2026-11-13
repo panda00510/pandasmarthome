@@ -45,6 +45,7 @@ export function Process() {
           className="inline-flex min-h-11 shrink-0 items-center gap-1.5 text-sm font-semibold text-bamboo-700 hover:text-bamboo-600"
         >
           {t.guides.learnMore}
+          <span className="sr-only">: {t.process.title}</span>
           <ArrowRight size={15} aria-hidden="true" />
         </a>
         </div>

@@ -197,10 +197,11 @@ export type Content = {
     eyebrow: string
     title: string
     lead: string
-    /** Status line on the preview card. No device counts. */
+    /** Line on the video card saying it is a screen recording of the real showroom. */
     status: string
-    /** Labels on the drawn floor plan: living, master, kitchen, bedroom. */
-    rooms: string[]
+    /** Accessible names of the clip's play / pause button. */
+    play: string
+    pause: string
     /** Floor plans the showroom opens directly with ?plan=<id>. */
     plans: { id: string; label: string }[]
   }
@@ -524,4 +525,32 @@ export type Content = {
     /** Corner label on every stock photo. */
     imageTag: string
   }
+  /** Opening WhatsApp line per page (src/lib/whatsapp.ts). Says where the visitor came from, never who they are. */
+  whatsapp: {
+    /** Guide pages: "{title}" is the guide heading, shortened so the message stays within 200 characters. */
+    guide: string
+    /** The 404 page. */
+    notFound: string
+    /** Complete messages keyed by page path ("homes/bto-smart-home/"). Unlisted pages use contact.whatsappGreeting. */
+    pages: Record<string, string>
+  }
+  /** /glossary/ page copy. The terms themselves are in content/glossary.<lang>.ts (loaded only on that page). */
+  glossary: {
+    navLabel: string
+    metaTitle: string
+    metaDescription: string
+    eyebrow: string
+    title: string
+    lead: string
+    jumpTo: string
+    /** Before the 1–2 links under a term. */
+    readMore: string
+    /** Under every guide: "{link}" becomes a link to the glossary labelled `noteLink`. */
+    note: string
+    noteLink: string
+  }
 }
+
+/** One glossary entry: `id` is its stable #anchor; `links` are 1–2 page paths ("guides/what-is-matter/"), labelled with that page's heading. */
+export type GlossaryTerm = { id: string; term: string; body: string; links: string[] }
+export type Glossary = { groups: { id: string; title: string; terms: GlossaryTerm[] }[] }

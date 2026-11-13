@@ -1,4 +1,5 @@
 import { findGuide, hubOf } from './content/guides'
+import type { Glossary } from './content/types'
 import type { Lang } from './i18n/context'
 
 /**
@@ -17,6 +18,14 @@ const loaders = {
   hardware: () => import('./components/sections/Hardware'),
   signage: () => import('./components/sections/Signage'),
   checklist: () => import('./components/sections/Checklist'),
+  // The terms come in this page's language only (content/glossary.<lang>.ts).
+  glossary: async (lang: Lang) => {
+    const [view, data] = await Promise.all([
+      import('./components/sections/Glossary'),
+      lang === 'zh' ? import('./content/glossary.zh') : import('./content/glossary.en'),
+    ])
+    return { ...view, glossaries: { [lang]: data.glossary } as Partial<Record<Lang, Glossary>> }
+  },
 }
 
 export type View = keyof typeof loaders
@@ -31,12 +40,13 @@ export const viewFiles: Record<View, string> = {
   hardware: 'src/components/sections/Hardware.tsx',
   signage: 'src/components/sections/Signage.tsx',
   checklist: 'src/components/sections/Checklist.tsx',
+  glossary: 'src/components/sections/Glossary.tsx',
 }
 
 export const views: { [K in View]?: Awaited<ReturnType<(typeof loaders)[K]>> } = {}
 
-export async function loadView(view: View | null) {
-  if (view) Object.assign(views, { [view]: await loaders[view]() })
+export async function loadView(view: View | null, lang: Lang) {
+  if (view) Object.assign(views, { [view]: await loaders[view](lang) })
 }
 
 const PAGES: Record<string, View> = {
@@ -47,6 +57,7 @@ const PAGES: Record<string, View> = {
   'custom-hardware/': 'hardware',
   'signage/': 'signage',
   'renovation-checklist/': 'checklist',
+  'glossary/': 'glossary',
 }
 
 /** Which chunk a page needs; null for an unknown address (the 404 view is in the main bundle). */

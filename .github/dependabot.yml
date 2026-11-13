@@ -1,0 +1,47 @@
+# Weekly dependency updates. Minor and patch bumps arrive as one grouped PR per
+# directory/ecosystem; each major bump gets its own PR. ci.yml checks every PR
+# (lint, typecheck, self-checks, both builds). Merging to main deploys the
+# site (deploy.yml), so wait for the checks before merging.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: '09:00'
+      timezone: Asia/Singapore
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: Deps
+    groups:
+      site-minor-and-patch:
+        update-types: [minor, patch]
+
+  - package-ecosystem: npm
+    directory: /showroom
+    schedule:
+      interval: weekly
+      day: monday
+      time: '09:00'
+      timezone: Asia/Singapore
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: 'Deps(showroom)'
+    groups:
+      showroom-minor-and-patch:
+        update-types: [minor, patch]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: '09:00'
+      timezone: Asia/Singapore
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: CI
+    groups:
+      actions-minor-and-patch:
+        update-types: [minor, patch]

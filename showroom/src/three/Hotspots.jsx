@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { Html, TransformControls, Billboard } from '@react-three/drei'
-import { useHA, isOn, usePlan } from '../ha/store'
+import { useHA, isOn, usePlan, CLEAN } from '../ha/store'
 import { stateText } from '../ha/format'
 import { useT } from '../i18n'
 import Icon, { iconFor } from '../ui/icons'
@@ -95,7 +95,10 @@ function Hotspot({ conf, rank }) {
 
         {visible && (
           <Html position={[0, 0.2, 0]} center zIndexRange={[8, 0]}>
+            {/* 鼠标 / 触屏的快捷方式：设备面板里有同样的全部操作，所以不进 Tab 顺序、不重复读出 */}
             <button
+              tabIndex={-1}
+              aria-hidden="true"
               className={`hotspot-label${on ? ' is-on' : ''}${active ? ' is-active' : ''}`}
               onClick={(ev) => {
                 ev.stopPropagation()
@@ -134,6 +137,7 @@ const rankInArea = (list, i) => list.slice(0, i).filter((other) => areaOf(other.
 
 export default function Hotspots() {
   const { hotspots } = usePlan()
+  if (CLEAN) return null
   return (
     <group>
       {hotspots.map((conf, i) => (

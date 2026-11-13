@@ -95,7 +95,7 @@ export function Hero() {
               <a
                 key={href}
                 href={href}
-                className="inline-flex min-h-10 items-center gap-1.5 rounded-full border border-white/12 px-3 text-sm font-medium text-ink-200 transition-colors hover:border-white/30 hover:bg-white/6 hover:text-paper"
+                className="inline-flex min-h-11 items-center gap-1.5 rounded-full border border-white/12 px-3 text-sm font-medium text-ink-200 transition-colors hover:border-white/30 hover:bg-white/6 hover:text-paper"
               >
                 <Icon size={15} aria-hidden="true" className="text-bamboo-300" />
                 {label}

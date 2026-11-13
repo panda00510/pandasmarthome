@@ -21,7 +21,7 @@ export default function Console() {
   const hidden = isMobile && sheetOpen
 
   return (
-    <div className={`console float${hidden ? ' is-hidden' : ''}`} aria-hidden={hidden}>
+    <div className={`console float${hidden ? ' is-hidden' : ''}`} inert={hidden}>
       <DemoButton />
       <div className="clock">
         <Icon name="sun" size={15} />
@@ -31,6 +31,7 @@ export default function Console() {
           value={timeOfDay}
           onChange={(e) => setTimeOfDay(Number(e.target.value))}
           aria-label={t('time_of_day')}
+          aria-valuetext={clock(timeOfDay)}
         />
         <Icon name="moon" size={15} />
         <span className="clock-time">{clock(timeOfDay)}</span>

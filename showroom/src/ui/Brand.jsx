@@ -32,19 +32,23 @@ export default function Brand() {
           <Icon name="exit" />
           <span className="tool-label">{t('back_site')}</span>
         </a>
-        <span className="tool-rule" />
+        <span className="tool-rule" aria-hidden="true" />
         <button
           className="tool is-lang"
           onClick={() => setLang(lang === 'en' ? 'zh' : 'en')}
           title={t('tool_lang')}
+          aria-label={t('tool_lang')}
+          lang={lang === 'en' ? 'zh-Hans' : 'en'}
         >
-          {lang === 'en' ? '中' : 'EN'}
+          <span aria-hidden="true">{lang === 'en' ? '中' : 'EN'}</span>
         </button>
         <span className="tool-rule" />
         <button
           className={`tool${showLabels ? ' is-on' : ''}`}
           onClick={() => setShowLabels(!showLabels)}
           title={showLabels ? t('tool_labels_on') : t('tool_labels_off')}
+          aria-label={t('tool_labels_off')}
+          aria-pressed={showLabels}
         >
           <Icon name="tag" />
         </button>
@@ -52,14 +56,16 @@ export default function Brand() {
           className={`tool is-calib${calibrating ? ' is-on' : ''}`}
           onClick={() => setCalibrating(!calibrating)}
           title={t('tool_calibrate')}
+          aria-label={t('tool_calibrate')}
+          aria-pressed={calibrating}
         >
           <Icon name="crosshair" />
         </button>
-        <button className="tool" onClick={reset} title={t('tool_reset')}>
+        <button className="tool" onClick={reset} title={t('tool_reset')} aria-label={t('tool_reset')}>
           <Icon name="undo" />
         </button>
         <span className="tool-rule" />
-        <button className="tool" onClick={() => setFocusMode(true)} title={t('tool_focus')}>
+        <button className="tool" data-focus-btn="" onClick={() => setFocusMode(true)} title={t('tool_focus')} aria-label={t('tool_focus')}>
           <Icon name="expand" />
         </button>
       </div>

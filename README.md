@@ -113,7 +113,7 @@ and `lang`; nothing from the form and nothing about the visitor is ever sent.
 
 | Event | When | Extra props |
 | --- | --- | --- |
-| `whatsapp_click` | any `wa.me` link | `source`: `floating`, `contact`, `hero`, `footer`, `products`, `hardware`, `signage`, `software`, `guide`, or `data-track-source` |
+| `whatsapp_click` | any `wa.me` link | `source`: `floating`, `contact`, `hero`, `footer`, `products`, `hardware`, `signage`, `software`, `guide`, `solution`, `home`, `page` (anything else), or `data-track-source` |
 | `email_click` / `tel_click` | any `mailto:` / `tel:` link | — |
 | `showroom_open` | any link to `/showroom/` | — |
 | `nav_cta_click` | the header "Book a consultation" button | — |
@@ -277,9 +277,11 @@ plan without making any request; CI runs it next to the Worker self-checks.
 AGENTS.md            working rules for coding agents (Claude Code / Codex), in Chinese
 public/              favicon, social card, app icons, manifest
   og/                per-page share cards, <key>-<lang>.png (npm run og, committed)
+  media/             showroom clip + poster (scripts/record-showroom.mjs, committed)
 scripts/make-og.mjs  rasterises the brand SVGs into PNGs (npm run og)
 scripts/prerender.mjs  writes one static HTML file per page into dist/
 scripts/indexnow.mjs   pings IndexNow with changed URLs after deploy
+scripts/record-showroom.mjs  records the homepage showroom clip (see "Showroom clip")
 serverless/          optional Cloudflare Worker: form -> Telegram relay
 src/
   index.css          the whole design system: colour, type, spacing, components
@@ -293,8 +295,10 @@ src/
     guides/          articles, one Markdown file per language (see "Guides")
     pages/           topic pages (solutions, home types, how-it-works, about, privacy), same format
     guides.ts        loads the articles; page list and per-page title/description
+    glossary.en.ts  glossary.zh.ts   /glossary/ terms, one file per language (loaded only on that page)
   i18n/              language context and path helpers (/ vs /zh/)
   lib/track.ts       optional conversion events (see "Conversion events")
+  lib/whatsapp.ts    every wa.me link, and each page's pre-filled opening line (copy in content `whatsapp`)
   views.ts           which chunk each page loads (see "Split per page")
   hooks/motion.ts    scroll reveal (never hides what is on screen at load)
   components/
@@ -302,18 +306,18 @@ src/
     layout/          Header (with the "Custom" dropdown), Footer
     graphics/
       HomePanel.tsx        the hero control-panel illustration
-      ShowroomPreview.tsx  drawn isometric floor plan for the 3D showroom band
       ProductFigures.tsx   desk-device drawings (products + custom hardware)
       SignageFigures.tsx   signage hero drawing (screen + door panel + console)
       GuideFigures.tsx     article figures
     sections/        one file per page section, including:
       Hero.tsx       first screen + trust strip; renders Showroom after it
-      Showroom.tsx   homepage 3D showroom band (links to /showroom/, ?plan=)
+      Showroom.tsx   homepage 3D showroom band: lazy looping clip + links to /showroom/, ?plan=
       Custom.tsx     homepage band: custom hardware + custom software + signage
       Hardware.tsx   the /custom-hardware/ page
       Signage.tsx    the /signage/ page (Panda Signage)
       Home.tsx       the homepage, section by section
       NotFound.tsx   the 404 page
+      Glossary.tsx   the /glossary/ page (+ its DefinedTermSet JSON-LD)
     ui.tsx           Button, SectionHeading, Chip, PhotoTag
     Seo.tsx          head sync + JSON-LD structured data
   entry-server.tsx   prerender entry: routes, sitemap, robots, llms.txt
@@ -322,7 +326,7 @@ src/
 
 Pages (each also under `/zh/`): `/`, `/solutions/…`, `/homes/…`,
 `/how-it-works/`, `/guides/…`, `/products/`, `/software/`,
-`/custom-hardware/`, `/signage/`, `/about/`, `/privacy/`. The 3D showroom is a separate build at `/showroom/`.
+`/custom-hardware/`, `/signage/`, `/renovation-checklist/`, `/glossary/`, `/about/`, `/privacy/`. The 3D showroom is a separate build at `/showroom/`.
 
 ---
 
@@ -397,6 +401,39 @@ skips the cards on any other OS. After editing a card, run `npm run og`, open
 each changed PNG to check for overflow and missing glyphs, then commit it
 (each card is ~45–55 KB; keep them under 60 KB).
 
+### Showroom clip
+
+The homepage showroom band plays a 12 s loop recorded from the showroom's own
+auto demo (come home → push into the living room → movie scene):
+`public/media/showroom-demo.mp4` (H.264, ≤ 1.2 MB), `showroom-demo.webm`
+(VP9, ≤ 900 KB) and `showroom-demo-poster.webp` (≤ 60 KB), all 1280×720,
+30 fps, no audio. Like the share cards they are **recorded locally on macOS
+and committed**; CI never records.
+
+```bash
+node scripts/record-showroom.mjs   # builds showroom/, serves it on :4178, records, encodes, stops the server
+```
+
+The script opens `?plan=4room&demo=1&clean=1` (`clean=1` is focus mode without
+hotspots or the exit button) in a headed Chromium, captures it with the
+DevTools screencast, cuts on the demo's step changes (and dissolves over the
+moment the camera flies through a wall), then encodes with ffmpeg. It needs
+no npm dependency: Playwright is taken from the repo if installed, else from
+the npx cache that the Playwright MCP server leaves (run
+`npx --yes @playwright/mcp@latest --help` once if it is missing), or from
+`PLAYWRIGHT_CORE=/path/to/playwright-core`; Chromium from
+`~/Library/Caches/ms-playwright` (or `CHROMIUM=`). Quality knobs:
+`CRF_H264` (23), `CRF_VP9` (34), `POSTER_AT` (5.2 s), `POSTER_Q` (80),
+`SCALE` (`1280:720`). Re-record whenever the showroom's look or demo changes,
+then watch the clip and check the sizes it prints.
+
+On the page nothing is fetched until the band is on screen: the prerendered
+HTML has only the lazy poster `<img>` (with width/height); the `<video>` and
+its sources are mounted the first time the card is 30 % visible, and it
+pauses off screen. With reduced motion or Save-Data it never autoplays —
+the poster and a play button only. The pause/play button is always visible
+(WCAG 2.2.2).
+
 ---
 
 ## Internationalisation
@@ -425,6 +462,10 @@ fails the type check until the other is updated too.
   (services included as `makesOffer`, `areaServed` = Singapore + its five
   regions), a `FAQPage` built from the FAQ copy, and a `WebSite` node.
 * JSON-LD `Article` + `BreadcrumbList` on every guide page.
+* `/glossary/`: `DefinedTermSet` + one `DefinedTerm` per entry (`url` = the
+  term's `#id` anchor); `llms.txt` lists each term with its first sentence. The
+  build fails if the two languages list different term ids or a term links to
+  a page that does not exist.
 * **Prerendered.** `npm run build` also renders every page in both languages on
   the server (`src/entry-server.tsx` → `scripts/prerender.mjs`) and writes
   `dist/[zh/]<path>/index.html`, so crawlers that skip JavaScript (most AI bots, Bing's
@@ -581,6 +622,19 @@ curl -s https://smartpanda.sg/ | grep -o '/assets/index-[^"]*\.js' | head -1
 
 Fetch that bundle and grep it for a known value; the workflow now runs the
 same check itself and fails the build if it comes up empty.
+
+### Pull request checks and Dependabot
+
+`.github/workflows/ci.yml` runs on every pull request: lint, typecheck, the
+relay / Worker / form-check self-tests, `npm run build`, and the showroom's
+lint and build. It deploys nothing and uses no secrets or variables.
+
+`.github/dependabot.yml` opens update PRs every Monday (09:00 Singapore time)
+for the site's npm packages, the showroom's, and the GitHub Actions used by
+the workflows. Minor and patch updates are grouped into one PR per directory;
+each major version gets its own PR. **Merging into `main` deploys the site**,
+so wait for the CI check to pass (and read the changelog of a major bump)
+before merging.
 
 ### Any other static host
 

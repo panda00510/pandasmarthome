@@ -20,7 +20,7 @@ if (lang === 'en' && new URLSearchParams(window.location.search).get('lang') ===
   // <link rel="modulepreload"> for them). Until they arrive the prerendered
   // HTML stays as it is, so nothing blanks or flashes; then React replaces it.
   const guide = findGuide(lang, path)
-  await Promise.all([loadDictionary(lang), loadView(viewOf(lang, path)), guide && loadGuideBody(guide)])
+  await Promise.all([loadDictionary(lang), loadView(viewOf(lang, path), lang), guide && loadGuideBody(guide)])
   createRoot(document.getElementById('root')!).render(
     <StrictMode>
       <LanguageProvider lang={lang} path={path}>

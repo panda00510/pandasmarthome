@@ -512,8 +512,9 @@ export const en: Content = {
     eyebrow: '3D showroom',
     title: 'Walk through a smart HDB flat before you commit',
     lead: 'Open the interactive 3D flat in your browser, switch scenes room by room, and see what each device does before anything is installed.',
-    status: 'Local control · interactive demo',
-    rooms: ['Living', 'Master', 'Kitchen', 'Bedroom'],
+    status: 'Screen recording of the 3D showroom',
+    play: 'Play the showroom clip',
+    pause: 'Pause the showroom clip',
     plans: [
       { id: '3room', label: 'HDB 3-Room' },
       { id: '4room', label: 'HDB 4-Room' },
@@ -1431,5 +1432,46 @@ export const en: Content = {
     imageTag: 'Illustrative photo',
     imageNote:
       'Photographs are illustrative stock images from Pexels. They are not Panda Smart Home installations or client projects.',
+  },
+
+  whatsapp: {
+    guide: 'Hi Panda Smart Home, I read your guide "{title}" and have a question: ',
+    notFound: "Hi Panda Smart Home, a link on your site didn't work for me. I was looking for: ",
+    pages: {
+      'solutions/': "Hi Panda Smart Home, I'm looking at your smart home solutions. My question: ",
+      'solutions/smart-lighting/': "Hi Panda Smart Home, I'd like to ask about smart lighting. My question: ",
+      'solutions/smart-aircon-control/': "Hi Panda Smart Home, I'd like to ask about smart aircon control. My question: ",
+      'solutions/motorised-curtains/': "Hi Panda Smart Home, I'd like to ask about motorised curtains. My question: ",
+      'solutions/smart-door-locks/': "Hi Panda Smart Home, I'd like to ask about smart door locks. My question: ",
+      'solutions/home-control/': "Hi Panda Smart Home, I'd like to ask about wall panels and smart switches. My question: ",
+      'solutions/energy-monitoring/': "Hi Panda Smart Home, I'd like to ask about energy monitoring and safety sensors. My question: ",
+      'solutions/upcoming-products/': "Hi Panda Smart Home, I'd like to ask about the AI box for CCTV / fall detection. My question: ",
+      'homes/': "Hi Panda Smart Home, I'm planning a smart home. My home type and situation: ",
+      'homes/bto-smart-home/': "Hi Panda Smart Home, I'm planning a smart home for a BTO flat. My situation: ",
+      'homes/hdb-resale-smart-home/': "Hi Panda Smart Home, I'm planning a smart home for an HDB resale flat. My situation: ",
+      'homes/condo-smart-home/': "Hi Panda Smart Home, I'm planning a smart home for a condo. My situation: ",
+      'homes/landed-smart-home/': "Hi Panda Smart Home, I'm planning a smart home for a landed home. My situation: ",
+      'homes/older-home-upgrade/': "Hi Panda Smart Home, I'm planning a smart home for an older home. My situation: ",
+      'guides/': 'Hi Panda Smart Home, I was reading your guides and have a question: ',
+      'glossary/': 'Hi Panda Smart Home, I was reading your glossary and have a question: ',
+      'how-it-works/': "Hi Panda Smart Home, I read how you work and I'd like to start. My home: ",
+      'renovation-checklist/': "Hi Panda Smart Home, I'm using your renovation checklist and have a question: ",
+      'about/': "Hi Panda Smart Home, I read your About page and I'd like to know: ",
+      'privacy/': 'Hi Panda Smart Home, I have a question about your privacy policy: ',
+    },
+  },
+
+  glossary: {
+    navLabel: 'Glossary',
+    metaTitle: 'Smart home glossary: Matter, Zigbee, neutral wire | Panda',
+    metaDescription:
+      'Plain-English definitions of the smart home terms in our guides — protocols, hubs, wiring, sensors and Singapore housing words — each linked to a guide.',
+    eyebrow: 'Glossary',
+    title: 'Smart home terms, in plain words',
+    lead: 'The words that keep coming up in our guides, two or three sentences each, with a link to where we explain them properly.',
+    jumpTo: 'Jump to',
+    readMore: 'Read more:',
+    note: 'Unfamiliar term? See the {link}.',
+    noteLink: 'smart home glossary',
   },
 }

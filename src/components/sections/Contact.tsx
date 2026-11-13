@@ -1,4 +1,5 @@
 import { useId, useState, type FormEvent, type ReactNode } from 'react'
+import { flushSync } from 'react-dom'
 import {
   ChevronDown,
   CircleCheck,
@@ -15,6 +16,7 @@ import { formattedAddress, hasAnyContactDetail, site } from '../../config/site'
 import { Button, SectionHeading } from '../ui'
 import { pageHref, useI18n } from '../../i18n/context'
 import { track } from '../../lib/track'
+import { whatsappHref } from '../../lib/whatsapp'
 
 type Status = 'idle' | 'submitting' | 'success' | 'mailto' | 'error'
 type Errors = { name?: string; contact?: string }
@@ -73,8 +75,14 @@ export function Contact() {
     if (!contact) nextErrors.contact = c.states.required
     else if (!isUsableContact(contact)) nextErrors.contact = c.states.invalidContact
 
-    setErrors(nextErrors)
-    if (Object.keys(nextErrors).length > 0) return
+    // Render the errors (aria-invalid + described-by) first, then move focus to
+    // the first bad field so a screen reader announces it with its message.
+    flushSync(() => setErrors(nextErrors))
+    const firstError = Object.keys(nextErrors)[0]
+    if (firstError) {
+      form.querySelector<HTMLElement>(`[name="${firstError}"]`)?.focus()
+      return
+    }
 
     if (MODE === 'mailto') {
       const body = [
@@ -169,7 +177,7 @@ export function Contact() {
               {site.whatsappLink ? (
                 <Button
                   as="a"
-                  href={site.whatsappLink}
+                  href={whatsappHref(t.contact.whatsappGreeting)!}
                   target="_blank"
                   rel="noopener noreferrer"
                   variant="accent"

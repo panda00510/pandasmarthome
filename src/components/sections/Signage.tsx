@@ -17,15 +17,13 @@ import {
 import type { LucideIcon } from 'lucide-react'
 import { SignageArt } from '../graphics/SignageFigures'
 import { Button, PhotoTag, SectionHeading } from '../ui'
-import { site } from '../../config/site'
+import { enquiryHref } from '../../lib/whatsapp'
 import { pageHref, useI18n } from '../../i18n/context'
 
 /**
  * Panda Signage: information screens and meeting room door panels. Same
  * shape as the custom-hardware page; no prices, no client list.
  */
-
-const WHATSAPP = site.whatsappLink ?? 'https://wa.me/6580676515'
 
 const ICONS: Record<string, LucideIcon> = {
   sites: Building2,
@@ -63,7 +61,7 @@ function Chips({ items }: { items: string[] }) {
 export function SignagePage() {
   const { t, lang } = useI18n()
   const s = t.signage
-  const enquireHref = `${WHATSAPP}?text=${encodeURIComponent(s.enquireAll)}`
+  const enquireHref = enquiryHref(s.enquireAll)
 
   return (
     <>

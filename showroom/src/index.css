@@ -16,8 +16,10 @@
   --line-2: rgba(240, 226, 205, 0.16);
 
   --text: #f2ebe1;
-  --text-2: #b1a597;
-  --text-3: #7d7466;
+  /* 对比度按最坏情况算（90% 面板后面是纯白墙面）：text-2 ≥ 7.4:1，text-3 ≥ 4.7:1（未开启的磁贴上）。
+     旧值 #b1a597 / #7d7466 在磁贴上只有 5.4 / 2.8:1。 */
+  --text-2: #c2b7a9;
+  --text-3: #a59a8c;
 
   /* 灯光琥珀：强调色只用在"通电/发光"上 */
   --amber: #e5b571;
@@ -70,8 +72,13 @@ button {
 :focus-visible {
   outline: 2px solid var(--amber);
   outline-offset: 2px;
+  /* 琥珀描边 + 内圈深色：浮在浅色 3D 画面上（白墙、白天天空）时也能看清 */
+  box-shadow: 0 0 0 2px var(--ink-950);
   border-radius: var(--r-xs);
 }
+/* 滑块与标定输入框自己写了 outline: none，键盘焦点要补回来 */
+input[type="range"]:focus-visible,
+.calib-axis input:focus-visible { outline: 2px solid var(--amber); outline-offset: 3px; }
 
 .icon { display: block; flex: none; }
 
@@ -331,7 +338,7 @@ input[type="range"].is-cool::-webkit-slider-thumb {
 .stile.is-active .stile-state, .stile.is-active .stile-icon { color: var(--cool); }
 .stile.is-alarm { border-color: rgba(214, 96, 77, .6); border-style: solid; }
 .stile.is-alarm .stile-state, .stile.is-alarm .stile-icon { color: #e07a64; }
-.stile-btn { font-size: 11px; padding: 5px 8px; border-radius: 8px; color: var(--text-2); background: rgba(240, 226, 205, .07); flex: none; }
+.stile-btn { font-size: 11px; padding: 5px 8px; min-height: 28px; border-radius: 8px; color: var(--text-2); background: rgba(240, 226, 205, .07); flex: none; }
 
 /* 首页：环境读数 */
 .env { display: flex; justify-content: space-between; padding: 2px 4px 14px; }
@@ -528,7 +535,7 @@ input[type="range"].is-cool::-webkit-slider-thumb {
 /* ===================== 专注模式 ===================== */
 
 .brand, .plans, .views, .console, .panel, .rail, .log, .calib, .assess {
-  transition: opacity .28s ease, transform .28s ease;
+  transition: opacity .28s ease, transform .28s ease, visibility 0s;
 }
 .app.is-focus .brand,
 .app.is-focus .plans,
@@ -542,6 +549,9 @@ input[type="range"].is-cool::-webkit-slider-thumb {
   opacity: 0;
   pointer-events: none;
   transform: translateY(8px);
+  /* 淡出后 visibility:hidden —— 看不见的按钮不能还留在 Tab 顺序里 */
+  visibility: hidden;
+  transition: opacity .28s ease, transform .28s ease, visibility 0s .28s;
 }
 
 .focus-exit {
@@ -762,7 +772,7 @@ input[type="range"].is-cool::-webkit-slider-thumb {
 /* ===================== 手机竖屏 ===================== */
 
 .sheet-handle {
-  width: 100%; padding: 10px 0 4px;
+  width: 100%; padding: 10px 0 4px; min-height: 32px;
   display: flex; justify-content: center; flex: none;
 }
 .sheet-handle span {
@@ -820,6 +830,10 @@ input[type="range"].is-cool::-webkit-slider-thumb {
   .panel.is-sheet .panel-title { font-size: 22px; }
   .panel.is-sheet:not(.is-open) .panel-body { overflow: hidden; }
   .panel.is-sheet .panel-body { padding-bottom: calc(22px + env(safe-area-inset-bottom, 0px)); }
+
+  /* 触屏：磁贴右上角的"调节"按钮放大到 44×44（贴着磁贴的圆角） */
+  .tile-more { top: 0; right: 0; width: 44px; height: 44px; border-radius: 0 14px 0 12px; }
+  .tile-name { padding-right: 30px; }
 
   .hotspot-label { padding: 4px 9px 4px 7px; gap: 6px; }
   .hotspot-text em { font-size: 10.5px; }

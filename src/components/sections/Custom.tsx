@@ -76,7 +76,7 @@ export function Custom() {
             <span className="relative mt-auto pt-8">
               <span className="btn h-12 bg-bamboo-400 px-6 text-[0.9375rem] text-ink-950 shadow-glow group-hover:bg-bamboo-300">
                 {hw.homeCta}
-                <ArrowRight size={17} aria-hidden="true" className="transition-transform group-hover:translate-x-0.5 motion-reduce:transition-none" />
+                <ArrowRight size={17} aria-hidden="true" className="transition-transform motion-safe:group-hover:translate-x-0.5 motion-reduce:transition-none" />
               </span>
             </span>
           </a>
@@ -99,7 +99,7 @@ export function Custom() {
             <span className="mt-auto pt-8">
               <span className="btn h-12 bg-brand px-6 text-[0.9375rem] text-white group-hover:bg-bamboo-800">
                 {sw.homeCta}
-                <ArrowRight size={17} aria-hidden="true" className="transition-transform group-hover:translate-x-0.5 motion-reduce:transition-none" />
+                <ArrowRight size={17} aria-hidden="true" className="transition-transform motion-safe:group-hover:translate-x-0.5 motion-reduce:transition-none" />
               </span>
             </span>
           </a>
@@ -127,7 +127,7 @@ export function Custom() {
               <span className="mt-8">
                 <span className="btn h-12 bg-brand px-6 text-[0.9375rem] text-white group-hover:bg-bamboo-800">
                   {sg.homeCta}
-                  <ArrowRight size={17} aria-hidden="true" className="transition-transform group-hover:translate-x-0.5 motion-reduce:transition-none" />
+                  <ArrowRight size={17} aria-hidden="true" className="transition-transform motion-safe:group-hover:translate-x-0.5 motion-reduce:transition-none" />
                 </span>
               </span>
             </span>

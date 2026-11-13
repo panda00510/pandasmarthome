@@ -38,15 +38,25 @@ export function Header() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  // Escape closes the mobile panel; body scroll stays locked while it is open.
+  // While the mobile panel is open: focus moves into it, the rest of the page
+  // is inert (so Tab stays in the header), body scroll is locked, and Escape
+  // closes it and returns focus to the menu button.
+  const menuButton = useRef<HTMLButtonElement>(null)
   useEffect(() => {
     if (!open) return
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setOpen(false)
+      if (e.key === 'Escape') {
+        setOpen(false)
+        menuButton.current?.focus()
+      }
     }
+    const rest = [...document.querySelectorAll<HTMLElement>('#root > :not(header)')]
+    for (const el of rest) el.inert = true
+    document.querySelector<HTMLElement>('#mobile-nav a')?.focus()
     document.addEventListener('keydown', onKey)
     document.body.style.overflow = 'hidden'
     return () => {
+      for (const el of rest) el.inert = false
       document.removeEventListener('keydown', onKey)
       document.body.style.overflow = ''
     }
@@ -125,7 +135,7 @@ export function Header() {
       <div className="shell flex h-16 items-center justify-between gap-3 min-[1280px]:h-[4.5rem]">
         <a
           href={`${home}#top`}
-          className={`min-w-0 rounded-lg transition-opacity hover:opacity-70 ${dark ? 'text-paper' : 'text-ink-950'}`}
+          className={`inline-flex min-h-11 min-w-0 items-center rounded-lg transition-opacity hover:opacity-70 ${dark ? 'text-paper' : 'text-ink-950'}`}
           aria-label={t.a11y.homeLink}
         >
           <Wordmark className="max-w-full" />
@@ -155,6 +165,7 @@ export function Header() {
           </Button>
 
           <button
+            ref={menuButton}
             type="button"
             onClick={() => setOpen((v) => !v)}
             aria-expanded={open}
@@ -324,7 +335,7 @@ function LangToggle({ lang, path, label, dark }: { lang: Lang; path: string; lab
             data-track-to={option.code}
             lang={option.code === 'zh' ? 'zh-Hans' : 'en'}
             hrefLang={option.code === 'zh' ? 'zh-Hans' : 'en'}
-            className={`inline-flex h-11 min-w-10 items-center justify-center rounded-full px-2 text-sm sm:min-w-11 sm:px-3 font-semibold whitespace-nowrap transition-colors ${
+            className={`inline-flex h-11 min-w-11 items-center justify-center rounded-full px-2 text-sm sm:px-3 font-semibold whitespace-nowrap transition-colors ${
               active
                 ? 'bg-white text-ink-950 shadow-[0_1px_2px_rgb(12_15_19/0.08)]'
                 : dark

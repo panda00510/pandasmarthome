@@ -3,11 +3,11 @@ import { MessageCircle } from 'lucide-react'
 import { Footer } from './components/layout/Footer'
 import { Header } from './components/layout/Header'
 import { Seo } from './components/Seo'
-import { site } from './config/site'
 import { NotFound } from './components/sections/NotFound'
 import { findGuide, hubOf, pagePaths, type Guide } from './content/guides'
 import { useReveal } from './hooks/motion'
 import { useI18n } from './i18n/context'
+import { pageWhatsappMessage, whatsappHref } from './lib/whatsapp'
 import { viewOf, views } from './views'
 
 export default function App() {
@@ -15,6 +15,7 @@ export default function App() {
   const guide = findGuide(lang, path)
   const notFound = !pagePaths.includes(path)
   useReveal()
+  const whatsapp = whatsappHref(pageWhatsappMessage(t, lang, path))
 
   // The floating WhatsApp button would sit on top of the form fields, so it steps aside there.
   const [atContact, setAtContact] = useState(false)
@@ -42,21 +43,21 @@ export default function App() {
 
       <Header />
 
-      <main id="main">
+      <main id="main" tabIndex={-1} className="outline-none">
         {notFound ? <NotFound /> : <Page path={path} guide={guide} />}
       </main>
 
       <Footer />
 
       {/* Floating WhatsApp shortcut, only when a number is configured. */}
-      {site.whatsappLink && !atContact && path !== 'products/' && path !== 'software/' && path !== 'custom-hardware/' && path !== 'signage/' ? (
+      {whatsapp && !atContact && path !== 'products/' && path !== 'software/' && path !== 'custom-hardware/' && path !== 'signage/' ? (
         <a
-          href={`${site.whatsappLink}?text=${encodeURIComponent(t.contact.whatsappGreeting)}`}
+          href={whatsapp}
           target="_blank"
           rel="noopener noreferrer"
           aria-label={t.contact.whatsappCta}
           data-track-source="floating"
-          className="fixed right-4 bottom-4 z-40 inline-flex size-14 items-center justify-center gap-2 rounded-full bg-[#25d366] text-white shadow-lift transition-transform hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink-950 motion-reduce:transition-none sm:right-6 sm:bottom-6 sm:size-auto sm:px-5 sm:py-3.5"
+          className="fixed right-4 bottom-4 z-40 inline-flex size-14 items-center justify-center gap-2 rounded-full bg-[#25d366] text-ink-950 shadow-lift transition-transform motion-safe:hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink-950 motion-reduce:transition-none sm:right-6 sm:bottom-6 sm:size-auto sm:px-5 sm:py-3.5"
         >
           <MessageCircle size={24} aria-hidden="true" />
           <span aria-hidden="true" className="hidden text-sm font-semibold sm:inline">
@@ -100,6 +101,10 @@ function Page({ path, guide }: { path: string; guide: Guide | undefined }) {
   if (view === 'checklist') {
     const { ChecklistPage } = v.checklist!
     return <ChecklistPage />
+  }
+  if (view === 'glossary') {
+    const { GlossaryPage, glossaries } = v.glossary!
+    return <GlossaryPage glossaries={glossaries} />
   }
   const { HomePage } = v.home!
   return <HomePage />

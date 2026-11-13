@@ -12,6 +12,7 @@ import {
 import '../../content/guideDescriptions'
 import { pageHref, useI18n, type Lang } from '../../i18n/context'
 import { GuideFigure } from '../graphics/GuideFigures'
+import { pageWhatsappMessage, whatsappHref } from '../../lib/whatsapp'
 import { Button } from '../ui'
 
 function formatDate(date: string, lang: Lang) {
@@ -93,6 +94,9 @@ export function GuidesIndex() {
         {t.guides.title}
       </h1>
       <p className="mt-4 max-w-2xl text-base leading-relaxed text-ink-600 sm:text-lg">{t.guides.lead}</p>
+      <p className="mt-3 text-[0.9375rem] text-ink-600">
+        <GlossaryNote />
+      </p>
 
       {featured.length ? (
         <div className="mt-8 grid gap-4 lg:mt-10 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]">
@@ -172,6 +176,7 @@ export function GuidePage({ guide }: { guide: Guide }) {
     : guidesIn(lang).filter((other) => other.slug !== guide.slug).slice(0, 3)
   const toc = isPage ? [] : headings(guide.body).filter((h) => h.text !== t.guides.related)
   const legal = guide.path === 'about/' || guide.path === 'privacy/'
+  const whatsapp = whatsappHref(pageWhatsappMessage(t, lang, guide.path))
 
   return (
     <>
@@ -232,7 +237,7 @@ export function GuidePage({ guide }: { guide: Guide }) {
                 <ol className="space-y-1 px-4 pb-4">
                   {toc.map((h) => (
                     <li key={h.id}>
-                      <a href={`#${h.id}`} className="block py-1.5 text-sm text-ink-700 hover:text-bamboo-700">
+                      <a href={`#${h.id}`} className="flex min-h-11 items-center py-1.5 text-sm text-ink-700 hover:text-bamboo-700">
                         {h.text}
                       </a>
                     </li>
@@ -244,6 +249,12 @@ export function GuidePage({ guide }: { guide: Guide }) {
             <div className="mt-8">
               <Markdown source={guide.body} slug={isPage ? '' : guide.slug} lang={lang} />
             </div>
+
+            {isPage ? null : (
+              <p className="mt-10 border-t border-ink-200 pt-5 text-[0.9375rem] text-ink-600">
+                <GlossaryNote />
+              </p>
+            )}
 
             {legal ? <CompanyDetails /> : null}
 
@@ -257,10 +268,10 @@ export function GuidePage({ guide }: { guide: Guide }) {
                   {t.guides.ctaButton}
                   <ArrowRight size={16} aria-hidden="true" />
                 </Button>
-                {site.whatsappLink ? (
+                {whatsapp ? (
                   <Button
                     as="a"
-                    href={`${site.whatsappLink}?text=${encodeURIComponent(t.contact.whatsappGreeting)}`}
+                    href={whatsapp}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="border border-white/25 bg-transparent text-paper hover:bg-white/10"
@@ -285,7 +296,7 @@ export function GuidePage({ guide }: { guide: Guide }) {
                     <li key={h.id}>
                       <a
                         href={`#${h.id}`}
-                        className="-ml-px block border-l border-transparent py-1.5 pl-4 text-sm leading-snug text-ink-600 hover:border-bamboo-500 hover:text-bamboo-700"
+                        className="-ml-px flex min-h-11 items-center border-l border-transparent py-1.5 pl-4 text-sm leading-snug text-ink-600 hover:border-bamboo-500 hover:text-bamboo-700"
                       >
                         {h.text}
                       </a>
@@ -312,6 +323,24 @@ export function GuidePage({ guide }: { guide: Guide }) {
           </div>
         </section>
       ) : null}
+    </>
+  )
+}
+
+/** "Unfamiliar term? See the glossary." — on /guides/ and under every guide. */
+function GlossaryNote() {
+  const { t, lang } = useI18n()
+  const [before, after] = t.glossary.note.split('{link}')
+  return (
+    <>
+      {before}
+      <a
+        href={pageHref(lang, 'glossary/')}
+        className="font-medium text-bamboo-700 underline decoration-bamboo-300 underline-offset-2 hover:decoration-bamboo-600"
+      >
+        {t.glossary.noteLink}
+      </a>
+      {after}
     </>
   )
 }

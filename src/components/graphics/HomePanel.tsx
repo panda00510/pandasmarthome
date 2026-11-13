@@ -162,7 +162,7 @@ export function HomePanel({ compact = false }: { compact?: boolean }) {
       </ul>
 
       {compact ? null : (
-      <p className="mt-3.5 flex items-center gap-2 text-[0.6875rem] text-ink-500">
+      <p className="mt-3.5 flex items-center gap-2 text-[0.6875rem] text-ink-400">
         <Lock
           size={11}
           className={`shrink-0 transition-colors duration-500 ${

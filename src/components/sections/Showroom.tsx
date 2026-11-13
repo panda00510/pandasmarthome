@@ -1,12 +1,17 @@
-import { ArrowRight, Play } from 'lucide-react'
-import { ShowroomPreview } from '../graphics/ShowroomPreview'
+import { useEffect, useRef, useState, useSyncExternalStore } from 'react'
+import { ArrowRight, Pause, Play } from 'lucide-react'
 import { Button } from '../ui'
 import { useI18n } from '../../i18n/context'
+import type { Content } from '../../content/types'
+
+const clip = `${import.meta.env.BASE_URL}media/showroom-demo`
+const noop = () => () => {}
 
 /**
  * The homepage's feature band for the 3D showroom (a separate build at
- * /showroom/). No iframe: a drawn preview and one large action keep WebGL off
- * the homepage until the visitor asks for it.
+ * /showroom/). No iframe: a 12 s screen recording of the showroom's own auto
+ * demo (scripts/record-showroom.mjs) keeps WebGL off the homepage until the
+ * visitor asks for it.
  */
 export function Showroom() {
   const { t, lang } = useI18n()
@@ -61,29 +66,116 @@ export function Showroom() {
           </div>
         </div>
 
-        {/* Duplicate of the button above for pointer users; kept out of the tab order. */}
-        <a
-          href={href}
-          tabIndex={-1}
-          aria-hidden="true"
-          data-reveal
-          className="group relative block overflow-hidden rounded-panel bg-linear-to-b from-ink-900 to-ink-950 p-4 shadow-stage sm:p-8"
-        >
-          <div aria-hidden="true" className="stage-grid pointer-events-none absolute inset-0" />
-          <div className="relative transition-transform duration-700 ease-(--ease-out-soft) group-hover:scale-[1.03] motion-reduce:transition-none motion-reduce:group-hover:scale-100">
-            <ShowroomPreview rooms={s.rooms} />
-          </div>
-          <span className="absolute right-4 bottom-4 sm:right-6 sm:bottom-6">
-            <span className="grid size-14 place-items-center rounded-full bg-bamboo-400 text-ink-950 shadow-glow transition-transform duration-300 group-hover:scale-110 motion-reduce:transition-none sm:size-16">
-              <Play size={26} className="translate-x-0.5" fill="currentColor" />
-            </span>
-          </span>
-          <span className="absolute bottom-6 left-4 flex max-w-[calc(100%-6rem)] items-center gap-2 rounded-full bg-ink-950/70 px-3.5 py-2 text-xs text-ink-300 ring-1 ring-white/10 backdrop-blur-md sm:bottom-9 sm:left-6">
-            <span className="size-1.5 shrink-0 rounded-full bg-bamboo-400" />
-            <span className="truncate">{s.status}</span>
-          </span>
-        </a>
+        <ShowroomClip href={href} s={s} />
       </div>
     </section>
+  )
+}
+
+/**
+ * The clip. Nothing is downloaded until the band scrolls into view: the server
+ * HTML has only the lazy poster <img>, and the <video> is mounted (sources and
+ * all) the first time the card is on screen. Off screen it pauses. Reduced
+ * motion or Save-Data: poster plus the play button, never autoplay. No storage.
+ */
+function ShowroomClip({ href, s }: { href: string; s: Content['showroom'] }) {
+  const box = useRef<HTMLDivElement>(null)
+  const video = useRef<HTMLVideoElement>(null)
+  const held = useRef(false) // the visitor paused, or autoplay is not wanted: stay paused
+  // false in the prerendered HTML, true once hydrated: the button only works with JS
+  const hydrated = useSyncExternalStore(noop, () => true, () => false)
+  const [armed, setArmed] = useState(false)
+  const [playing, setPlaying] = useState(false)
+
+  useEffect(() => {
+    const conn = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection
+    held.current = matchMedia('(prefers-reduced-motion: reduce)').matches || Boolean(conn?.saveData)
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (!e.isIntersecting) return video.current?.pause()
+        if (held.current) return
+        if (video.current) void video.current.play().catch(() => {})
+        else setArmed(true)
+      },
+      { threshold: 0.3 },
+    )
+    if (box.current) io.observe(box.current)
+    return () => io.disconnect()
+  }, [])
+
+  // First mount of the <video>: start it (the observer only fires on changes).
+  useEffect(() => {
+    if (armed) void video.current?.play().catch(() => {})
+  }, [armed])
+
+  const toggle = () => {
+    const v = video.current
+    if (v && !v.paused) {
+      held.current = true
+      v.pause()
+      return
+    }
+    held.current = false
+    if (v) void v.play().catch(() => {})
+    else setArmed(true)
+  }
+
+  return (
+    <figure data-reveal className="m-0">
+      <div ref={box} className="group relative overflow-hidden rounded-panel bg-ink-900 shadow-stage ring-1 ring-white/10">
+        <div className="relative aspect-video transition-transform duration-700 ease-(--ease-out-soft) group-hover:scale-[1.03] motion-reduce:transition-none motion-reduce:group-hover:scale-100">
+          <img
+            src={`${clip}-poster.webp`}
+            alt=""
+            width={1280}
+            height={720}
+            loading="lazy"
+            decoding="async"
+            className="absolute inset-0 size-full object-cover"
+          />
+          {armed && (
+            <video
+              ref={video}
+              muted
+              loop
+              playsInline
+              preload="none"
+              poster={`${clip}-poster.webp`}
+              aria-hidden="true"
+              onPlay={() => setPlaying(true)}
+              onPause={() => setPlaying(false)}
+              className="absolute inset-0 size-full object-cover"
+            >
+              <source src={`${clip}.webm`} type="video/webm" />
+              <source src={`${clip}.mp4`} type="video/mp4" />
+            </video>
+          )}
+        </div>
+
+        {/* The whole card opens the showroom. Duplicate of the button beside it, so out of the tab order. */}
+        <a href={href} tabIndex={-1} aria-hidden="true" className="absolute inset-0" />
+
+        {hydrated && (
+          <button
+            type="button"
+            onClick={toggle}
+            aria-label={playing ? s.pause : s.play}
+            className="absolute top-3 right-3 grid size-11 place-items-center rounded-full bg-ink-950/70 text-paper ring-1 ring-white/20 backdrop-blur-md transition-colors hover:bg-ink-950/90 sm:top-4 sm:right-4"
+          >
+            {playing ? <Pause size={18} aria-hidden="true" fill="currentColor" /> : <Play size={18} aria-hidden="true" className="translate-x-px" fill="currentColor" />}
+          </button>
+        )}
+
+        <span aria-hidden="true" className="pointer-events-none absolute right-4 bottom-4 sm:right-6 sm:bottom-6">
+          <span className="grid size-11 place-items-center rounded-full bg-bamboo-400 text-ink-950 shadow-glow transition-transform duration-300 group-hover:scale-110 motion-reduce:transition-none sm:size-14">
+            <ArrowRight size={22} />
+          </span>
+        </span>
+      </div>
+      <figcaption className="mt-3 flex items-center gap-2 px-1 text-xs text-ink-300">
+        <span aria-hidden="true" className="size-1.5 shrink-0 rounded-full bg-bamboo-400" />
+        {s.status}
+      </figcaption>
+    </figure>
   )
 }

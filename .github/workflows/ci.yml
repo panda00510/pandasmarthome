@@ -1,0 +1,50 @@
+name: CI
+
+# Checks for pull requests (including Dependabot's): the same gates as
+# deploy.yml, without deploying anything. No secrets, no repository variables,
+# read-only token — the build runs with every contact channel unset.
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Sitemap lastmod reads git history, as in deploy.yml.
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            showroom/package-lock.json
+
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: node serverless/telegram-relay.test.mjs
+      - run: node worker/index.test.mjs
+      - run: node scripts/check-form.mjs --dry
+      - name: Build the site
+        env:
+          VITE_SITE_URL: https://smartpanda.sg
+        run: npm run build
+
+      - name: Lint and build the 3D showroom
+        working-directory: showroom
+        run: |
+          npm ci
+          npm run lint
+          npm run build

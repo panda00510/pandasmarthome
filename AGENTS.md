@@ -44,6 +44,7 @@ node scripts/check-form.mjs --dry                    # 每周表单自检的解�
 
 ## 部署
 
+- PR（含 Dependabot 每周一开的依赖更新 PR）由 `.github/workflows/ci.yml` 检查：lint、typecheck、三个自检、主站与样板间构建，不部署、不用密钥。合并到 `main` 即部署，合并前等 CI 通过。
 - 推 `main` → `.github/workflows/deploy.yml` 一次运行同时发布 **GitHub Pages**（副本，`BASE_PATH=/pandasmarthome/`）与 **Cloudflare**（根路径，canonical）。CI 先跑 lint、typecheck、两个 Worker 自检，并检查 `VITE_*` 是否真的进了包。
 - canonical 是 `https://smartpanda.sg`（`VITE_SITE_URL`）；www 与旧 workers.dev 地址由 Worker 301。
 - **不要用 Cloudflare Workers Builds**（必须保持断开），否则两条流水线互相覆盖。原因见 README「Why not Cloudflare Workers Builds」。
@@ -53,6 +54,8 @@ node scripts/check-form.mjs --dry                    # 每周表单自检的解�
 
 - 用户可见文案只在 `src/content/en.ts` 与 `zh.ts`，类型在 `types.ts`；**两种语言同一批改**（类型检查会拦住只改一边）。
 - 指南 / 专题页是 `src/content/guides/`、`src/content/pages/` 下的 `<slug>.en.md` + `.zh.md`，两种语言都必须有。
+- 术语表词条在 `src/content/glossary.en.ts` / `glossary.zh.ts`（只在 /glossary/ 加载；两边 id 必须一致、链接必须是站内真实页面，构建会检查）。每条只复述指南里已有的说法。
+- 所有 wa.me 链接走 `src/lib/whatsapp.ts`；各页预填开场白在 content 的 `whatsapp` 块，不带访客个人信息。
 - 例外：分享卡的文字与 alt 在 `src/config/ogImages.ts`（生成脚本要直接 import，必须自包含）。
 
 ## 红线
@@ -128,9 +131,11 @@ node scripts/check-form.mjs --dry                    # 每周表单自检的解�
 - 通读 2026-11-13 发布的 5 篇指南、各指南开头的要点，以及硬件定制 / 信息屏 / 关于我们的中文文案。
   HDB 装修那篇里 "Directory of Renovation Contractors" 的中文名是自译，需核对。
 - 通读 2026-11-13 新增的两篇指南（信息屏选型、ESP32 定制还是买现成）和可打印清单 `/renovation-checklist/`（打印一次看看效果）。
+- 通读 2026-11-13 新增的术语表 `/glossary/`（中英 40 条）与各页 WhatsApp 预填开场白（content 的 `whatsapp` 块）。
 - 另一台电脑若有未推送的本地改动：先 `git pull`，有冲突再处理。
 
 **技术尾项（不急）**
+- Dependabot 的 PR（`.github/dependabot.yml`）需要站长或 Claude 审核合并；合并即部署，先等 CI 通过。deploy.yml 里 `actions/checkout@v4`、`actions/setup-node@v4` 的 Node 20 弃用提示留给 Dependabot 提升级 PR。
 - 指南每篇文章没有单独的分享图（共用一张）；样板间只有英文分享图。
 - 样板间再次访问约 1.8 秒离开加载屏，目标 1.5 秒。
 - 未上 CSP；上的时候按 README "Conversion events" 一节放行统计域名。

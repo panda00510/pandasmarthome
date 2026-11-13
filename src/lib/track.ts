@@ -73,7 +73,8 @@ function whatsappSource(link: Element) {
     'signage/': 'signage',
     'software/': 'software',
   }
-  return pages[path] ?? (path.startsWith('guides/') ? 'guide' : 'page')
+  const sections: Record<string, string> = { guides: 'guide', solutions: 'solution', homes: 'home' }
+  return pages[path] ?? sections[path.split('/')[0]] ?? 'page'
 }
 
 /**

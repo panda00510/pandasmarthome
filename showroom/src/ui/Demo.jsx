@@ -76,7 +76,11 @@ export default function Demo() {
   const siteContact = t.lang === 'zh' ? '../zh/#contact' : '../#contact'
 
   return (
-    <div className="demo-cap" aria-live="polite" aria-label={t('demo_region')} data-demo="">
+    <div className="demo-cap" data-demo="">
+      {/* 读屏只播报三次状态：开始、结束、被打断；逐步字幕不进 live 区域，免得每 3–6 秒插话一次 */}
+      <p className="sr-only" role="status">
+        {status === 'running' ? t('demo_live_start') : status === 'end' ? t('demo_end') : status === 'control' ? t('demo_control') : ''}
+      </p>
       {status === 'running' && (
         <div className="demo-card float">
           <p className="demo-text">{t(STEPS[step].caption)}</p>

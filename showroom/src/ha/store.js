@@ -16,6 +16,15 @@ function entitiesFor(planId) {
 
 const initialPlan = planFromURL()
 
+// ?clean=1：录屏用的干净画面 —— 以专注模式打开，并且不画热点、不显示退出按钮（scripts/record-showroom.mjs 用）
+export const CLEAN = (() => {
+  try {
+    return new URLSearchParams(window.location.search).get('clean') === '1'
+  } catch {
+    return false
+  }
+})()
+
 const OVERRIDE_KEY = 'showroom.hotspotOverrides'
 const UI_KEY = 'showroom.ui'
 
@@ -206,7 +215,7 @@ export const useHA = create((set, get) => ({
   view: 'overview',       // 相机预设视角
   sheetOpen: false,       // 手机端底部抽屉
   panelCollapsed: savedUI.panelCollapsed ?? false,  // 右侧面板收成图标条
-  focusMode: false,       // 专注模式：隐藏全部界面，只看房子
+  focusMode: CLEAN,       // 专注模式：隐藏全部界面，只看房子
   lang: initialLang(),
 
   // 热点标定：拖动 3D 里的锚点并导出坐标，换模型后重新定位用
