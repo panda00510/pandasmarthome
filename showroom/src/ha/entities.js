@@ -2,17 +2,17 @@
 // 实体 ID / 属性名与真实 HA 保持一致，将来换成真设备时只需替换 store 的传输层。
 
 export const AREAS = {
-  living: { en: 'Living & Dining', zh: '客餐厅' },
-  kitchen: { en: 'Kitchen', zh: '厨房' },
-  bedroom: { en: 'Master Bedroom', zh: '主卧' },
-  second: { en: 'Common Bedroom', zh: '卧室' },
-  bath: { en: 'Common Bathroom', zh: '公共卫生间' },
-  third: { en: 'Bedroom 3', zh: '卧室 3' },
-  study: { en: 'Study', zh: '书房' },
-  mbath: { en: 'Master Bathroom', zh: '主卫' },
-  hall: { en: 'Corridor', zh: '走廊' },
-  entry: { en: 'Foyer', zh: '玄关' },
-  yard: { en: 'Service Yard', zh: '服务阳台' },
+  living: { en: 'Living & Dining', zh: '客餐厅', short: { en: 'Living', zh: '客餐厅' } },
+  kitchen: { en: 'Kitchen', zh: '厨房', short: { en: 'Kitchen', zh: '厨房' } },
+  bedroom: { en: 'Master Bedroom', zh: '主卧', short: { en: 'Master', zh: '主卧' } },
+  second: { en: 'Common Bedroom', zh: '卧室', short: { en: 'Bed 2', zh: '卧室' } },
+  bath: { en: 'Common Bathroom', zh: '公共卫生间', short: { en: 'Bath', zh: '公卫' } },
+  third: { en: 'Bedroom 3', zh: '卧室 3', short: { en: 'Bed 3', zh: '卧室 3' } },
+  study: { en: 'Study', zh: '书房', short: { en: 'Study', zh: '书房' } },
+  mbath: { en: 'Master Bathroom', zh: '主卫', short: { en: 'M. Bath', zh: '主卫' } },
+  hall: { en: 'Corridor', zh: '走廊', short: { en: 'Hall', zh: '走廊' } },
+  entry: { en: 'Foyer', zh: '玄关', short: { en: 'Foyer', zh: '玄关' } },
+  yard: { en: 'Service Yard', zh: '服务阳台', short: { en: 'Yard', zh: '阳台' } },
 }
 
 export const INITIAL_ENTITIES = {

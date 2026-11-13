@@ -381,6 +381,8 @@ export default function ControlPanel() {
   const current = tab === 'home' || rooms.includes(tab) ? tab : 'home'
   const tabs = ['home', ...rooms]
   const tabName = (k) => (k === 'home' ? t('tab_home') : t.pick(AREAS[k]))
+  // 标签用短名，桌面端才能几行内全部排开；面板标题仍用全名
+  const tabShort = (k) => (k === 'home' ? t('tab_home') : t.pick(AREAS[k].short))
 
   // 切标签 = 切房间：相机缓动到该房间视角（有的话）；首页回全屋
   const choose = (k) => {
@@ -465,9 +467,10 @@ export default function ControlPanel() {
               aria-controls="panel-tabpanel"
               tabIndex={current === k ? 0 : -1}
               className={`tab${current === k ? ' is-on' : ''}`}
+              title={tabName(k)}
               onClick={() => { choose(k); if (isMobile) setOpen(true) }}
             >
-              {tabName(k)}
+              {tabShort(k)}
             </button>
           ))}
         </div>
