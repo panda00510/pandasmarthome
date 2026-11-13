@@ -1,5 +1,4 @@
 import { ArrowRight } from 'lucide-react'
-import { SectionHeading } from '../ui'
 import { useI18n } from '../../i18n/context'
 
 /**
@@ -57,44 +56,49 @@ function HandoverArt() {
 
 const ART = { scope: ScopeArt, plan: PlanArt, handover: HandoverArt }
 
-export function Deliver() {
+/**
+ * Compact "what you receive" strip, rendered at the foot of the process
+ * section: the three written records as one row of small cards.
+ */
+export function DeliverStrip() {
   const { t, lang } = useI18n()
   const d = t.deliver
 
   return (
-    <section id="deliver" className="band border-t border-ink-200/70 bg-paper-alt">
-      <div className="shell">
-        <SectionHeading eyebrow={d.eyebrow} title={d.title} lead={d.lead} shortOnPhone />
-
-        <ul className="reveal-group mt-8 grid gap-4 md:grid-cols-3 lg:mt-12">
-          {d.items.map((item) => {
-            const Art = ART[item.id as keyof typeof ART] ?? ScopeArt
-            return (
-              <li key={item.id} data-reveal className="card flex overflow-hidden md:flex-col">
-                <div className="w-28 shrink-0 border-r border-ink-100 bg-bamboo-50/60 p-2 sm:w-40 md:h-40 md:w-auto md:border-r-0 md:border-b md:p-3">
-                  <Art />
-                </div>
-                <div className="flex min-w-0 flex-1 flex-col p-4 lg:p-6">
-                  <p className="eyebrow">{item.tag}</p>
-                  <h3 className="mt-2 text-[1.0625rem] leading-snug font-semibold text-ink-950">{item.title}</h3>
-                  <p className="mt-2 text-[0.9375rem] leading-relaxed text-ink-600">{item.body}</p>
-                </div>
-              </li>
-            )
-          })}
-        </ul>
-
-        <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-sm text-ink-500">{d.note}</p>
-          <a
-            href={`${import.meta.env.BASE_URL}showroom/?lang=${lang}`}
-            className="inline-flex items-center gap-1.5 text-sm font-semibold text-bamboo-700 hover:text-bamboo-600"
-          >
-            {d.demoCta}
-            <ArrowRight size={15} aria-hidden="true" />
-          </a>
+    <div id="deliver" className="mt-10 border-t border-ink-200 pt-8 lg:mt-12 lg:pt-10">
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <p className="eyebrow">{d.eyebrow}</p>
+          <h3 className="mt-2 text-[1.375rem] leading-snug font-semibold tracking-[-0.02em] text-ink-950 sm:text-2xl">
+            {d.title}
+          </h3>
+          <p className="mt-1 text-xs text-ink-500">{d.note}</p>
         </div>
+        <a
+          href={`${import.meta.env.BASE_URL}showroom/?lang=${lang}`}
+          className="inline-flex min-h-11 shrink-0 items-center gap-1.5 text-sm font-semibold text-bamboo-700 hover:text-bamboo-600"
+        >
+          {d.demoCta}
+          <ArrowRight size={15} aria-hidden="true" />
+        </a>
       </div>
-    </section>
+
+      <ul className="reveal-group mt-6 grid gap-3 md:grid-cols-3">
+        {d.items.map((item) => {
+          const Art = ART[item.id as keyof typeof ART] ?? ScopeArt
+          return (
+            <li key={item.id} data-reveal className="card flex items-center gap-4 overflow-hidden p-3 pr-4">
+              <div className="h-16 w-24 shrink-0 rounded-xl bg-bamboo-50/70 p-1">
+                <Art />
+              </div>
+              <div className="min-w-0">
+                <p className="text-xs font-semibold tracking-wide text-bamboo-700">{item.tag}</p>
+                <p className="mt-1 text-[0.9375rem] leading-snug font-semibold text-ink-950">{item.title}</p>
+              </div>
+            </li>
+          )
+        })}
+      </ul>
+    </div>
   )
 }

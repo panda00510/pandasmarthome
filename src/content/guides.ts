@@ -69,6 +69,11 @@ const TOPICS: Record<string, (typeof TOPIC_IDS)[number]> = {
   'smart-door-lock-guide': 'security',
   'water-smoke-humidity-sensors-singapore': 'security',
   'smart-home-privacy-local-vs-cloud': 'security',
+  'bto-key-collection-smart-home-timeline': 'renovation',
+  'smart-home-during-hdb-renovation': 'renovation',
+  'condo-smart-home-upgrade-cost-factors': 'renovation',
+  'singapore-humidity-mould-aircon-dry-mode-automation': 'security',
+  'esp32-ai-voice-assistant-what-it-can-do': 'start',
 }
 
 /** Shown first on /guides/: one main pick, then two. */
@@ -183,6 +188,7 @@ export const pagePaths = [
   'guides/',
   'products/',
   'software/',
+  'custom-hardware/',
   ...guidesIn('en').map((guide) => guide.path),
   ...pagesIn('en').map((page) => page.path),
   ...HUBS.map((hub) => `${hub}/`),
@@ -200,7 +206,12 @@ export function pageMeta(lang: Lang, path: string) {
   const guide = findGuide(lang, path)
   if (guide) {
     const suffix = lang === 'zh' ? `｜${brand.nameZh}` : ` | ${brand.name}`
-    return { title: guide.title + suffix, description: guide.description, guide }
+    // Search results cut titles at roughly 60 Latin / 30 CJK characters; a long
+    // title keeps its words and drops the brand suffix (the brand is still in
+    // og:site_name and the JSON-LD). CJK counts double.
+    const width = (text: string) => [...text].reduce((n, ch) => n + (ch > '\u2e80' ? 2 : 1), 0)
+    const title = width(guide.title + suffix) <= 65 ? guide.title + suffix : guide.title
+    return { title, description: guide.description, guide }
   }
   const hub = hubOf(path)
   if (hub) {
@@ -214,6 +225,9 @@ export function pageMeta(lang: Lang, path: string) {
   }
   if (path === 'software/') {
     return { title: t.software.metaTitle, description: t.software.metaDescription, guide: null }
+  }
+  if (path === 'custom-hardware/') {
+    return { title: t.hardware.metaTitle, description: t.hardware.metaDescription, guide: null }
   }
   return { title: t.meta.title, description: t.meta.description, guide: null }
 }

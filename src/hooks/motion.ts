@@ -21,7 +21,11 @@ export function useReveal() {
   useEffect(() => {
     if (prefersReducedMotion()) return
 
-    const elements = Array.from(document.querySelectorAll<HTMLElement>('[data-reveal]'))
+    // Anything already on screen at load stays visible: first-screen content
+    // must never wait for a scroll or an animation to appear.
+    const elements = Array.from(document.querySelectorAll<HTMLElement>('[data-reveal]')).filter(
+      (el) => el.getBoundingClientRect().top > window.innerHeight,
+    )
     if (elements.length === 0) return
 
     for (const el of elements) el.classList.add('reveal-pending')

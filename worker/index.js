@@ -8,8 +8,19 @@ const MOVED = {
     '/guides/local-smart-home-vs-google-apple-smartthings/',
 }
 
+// Security headers on every served file. Set here rather than in
+// public/_headers because with run_worker_first the response comes from this
+// Worker, and _headers is not guaranteed to apply to Worker responses.
+// CSP is deliberately left out for now (inline JSON-LD and the showroom).
+const HEADERS = {
+  'Strict-Transport-Security': 'max-age=31536000',
+  'X-Content-Type-Options': 'nosniff',
+  'Referrer-Policy': 'strict-origin-when-cross-origin',
+  'Permissions-Policy': 'camera=(), microphone=(), geolocation=(), payment=()',
+}
+
 export default {
-  fetch(request, env) {
+  async fetch(request, env) {
     const url = new URL(request.url)
     const wrongHost = env.CANONICAL_HOST && url.hostname !== env.CANONICAL_HOST
     const zh = url.pathname.startsWith('/zh/')
@@ -24,6 +35,9 @@ export default {
       if (moved) url.pathname = (zh ? '/zh' : '') + moved
       return Response.redirect(url.toString(), 301)
     }
-    return env.ASSETS.fetch(request)
+    const asset = await env.ASSETS.fetch(request)
+    const res = new Response(asset.body, asset)
+    for (const [name, value] of Object.entries(HEADERS)) res.headers.set(name, value)
+    return res
   },
 }

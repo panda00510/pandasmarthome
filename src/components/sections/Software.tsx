@@ -27,35 +27,6 @@ function whatsappHref(message: string) {
   return `${PREORDER_WHATSAPP}?text=${encodeURIComponent(message)}`
 }
 
-/** A single card on the home page, linking to the software page. */
-export function SoftwareCard() {
-  const { t, lang } = useI18n()
-  const s = t.software
-
-  return (
-    <section className="border-t border-ink-200/70">
-      <div className="shell py-8 lg:py-10">
-        <a
-          href={pageHref(lang, 'software/')}
-          className="card group flex flex-col gap-4 p-5 transition-colors hover:border-bamboo-200 sm:flex-row sm:items-center sm:justify-between sm:p-6"
-        >
-          <span className="min-w-0">
-            <span className="eyebrow">{s.eyebrow}</span>
-            <span className="mt-2 block text-[1.25rem] leading-snug font-semibold tracking-[-0.02em] text-ink-950 sm:text-[1.4rem]">
-              {s.homeTitle}
-            </span>
-            <span className="mt-2 block max-w-2xl text-[0.9375rem] leading-relaxed text-ink-600">{s.homeLead}</span>
-          </span>
-          <span className="inline-flex min-h-11 shrink-0 items-center gap-1.5 text-sm font-semibold text-bamboo-700 group-hover:text-bamboo-600">
-            {s.homeCta}
-            <ArrowRight size={15} aria-hidden="true" />
-          </span>
-        </a>
-      </div>
-    </section>
-  )
-}
-
 export function SoftwarePage() {
   const { t, lang } = useI18n()
   const s = t.software
@@ -68,7 +39,7 @@ export function SoftwarePage() {
             <span aria-hidden="true" className="h-px w-6 bg-bamboo-500/50" />
             {s.eyebrow}
           </p>
-          <h1 className="mt-3 max-w-3xl text-[2rem] leading-[1.1] font-semibold tracking-[-0.03em] text-ink-950 sm:text-5xl">
+          <h1 className="mt-5 max-w-4xl text-[2.25rem] leading-[1.06] font-semibold tracking-[-0.035em] text-balance text-ink-950 sm:text-[3rem] lg:text-[3.5rem]">
             {s.title}
           </h1>
           <p className="mt-4 max-w-2xl text-base leading-relaxed text-ink-600 sm:text-lg">{s.lead}</p>
@@ -179,6 +150,21 @@ export function SoftwarePage() {
               <ArrowRight size={15} aria-hidden="true" />
             </a>
           </div>
+          <a
+            href={pageHref(lang, 'custom-hardware/')}
+            className="card group mt-4 flex flex-col gap-4 border-white/10 bg-ink-950 p-5 text-paper sm:flex-row sm:items-center sm:justify-between sm:p-7"
+          >
+            <span className="max-w-2xl">
+              <span className="block text-[1.25rem] leading-snug font-semibold tracking-[-0.02em] sm:text-[1.4rem]">
+                {t.hardware.pairTitle}
+              </span>
+              <span className="mt-2 block text-[0.9375rem] leading-relaxed text-ink-300">{t.hardware.pairBody}</span>
+            </span>
+            <span className="inline-flex min-h-11 shrink-0 items-center gap-1.5 text-sm font-semibold text-bamboo-300 group-hover:text-bamboo-200">
+              {t.hardware.homeCta}
+              <ArrowRight size={15} aria-hidden="true" />
+            </span>
+          </a>
         </div>
       </section>
 

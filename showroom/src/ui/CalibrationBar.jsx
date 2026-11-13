@@ -1,14 +1,21 @@
 import { useRef, useState } from 'react'
 import Icon from './icons'
 import { useT } from '../i18n'
-import { useHA } from '../ha/store'
-import { HOTSPOTS } from '../three/Hotspots'
+import { useHA, usePlan } from '../ha/store'
 
 export default function CalibrationBar() {
   const t = useT()
   const calibrating = useHA((s) => s.calibrating)
   const calibTarget = useHA((s) => s.calibTarget)
-  const overrides = useHA((s) => s.hotspotOverrides)
+  const allOverrides = useHA((s) => s.hotspotOverrides)
+  const planId = useHA((s) => s.planId)
+  const { hotspots: HOTSPOTS } = usePlan()
+  // 只看当前户型的标定（键为 "户型:实体"）
+  const overrides = Object.fromEntries(
+    Object.entries(allOverrides)
+      .filter(([k]) => k.startsWith(`${planId}:`))
+      .map(([k, v]) => [k.slice(planId.length + 1), v])
+  )
   const entities = useHA((s) => s.entities)
   const setHotspotPos = useHA((s) => s.setHotspotPos)
   const resetHotspots = useHA((s) => s.resetHotspots)
@@ -26,9 +33,9 @@ export default function CalibrationBar() {
   const buildCode = () => {
     const body = HOTSPOTS.map((h) => {
       const p = overrides[h.id] ?? h.pos
-      return `  { id: '${h.id}', pos: [${p.map((n) => Number(n).toFixed(2)).join(', ')}] },`
-    }).join('\n')
-    return `export const HOTSPOTS = [\n${body}\n]`
+      return `    { "id": "${h.id}", "pos": [${p.map((n) => Number(n).toFixed(2)).join(', ')}] }`
+    }).join(',\n')
+    return `// src/plans/${planId}.json\n  "hotspots": [\n${body}\n  ]`
   }
 
   const copy = async () => {

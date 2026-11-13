@@ -1,7 +1,7 @@
 import { useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { PlaneGeometry, DoubleSide } from 'three'
-import { useHA } from '../ha/store'
+import { useHA, usePlan } from '../ha/store'
 import { damp } from './utils'
 import { getTextures, tiled } from './textures'
 
@@ -91,11 +91,12 @@ function Curtain({ entityId, x0, x1, z, top = 2.45, bottom = 0.04, color = '#e6d
 }
 
 export default function Curtains() {
+  const { curtains = [] } = usePlan()
   return (
     <group>
-      <Curtain entityId="cover.living_curtain" x0={-4.5} x1={-1.6} z={-4.05} top={2.32} />
-      <Curtain entityId="cover.second_curtain" x0={-0.5} x1={1.3} z={-4.05} top={2.22} color="#d8cfc2" />
-      <Curtain entityId="cover.bedroom_curtain" x0={2.35} x1={4.55} z={-4.05} top={2.22} color="#d8cfc2" />
+      {curtains.map((c) => (
+        <Curtain key={c.id} entityId={c.id} x0={c.x0} x1={c.x1} z={c.z} top={c.top} color={c.color} />
+      ))}
     </group>
   )
 }

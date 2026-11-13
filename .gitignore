@@ -31,3 +31,6 @@ dist-ssr
 
 # Generated from ASSET_SOURCES.md by scripts/copy-credits.mjs
 public/asset-sources.txt
+
+# Local tooling
+.playwright-mcp/

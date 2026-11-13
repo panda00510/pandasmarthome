@@ -44,7 +44,7 @@
   --color-ink-700: #3f4652;
   --color-ink-800: #2a2f38;
   --color-ink-900: #171b21;
-  --color-ink-950: #0c0f13;
+  --color-ink-950: #0a0d11;
 
   --color-bamboo-50: #edf8f2;
   --color-bamboo-100: #d3efe0;
@@ -90,11 +90,15 @@
   --text-hero--letter-spacing: -0.03em;
 
   /* ---- Radii & elevation ------------------------------------------------- */
-  --radius-card: 1rem;
-  --radius-panel: 1.5rem;
+  --radius-card: 1.25rem;
+  --radius-panel: 1.75rem;
 
-  --shadow-soft: 0 1px 1px rgb(12 15 19 / 0.03), 0 4px 12px -8px rgb(12 15 19 / 0.1);
-  --shadow-lift: 0 1px 2px rgb(12 15 19 / 0.04), 0 12px 24px -14px rgb(12 15 19 / 0.18);
+  --shadow-soft: 0 1px 1px rgb(12 15 19 / 0.03), 0 6px 16px -10px rgb(12 15 19 / 0.12);
+  --shadow-lift: 0 1px 2px rgb(12 15 19 / 0.04), 0 22px 44px -22px rgb(12 15 19 / 0.28);
+  /* Deep stage shadow for the hero photo and showroom preview on ink. */
+  --shadow-stage: 0 40px 120px -40px rgb(0 0 0 / 0.8), 0 0 0 1px rgb(255 255 255 / 0.08);
+  /* The one glow: primary CTA on dark bands. */
+  --shadow-glow: 0 0 0 1px rgb(111 199 159 / 0.35), 0 12px 40px -10px rgb(63 174 126 / 0.55);
 
   /* ---- Layout ------------------------------------------------------------ */
   --spacing-page: 1200px;
@@ -218,16 +222,16 @@
 
   /* Vertical rhythm between major sections. */
   .band {
-    padding-block: 3rem;
+    padding-block: 4rem;
   }
   @media (width >= 768px) {
     .band {
-      padding-block: 5rem;
+      padding-block: 6rem;
     }
   }
   @media (width >= 1280px) {
     .band {
-      padding-block: 6rem;
+      padding-block: 5.5rem;
     }
   }
 
@@ -345,7 +349,7 @@
 
   .card {
     border-radius: var(--radius-card);
-    border: 1px solid var(--color-ink-200);
+    border: 1px solid rgb(214 218 224 / 0.8);
     background: #fff;
     box-shadow: var(--shadow-soft);
   }
@@ -378,5 +382,69 @@
   }
   html:lang(zh) .eyebrow {
     letter-spacing: 0.08em;
+  }
+
+  /* ---- Dark stage backgrounds ---------------------------------------------
+     A fine grid that fades out from the top, and a slow green glow. Both are
+     decoration only (aria-hidden) and sit behind content in an
+     overflow-hidden, isolated section.                                       */
+  .stage-grid {
+    background-image:
+      linear-gradient(to right, rgb(255 255 255 / 0.045) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(255 255 255 / 0.045) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: radial-gradient(ellipse 80% 70% at 50% 0%, #000 25%, transparent 75%);
+  }
+  .stage-glow {
+    background:
+      radial-gradient(40rem 26rem at 78% 8%, rgb(63 174 126 / 0.22), transparent 65%),
+      radial-gradient(30rem 22rem at 8% 85%, rgb(31 138 95 / 0.14), transparent 70%);
+    animation: drift 22s ease-in-out infinite;
+  }
+
+  /* Index numerals on the trust strip and other metric rows. */
+  .numeral {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: 'tnum', 'zero';
+    letter-spacing: 0.04em;
+  }
+
+  /* Pulsing device lights on the showroom preview. */
+  .iso-pulse {
+    animation: iso-pulse 3.2s ease-in-out infinite;
+  }
+}
+
+@keyframes iso-pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Linked cards lift on hover. Unlayered on purpose: the components set
+   `transition-colors` as a utility, which would otherwise win and make the
+   lift jump instead of ease. Reduced motion keeps the colour change only. */
+@media (hover: hover) and (pointer: fine) {
+  a.card {
+    transition:
+      transform 0.35s var(--ease-out-soft),
+      box-shadow 0.35s var(--ease-out-soft),
+      border-color 0.35s var(--ease-out-soft),
+      background-color 0.35s var(--ease-out-soft);
+  }
+  a.card:hover {
+    transform: translateY(-4px);
+    border-color: var(--color-bamboo-200);
+    box-shadow: var(--shadow-lift);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  a.card:hover,
+  .card.spotlight:hover {
+    transform: none;
   }
 }

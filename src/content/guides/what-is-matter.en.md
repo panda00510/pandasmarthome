@@ -2,7 +2,8 @@
 title: What is Matter, and should you only buy Matter devices?
 description: Matter is a shared smart home standard. What it actually changes, how Thread fits in, and what to check on the box before you buy devices for your home.
 published: 2026-09-23
-updated: 2026-11-06
+updated: 2026-11-13
+points: Matter is a shared language for devices, carried over Wi-Fi, Thread or Ethernet | Thread devices need a Thread border router on your network | Prefer Matter for new devices, but working Zigbee or Wi-Fi devices need not be replaced
 ---
 More and more smart home boxes carry the Matter logo. It is a real step forward, but it is easy to read more into it than it promises. Here is what it means in practice for someone planning a home.
 

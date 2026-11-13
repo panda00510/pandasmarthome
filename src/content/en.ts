@@ -6,7 +6,7 @@ export const en: Content = {
   meta: {
     title: 'Panda Smart Home | Open Smart Home Solutions Singapore',
     description:
-      'Smart home design and installation across Singapore — HDB, BTO, condo and landed homes. Lighting, aircon, curtains, locks and cameras on one local system, with no vendor lock-in.',
+      'Smart home design and installation for HDB, BTO, condo and landed homes in Singapore. Lighting, aircon, curtains, locks and cameras on one local system.',
     keywords:
       'smart home Singapore, smart home installation Singapore, smart home company Singapore, smart home solutions Singapore, home automation Singapore, smart home system Singapore, whole home automation, HDB smart home, BTO smart home, BTO renovation smart home, condo smart home, landed house smart home, smart lighting Singapore, smart switch Singapore, no neutral smart switch, smart aircon control Singapore, smart curtains Singapore, motorised curtains Singapore, motorised blinds Singapore, digital lock Singapore, smart door lock Singapore, CCTV installation Singapore, home security Singapore, energy monitoring, Matter, Zigbee, Thread, Apple Home, Google Home, Alexa',
     ogImageAlt: 'Panda Smart Home — open smart home solutions in Singapore',
@@ -54,13 +54,13 @@ export const en: Content = {
     panel: {
       title: 'Home',
       subtitle: 'All systems normal',
-      rooms: ['Living', 'Master', 'Kitchen', 'Study'],
+      rooms: ['Living', 'Master', 'Kitchen', 'Bedroom'],
       scenes: [
         { name: 'Good morning', detail: 'Curtains open · Aircon off' },
         { name: 'Movie night', detail: 'Lights 15% · Blinds down' },
         { name: 'Away', detail: 'Locks armed · Cameras on' },
       ],
-      status: 'Local control · 42 devices online',
+      status: 'Local control · interactive demo',
     },
   },
 
@@ -175,7 +175,7 @@ export const en: Content = {
       title: 'Smart home plans by home type',
       lead: 'New BTO flats, older HDB flats, condominiums and landed homes each need a different plan. Start with the one closest to yours.',
       all: 'All home types',
-      metaTitle: 'Smart Home for HDB, BTO, Condo and Landed Homes in Singapore | Panda Smart Home',
+      metaTitle: 'Smart Home for HDB, BTO, Condo & Landed | Panda Smart Home',
       metaDescription:
         'Smart home planning for BTO flats, HDB resale and older homes, condominiums and landed houses in Singapore.',
     },
@@ -187,7 +187,7 @@ export const en: Content = {
     lead: 'Finished screen devices: an enclosure, an interface and firmware already installed. They are not in stock yet. The prices are indicative starting prices, confirmed on WhatsApp before you order. Stock and support are in Singapore.',
     metaTitle: 'Desk Screen Devices to Pre-order | Panda Smart Home',
     metaDescription:
-      'Pre-order screen-equipped desk devices in Singapore: an AI voice assistant, a Home Assistant touch panel, a 32×8 pixel clock and a weather display. Features can be customized. Indicative prices. Not in stock yet.',
+      'Pre-order desk devices in Singapore: an AI voice assistant, a Home Assistant touch panel, a pixel clock and a weather display. Indicative prices.',
     status: 'Pre-order / Coming soon',
     priceLabel: 'Indicative price',
     priceFrom: 'from {amount}',
@@ -330,9 +330,9 @@ export const en: Content = {
     eyebrow: 'Software',
     title: 'Custom software for small businesses',
     lead: 'Practical systems for shops and one-person businesses in Singapore. Built one-to-one, with the price written down before any work starts, and support in Chinese or English.',
-    metaTitle: 'Custom Software for Small Businesses in Singapore | Panda Smart Home',
+    metaTitle: 'Small Business Software in Singapore | Panda Smart Home',
     metaDescription:
-      'Booking, inventory, WhatsApp bots and simple internal tools for Singapore shops and small businesses. Indicative prices from S$600. One-to-one, in English or Chinese.',
+      'Booking, inventory, WhatsApp bots and simple internal tools for Singapore shops. Indicative prices from S$600, one-to-one, in English or Chinese.',
     whoTitle: 'Who this is for',
     audiences: [
       'Shops',
@@ -436,6 +436,148 @@ export const en: Content = {
       {
         q: 'Can a screen in the shop be part of it?',
         a: 'Yes. A menu screen, a queue display or an information screen can be part of the job. Those devices are listed on the products page and are still on pre-order.',
+      },
+    ],
+  },
+
+  showroom: {
+    eyebrow: '3D showroom',
+    title: 'Walk through a smart HDB flat before you commit',
+    lead: 'Open the interactive 3D flat in your browser, switch scenes room by room, and see what each device does before anything is installed.',
+    status: 'Local control · interactive demo',
+    rooms: ['Living', 'Master', 'Kitchen', 'Bedroom'],
+    plans: [
+      { id: '3room', label: 'HDB 3-Room' },
+      { id: '4room', label: 'HDB 4-Room' },
+      { id: '5room', label: 'HDB 5-Room' },
+    ],
+  },
+
+  custom: {
+    nav: 'Custom',
+    eyebrow: 'Custom builds',
+    title: 'Hardware and software, made for the job',
+    lead: 'Small AI and IoT devices built on ESP32, and software for shops and small teams. Designed one-to-one, quoted in writing before work starts, and handed over with the source.',
+    devicesCta: 'Or see the ready-made screen devices',
+  },
+
+  hardware: {
+    navLabel: 'Custom AI hardware',
+    sectionEyebrows: { capabilities: 'Capabilities', levels: 'Levels', process: 'Process' },
+    eyebrow: 'Custom AI hardware',
+    title: 'Custom ESP32 AI and IoT devices, from idea to a working unit',
+    lead: 'Small devices built on ESP32 and ESP32-S3 for individuals, shops and small teams in Singapore: voice assistants, touch screens, sensors and controllers. Prototypes and one-off builds, with the firmware and source handed over to you.',
+    metaTitle: 'Custom ESP32 AI Hardware in Singapore | Panda Smart Home',
+    metaDescription:
+      'Custom ESP32 devices in Singapore: AI voice assistants, touch panels, sensors and Home Assistant, ESPHome, MQTT or Matter integration. Quoted in writing.',
+    whoTitle: 'Who this is for',
+    audiences: ['Individuals and makers', 'Shops and F&B', 'Offices and small teams', 'Smart home owners'],
+    groupsTitle: 'What we can build',
+    groups: [
+      {
+        id: 'voice',
+        title: 'AI voice assistant devices',
+        body: 'A small speaker device in the style of Xiaozhi, connected to a large language model, with a persona and knowledge you define.',
+        items: ['LLM connection', 'Custom persona', 'Your own knowledge'],
+      },
+      {
+        id: 'screen',
+        title: 'Touch panels and desk information screens',
+        body: 'Touch panels built with LVGL and desk information screens, with an interface designed for one purpose.',
+        items: ['LVGL touch panels', 'Desk info screens'],
+      },
+      {
+        id: 'sensor',
+        title: 'Sensor and automation nodes',
+        body: 'Small nodes that measure or switch: temperature and humidity, presence radar, power metering and relays.',
+        items: ['Temperature and humidity', 'Presence radar', 'Power metering', 'Relays'],
+      },
+      {
+        id: 'integration',
+        title: 'Home Assistant, ESPHome, MQTT and Matter integration',
+        body: 'Devices that join the system you already run, without a vendor cloud in the middle.',
+        items: ['Home Assistant', 'ESPHome', 'MQTT', 'Matter'],
+      },
+      {
+        id: 'local',
+        title: 'NEA weather and LTA bus data',
+        body: 'Screens and devices that show Singapore data: NEA weather and LTA bus arrivals.',
+        items: ['NEA weather', 'LTA bus arrivals'],
+      },
+      {
+        id: 'shop',
+        title: 'Queue and menu screens for shops',
+        body: 'Queue number displays and menu screens for a shop counter.',
+        items: ['Queue number displays', 'Menu screens'],
+      },
+    ],
+    tiersTitle: 'Three levels of custom',
+    tiers: [
+      {
+        title: 'New firmware or interface for an existing device',
+        body: 'Keep the hardware you have and change what it does or how it looks.',
+      },
+      {
+        title: 'Off-the-shelf board with custom firmware',
+        body: 'A proven development board with firmware written for the job.',
+      },
+      {
+        title: 'A prototype from scratch',
+        body: 'When nothing existing fits: a prototype designed around the job, tried and revised with you.',
+      },
+    ],
+    tiersNote:
+      'These are prototypes and one-off custom builds, not certified mass-produced products. If a device with a radio transmitter is to be sold commercially, IMDA requirements apply; we assess that once you have confirmed how the device will be used.',
+    processTitle: 'How a build runs',
+    steps: [
+      { title: 'Talk it through', body: 'Tell us what the device should do, where it will sit and who will use it.' },
+      { title: 'Feasibility and written quote', body: 'We check what is feasible and put the scope and price in writing.' },
+      { title: 'Prototype', body: 'A first working unit, built to the agreed scope.' },
+      { title: 'Try and revise', body: 'You use it, we adjust it. A change of scope is quoted before it is added.' },
+      { title: 'Handover', body: 'The device, the firmware, the source and the documentation are yours. No lock-in.' },
+    ],
+    priceTitle: 'Pricing',
+    priceBody:
+      'Every build is different, so there is no list price. Any starting figure we mention is indicative; the price you pay is written in the quote before work starts.',
+    pairTitle: 'Device and software together',
+    pairBody:
+      'A device can come with the software around it: a back office, a mini-program or a dashboard. Both sides are designed, quoted and handed over together.',
+    enquire: 'Discuss a custom device',
+    enquireAll: "Hi Panda Smart Home, I'd like to discuss a custom ESP32 device. Here's what it should do: ",
+    homeTitle: 'Custom AI hardware',
+    homeLead:
+      'ESP32 voice assistants, touch screens, sensors and controllers for homes, shops and small teams. Prototypes and one-off builds, with the source handed over.',
+    homeCta: 'Explore custom hardware',
+    finePrint: [
+      'Prototypes and one-off custom builds only. These are not certified mass-produced products.',
+      'Commercial sale of a device with a radio transmitter needs IMDA compliance, assessed once the use is confirmed.',
+      'Firmware, source code and documentation are handed over to you at the end of the job.',
+    ],
+    faqTitle: 'Before you ask for a quote',
+    faq: [
+      {
+        q: 'Can the device work offline?',
+        a: 'Sensors, screens and controls can run fully on your local network. Features that call a large language model or an online data source need the internet for that part; the quote says which parts do.',
+      },
+      {
+        q: 'Which AI model does it use, and who pays for it?',
+        a: 'We agree the model provider with you. Usage is billed by the provider to your own account, so you can see and control the cost.',
+      },
+      {
+        q: 'What happens to my data?',
+        a: 'Local features keep data on your network. When a feature sends voice or text to an AI provider, the plan says what is sent and to whom before it is built.',
+      },
+      {
+        q: 'Is there a warranty or ongoing maintenance?',
+        a: 'Support and maintenance terms are written into the quote for each build. Because you receive the source, you are not tied to us for later changes.',
+      },
+      {
+        q: 'Can it join my existing smart home?',
+        a: 'Yes, where your system supports it: Home Assistant, ESPHome, MQTT or Matter.',
+      },
+      {
+        q: 'Do you take on a single-unit build?',
+        a: 'Yes. A custom build can be a single device.',
       },
     ],
   },
@@ -817,6 +959,7 @@ export const en: Content = {
         'Doors & security',
         'Controls & dashboards',
         'Energy & monitoring',
+        'Custom AI hardware (ESP32)',
         'Not sure yet, advise me',
       ],
       message: 'What would you like to solve? (optional)',
@@ -868,6 +1011,7 @@ export const en: Content = {
       'Practical smart home guides for HDB, condo and landed homes in Singapore — wiring, local control, devices and planning.',
     all: 'All guides',
     updated: 'Updated',
+    byline: 'By the Panda Smart Home team',
     more: 'More guides',
     backHome: 'Back to home',
     related: 'Related guides',

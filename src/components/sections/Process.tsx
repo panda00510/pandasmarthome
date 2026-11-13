@@ -1,15 +1,16 @@
 import { ArrowRight } from 'lucide-react'
 import { SectionHeading } from '../ui'
+import { DeliverStrip } from './Deliver'
 import { pageHref, useI18n } from '../../i18n/context'
 
-/** Five steps as a timeline: across on desktop, down on a phone. */
+/** Five steps as a timeline (across on desktop, down on a phone), then what you receive. */
 export function Process() {
   const { t, lang } = useI18n()
 
   return (
-    <section id="process" className="band">
+    <section id="process" className="band border-t border-ink-200/70 bg-paper-alt">
       <div className="shell">
-        <SectionHeading eyebrow={t.process.eyebrow} title={t.process.title} lead={t.process.lead} shortOnPhone />
+        <SectionHeading eyebrow={t.process.eyebrow} title={t.process.title} lead={t.process.lead} shortOnPhone split />
 
         <ol className="reveal-group mt-8 grid gap-x-5 gap-y-5 lg:mt-12 lg:grid-cols-5">
           {t.process.steps.map((step, i) => (
@@ -37,14 +38,18 @@ export function Process() {
           ))}
         </ol>
 
-        <p className="mt-6 max-w-3xl text-sm leading-relaxed text-ink-600">{t.process.note}</p>
+        <div className="mt-6 flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between sm:gap-8">
+          <p className="max-w-3xl text-sm leading-relaxed text-ink-600">{t.process.note}</p>
         <a
           href={pageHref(lang, 'how-it-works/')}
-          className="mt-3 inline-flex min-h-11 items-center gap-1.5 text-sm font-semibold text-bamboo-700 hover:text-bamboo-600"
+          className="inline-flex min-h-11 shrink-0 items-center gap-1.5 text-sm font-semibold text-bamboo-700 hover:text-bamboo-600"
         >
           {t.guides.learnMore}
           <ArrowRight size={15} aria-hidden="true" />
         </a>
+        </div>
+
+        <DeliverStrip />
       </div>
     </section>
   )

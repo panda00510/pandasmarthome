@@ -1,46 +1,16 @@
 import { useRef, useState } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { Html, TransformControls } from '@react-three/drei'
-import { useHA, isOn } from '../ha/store'
+import { useHA, isOn, usePlan } from '../ha/store'
 import { stateText } from '../ha/format'
 import { useT } from '../i18n'
 import Icon, { iconFor } from '../ui/icons'
 import { damp } from './utils'
 import { useIsMobile } from '../hooks'
 
-// 每个可控实体在 3D 空间里的锚点。开启标定模式后可拖动，坐标可导出回这张表。
-export const HOTSPOTS = [
-  { id: 'light.living_main', pos: [-3.35, 2.28, -2.15] },
-  { id: 'light.living_strip', pos: [-2.1, 2.52, -3.92] },
-  { id: 'light.dining_pendant', pos: [-3.95, 1.95, 0.35] },
-  { id: 'light.living_floor', pos: [-1.72, 1.45, -3.75] },
-  { id: 'media_player.living_tv', pos: [-4.55, 1.45, -2.35] },
-  { id: 'cover.living_curtain', pos: [-3.05, 2.28, -3.88] },
-  { id: 'climate.living_ac', pos: [-1.35, 2.22, -2.55] },
-  { id: 'fan.living_ceiling', pos: [-2.55, 2.05, -0.85] },
-
-  { id: 'light.bedroom_main', pos: [3.5, 2.28, -2.9] },
-  { id: 'light.bedroom_bedside', pos: [2.28, 0.72, -3.62] },
-  { id: 'cover.bedroom_curtain', pos: [3.45, 2.2, -3.9] },
-  { id: 'climate.bedroom_ac', pos: [4.7, 2.16, -2.55] },
-  { id: 'fan.bedroom_ceiling', pos: [4.15, 2.0, -1.65] },
-
-  { id: 'light.second_main', pos: [0.4, 2.28, -2.9] },
-  { id: 'cover.second_curtain', pos: [0.4, 2.2, -3.9] },
-  { id: 'climate.second_ac', pos: [-0.62, 2.16, -2.75] },
-  { id: 'fan.second_ceiling', pos: [1.05, 2.0, -1.7] },
-
-  { id: 'light.kitchen_spot', pos: [-4.0, 2.32, 2.95] },
-  { id: 'light.bath_mirror', pos: [-0.08, 1.82, 1.82] },
-  { id: 'switch.bath_heater', pos: [-0.1, 1.85, 1.15] },
-  { id: 'light.hall_down', pos: [1.05, 2.32, -0.55] },
-
-  { id: 'lock.entry', pos: [2.98, 1.2, 4.15] },
-  { id: 'camera.entry_doorbell', pos: [3.2, 1.5, 4.2] },
-]
-
-// 视角 → 区域；选中房间时只亮出该房间前几个设备的标签
-const VIEW_AREA = { living: 'living', master: 'bedroom', bed2: 'second', kitchen: 'kitchen', bath: 'bath' }
+// 每个可控实体在 3D 空间里的锚点在 plans/<户型>.json 的 hotspots 里。
+// 开启标定模式后可拖动，坐标可导出回那张表。
+// 选中房间视角时只亮出该视角 area 里前几个设备的标签。
 const ROOM_LABEL_LIMIT = 5
 
 function Hotspot({ conf, rank }) {
@@ -54,7 +24,8 @@ function Hotspot({ conf, rank }) {
   const calibTarget = useHA((s) => s.calibTarget)
   const setCalibTarget = useHA((s) => s.setCalibTarget)
   const setHotspotPos = useHA((s) => s.setHotspotPos)
-  const override = useHA((s) => s.hotspotOverrides[conf.id])
+  const override = useHA((s) => s.hotspotOverrides[`${s.planId}:${conf.id}`])
+  const plan = usePlan()
 
   const t = useT()
   const isMobile = useIsMobile()
@@ -66,7 +37,7 @@ function Hotspot({ conf, rank }) {
   const on = isOn(entity)
   const isCalibTarget = calibrating && calibTarget === conf.id
   const active = selected === conf.id || isCalibTarget
-  const inRoom = VIEW_AREA[view] === entity.area && rank < ROOM_LABEL_LIMIT
+  const inRoom = plan.views[view]?.area === entity.area && rank < ROOM_LABEL_LIMIT
   const visible = showLabels || hovered || active || inRoom
   const pos = override ?? conf.pos
 
@@ -153,13 +124,14 @@ function Hotspot({ conf, rank }) {
 
 // 同一区域里排第几（用实体 id 的区域前缀分组，如 light.living_main → living）
 const areaOf = (id) => id.split('.')[1].split('_')[0]
-const rankInArea = (i) => HOTSPOTS.slice(0, i).filter((other) => areaOf(other.id) === areaOf(HOTSPOTS[i].id)).length
+const rankInArea = (list, i) => list.slice(0, i).filter((other) => areaOf(other.id) === areaOf(list[i].id)).length
 
 export default function Hotspots() {
+  const { hotspots } = usePlan()
   return (
     <group>
-      {HOTSPOTS.map((conf, i) => (
-        <Hotspot key={conf.id} conf={conf} rank={rankInArea(i)} />
+      {hotspots.map((conf, i) => (
+        <Hotspot key={conf.id} conf={conf} rank={rankInArea(hotspots, i)} />
       ))}
     </group>
   )

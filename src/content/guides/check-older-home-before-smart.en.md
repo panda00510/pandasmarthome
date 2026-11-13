@@ -2,7 +2,8 @@
 title: What to check in an older home before adding smart devices
 description: Older flats and houses often differ from new builds in switch boxes, wiring, Wi-Fi coverage and aircon. A checklist to run through before you buy anything.
 published: 2026-11-06
-updated: 2026-11-08
+updated: 2026-11-13
+points: Many older switch boxes have no neutral wire, which decides which smart switches you can use | Opening a switch box or checking the wiring is work for a licensed electrical worker | Walk the home and record switches, weak Wi-Fi spots, aircon models and doors on one page
 ---
 An older home is not a problem for a smart home, but it is a home with surprises. The switch box that looked ordinary may have no neutral wire, the walls may block Wi-Fi, and the aircon may be older than the apps that control it. A short survey before you buy saves returns and frustration.
 

@@ -29,9 +29,7 @@ export function damp(current, target, lambda, dt) {
   return current + (target - current) * (1 - Math.exp(-lambda * dt))
 }
 
-
-// 户型来自 src/plan.json —— 和 Blender 脚本共用同一份数据源
-export { default as PLAN } from '../plan.json'
+// 户型数据在 src/plans/<户型>.json，组件里用 usePlan()（ha/store）取当前户型
 
 export const MAT = {
   floorWood: '#a9825a',

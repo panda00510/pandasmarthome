@@ -2,7 +2,8 @@
 title: Smart switches without a neutral wire — what to know before you buy
 description: Many wall switch boxes in older homes have no neutral wire. How no-neutral smart switches work, their trade-offs, and the alternatives worth considering.
 published: 2026-09-23
-updated: 2026-11-06
+updated: 2026-11-13
+points: Many switch boxes have no neutral wire, and older HDB flats are often wired this way | No-neutral switches can make low-wattage LEDs flicker or glow; a bypass capacitor is a common fix | Alternatives include running a neutral, a relay module at the light, or smart bulbs with a scene button
 ---
 Most smart switches need constant power for their radio, and that normally comes from a neutral wire. In many homes, though, the switch box only holds the live wire and the wire running to the light — the neutral goes straight to the light fitting instead. Older HDB flats are often wired this way, so it is worth checking before you buy switches.
 

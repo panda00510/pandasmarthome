@@ -42,7 +42,7 @@ cp tools/_work/shell_living.glb src/assets/baked/
 cp tools/_work/lightmap_living.json src/three/
 ```
 
-`tools/plan.py` 里的户型和灯位**必须和 `src/three/utils.js`、`Fixtures.jsx` 对齐**，
+`tools/plan.py` 读 `src/plans/<户型>.json`（环境变量 `PLAN`，默认 `4room`），和运行时同一份数据，
 差一点烘出来的贴图就和运行时的模型对不上。
 
 ## 三个容易踩的坑
@@ -70,7 +70,7 @@ Blender 的面光用瓦特，three.js 的点光源用坎德拉，两套单位没
 
 ## 目前的范围
 
-运行中的四房户型没有套用下面这批贴图（`plan.json` 的 `gi` 是 `realtime`）。下面是上一版 198 ㎡ 户型的烘焙记录，换户型后必须整屋重烘才能再打开。
+运行中的四房户型没有套用下面这批贴图（`plans/<户型>.json` 的 `gi` 是 `realtime`）。下面是上一版 198 ㎡ 户型的烘焙记录，换户型后必须整屋重烘才能再打开。
 
 **上一版全屋六个房间**都烘了，九盏灯分三张 atlas：
 
@@ -80,14 +80,14 @@ Blender 的面光用瓦特，three.js 的点光源用坎德拉，两套单位没
 | 1 | 主卧吸顶 | 床头灯 | 次卧吸顶 |
 | 2 | 厨房射灯 | 镜前灯 | 走廊筒灯 |
 
-整屋共用一套 UV，所以三张贴图叠加就是全屋完整光照。落地灯不烘（`plan.json` 里 `bake: false`）——
+整屋共用一套 UV，所以三张贴图叠加就是全屋完整光照。落地灯不烘（`plans/<户型>.json` 里 `bake: false`）——
 它是可移动的小灯，走实时光照更合理。
 
-再加灯只需在 `src/plan.json` 的 `lamps` 里追加，通道会按分组顺序自动分配。
+再加灯只需在 `src/plans/<户型>.json` 的 `lamps` 里追加，通道会按分组顺序自动分配。
 
 ## 第四个坑：通道别手写
 
-`plan.json` 里一度手写了每盏灯的 `channel`，结果同一张 atlas 里三盏灯都写成了 R，
+`plans/<户型>.json` 里一度手写了每盏灯的 `channel`，结果同一张 atlas 里三盏灯都写成了 R，
 后烘的把先烘的直接覆盖 —— 画面上表现为某些灯"点了没反应"。
 现在通道由 `tools/plan.py` 按组内位置自动分配（第 0/1/2 盏 → R/G/B），不再有手写的机会。
 

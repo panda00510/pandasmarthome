@@ -4,18 +4,18 @@ import { Footer } from './components/layout/Footer'
 import { Header } from './components/layout/Header'
 import { Seo } from './components/Seo'
 import { Contact } from './components/sections/Contact'
-import { CtaBand } from './components/sections/CtaBand'
-import { Deliver } from './components/sections/Deliver'
 import { Faq } from './components/sections/Faq'
-import { GuidePage, GuidesIndex, LatestGuides } from './components/sections/Guides'
+import { GuidePage, GuidesIndex } from './components/sections/Guides'
 import { Hero } from './components/sections/Hero'
 import { HubPage } from './components/sections/Hub'
 import { Homes } from './components/sections/Homes'
 import { Platform } from './components/sections/Platform'
 import { Process } from './components/sections/Process'
 import { Solutions } from './components/sections/Solutions'
-import { ProductsPage, ProductsStrip } from './components/sections/Products'
-import { SoftwareCard, SoftwarePage } from './components/sections/Software'
+import { ProductsPage } from './components/sections/Products'
+import { SoftwarePage } from './components/sections/Software'
+import { Custom } from './components/sections/Custom'
+import { HardwarePage } from './components/sections/Hardware'
 import { Upcoming } from './components/sections/Upcoming'
 import { site } from './config/site'
 import { findGuide, hubOf } from './content/guides'
@@ -63,19 +63,17 @@ export default function App() {
           <ProductsPage />
         ) : path === 'software/' ? (
           <SoftwarePage />
+        ) : path === 'custom-hardware/' ? (
+          <HardwarePage />
         ) : (
           <>
             <Hero />
             <Solutions />
-            <ProductsStrip />
-            <SoftwareCard />
-            <Deliver />
+            <Custom />
             <Homes />
             <Process />
             <Platform />
-            <CtaBand />
             <Faq />
-            <LatestGuides />
             <Upcoming />
             <Contact />
           </>
@@ -85,7 +83,7 @@ export default function App() {
       <Footer />
 
       {/* Floating WhatsApp shortcut, only when a number is configured. */}
-      {site.whatsappLink && !atContact && path !== 'products/' && path !== 'software/' ? (
+      {site.whatsappLink && !atContact && path !== 'products/' && path !== 'software/' && path !== 'custom-hardware/' ? (
         <a
           href={`${site.whatsappLink}?text=${encodeURIComponent(t.contact.whatsappGreeting)}`}
           target="_blank"

@@ -165,6 +165,67 @@ export type Content = {
     faqTitle: string
     faq: { q: string; a: string }[]
   }
+  /** Homepage band for the 3D showroom (separate build at /showroom/). */
+  showroom: {
+    eyebrow: string
+    title: string
+    lead: string
+    /** Status line on the preview card. No device counts. */
+    status: string
+    /** Labels on the drawn floor plan: living, master, kitchen, bedroom. */
+    rooms: string[]
+    /** Floor plans the showroom opens directly with ?plan=<id>. */
+    plans: { id: string; label: string }[]
+  }
+  /** "Custom" group: header dropdown and the homepage band (hardware + software). */
+  custom: {
+    /** Header dropdown label. */
+    nav: string
+    eyebrow: string
+    title: string
+    lead: string
+    /** Link to the products page from the homepage band. */
+    devicesCta: string
+  }
+  /**
+   * Custom ESP32 AI / IoT hardware. Prototypes and small batches only; no
+   * client list, no lead times, no certification claims, no prices.
+   */
+  hardware: {
+    /** Header dropdown and footer label. */
+    navLabel: string
+    /** Small labels above each section heading on the page. */
+    sectionEyebrows: { capabilities: string; levels: string; process: string }
+    eyebrow: string
+    title: string
+    lead: string
+    metaTitle: string
+    metaDescription: string
+    whoTitle: string
+    audiences: string[]
+    groupsTitle: string
+    groups: { id: string; title: string; body: string; items: string[] }[]
+    tiersTitle: string
+    tiers: { title: string; body: string }[]
+    /** Prototype / small-batch and IMDA note under the tiers. */
+    tiersNote: string
+    processTitle: string
+    steps: { title: string; body: string }[]
+    priceTitle: string
+    priceBody: string
+    /** Cross-link card shared by the hardware and software pages. */
+    pairTitle: string
+    pairBody: string
+    enquire: string
+    /** Page-level WhatsApp message. Complete. */
+    enquireAll: string
+    homeTitle: string
+    homeLead: string
+    homeCta: string
+    finePrint: string[]
+    faqTitle: string
+    faq: { q: string; a: string }[]
+  }
   /** Products still in development — shown as "coming next", never as on sale. */
   upcoming: {
     eyebrow: string
@@ -308,6 +369,8 @@ export type Content = {
     metaDescription: string
     all: string
     updated: string
+    /** Visible author line on guides and topic pages: the team, never a person. */
+    byline: string
     more: string
     backHome: string
     related: string

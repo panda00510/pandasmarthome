@@ -2,7 +2,8 @@
 title: What still works in a smart home when the internet goes down?
 description: Local control vs cloud control, explained for Singapore homes — what keeps running during an outage, what pauses, and how to check a device before you buy.
 published: 2026-09-23
-updated: 2026-11-08
+updated: 2026-11-13
+points: On a local system, switches, scene buttons, automations and sensors keep working without internet | Remote access, most voice assistants and cloud-only devices usually pause during an outage | Before buying, look for Zigbee, Thread, Matter or a documented local API
 ---
 When the fibre drops, some smart homes quietly carry on and others turn into homes where the lights only answer to an app that can no longer reach its server. Which one you get depends on a single design choice: where the decisions are made.
 

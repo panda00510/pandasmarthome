@@ -11,7 +11,7 @@ import {
 } from '../../content/guides'
 import { pageHref, useI18n, type Lang } from '../../i18n/context'
 import { GuideFigure } from '../graphics/GuideFigures'
-import { Button, SectionHeading } from '../ui'
+import { Button } from '../ui'
 
 function formatDate(date: string, lang: Lang) {
   return new Intl.DateTimeFormat(lang === 'zh' ? 'zh-Hans-SG' : 'en-SG', { dateStyle: 'long' }).format(
@@ -69,37 +69,40 @@ function GuideCard({
   )
 }
 
-/** Homepage strip: the three newest guides. */
+/** Homepage: the three newest guides as a compact list, under the FAQ heading. */
 export function LatestGuides() {
   const { t, lang } = useI18n()
   const latest = guidesIn(lang).slice(0, 3)
   if (!latest.length) return null
 
   return (
-    <section id="guides" className="band border-t border-ink-200/70">
-      <div className="shell">
-        <div className="flex flex-wrap items-end justify-between gap-4">
-          <SectionHeading
-            eyebrow={t.guides.eyebrow}
-            title={t.guides.title}
-            lead={t.guides.lead}
-            shortOnPhone
-          />
-          <a
-            href={pageHref(lang, 'guides/')}
-            className="inline-flex min-h-11 items-center gap-1.5 text-sm font-semibold text-bamboo-700 hover:text-bamboo-600"
-          >
-            {t.guides.all}
-            <ArrowRight size={15} aria-hidden="true" />
-          </a>
-        </div>
-        <div className="reveal-group mt-6 grid gap-3 md:grid-cols-3 md:gap-4 lg:mt-10">
-          {latest.map((guide) => (
-            <GuideCard key={guide.slug} guide={guide} lang={lang} brief />
-          ))}
-        </div>
-      </div>
-    </section>
+    <div id="guides" className="mt-10 scroll-mt-24">
+      <h3 className="text-xs font-semibold tracking-[0.14em] text-bamboo-700 uppercase">{t.guides.eyebrow}</h3>
+      <ul className="mt-3 divide-y divide-ink-200 border-y border-ink-200">
+        {latest.map((guide) => (
+          <li key={guide.slug}>
+            <a
+              href={pageHref(lang, guide.path)}
+              className="group flex min-h-12 items-start justify-between gap-4 py-3 text-[0.9375rem] leading-snug font-medium text-ink-800 transition-colors hover:text-bamboo-700"
+            >
+              {guide.heading}
+              <ArrowRight
+                size={15}
+                aria-hidden="true"
+                className="mt-0.5 shrink-0 text-ink-400 transition-transform group-hover:translate-x-0.5 group-hover:text-bamboo-700 motion-reduce:transition-none"
+              />
+            </a>
+          </li>
+        ))}
+      </ul>
+      <a
+        href={pageHref(lang, 'guides/')}
+        className="mt-2 inline-flex min-h-11 items-center gap-1.5 text-sm font-semibold text-bamboo-700 hover:text-bamboo-600"
+      >
+        {t.guides.all}
+        <ArrowRight size={15} aria-hidden="true" />
+      </a>
+    </div>
   )
 }
 
@@ -122,7 +125,7 @@ export function GuidesIndex() {
         <span aria-hidden="true" className="h-px w-6 bg-bamboo-500/50" />
         {t.guides.eyebrow}
       </p>
-      <h1 className="mt-3 max-w-3xl text-[2rem] leading-[1.1] font-semibold tracking-[-0.03em] text-ink-950 sm:text-5xl">
+      <h1 className="mt-5 max-w-4xl text-[2.25rem] leading-[1.06] font-semibold tracking-[-0.035em] text-balance text-ink-950 sm:text-[3rem] lg:text-[3.5rem]">
         {t.guides.title}
       </h1>
       <p className="mt-4 max-w-2xl text-base leading-relaxed text-ink-600 sm:text-lg">{t.guides.lead}</p>
@@ -130,9 +133,9 @@ export function GuidesIndex() {
       {featured.length ? (
         <div className="mt-8 grid gap-4 lg:mt-10 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]">
           <div>
-            <p className="mb-2 text-xs font-semibold tracking-wider text-bamboo-700 uppercase">
+            <h2 className="mb-2 text-xs font-semibold tracking-wider text-bamboo-700 uppercase">
               {t.guides.featured}
-            </p>
+            </h2>
             <GuideCard guide={featured[0]} lang={lang} feature />
           </div>
           <div className="grid gap-4 lg:pt-6">
@@ -143,6 +146,7 @@ export function GuidesIndex() {
         </div>
       ) : null}
 
+      <h2 className="sr-only">{t.guides.allTopics}</h2>
       <div role="group" aria-label={t.guides.allTopics} className="mt-10 flex flex-wrap gap-2">
         {['all', ...topics].map((id) => (
           <button
@@ -207,7 +211,7 @@ export function GuidePage({ guide }: { guide: Guide }) {
   return (
     <>
       <article className="shell pt-8 pb-14 lg:pt-12">
-        <div className="lg:grid lg:grid-cols-[minmax(0,44rem)_14rem] lg:justify-center lg:gap-14">
+        <div className="lg:grid lg:grid-cols-[minmax(0,41rem)_14rem] lg:justify-center lg:gap-14">
           <div className="min-w-0">
             <a
               href={pageHref(lang, hub ? `${hub}/` : isPage ? '' : 'guides/')}
@@ -219,18 +223,19 @@ export function GuidePage({ guide }: { guide: Guide }) {
             <h1 className="mt-4 text-[1.875rem] leading-[1.15] font-semibold tracking-[-0.03em] text-balance text-ink-950 sm:text-[2.75rem]">
               {guide.heading}
             </h1>
-            {isPage ? null : (
-              <p className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-ink-500">
+            <p className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-ink-600">
+              <span className="font-medium text-ink-800">{t.guides.byline}</span>
+              <span>
+                {t.guides.updated}{' '}
+                <time dateTime={guide.updated}>{formatDate(guide.updated, lang)}</time>
+              </span>
+              {isPage ? null : (
                 <span className="inline-flex items-center gap-1">
                   <Clock size={13} aria-hidden="true" />
                   {minutesLabel(t.guides.readMin, guide)}
                 </span>
-                <span>
-                  {t.guides.updated}{' '}
-                  <time dateTime={guide.updated}>{formatDate(guide.updated, lang)}</time>
-                </span>
-              </p>
-            )}
+              )}
+            </p>
             <p className="mt-5 border-l-2 border-bamboo-500 pl-4 text-[1.0625rem] leading-relaxed text-ink-700 sm:text-lg">
               {guide.description}
             </p>

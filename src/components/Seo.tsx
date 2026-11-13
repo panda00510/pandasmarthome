@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { brand, brandAssets } from '../config/brand'
 import { hasAddress, site, socialLinks } from '../config/site'
-import { pageMeta } from '../content/guides'
+import { hubOf, pageMeta } from '../content/guides'
 import { langPath, useI18n } from '../i18n/context'
 
 /** Upsert a `<meta>` tag by its name/property attribute. */
@@ -42,6 +42,10 @@ export function Seo() {
   const { lang, t, path } = useI18n()
   const { title, description, guide } = pageMeta(lang, path)
   const url = site.url ? site.url + langPath(lang, path) : undefined
+  // Stable node ids so the graph's pieces reference each other.
+  const id = (node: string) => (url ? `${url}#${node}` : undefined)
+  const ref = (node: string) => (url ? { '@id': `${url}#${node}` } : undefined)
+  const businessRef = site.url ? { '@id': `${site.url}#business` } : undefined
 
   useEffect(() => {
     document.title = title
@@ -82,16 +86,21 @@ export function Seo() {
   ]
 
   const business: Record<string, unknown> = {
-    '@type': ['LocalBusiness', 'HomeAndConstructionBusiness'],
+    '@type': ['Organization', 'LocalBusiness', 'HomeAndConstructionBusiness'],
     '@id': site.url ? `${site.url}#business` : undefined,
     name: lang === 'zh' ? site.companyNameZh : site.companyName,
     alternateName: lang === 'zh' ? brand.name : brand.nameZh,
     description: t.meta.description,
     url: site.url ?? undefined,
-    logo: site.url ? site.url + brandAssets.ogImage : undefined,
+    logo: site.url ? { '@type': 'ImageObject', url: `${site.url}/icon-512.png`, width: 512, height: 512 } : undefined,
     image: site.url ? site.url + brandAssets.ogImage : undefined,
     areaServed,
     knowsLanguage: ['en', 'zh-Hans'],
+    knowsAbout: ['Smart home', 'Home automation', 'Matter', 'Zigbee', 'Thread', 'Home Assistant', 'ESP32'],
+    // Registered entity number (UEN), only when configured.
+    identifier: site.registrationNumber
+      ? { '@type': 'PropertyValue', propertyID: 'UEN', value: site.registrationNumber }
+      : undefined,
     keywords: t.meta.keywords,
     slogan: lang === 'zh' ? brand.taglineZh : brand.taglineEn,
     // Contact channels appear only when a real value is configured.
@@ -121,6 +130,8 @@ export function Seo() {
 
   const faq = {
     '@type': 'FAQPage',
+    '@id': id('faq'),
+    isPartOf: site.url ? { '@id': `${site.url}#website` } : undefined,
     mainEntity: t.faq.items.map((item) => ({
       '@type': 'Question',
       name: item.q,
@@ -130,16 +141,22 @@ export function Seo() {
 
   // Article pages describe the article and its place in the site; the FAQ
   // belongs to the homepage only.
+  const topicHub = guide?.kind === 'page' ? hubOf(guide.path.replace(/[^/]+\/$/, '')) : null
   const article = guide
     ? [
         {
           '@type': guide.kind === 'page' ? 'WebPage' : 'Article',
+          '@id': id(guide.kind === 'page' ? 'webpage' : 'article'),
+          isPartOf: site.url ? { '@id': `${site.url}#website` } : undefined,
+          breadcrumb: ref('breadcrumb'),
+          about: businessRef && guide.kind === 'page' ? businessRef : undefined,
           headline: guide.title,
           description: guide.description,
           datePublished: guide.published,
           dateModified: guide.updated,
           inLanguage: lang === 'zh' ? 'zh-Hans-SG' : 'en-SG',
           mainEntityOfPage: url,
+          url,
           image: site.url ? site.url + brandAssets.ogImage : undefined,
           author: site.url ? { '@id': `${site.url}#business` } : undefined,
           publisher: site.url ? { '@id': `${site.url}#business` } : undefined,
@@ -147,6 +164,7 @@ export function Seo() {
         guide.kind === 'page' && guide.path.startsWith('solutions/')
           ? {
               '@type': 'Service',
+              '@id': id('service'),
               name: guide.title,
               description: guide.description,
               url: url ?? undefined,
@@ -157,6 +175,8 @@ export function Seo() {
         guide.faq.length
           ? {
               '@type': 'FAQPage',
+              '@id': id('faq'),
+              isPartOf: site.url ? { '@id': `${site.url}#website` } : undefined,
               mainEntity: guide.faq.map((item) => ({
                 '@type': 'Question',
                 name: item.q,
@@ -167,10 +187,15 @@ export function Seo() {
         site.url
           ? {
               '@type': 'BreadcrumbList',
+              '@id': id('breadcrumb'),
               itemListElement: [
                 { name: lang === 'zh' ? brand.nameZh : brand.name, item: site.url + langPath(lang) },
                 ...(guide.kind === 'guide'
                   ? [{ name: t.guides.eyebrow, item: site.url + langPath(lang, 'guides/') }]
+                  : []),
+                // Topic pages sit under their hub (/homes/, /solutions/).
+                ...(topicHub
+                  ? [{ name: t.hubs[topicHub].eyebrow, item: site.url + langPath(lang, `${topicHub}/`) }]
                   : []),
                 { name: guide.title, item: site.url + langPath(lang, guide.path) },
               ].map((crumb, i) => ({ '@type': 'ListItem', position: i + 1, ...crumb })),
@@ -258,6 +283,68 @@ export function Seo() {
         }
       : null
 
+  // Custom ESP32 hardware: one Service with its capability groups as an
+  // OfferCatalog. No prices, no client list, no ratings.
+  const hardwareService =
+    path === 'custom-hardware/'
+      ? {
+          '@type': 'Service',
+          name: t.hardware.title,
+          serviceType: t.hardware.eyebrow,
+          description: `${t.hardware.lead} ${t.hardware.tiersNote}`,
+          provider: site.url ? { '@id': `${site.url}#business` } : undefined,
+          areaServed: { '@type': 'Country', name: 'Singapore' },
+          url: url ?? undefined,
+          hasOfferCatalog: {
+            '@type': 'OfferCatalog',
+            name: t.hardware.groupsTitle,
+            itemListElement: t.hardware.groups.map((group) => ({
+              '@type': 'Offer',
+              itemOffered: { '@type': 'Service', name: group.title, description: group.body },
+            })),
+          },
+        }
+      : null
+
+  const hardwareFaq =
+    path === 'custom-hardware/'
+      ? {
+          '@type': 'FAQPage',
+          mainEntity: t.hardware.faq.map((item) => ({
+            '@type': 'Question',
+            name: item.q,
+            acceptedAnswer: { '@type': 'Answer', text: item.a },
+          })),
+        }
+      : null
+
+  // Index pages (hubs, guides, products, software): a CollectionPage/WebPage
+  // node with a two-step breadcrumb. Guides and topic pages have their own above.
+  const indexPage =
+    !guide && path !== '' && site.url
+      ? [
+          {
+            '@type': hubOf(path) || path === 'guides/' ? 'CollectionPage' : 'WebPage',
+            '@id': id('webpage'),
+            url,
+            name: title,
+            description,
+            inLanguage: lang === 'zh' ? 'zh-Hans-SG' : 'en-SG',
+            isPartOf: { '@id': `${site.url}#website` },
+            about: businessRef,
+            breadcrumb: ref('breadcrumb'),
+          },
+          {
+            '@type': 'BreadcrumbList',
+            '@id': id('breadcrumb'),
+            itemListElement: [
+              { name: lang === 'zh' ? brand.nameZh : brand.name, item: site.url + langPath(lang) },
+              { name: title, item: url },
+            ].map((crumb, i) => ({ '@type': 'ListItem', position: i + 1, ...crumb })),
+          },
+        ]
+      : []
+
   const graph = {
     '@context': 'https://schema.org',
     '@graph': [
@@ -268,7 +355,10 @@ export function Seo() {
           ? [productList, productFaq]
           : path === 'software/'
             ? [softwareList, softwareFaq]
-            : article),
+            : path === 'custom-hardware/'
+              ? [hardwareService, hardwareFaq]
+              : article),
+      ...indexPage,
       {
         '@type': 'WebSite',
         '@id': site.url ? `${site.url}#website` : undefined,

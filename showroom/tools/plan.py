@@ -1,8 +1,12 @@
-"""读 src/plan.json —— 户型的唯一数据源，Blender 和 three.js 共用同一份。"""
+"""读 src/plans/<户型>.json —— 户型的唯一数据源，Blender 和 three.js 共用同一份。
+默认 4room，换户型：PLAN=3room blender -b ...
+"""
 import json
+import os
 from pathlib import Path
 
-PLAN = json.loads((Path(__file__).resolve().parents[1] / "src" / "plan.json").read_text())
+PLAN_ID = os.environ.get("PLAN", "4room")
+PLAN = json.loads((Path(__file__).resolve().parents[1] / "src" / "plans" / f"{PLAN_ID}.json").read_text())
 
 WALL_H = PLAN["wallH"]
 WALL_T = PLAN["wallT"]
@@ -10,7 +14,7 @@ ROOMS = PLAN["rooms"]
 EXTERIOR = PLAN["exterior"]
 INTERIOR = PLAN["interior"]
 LAMPS = PLAN["lamps"]
-OCCLUDERS = PLAN["occluders"]
+OCCLUDERS = PLAN.get("occluders", [])
 
 # 可烘焙的灯按三个一组打包成一张贴图，通道按组内位置自动分配 ——
 # 手写 channel 太容易写重，同一张图里两盏灯抢同一个通道会互相覆盖。

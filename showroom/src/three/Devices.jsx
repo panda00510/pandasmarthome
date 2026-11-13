@@ -1,7 +1,7 @@
 import { useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { RoundedBox } from '@react-three/drei'
-import { useHA, isOn } from '../ha/store'
+import { useHA, isOn, usePlan } from '../ha/store'
 import { damp } from './utils'
 
 // 壁挂分体机。本地 -X 是出风方向，用 group 的 rotation 对准房间。
@@ -75,20 +75,21 @@ function CeilingFan({ id, position }) {
 }
 
 // 浴室储水式热水器，高挂在花洒一侧。通电只亮指示灯，不把整间浴室烤红。
-function StorageHeater() {
-  const e = useHA((s) => s.entities['switch.bath_heater'])
+// 横挂：罐体沿本地 x，指示灯朝本地 -z（贴墙装在 +z 一侧的墙上）。
+function StorageHeater({ id, position, rotation }) {
+  const e = useHA((s) => s.entities[id])
   const on = isOn(e)
   return (
-    <group position={[-0.55, 2.02, 1.55]}>
-      <mesh rotation={[Math.PI / 2, 0, 0]} castShadow>
+    <group position={position} rotation={rotation}>
+      <mesh rotation={[0, 0, Math.PI / 2]} castShadow>
         <cylinderGeometry args={[0.15, 0.15, 0.5, 20]} />
         <meshStandardMaterial color="#e7e1d8" roughness={0.35} metalness={0.2} />
       </mesh>
-      <mesh rotation={[Math.PI / 2, 0, 0]}>
+      <mesh rotation={[0, 0, Math.PI / 2]}>
         <cylinderGeometry args={[0.155, 0.155, 0.08, 20]} />
         <meshStandardMaterial color="#8d8680" roughness={0.4} metalness={0.35} />
       </mesh>
-      <mesh position={[0, -0.1, 0.22]}>
+      <mesh position={[0.12, -0.08, -0.14]}>
         <sphereGeometry args={[0.022, 12, 10]} />
         <meshStandardMaterial
           color={on ? '#e5b571' : '#6d675f'}
@@ -101,66 +102,70 @@ function StorageHeater() {
   )
 }
 
-// 大门电子锁在门内侧，可视门铃在门外门框旁，室内小屏在玄关。
-function EntryHardware() {
-  const lock = useHA((s) => s.entities['lock.entry'])
-  const bell = useHA((s) => s.entities['camera.entry_doorbell'])
-  const locked = lock?.state === 'locked'
-  const live = isOn(bell)
-  const led = locked ? '#58c191' : '#e5b571'
-
+// 大门电子锁装在门扇内侧（本地 -z 朝屋内），可视门铃在门外门框旁（朝 +z），室内小屏在玄关墙上（朝 +z）。
+function DoorLock({ id, position, rotation }) {
+  const lock = useHA((s) => s.entities[id])
+  const led = lock?.state === 'locked' ? '#58c191' : '#e5b571'
   return (
-    <group>
-      <group position={[2.98, 1.05, 4.36]}>
-        <RoundedBox args={[0.16, 0.28, 0.045]} radius={0.012} smoothness={2} castShadow>
-          <meshStandardMaterial color="#2a2e33" roughness={0.4} metalness={0.55} />
-        </RoundedBox>
-        <mesh position={[0, 0.04, -0.03]}>
-          <sphereGeometry args={[0.016, 12, 10]} />
-          <meshStandardMaterial color={led} emissive={led} emissiveIntensity={1.8} toneMapped={false} />
-        </mesh>
-      </group>
-
-      <group position={[3.32, 1.42, 4.58]}>
-        <RoundedBox args={[0.09, 0.16, 0.04]} radius={0.01} smoothness={2} castShadow>
-          <meshStandardMaterial color="#23272b" roughness={0.45} metalness={0.4} />
-        </RoundedBox>
-        <mesh position={[0, 0.03, 0.025]}>
-          <circleGeometry args={[0.018, 16]} />
-          <meshStandardMaterial color="#1a3a5c" emissive={live ? '#7eb6ff' : '#102033'} emissiveIntensity={live ? 1.4 : 0.2} />
-        </mesh>
-      </group>
-
-      <group position={[2.16, 1.45, 3.55]} rotation={[0, Math.PI / 2, 0]}>
-        <RoundedBox args={[0.02, 0.16, 0.11]} radius={0.006} smoothness={2}>
-          <meshStandardMaterial color="#2c3136" roughness={0.5} />
-        </RoundedBox>
-        <mesh position={[0.012, 0, 0]}>
-          <planeGeometry args={[0.08, 0.11]} />
-          <meshStandardMaterial
-            color={live ? '#14324f' : '#1a1e22'}
-            emissive={live ? '#6aa8e8' : '#000000'}
-            emissiveIntensity={live ? 0.8 : 0}
-          />
-        </mesh>
-      </group>
+    <group position={position} rotation={rotation}>
+      <RoundedBox args={[0.16, 0.28, 0.045]} radius={0.012} smoothness={2} castShadow>
+        <meshStandardMaterial color="#2a2e33" roughness={0.4} metalness={0.55} />
+      </RoundedBox>
+      <mesh position={[0, 0.04, -0.03]}>
+        <sphereGeometry args={[0.016, 12, 10]} />
+        <meshStandardMaterial color={led} emissive={led} emissiveIntensity={1.8} toneMapped={false} />
+      </mesh>
     </group>
   )
 }
 
+function Doorbell({ id, position, rotation }) {
+  const live = isOn(useHA((s) => s.entities[id]))
+  return (
+    <group position={position} rotation={rotation}>
+      <RoundedBox args={[0.09, 0.16, 0.04]} radius={0.01} smoothness={2} castShadow>
+        <meshStandardMaterial color="#23272b" roughness={0.45} metalness={0.4} />
+      </RoundedBox>
+      <mesh position={[0, 0.03, 0.025]}>
+        <circleGeometry args={[0.018, 16]} />
+        <meshStandardMaterial color="#1a3a5c" emissive={live ? '#7eb6ff' : '#102033'} emissiveIntensity={live ? 1.4 : 0.2} />
+      </mesh>
+    </group>
+  )
+}
+
+function Monitor({ id, position, rotation }) {
+  const live = isOn(useHA((s) => s.entities[id]))
+  return (
+    <group position={position} rotation={rotation}>
+      <RoundedBox args={[0.11, 0.16, 0.02]} radius={0.006} smoothness={2}>
+        <meshStandardMaterial color="#2c3136" roughness={0.5} />
+      </RoundedBox>
+      <mesh position={[0, 0, 0.012]}>
+        <planeGeometry args={[0.08, 0.11]} />
+        <meshStandardMaterial
+          color={live ? '#14324f' : '#1a1e22'}
+          emissive={live ? '#6aa8e8' : '#000000'}
+          emissiveIntensity={live ? 0.8 : 0}
+        />
+      </mesh>
+    </group>
+  )
+}
+
+const KINDS = { split: SplitUnit, fan: CeilingFan, heater: StorageHeater, lock: DoorLock, doorbell: Doorbell, monitor: Monitor }
+
+// 设备摆位按户型写在 plans/<户型>.json 的 devices 里，rot 为角度
 export default function Devices() {
+  const { devices = [] } = usePlan()
   return (
     <group>
-      <SplitUnit id="climate.living_ac" position={[-1.16, 2.2, -2.55]} />
-      <SplitUnit id="climate.bedroom_ac" position={[4.98, 2.16, -2.55]} scale={0.9} />
-      <SplitUnit id="climate.second_ac" position={[-0.8, 2.16, -2.75]} rotation={[0, Math.PI, 0]} scale={0.88} />
-
-      <CeilingFan id="fan.living_ceiling" position={[-3.35, 2.08, -1.15]} />
-      <CeilingFan id="fan.bedroom_ceiling" position={[3.45, 2.08, -2.05]} />
-      <CeilingFan id="fan.second_ceiling" position={[0.35, 2.08, -2.15]} />
-
-      <StorageHeater />
-      <EntryHardware />
+      {devices.map((d, i) => {
+        const Kind = KINDS[d.type]
+        return Kind ? (
+          <Kind key={i} id={d.id} position={d.pos} rotation={[0, ((d.rot ?? 0) * Math.PI) / 180, 0]} scale={d.scale} />
+        ) : null
+      })}
     </group>
   )
 }

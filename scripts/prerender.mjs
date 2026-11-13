@@ -39,6 +39,7 @@ for (const { lang, path } of routes) {
     ['og:locale:alternate', meta.localeAlt],
     ['twitter:title', meta.title],
     ['twitter:description', meta.description],
+    ['og:image:alt', meta.ogImageAlt],
   ]) {
     page = setMeta(page, key, value)
   }
@@ -62,12 +63,13 @@ const gitDate = (...paths) => {
     return today
   }
 }
-const { robots, sitemap, llms, feeds } = crawlerFiles({
+const { robots, sitemap, llms, llmsFull, feeds } = crawlerFiles({
   site: gitDate('src', 'index.html', ':(exclude)src/content/guides'),
   showroom: gitDate('showroom'),
 })
 await writeFile(at('dist/robots.txt'), robots)
 await writeFile(at('dist/llms.txt'), llms)
+await writeFile(at('dist/llms-full.txt'), llmsFull)
 if (sitemap) await writeFile(at('dist/sitemap.xml'), sitemap)
 if (feeds) {
   await writeFile(at('dist/feed.xml'), feeds.en)

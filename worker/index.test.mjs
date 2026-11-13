@@ -9,7 +9,12 @@ assert.equal(moved.status, 301)
 assert.equal(moved.headers.get('location'), 'https://smartpanda.sg/zh/guides/x/?a=1')
 
 assert.equal((await get('https://www.smartpanda.sg/')).status, 301)
-assert.equal(await (await get('https://smartpanda.sg/')).text(), 'asset')
+const home = await get('https://smartpanda.sg/')
+assert.equal(await home.text(), 'asset')
+assert.equal(home.headers.get('x-content-type-options'), 'nosniff')
+assert.match(home.headers.get('strict-transport-security'), /max-age=\d+/)
+assert.ok(home.headers.get('referrer-policy'))
+assert.ok(home.headers.get('permissions-policy'))
 console.log('worker ok')
 
 const old = '/guides/home-assistant-vs-google-apple-smartthings/'

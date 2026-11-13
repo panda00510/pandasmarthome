@@ -86,6 +86,7 @@ jobs:
       - run: npm run lint
       - run: npm run typecheck
       - run: node serverless/telegram-relay.test.mjs
+      - run: node worker/index.test.mjs
 
       # --- Build 1: GitHub Pages -------------------------------------------
       # A project page is served from /<repo>/, so the bundle needs a matching

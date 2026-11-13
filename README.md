@@ -152,8 +152,8 @@ bundle. Endpoints that don't use one can leave it blank; the field is omitted.
 > **Lock the key to your domains.** Because the key ships in the public bundle,
 > anyone can copy it and POST from anywhere, which means spam straight to your
 > inbox. In the Web3Forms dashboard set **Allowed Domains** to
-> `panda00510.github.io` and `pandasmarthome.xunleix8.workers.dev` (plus any
-> future custom domain). Web3Forms also has a built-in spam filter and an
+> `smartpanda.sg`, `www.smartpanda.sg`, `panda00510.github.io` and
+> `pandasmarthome.xunleix8.workers.dev`. Web3Forms also has a built-in spam filter and an
 > optional hCaptcha if it ever gets abused.
 
 After changing either variable, run `npm run build`. Nothing else changes —
@@ -195,6 +195,8 @@ any submission where it is non-empty as spam.
 ```
 public/              favicon, social card, app icons, manifest
 scripts/make-og.mjs  rasterises the brand SVGs into PNGs (npm run og)
+scripts/prerender.mjs  writes one static HTML file per page into dist/
+scripts/indexnow.mjs   pings IndexNow with changed URLs after deploy
 serverless/          optional Cloudflare Worker: form -> Telegram relay
 src/
   index.css          the whole design system: colour, type, spacing, components
@@ -207,18 +209,29 @@ src/
     guides/          articles, one Markdown file per language (see "Guides")
     guides.ts        loads the articles; page list and per-page title/description
   i18n/              language context and path helpers (/ vs /zh/)
+  hooks/motion.ts    scroll reveal (never hides what is on screen at load)
   components/
     brand/           PandaMark (glyph) and Wordmark (lockup)
-    layout/          Header, Footer
-    graphics/        HomePanel — the hero control-panel illustration
-    sections/        one file per page section
+    layout/          Header (with the "Custom" dropdown), Footer
+    graphics/
+      HomePanel.tsx        the hero control-panel illustration
+      ShowroomPreview.tsx  drawn isometric floor plan for the 3D showroom band
+      ProductFigures.tsx   desk-device drawings (products + custom hardware)
+      GuideFigures.tsx     article figures
+    sections/        one file per page section, including:
+      Hero.tsx       first screen + trust strip; renders Showroom after it
+      Showroom.tsx   homepage 3D showroom band (links to /showroom/, ?plan=)
+      Custom.tsx     homepage band: custom hardware + custom software
+      Hardware.tsx   the /custom-hardware/ page
+    ui.tsx           Button, SectionHeading, Chip, PhotoTag
     Seo.tsx          head sync + JSON-LD structured data
   entry-server.tsx   prerender entry: routes, sitemap, robots, llms.txt
-scripts/prerender.mjs  writes one static HTML file per page into dist/
-scripts/indexnow.mjs   pings IndexNow with changed URLs after deploy
-    ui.tsx           Button, SectionHeading, Chip
-  assets/            photos, fonts, third-party brand logos (all local)
+  assets/            photos, fonts (all local)
 ```
+
+Pages (each also under `/zh/`): `/`, `/solutions/…`, `/homes/…`,
+`/how-it-works/`, `/guides/…`, `/products/`, `/software/`,
+`/custom-hardware/`. The 3D showroom is a separate build at `/showroom/`.
 
 ---
 
@@ -236,7 +249,20 @@ tokens, so everything is available as normal utilities (`bg-bamboo-500`,
 * **Layout** — `.shell` caps content at 1200px with 20px/32px gutters;
   `.band` sets the vertical rhythm between sections.
 * **Components** — `.btn`, `.field`, `.card`, `.eyebrow` are the shared
-  primitives; variants live in `src/components/ui.tsx`.
+  primitives; variants live in `src/components/ui.tsx`. Linked cards
+  (`a.card`) lift on hover; reduced motion keeps only the colour change.
+* **Buttons** — `primary` (brand green), `secondary`, `ghost`, `inverse`, and
+  for ink bands `glow` (bright bamboo with dark text, ≈7:1) and `outlineDark`.
+* **Elevation** — `shadow-soft`, `shadow-lift`, plus `shadow-stage` (deep
+  shadow for panels on ink) and `shadow-glow` (the primary CTA on ink only).
+  Radii: `rounded-card` 1.25rem, `rounded-panel` 1.75rem.
+* **Dark bands** — `.stage-grid` (fine grid fading from the top) and
+  `.stage-glow` (slow green glow, stopped by reduced motion) behind the hero,
+  the showroom band and the custom-hardware hero. `.numeral` sets tabular
+  index numbers (01, 02 …). Bands alternate paper / paper-alt / ink.
+* **Motion** — CSS transform and opacity only. First-screen content never
+  depends on an animation or a scroll to be visible; `[data-reveal]` hiding
+  is added by JS and only below the fold.
 
 Breakpoints are Tailwind defaults. The layout was checked at 375, 768 and
 1440 px.
@@ -294,9 +320,18 @@ fails the type check until the other is updated too.
   `dist/[zh/]<path>/index.html`, so crawlers that skip JavaScript (most AI bots, Bing's
   first pass) still see the full copy, JSON-LD and canonical links. The browser
   re-renders on load; there is no hydration to keep in sync.
-* `robots.txt` (explicitly allows Googlebot, Bingbot and the named AI
-  crawlers), `sitemap.xml` and `llms.txt` are **generated at build** from the
-  copy and `VITE_SITE_URL` — there is no hand-written copy in `public/`.
+* `robots.txt` (explicitly allows Bingbot, Applebot and the named AI
+  crawlers), `sitemap.xml` (with `en` / `zh-Hans` / `x-default` alternates),
+  `llms.txt` (brand brief, core pages, services, guides) and `llms-full.txt`
+  (full text of every guide and topic page) are **generated at build** from
+  the copy and `VITE_SITE_URL` — there is no hand-written copy in `public/`.
+* Guide titles longer than ~60 characters (~30 CJK) drop the brand suffix in
+  `<title>` so the words that matter are not truncated (`pageMeta` in
+  `src/content/guides.ts`).
+* JSON-LD nodes carry `@id`s (`#business`, `#website`, `#webpage`/`#article`,
+  `#breadcrumb`, `#faq`) and reference each other; index pages get a
+  `CollectionPage`/`WebPage` node and a breadcrumb. SEO/GEO plan and the
+  owner's to-do list: [SEO_GEO_PLAN.md](SEO_GEO_PLAN.md).
 * Sitemap `lastmod` is real: guide pages use their `updated` date; other pages
   use the last git commit touching `src/` or `index.html` (the showroom uses
   `showroom/`). CI checks out full history (`fetch-depth: 0`) for this — a
@@ -327,8 +362,8 @@ It runs lint, typecheck and the relay self-check first, so a broken commit
 fails the deploy instead of shipping.
 
 Live at **<https://panda00510.github.io/pandasmarthome/>** — a secondary copy.
-The canonical host is Cloudflare (see below); this copy's canonical links
-point there.
+The canonical host is **<https://smartpanda.sg/>** on Cloudflare (see below);
+this copy's canonical links point there.
 
 Because `.env.local` is git-ignored, the CI build reads contact details from
 **repository variables** instead (Settings → Secrets and variables → Actions →
@@ -354,9 +389,13 @@ BASE_PATH=/pandasmarthome/ npm run build && BASE_PATH=/pandasmarthome/ npm run p
 
 ### Cloudflare (canonical)
 
-Canonical URL: **<https://pandasmarthome.xunleix8.workers.dev/>** — the value of
-`VITE_SITE_URL`. Submit `https://pandasmarthome.xunleix8.workers.dev/sitemap.xml`
-in Google Search Console and Bing Webmaster Tools.
+Canonical URL: **<https://smartpanda.sg/>** — the value of `VITE_SITE_URL`.
+Submit `https://smartpanda.sg/sitemap.xml` in Google Search Console and Bing
+Webmaster Tools.
+
+`www.smartpanda.sg` and the old `pandasmarthome.xunleix8.workers.dev` address
+answer with a 301 to `smartpanda.sg` (the `CANONICAL_HOST` var in
+`wrangler.jsonc`, handled by `worker/index.js`).
 
 Both hosts are published by **one** GitHub Actions run
 (`.github/workflows/deploy.yml`). There is a single set of variables — the
@@ -382,9 +421,14 @@ serves from the domain root and must have it unset. It also fails the run if
 `VITE_*` variables were set but did not make it into the bundle, which is the
 exact failure that made the mirror render as unconfigured.
 
-`wrangler.jsonc` defines the Worker: assets-only (no script), serving `dist`,
-with `not_found_handling: "none"` so unknown paths return a real 404 instead
-of soft-404ing the homepage.
+`wrangler.jsonc` defines the Worker: a small script (`worker/index.js`) in
+front of the `dist` assets, with `not_found_handling: "none"` so unknown paths
+return a real 404 instead of soft-404ing the homepage. The script does the
+host and moved-page 301s and adds the security headers (HSTS,
+`X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy`) to every
+response — in code rather than `public/_headers`, because with
+`run_worker_first` the response comes from the Worker. Self-check:
+`node worker/index.test.mjs`.
 
 #### Why not Cloudflare Workers Builds
 
@@ -403,7 +447,7 @@ build, one set of variables, no second place for configuration to go stale.
 Verify a deploy actually picked the values up:
 
 ```bash
-curl -s https://pandasmarthome.xunleix8.workers.dev/ | grep -o '/assets/index-[^"]*\.js' | head -1
+curl -s https://smartpanda.sg/ | grep -o '/assets/index-[^"]*\.js' | head -1
 ```
 
 Fetch that bundle and grep it for a known value; the workflow now runs the

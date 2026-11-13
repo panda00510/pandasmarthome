@@ -33,7 +33,7 @@ export function Solutions() {
           eyebrow={t.solutions.eyebrow}
           title={t.solutions.title}
           lead={t.solutions.lead}
-          shortOnPhone
+          shortOnPhone split
         />
 
         <ul className="reveal-group mt-8 grid grid-cols-2 gap-3 lg:mt-12 lg:grid-cols-3 lg:gap-4">

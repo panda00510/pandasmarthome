@@ -1,5 +1,6 @@
 import { RoundedBox } from '@react-three/drei'
 import { getTextures } from './textures'
+import { usePlan } from '../ha/store'
 import { latheGeometry, PROFILES } from './shapes'
 
 let TURNED = null
@@ -54,7 +55,8 @@ function Art({ p, w, h, frame = '#4a4038', art = 'art1', axis = 'x', flip = fals
   )
 }
 
-function Books({ p, rot = 0, colors = ['#8a5f4a', '#4f5f6b', '#c2b49a'] }) {
+function Books({ p, rot = 0, colors: colorsIn, palette = ['#8a5f4a', '#4f5f6b', '#c2b49a'] }) {
+  const colors = colorsIn ?? palette
   return (
     <group position={p} rotation={[0, rot, 0]}>
       {colors.map((c, i) => (
@@ -101,7 +103,8 @@ function Bowl({ p, r = 1, c = '#e4ddd2' }) {
   )
 }
 
-function Mug({ p, c = '#cfc6bb' }) {
+function Mug({ p, c: cIn }) {
+  const c = cIn ?? '#cfc6bb'
   return (
     <group position={p}>
       <mesh geometry={turned().mug} position={[0, -0.048, 0]} castShadow receiveShadow>
@@ -115,28 +118,43 @@ function Mug({ p, c = '#cfc6bb' }) {
   )
 }
 
+function Jars({ p }) {
+  return [0, 1, 2].map((i) => (
+    <mesh key={i} position={[p[0] + i * 0.12, p[1], p[2]]} castShadow>
+      <cylinderGeometry args={[0.028, 0.028, 0.12, 10]} />
+      <meshStandardMaterial color={['#8e7b60', '#a8946f', '#6f6a58'][i]} roughness={0.5} />
+    </mesh>
+  ))
+}
+
+// 软装按户型写在 plans/<户型>.json 的 decor 里
 export default function Decor() {
+  const { decor = [] } = usePlan()
   return (
     <group>
-      <Art p={[-1.08, 1.5, -3.45]} w={0.62} h={0.78} axis="x" frame="#5a4e40" art="art1" flip />
-      <Books p={[-4.15, 0.4, -2.55]} rot={0.2} />
-      <Mug p={[-4.5, 0.45, -2.25]} />
-      <Box p={[-4.55, 0.74, 0.15]} s={[0.32, 0.008, 0.22]} c="#a8967f" r={0.95} radius={0.004} />
-      <Vase p={[-3.95, 0.86, 0.35]} />
-
-      <Books p={[2.28, 0.42, -3.62]} rot={-0.2} colors={['#6b7f8a', '#c9b7a0']} />
-      <Art p={[4.9, 1.55, -4.06]} w={0.36} h={0.48} frame="#6b5c4a" art="art2" axis="z" />
-
-      <Box p={[-4.7, 0.94, 3.4]} s={[0.32, 0.02, 0.22]} c="#a37f52" r={0.7} radius={0.01} />
-      <Bowl p={[-4.15, 0.95, 4.05]} r={0.85} />
-      {[0, 1, 2].map((i) => (
-        <mesh key={i} position={[-4.55, 0.98, 2.7 + i * 0.12]} castShadow>
-          <cylinderGeometry args={[0.028, 0.028, 0.12, 10]} />
-          <meshStandardMaterial color={['#8e7b60', '#a8946f', '#6f6a58'][i]} roughness={0.5} />
-        </mesh>
-      ))}
-
-      <Mug p={[-0.35, 0.88, 1.95]} c="#dfe3e2" />
+      {decor.map((d, i) => {
+        const rot = ((d.rot ?? 0) * Math.PI) / 180
+        switch (d.type) {
+          case 'art':
+            return <Art key={i} p={d.pos} w={d.w} h={d.h} axis={d.axis} flip={d.flip} art={d.art} frame={d.frame} />
+          case 'books':
+            return <Books key={i} p={d.pos} rot={rot} colors={d.colors} />
+          case 'mug':
+            return <Mug key={i} p={d.pos} c={d.color} />
+          case 'vase':
+            return <Vase key={i} p={d.pos} />
+          case 'bowl':
+            return <Bowl key={i} p={d.pos} r={0.85} />
+          case 'runner':
+            return <Box key={i} p={d.pos} s={d.size} c="#a8967f" r={0.95} radius={0.004} />
+          case 'board':
+            return <Box key={i} p={d.pos} s={[0.32, 0.02, 0.22]} c="#a37f52" r={0.7} radius={0.01} />
+          case 'jars':
+            return <Jars key={i} p={d.pos} />
+          default:
+            return null
+        }
+      })}
     </group>
   )
 }

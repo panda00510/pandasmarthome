@@ -3,7 +3,7 @@ import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { OrbitControls, ContactShadows } from '@react-three/drei'
 import { EffectComposer, Bloom, Vignette, N8AO } from '@react-three/postprocessing'
 import { Vector3, Color, Fog } from 'three'
-import { useHA } from '../ha/store'
+import { useHA, usePlan } from '../ha/store'
 import hdriUrl from '../assets/hdri/studio_small_09_1k.hdr?url'
 import { useIsMobile } from '../hooks'
 import Shell from './Shell'
@@ -21,15 +21,7 @@ import Surroundings from './Surroundings'
 // 换成自己的模型：在 .env 里设置 VITE_HOUSE_MODEL=/house.glb
 const MODEL_URL = import.meta.env.VITE_HOUSE_MODEL || null
 
-export const VIEWS = {
-  overview: { name: { en: 'Overview', zh: '全屋' }, pos: [10.1, 12.7, 13.0], target: [-0.2, 0.35, 0.2] },
-  // 机位都在房间内部，视线不穿实墙。客厅从餐厅一侧看向沙发，主卧靠近房门看向床。
-  living: { name: { en: 'Living', zh: '客厅' }, pos: [-2.2, 2.05, 2.05], target: [-3.7, 0.9, -2.2] },
-  bedroom: { name: { en: 'Master', zh: '主卧' }, pos: [4.15, 1.85, -1.5], target: [3.5, 0.75, -3.3] },
-  second: { name: { en: 'Bed 2', zh: '次卧' }, pos: [0.45, 1.75, -1.45], target: [0.4, 0.65, -3.55] },
-  kitchen: { name: { en: 'Kitchen', zh: '厨房' }, pos: [-3.4, 1.9, 1.65], target: [-4.6, 0.8, 3.55] },
-  bath: { name: { en: 'Bath', zh: '卫生间' }, pos: [0.1, 1.7, 0.45], target: [-0.4, 0.95, 1.75] },
-}
+// 相机预设视角按户型写在 plans/<户型>.json 的 views 里（机位都在房间内部，视线不穿实墙）。
 
 const MOBILE_FOV = 60
 const DESKTOP_FOV = 36
@@ -87,6 +79,13 @@ function CameraRig({ views, isMobile }) {
     camera.position.lerp(p, k)
     controls.target.lerp(t, k)
     controls.update()
+    // 房间视角可以给更广的视场角（小房间里 36° 只看得到一张床）；手机本来就是 60°
+    const base = isMobile ? MOBILE_FOV : DESKTOP_FOV
+    const fov = Math.max(base, v.fov ?? base)
+    if (Math.abs(camera.fov - fov) > 0.05) {
+      camera.fov += (fov - camera.fov) * k
+      camera.updateProjectionMatrix()
+    }
   })
   return null
 }
@@ -121,8 +120,10 @@ function Atmosphere() {
 
 function World() {
   const bindings = useRef(null)
+  const planId = useHA((s) => s.planId)
+  // 按户型整组重挂：灯、家具、热点都从新户型的数据重建
   return (
-    <>
+    <group key={planId}>
       {MODEL_URL ? (
         <ExternalHouse url={MODEL_URL} onBindings={(m) => (bindings.current = m)} />
       ) : (
@@ -137,19 +138,22 @@ function World() {
       <Fixtures />
       <Surroundings />
       <Hotspots />
-    </>
+    </group>
   )
 }
 
 export default function Scene() {
   const isMobile = useIsMobile()
+  const plan = usePlan()
   const views = useMemo(
     () =>
-      isMobile
-        ? { ...VIEWS, overview: { ...VIEWS.overview, pos: [9.4, 13.2, 12.4], target: [-0.15, 0.25, 0.25] } }
-        : VIEWS,
-    [isMobile]
+      isMobile && plan.views.overview.mobile
+        ? { ...plan.views, overview: { ...plan.views.overview, ...plan.views.overview.mobile } }
+        : plan.views,
+    [isMobile, plan]
   )
+  const [cx, cz] = plan.center
+  const start = views.overview
 
   return (
     <Canvas
@@ -157,7 +161,7 @@ export default function Scene() {
       dpr={isMobile ? [1, 1.5] : [1, 1.8]}
       gl={{ antialias: true, powerPreference: 'high-performance' }}
       camera={{
-        position: isMobile ? [9.4, 13.2, 12.4] : [10.1, 12.7, 13.0],
+        position: start.pos,
         fov: isMobile ? MOBILE_FOV : DESKTOP_FOV,
         near: 0.1,
         far: 400,
@@ -171,11 +175,11 @@ export default function Scene() {
         <HdriEnvironment url={hdriUrl} />
       </Suspense>
 
-      <ContactShadows position={[0, -0.31, 0.15]} opacity={0.45} scale={18} blur={2.6} far={5} resolution={512} color="#05070b" />
+      <ContactShadows position={[cx, -0.31, cz]} opacity={0.45} scale={18} blur={2.6} far={5} resolution={512} color="#05070b" />
 
       <OrbitControls
         makeDefault
-        target={[0.05, 0.55, 0.15]}
+        target={start.target}
         minDistance={2.0}
         maxDistance={64}
         maxPolarAngle={Math.PI / 2.12}

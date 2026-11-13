@@ -1,0 +1,196 @@
+{
+  "_comment": "HDB 三房（约 66 ㎡）。约定同 4room.json。东南角是组屋公共走廊让出的凹口（外墙折进去），走廊尽头开一扇高窗。三房一般不带阳台，客厅改为北向大窗。",
+  "id": "3room",
+  "layout": { "en": "HDB 3-Room", "zh": "HDB 三房" },
+  "short": { "en": "3-Room · 66 ㎡", "zh": "三房 · 66 ㎡" },
+  "areaM2": 66,
+  "gi": "realtime",
+  "width": 9.2,
+  "depth": 7.8,
+  "center": [-0.1, -0.5],
+  "wallH": 2.6,
+  "wallT": 0.12,
+  "rooms": {
+    "living": { "x0": -4.7, "x1": -1.0, "z0": -4.4, "z1": 1.0, "floor": "woodFloor", "name": { "en": "Living & Dining", "zh": "客餐厅" } },
+    "kitchen": { "x0": -3.4, "x1": -1.0, "z0": 1.0, "z1": 3.4, "floor": "tile", "name": { "en": "Kitchen", "zh": "厨房" } },
+    "yard": { "x0": -4.7, "x1": -3.4, "z0": 1.0, "z1": 3.4, "floor": "tile", "name": { "en": "Service Yard", "zh": "服务阳台" } },
+    "foyer": { "x0": -1.0, "x1": 0.4, "z0": 0.6, "z1": 3.4, "floor": "tile", "name": { "en": "Foyer", "zh": "玄关" } },
+    "hall": { "x0": -1.0, "x1": 3.0, "z0": -0.6, "z1": 0.6, "floor": "woodFloor", "name": { "en": "Corridor", "zh": "走廊" } },
+    "bed2": { "x0": -1.0, "x1": 1.6, "z0": -4.4, "z1": -0.6, "floor": "woodFloorWarm", "name": { "en": "Common Bedroom", "zh": "卧室" } },
+    "master": { "x0": 1.6, "x1": 4.5, "z0": -4.4, "z1": -0.6, "floor": "woodFloorWarm", "name": { "en": "Master Bedroom", "zh": "主卧" } },
+    "mbath": { "x0": 3.0, "x1": 4.5, "z0": -0.6, "z1": 1.6, "floor": "tile", "name": { "en": "Master Bathroom", "zh": "主卫" } },
+    "bath": { "x0": 0.4, "x1": 1.9, "z0": 0.6, "z1": 2.2, "floor": "tile", "name": { "en": "Common Bathroom", "zh": "公共卫生间" } },
+    "shelter": { "x0": 0.4, "x1": 1.9, "z0": 2.2, "z1": 3.4, "floor": "tile", "name": { "en": "Household Shelter", "zh": "家庭避难所" } }
+  },
+  "exterior": [
+    { "id": "north", "axis": "x", "at": -4.4, "from": -4.7, "to": 4.5, "holes": [
+      { "from": -4.4, "to": -1.3, "y0": 0.5, "y1": 2.25, "glass": true },
+      { "from": -0.2, "to": 1.2, "y0": 0.95, "y1": 2.15, "glass": true },
+      { "from": 2.1, "to": 3.9, "y0": 0.95, "y1": 2.15, "glass": true }
+    ] },
+    { "id": "east", "axis": "z", "at": 4.5, "from": -4.4, "to": 1.6, "holes": [
+      { "from": 0.95, "to": 1.45, "y0": 1.6, "y1": 2.1, "glass": true }
+    ] },
+    { "id": "mbath_south", "axis": "x", "at": 1.6, "from": 3.0, "to": 4.5, "holes": [] },
+    { "id": "mbath_west", "axis": "z", "at": 3.0, "from": -0.6, "to": 1.6, "holes": [] },
+    { "id": "hall_south", "axis": "x", "at": 0.6, "from": 1.9, "to": 3.0, "holes": [
+      { "from": 2.1, "to": 2.85, "y0": 1.2, "y1": 2.1, "glass": true }
+    ] },
+    { "id": "bath_east", "axis": "z", "at": 1.9, "from": 0.6, "to": 2.2, "holes": [] },
+    { "id": "shelter_east", "axis": "z", "at": 1.9, "from": 2.2, "to": 3.4, "thickness": 0.24, "holes": [] },
+    { "id": "south", "axis": "x", "at": 3.4, "from": -4.7, "to": 0.4, "holes": [
+      { "from": -3.0, "to": -1.6, "y0": 1.05, "y1": 2.1, "glass": true },
+      { "from": -0.7, "to": 0.3, "y0": 0, "y1": 2.1, "door": "entry", "open": 0 }
+    ] },
+    { "id": "shelter_south", "axis": "x", "at": 3.4, "from": 0.4, "to": 1.9, "thickness": 0.24, "holes": [] },
+    { "id": "west", "axis": "z", "at": -4.7, "from": -4.4, "to": 3.4, "holes": [
+      { "from": 1.5, "to": 3.1, "y0": 0.95, "y1": 2.2, "glass": true }
+    ] }
+  ],
+  "interior": [
+    { "id": "living_bed2", "axis": "z", "at": -1.0, "from": -4.4, "to": -0.6, "holes": [] },
+    { "id": "bed2_hall", "axis": "x", "at": -0.6, "from": -1.0, "to": 1.6, "holes": [
+      { "from": 0.65, "to": 1.5, "y0": 0, "y1": 2.1, "door": "bed2" }
+    ] },
+    { "id": "bed2_master", "axis": "z", "at": 1.6, "from": -4.4, "to": -0.6, "holes": [] },
+    { "id": "master_hall", "axis": "x", "at": -0.6, "from": 1.6, "to": 3.0, "holes": [
+      { "from": 2.05, "to": 2.9, "y0": 0, "y1": 2.1, "door": "master" }
+    ] },
+    { "id": "master_mbath", "axis": "x", "at": -0.6, "from": 3.0, "to": 4.5, "holes": [
+      { "from": 3.3, "to": 4.05, "y0": 0, "y1": 2.1, "door": "mbath" }
+    ] },
+    { "id": "hall_bath", "axis": "x", "at": 0.6, "from": 0.4, "to": 1.9, "holes": [
+      { "from": 0.75, "to": 1.5, "y0": 0, "y1": 2.1, "door": "bath", "swing": 1 }
+    ] },
+    { "id": "foyer_bath", "axis": "z", "at": 0.4, "from": 0.6, "to": 2.2, "holes": [] },
+    { "id": "foyer_shelter", "axis": "z", "at": 0.4, "from": 2.2, "to": 3.4, "thickness": 0.24, "holes": [
+      { "from": 2.45, "to": 3.25, "y0": 0, "y1": 2.0, "door": "shelter", "open": 0.1 }
+    ] },
+    { "id": "bath_shelter", "axis": "x", "at": 2.2, "from": 0.4, "to": 1.9, "thickness": 0.24, "holes": [] },
+    { "id": "living_kitchen", "axis": "x", "at": 1.0, "from": -4.7, "to": -1.0, "holes": [
+      { "from": -2.6, "to": -1.75, "y0": 0, "y1": 2.1 }
+    ] },
+    { "id": "yard_kitchen", "axis": "z", "at": -3.4, "from": 1.0, "to": 3.4, "holes": [
+      { "from": 1.85, "to": 2.65, "y0": 0, "y1": 2.1, "door": "yard" }
+    ] },
+    { "id": "kitchen_foyer", "axis": "z", "at": -1.0, "from": 1.0, "to": 3.4, "holes": [] }
+  ],
+  "lamps": [
+    { "id": "light.living_main", "room": "living", "pos": [-3.0, 2.42, -2.4], "power": 76, "kelvin": 3200, "kind": "ceiling", "size": 0.46 },
+    { "id": "light.living_strip", "room": "living", "pos": [-2.85, 2.5, -4.26], "power": 40, "kelvin": 2800, "kind": "strip", "size": [3.0, 0.04], "along": "x" },
+    { "id": "light.dining_pendant", "room": "living", "pos": [-2.85, 1.82, 0.05], "power": 34, "kelvin": 2900, "kind": "pendant", "size": 0.26 },
+    { "id": "light.living_floor", "room": "living", "pos": [-1.35, 0, -3.85], "power": 26, "kelvin": 2700, "kind": "floor", "size": 0.2 },
+    { "id": "light.bedroom_main", "room": "bedroom", "pos": [2.55, 2.42, -3.1], "power": 54, "kelvin": 4000, "kind": "ceiling", "size": 0.4 },
+    { "id": "light.bedroom_bedside", "room": "bedroom", "pos": [1.86, 0.42, -3.95], "power": 16, "kelvin": 2700, "kind": "table", "size": 0.14 },
+    { "id": "light.second_main", "room": "second", "pos": [0.3, 2.42, -2.9], "power": 46, "kelvin": 4000, "kind": "ceiling", "size": 0.36 },
+    { "id": "light.kitchen_spot", "room": "kitchen", "pos": [-2.2, 2.48, 2.2], "power": 48, "kelvin": 5000, "kind": "spots", "size": 0.14, "along": "x", "span": 1.2 },
+    { "id": "light.bath_mirror", "room": "bath", "pos": [0.49, 1.68, 1.05], "power": 24, "kelvin": 4300, "kind": "strip", "size": [0.6, 0.035], "along": "z" },
+    { "id": "light.hall_down", "room": "hall", "pos": [1.0, 2.48, 0.0], "power": 30, "kelvin": 3500, "kind": "spots", "size": 0.12, "along": "x", "span": 1.8 }
+  ],
+  "tvGlow": [-4.0, 1.15, -2.4],
+  "furniture": [
+    { "type": "tv", "pos": [-4.42, 0, -2.4], "rot": 90 },
+    { "type": "sofa", "pos": [-2.0, 0, -2.4], "rot": -90, "scale": 0.78 },
+    { "type": "coffee", "pos": [-3.1, 0, -2.4], "rot": 90 },
+    { "type": "dining", "pos": [-2.85, 0, 0.05] },
+    { "type": "plant", "pos": [-4.35, 0, 0.6] },
+
+    { "type": "shoe", "pos": [-0.765, 0, 2.3], "rot": 90, "len": 1.2 },
+
+    { "type": "counter", "pos": [-2.2, 0, 3.04], "rot": 180, "len": 2.3, "sink": 0.1 },
+    { "type": "counter", "pos": [-1.36, 0, 2.11], "rot": -90, "len": 1.25, "hob": 0.0 },
+    { "type": "upper", "pos": [-1.235, 1.55, 2.11], "rot": -90, "len": 1.25 },
+    { "type": "fridge", "pos": [-3.02, 0, 1.42], "rot": 90 },
+    { "type": "washer", "pos": [-4.3, 0, 1.37] },
+    { "type": "rack", "pos": [-4.2, 2.3, 2.4], "len": 1.6 },
+
+    { "type": "bed", "pos": [2.5, 0, -2.9], "rot": 90, "scale": 0.78 },
+    { "type": "nightstand", "pos": [1.86, 0, -3.95] },
+    { "type": "wardrobe", "pos": [4.13, 0, -2.6], "rot": -90, "len": 2.0 },
+
+    { "type": "bed", "pos": [-0.19, 0, -3.6], "rot": 90, "scale": 0.7 },
+    { "type": "desk", "pos": [1.26, 0, -2.1], "rot": -90, "len": 1.0 },
+    { "type": "chair", "pos": [0.72, 0, -2.1], "rot": 90 },
+    { "type": "wardrobe", "pos": [-0.2, 0, -0.96], "rot": 180, "len": 1.4 },
+
+    { "type": "vanity", "pos": [0.69, 0, 1.0], "rot": 90, "len": 0.7 },
+    { "type": "toilet", "pos": [1.56, 0, 1.0], "rot": -90 },
+    { "type": "glass", "pos": [0.8, 1.0, 1.5], "size": [0.68, 1.8, 0.02] },
+
+    { "type": "vanity", "pos": [4.21, 0, 0.05], "rot": -90, "len": 0.7 },
+    { "type": "toilet", "pos": [3.36, 0, 0.45], "rot": 90 },
+    { "type": "glass", "pos": [3.5, 1.0, 0.95], "size": [0.88, 1.8, 0.02] },
+
+    { "type": "box", "pos": [1.15, 0.9, 3.1], "size": [1.1, 1.8, 0.34], "color": "#c8c2b6" }
+  ],
+  "decor": [
+    { "type": "art", "pos": [-1.08, 1.5, -2.4], "w": 0.62, "h": 0.78, "axis": "x", "flip": true, "art": "art1", "frame": "#5a4e40" },
+    { "type": "books", "pos": [-2.95, 0.4, -2.65], "rot": 12 },
+    { "type": "mug", "pos": [-3.25, 0.45, -2.1] },
+    { "type": "runner", "pos": [-2.85, 0.745, 0.05], "size": [1.2, 0.008, 0.3] },
+    { "type": "vase", "pos": [-2.85, 0.86, 0.05] },
+    { "type": "art", "pos": [1.68, 1.6, -2.9], "w": 0.9, "h": 0.58, "axis": "x", "art": "art2", "frame": "#6b5c4a" },
+    { "type": "board", "pos": [-1.75, 0.94, 3.05] },
+    { "type": "bowl", "pos": [-1.26, 0.95, 2.6] },
+    { "type": "jars", "pos": [-3.1, 0.98, 3.12] },
+    { "type": "mug", "pos": [0.62, 0.9, 1.2], "color": "#dfe3e2" }
+  ],
+  "rugs": [
+    { "x": -3.05, "z": -2.4, "w": 2.3, "d": 2.2 },
+    { "x": 2.6, "z": -2.9, "w": 2.1, "d": 2.0, "color": "#b3a897" }
+  ],
+  "curtains": [
+    { "id": "cover.living_curtain", "x0": -4.5, "x1": -1.2, "z": -4.22, "top": 2.32 },
+    { "id": "cover.second_curtain", "x0": -0.35, "x1": 1.35, "z": -4.22, "top": 2.22, "color": "#d8cfc2" },
+    { "id": "cover.bedroom_curtain", "x0": 1.95, "x1": 4.05, "z": -4.22, "top": 2.22, "color": "#d8cfc2" }
+  ],
+  "devices": [
+    { "type": "split", "id": "climate.living_ac", "pos": [-1.17, 2.2, -2.4] },
+    { "type": "split", "id": "climate.bedroom_ac", "pos": [2.48, 2.3, -0.77], "rot": -90, "scale": 0.85 },
+    { "type": "split", "id": "climate.second_ac", "pos": [-0.83, 2.16, -2.0], "rot": 180, "scale": 0.85 },
+    { "type": "fan", "id": "fan.living_ceiling", "pos": [-2.85, 2.1, -1.0] },
+    { "type": "fan", "id": "fan.bedroom_ceiling", "pos": [2.95, 2.12, -1.75] },
+    { "type": "fan", "id": "fan.second_ceiling", "pos": [0.35, 2.1, -1.75] },
+    { "type": "heater", "id": "switch.bath_heater", "pos": [0.78, 2.05, 1.9] },
+    { "type": "lock", "id": "lock.entry", "pos": [0.13, 1.05, 3.355] },
+    { "type": "doorbell", "id": "camera.entry_doorbell", "pos": [0.55, 1.42, 3.48] },
+    { "type": "monitor", "id": "camera.entry_doorbell", "pos": [-0.93, 1.45, 3.12], "rot": 90 }
+  ],
+  "hotspots": [
+    { "id": "light.living_main", "pos": [-3.0, 2.28, -2.4] },
+    { "id": "light.living_strip", "pos": [-1.9, 2.52, -4.2] },
+    { "id": "light.dining_pendant", "pos": [-2.85, 1.95, 0.05] },
+    { "id": "light.living_floor", "pos": [-1.35, 1.45, -3.85] },
+    { "id": "media_player.living_tv", "pos": [-4.3, 1.45, -2.4] },
+    { "id": "cover.living_curtain", "pos": [-3.6, 2.28, -4.22] },
+    { "id": "climate.living_ac", "pos": [-1.37, 2.22, -2.4] },
+    { "id": "fan.living_ceiling", "pos": [-2.85, 1.95, -1.0] },
+
+    { "id": "light.bedroom_main", "pos": [2.55, 2.28, -3.1] },
+    { "id": "light.bedroom_bedside", "pos": [1.86, 0.72, -3.95] },
+    { "id": "cover.bedroom_curtain", "pos": [3.4, 2.2, -4.22] },
+    { "id": "climate.bedroom_ac", "pos": [2.48, 2.18, -1.02] },
+    { "id": "fan.bedroom_ceiling", "pos": [2.95, 1.95, -1.75] },
+
+    { "id": "light.second_main", "pos": [0.3, 2.28, -2.9] },
+    { "id": "cover.second_curtain", "pos": [0.8, 2.2, -4.22] },
+    { "id": "climate.second_ac", "pos": [-0.63, 2.16, -2.0] },
+    { "id": "fan.second_ceiling", "pos": [0.35, 1.95, -1.75] },
+
+    { "id": "light.kitchen_spot", "pos": [-2.2, 2.32, 2.2] },
+    { "id": "light.bath_mirror", "pos": [0.55, 1.82, 1.05] },
+    { "id": "switch.bath_heater", "pos": [0.78, 1.85, 1.75] },
+    { "id": "light.hall_down", "pos": [1.0, 2.32, 0.0] },
+
+    { "id": "lock.entry", "pos": [0.13, 1.2, 3.15] },
+    { "id": "camera.entry_doorbell", "pos": [0.55, 1.55, 3.6] }
+  ],
+  "views": {
+    "overview": { "name": { "en": "Overview", "zh": "全屋" }, "pos": [9.0, 11.4, 11.0], "target": [-0.1, 0.3, -0.5], "mobile": { "pos": [8.4, 12.2, 10.6], "target": [-0.1, 0.2, -0.45] } },
+    "living": { "name": { "en": "Living", "zh": "客厅" }, "area": "living", "pos": [-1.3, 1.9, 0.75], "target": [-3.4, 0.8, -2.8], "fov": 52 },
+    "bedroom": { "name": { "en": "Master", "zh": "主卧" }, "area": "bedroom", "pos": [3.6, 2.0, -0.72], "target": [2.0, 0.6, -3.4], "fov": 52 },
+    "second": { "name": { "en": "Bed 2", "zh": "次卧" }, "area": "second", "pos": [1.4, 2.0, -0.75], "target": [-0.4, 0.5, -3.6], "fov": 52 },
+    "kitchen": { "name": { "en": "Kitchen", "zh": "厨房" }, "area": "kitchen", "pos": [-2.2, 1.85, -0.4], "target": [-2.1, 0.8, 3.0], "fov": 52 },
+    "bath": { "name": { "en": "Bath", "zh": "卫生间" }, "area": "bath", "pos": [1.65, 1.9, 1.95], "target": [0.55, 0.8, 0.75], "fov": 58 }
+  }
+}

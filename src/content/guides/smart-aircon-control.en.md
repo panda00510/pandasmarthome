@@ -2,7 +2,8 @@
 title: Smart aircon control — IR remotes, wired adapters and what to check first
 description: Aircon runs almost every day in Singapore. The difference between infrared and wired control, the automations worth setting up, and what to confirm before you start.
 published: 2026-10-22
-updated: 2026-11-06
+updated: 2026-11-13
+points: An IR controller needs no wiring and suits rentals, but cannot confirm the aircon state | A wired adapter reads back the real state, but support depends on brand and model | Useful automations include pre-cooling on the way home, sleep mode and pausing when a window opens
 ---
 In Singapore, the air-conditioner is probably the appliance a home uses most. What people want from a smart setup is usually simple: cool the room before they get home, adjust it once they are asleep, and switch everything off when the last person leaves. There are two main ways to get there, each with trade-offs.
 

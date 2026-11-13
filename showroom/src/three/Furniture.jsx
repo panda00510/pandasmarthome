@@ -2,7 +2,7 @@ import { useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { RoundedBox } from '@react-three/drei'
 import { DoubleSide } from 'three'
-import { useHA, isOn } from '../ha/store'
+import { useHA, isOn, usePlan } from '../ha/store'
 import { MAT, damp } from './utils'
 import { getTextures, tiled } from './textures'
 import SofaModel from './SofaModel'
@@ -199,107 +199,291 @@ function GlassBox({ position, args }) {
   )
 }
 
-export default function Furniture() {
+// ---------------- 按户型数据摆放的家具 ----------------
+// 每件家具都在自己的本地坐标里建模：正面朝 +z，长度沿 x。
+// 户型 JSON 里给 pos（地面中心）、rot（角度）、len / scale 等参数。
+
+const QUARTZ = '#3f4348'
+const CABINET = '#e2ded6'
+
+function TvUnit() {
+  return (
+    <group>
+      <B p={[0, 0.2, -0.02]} s={[1.7, 0.4, 0.38]} c={MAT.woodDark} r={0.6} />
+      <Television />
+    </group>
+  )
+}
+
+function CoffeeTable() {
   const g = geo()
   return (
     <group>
-      {/* ---------------- 客餐厅：电视靠西墙，沙发朝西 ---------------- */}
-      <group position={[-5.02, 0, -2.35]} rotation={[0, Math.PI / 2, 0]}>
-        <B p={[0, 0.2, -0.02]} s={[1.7, 0.4, 0.38]} c={MAT.woodDark} r={0.6} />
-        <Television />
-      </group>
-      <Sofa position={[-3.45, 0, -2.4]} rotation={[0, Math.PI / 2, 0]} scale={0.78} />
+      <Wood g={g.tableTop} p={[0, 0.36, 0]} />
+      <Wood g={g.tableShelf} p={[0, 0.14, 0]} c={MAT.woodDark} r={0.65} />
+      {[[-0.55, -0.28], [0.55, -0.28], [-0.55, 0.28], [0.55, 0.28]].map(([x, z], i) => (
+        <Metal key={i} g={g.tableLeg} p={[x, 0.18, z]} />
+      ))}
+    </group>
+  )
+}
 
-      <group position={[-4.32, 0, -2.4]} rotation={[0, Math.PI / 2, 0]}>
-        <Wood g={g.tableTop} p={[0, 0.36, 0]} />
-        <Wood g={g.tableShelf} p={[0, 0.14, 0]} c={MAT.woodDark} r={0.65} />
-        {[[-0.55, -0.28], [0.55, -0.28], [-0.55, 0.28], [0.55, 0.28]].map(([x, z], i) => (
-          <Metal key={i} g={g.tableLeg} p={[x, 0.18, z]} />
-        ))}
-      </group>
-
-      <Wood g={g.diningTop} p={[-3.95, 0.72, 0.35]} />
-      {[[-4.65, 0.02], [-3.25, 0.02], [-4.65, 0.68], [-3.25, 0.68]].map(([x, z], i) => (
+// 四人餐桌，长边沿 x
+function DiningSet() {
+  const g = geo()
+  return (
+    <group>
+      <Wood g={g.diningTop} p={[0, 0.72, 0]} />
+      {[[-0.7, -0.33], [0.7, -0.33], [-0.7, 0.33], [0.7, 0.33]].map(([x, z], i) => (
         <Wood key={i} g={g.diningLeg} p={[x, 0.35, z]} c={MAT.woodDark} r={0.6} />
       ))}
-      <Chair p={[-4.45, 0, -0.28]} />
-      <Chair p={[-3.45, 0, -0.28]} />
-      <Chair p={[-4.45, 0, 0.98]} ry={Math.PI} />
-      <Chair p={[-3.45, 0, 0.98]} ry={Math.PI} />
+      <Chair p={[-0.5, 0, -0.63]} />
+      <Chair p={[0.5, 0, -0.63]} />
+      <Chair p={[-0.5, 0, 0.63]} ry={Math.PI} />
+      <Chair p={[0.5, 0, 0.63]} ry={Math.PI} />
+    </group>
+  )
+}
 
-      <mesh position={[-1.55, 0.18, 1.7]} castShadow receiveShadow>
+function Nightstand() {
+  return <B p={[0, 0.2, 0]} s={[0.4, 0.4, 0.36]} c={MAT.woodDark} r={0.6} />
+}
+
+// 到顶衣柜：柜体 + 门缝 + 拉手条
+function Wardrobe({ len = 1.6 }) {
+  const doors = Math.max(2, Math.round(len / 0.5))
+  return (
+    <group>
+      <B p={[0, 1.07, 0]} s={[len, 2.14, 0.58]} c="#d6cdbf" r={0.7} />
+      {Array.from({ length: doors - 1 }, (_, i) => -len / 2 + (len * (i + 1)) / doors).map((x) => (
+        <mesh key={x} position={[x, 1.07, 0.292]}>
+          <boxGeometry args={[0.006, 2.04, 0.004]} />
+          <meshStandardMaterial color="#9c9286" roughness={0.8} />
+        </mesh>
+      ))}
+      <B p={[0, 1.05, 0.3]} s={[len - 0.08, 0.02, 0.02]} c="#8d8378" r={0.35} m={0.7} />
+    </group>
+  )
+}
+
+function Desk({ len = 1.1 }) {
+  return (
+    <group>
+      <B p={[0, 0.735, 0]} s={[len, 0.03, 0.55]} c={MAT.woodLight} r={0.55} />
+      {[-1, 1].map((sx) => (
+        <B key={sx} p={[sx * (len / 2 - 0.03), 0.36, 0]} s={[0.03, 0.72, 0.5]} c={MAT.metal} r={0.4} m={0.5} />
+      ))}
+    </group>
+  )
+}
+
+// 厨柜：地柜 + 石英石台面，可带水槽或电磁炉
+function Counter({ len = 2, sink, hob }) {
+  return (
+    <group>
+      <B p={[0, 0.06, 0.02]} s={[len, 0.12, 0.5]} c="#b9b2a7" r={0.8} />
+      <B p={[0, 0.5, 0]} s={[len, 0.76, 0.56]} c={CABINET} r={0.6} />
+      <B p={[0, 0.905, 0]} s={[len + 0.02, 0.04, 0.6]} c={QUARTZ} r={0.3} m={0.15} />
+      {sink != null && (
+        <group position={[sink, 0.928, 0.02]}>
+          <mesh>
+            <boxGeometry args={[0.62, 0.006, 0.4]} />
+            <meshStandardMaterial color="#9ea4a8" roughness={0.25} metalness={0.85} />
+          </mesh>
+          <mesh position={[0, 0.16, -0.22]}>
+            <cylinderGeometry args={[0.014, 0.014, 0.32, 10]} />
+            <meshStandardMaterial color="#c4c8cb" roughness={0.2} metalness={0.9} />
+          </mesh>
+        </group>
+      )}
+      {hob != null && (
+        <mesh position={[hob, 0.927, 0.02]}>
+          <boxGeometry args={[0.6, 0.006, 0.5]} />
+          <meshStandardMaterial color="#121416" roughness={0.12} metalness={0.3} />
+        </mesh>
+      )}
+    </group>
+  )
+}
+
+// 吊柜：pos.y 是柜底高度
+function Upper({ len = 1.5 }) {
+  return <B p={[0, 0.35, 0]} s={[len, 0.7, 0.35]} c={CABINET} r={0.6} />
+}
+
+function Fridge() {
+  return (
+    <group>
+      <B p={[0, 0.88, 0]} s={[0.65, 1.76, 0.65]} c="#b9bec4" r={0.3} m={0.6} />
+      <mesh position={[0, 1.18, 0.328]}>
+        <boxGeometry args={[0.6, 0.006, 0.004]} />
+        <meshStandardMaterial color="#6e7378" />
+      </mesh>
+      <B p={[0.26, 1.0, 0.345]} s={[0.025, 0.5, 0.025]} c="#8a8f94" r={0.3} m={0.8} />
+    </group>
+  )
+}
+
+// 前开式洗衣机
+function Washer() {
+  return (
+    <group>
+      <B p={[0, 0.42, 0]} s={[0.6, 0.84, 0.58]} c="#e9ecee" r={0.4} m={0.1} />
+      <mesh position={[0, 0.4, 0.292]} rotation={[Math.PI / 2, 0, 0]}>
+        <torusGeometry args={[0.17, 0.03, 10, 28]} />
+        <meshStandardMaterial color="#9aa2a8" roughness={0.3} metalness={0.6} />
+      </mesh>
+      <mesh position={[0, 0.4, 0.29]}>
+        <circleGeometry args={[0.15, 28]} />
+        <meshStandardMaterial color="#2c3a44" roughness={0.1} metalness={0.2} />
+      </mesh>
+    </group>
+  )
+}
+
+// 吊顶晾衣架：两根杆沿本地 z
+function Rack({ len = 1.6 }) {
+  return (
+    <group>
+      {[-0.15, 0.15].map((x) => (
+        <mesh key={x} position={[x, 0, 0]} rotation={[Math.PI / 2, 0, 0]} castShadow>
+          <cylinderGeometry args={[0.015, 0.015, len, 8]} />
+          <meshStandardMaterial color="#c4c8cb" roughness={0.3} metalness={0.8} />
+        </mesh>
+      ))}
+      {[-len / 2 + 0.1, len / 2 - 0.1].map((z) => (
+        <mesh key={z} position={[0, 0.15, z]} castShadow>
+          <boxGeometry args={[0.34, 0.3, 0.02]} />
+          <meshStandardMaterial color="#c4c8cb" roughness={0.3} metalness={0.8} />
+        </mesh>
+      ))}
+      <mesh position={[0.15, -0.28, 0.2]} castShadow>
+        <boxGeometry args={[0.02, 0.55, 0.5]} />
+        <meshStandardMaterial color="#d9cfc2" roughness={1} side={DoubleSide} />
+      </mesh>
+    </group>
+  )
+}
+
+// 悬挂浴室柜 + 台盆 + 镜子（镜子贴背墙，本地 -z）
+function Vanity({ len = 0.8 }) {
+  return (
+    <group>
+      <B p={[0, 0.62, 0]} s={[len, 0.42, 0.46]} c="#7a6553" r={0.6} />
+      <B p={[0, 0.85, 0]} s={[len + 0.02, 0.04, 0.48]} c="#efedea" r={0.25} />
+      <mesh position={[0, 0.875, 0.03]}>
+        <cylinderGeometry args={[0.17, 0.15, 0.01, 24]} />
+        <meshStandardMaterial color="#f7f6f3" roughness={0.15} />
+      </mesh>
+      <mesh position={[0, 1.45, -0.225]}>
+        <planeGeometry args={[len * 0.92, 0.72]} />
+        <meshStandardMaterial color="#aebcc4" roughness={0.05} metalness={0.9} />
+      </mesh>
+    </group>
+  )
+}
+
+// 坐便器：水箱靠背墙（本地 -z）
+function Toilet() {
+  return (
+    <group>
+      <B p={[0, 0.2, 0.02]} s={[0.36, 0.4, 0.5]} c="#f2efe9" r={0.3} />
+      <B p={[0, 0.5, -0.2]} s={[0.38, 0.32, 0.16]} c="#f2efe9" r={0.3} />
+    </group>
+  )
+}
+
+// 悬浮鞋柜：离地 15cm，下面放拖鞋
+function ShoeCabinet({ len = 1.2 }) {
+  return (
+    <group>
+      <B p={[0, 0.65, 0]} s={[len, 1.0, 0.35]} c={MAT.woodDark} r={0.6} />
+      <B p={[0, 1.165, 0]} s={[len + 0.02, 0.03, 0.37]} c="#d9d2c6" r={0.4} />
+      <B p={[-len / 4, 0.03, 0.05]} s={[0.26, 0.04, 0.1]} c="#8d7d6d" r={0.9} />
+    </group>
+  )
+}
+
+function Plant({ scale = 1 }) {
+  return (
+    <group scale={scale}>
+      <mesh position={[0, 0.18, 0]} castShadow receiveShadow>
         <cylinderGeometry args={[0.2, 0.16, 0.36, 16]} />
         <meshStandardMaterial color="#b9b0a3" roughness={0.9} />
       </mesh>
-      <mesh position={[-1.55, 0.62, 1.7]} castShadow>
+      <mesh position={[0, 0.62, 0]} castShadow>
         <sphereGeometry args={[0.32, 14, 12]} />
         <meshStandardMaterial color={MAT.green} roughness={1} />
       </mesh>
+    </group>
+  )
+}
 
-      {/* ---------------- 主卧：床头靠西墙 ---------------- */}
-      <Bed position={[3.15, 0, -2.9]} rotation={[0, Math.PI / 2, 0]} scale={0.9} />
-      <B p={[2.28, 0.2, -3.62]} s={[0.4, 0.4, 0.36]} c={MAT.woodDark} r={0.6} />
-      <B p={[4.82, 1.05, -3.2]} s={[0.48, 2.05, 1.25]} c="#cfc6b8" r={0.75} />
-
-      {/* ---------------- 朝北的次卧 ---------------- */}
-      <Bed position={[0.35, 0, -3.25]} scale={0.7} />
-      <B p={[1.35, 0.2, -2.35]} s={[0.38, 0.4, 0.36]} c={MAT.woodDark} r={0.6} />
-
-      {/* ---------------- 朝走廊的卧室 ---------------- */}
-      <Bed position={[0.15, 0, 3.22]} scale={0.76} />
-      <mesh position={[0.5, 2.46, 3.3]}>
-        <cylinderGeometry args={[0.18, 0.18, 0.03, 20]} />
-        <meshStandardMaterial color="#f3f0ea" roughness={0.6} />
-      </mesh>
-
-      {/* ---------------- 厨房 ---------------- */}
-      <B p={[-4.88, 0.44, 3.15]} s={[0.55, 0.86, 2.15]} c="#e2ded6" r={0.6} />
-      <B p={[-4.88, 0.9, 3.15]} s={[0.6, 0.05, 2.2]} c="#3f4348" r={0.35} m={0.2} />
-      <B p={[-4.88, 1.7, 3.15]} s={[0.32, 0.55, 2.0]} c="#e2ded6" r={0.6} />
-      <B p={[-4.15, 0.44, 4.18]} s={[1.5, 0.86, 0.5]} c="#e2ded6" r={0.6} />
-      <B p={[-4.15, 0.9, 4.18]} s={[1.55, 0.05, 0.55]} c="#3f4348" r={0.35} m={0.2} />
-      <B p={[-4.9, 0.85, 1.72]} s={[0.62, 1.7, 0.62]} c="#b9bec4" r={0.35} m={0.55} />
-
-      {/* ---------------- 服务阳台：洗衣机 + 晾杆 ---------------- */}
-      <B p={[-2.2, 0.42, 2.78]} s={[0.58, 0.84, 0.58]} c="#d5dbe0" r={0.4} m={0.25} />
-      <B p={[-2.2, 0.88, 2.78]} s={[0.6, 0.06, 0.6]} c="#8e98a0" r={0.35} m={0.4} />
-      {[-1.55, -1.9].map((x) => (
-        <mesh key={x} position={[x, 0.85, 4.12]} castShadow>
-          <cylinderGeometry args={[0.02, 0.02, 1.5, 8]} />
-          <meshStandardMaterial color="#8d8378" roughness={0.45} metalness={0.4} />
+// 阳台长条花槽
+function Planter({ len = 2 }) {
+  return (
+    <group>
+      <B p={[0, 0.2, 0]} s={[len, 0.4, 0.3]} c="#8f8a82" r={0.85} />
+      {Array.from({ length: Math.round(len / 0.4) }, (_, i) => -len / 2 + 0.2 + i * 0.4).map((x, i) => (
+        <mesh key={x} position={[x, 0.48 + (i % 2) * 0.05, 0]} castShadow>
+          <sphereGeometry args={[0.17, 10, 8]} />
+          <meshStandardMaterial color={i % 2 ? '#5d7f52' : MAT.green} roughness={1} />
         </mesh>
       ))}
-      <mesh position={[-1.72, 1.5, 4.12]} rotation={[0, 0, Math.PI / 2]} castShadow>
-        <cylinderGeometry args={[0.015, 0.015, 0.5, 8]} />
-        <meshStandardMaterial color="#8d8378" roughness={0.45} metalness={0.4} />
-      </mesh>
+    </group>
+  )
+}
 
-      {/* ---------------- 公共卫生间 ---------------- */}
-      <B p={[-0.08, 0.4, 1.95]} s={[1.15, 0.78, 0.42]} c="#e4e0d9" r={0.5} />
-      <B p={[-0.08, 0.82, 1.95]} s={[1.2, 0.04, 0.46]} c="#cfd4d6" r={0.25} m={0.15} />
-      <mesh position={[-0.08, 1.42, 2.12]}>
-        <planeGeometry args={[0.95, 0.62]} />
-        <meshStandardMaterial color="#aebcc4" roughness={0.06} metalness={0.85} />
-      </mesh>
-      <B p={[-0.62, 0.18, 0.85]} s={[0.36, 0.36, 0.52]} c="#f2efe9" r={0.3} />
-      <B p={[-0.62, 0.42, 1.05]} s={[0.36, 0.28, 0.16]} c="#f2efe9" r={0.3} />
-      <GlassBox position={[-0.72, 1.0, 1.45]} args={[0.04, 1.7, 0.7]} />
+// 吸顶装饰灯盘（不接实体）
+function Disc() {
+  return (
+    <mesh position={[0, -0.1, 0]}>
+      <cylinderGeometry args={[0.18, 0.18, 0.03, 20]} />
+      <meshStandardMaterial color="#f3f0ea" roughness={0.6} />
+    </mesh>
+  )
+}
 
-      {/* ---------------- 主卫 ---------------- */}
-      <B p={[4.85, 0.4, -0.2]} s={[0.42, 0.78, 0.8]} c="#e4e0d9" r={0.5} />
-      <B p={[4.85, 0.82, -0.2]} s={[0.46, 0.04, 0.86]} c="#cfd4d6" r={0.25} m={0.15} />
-      <mesh position={[5.08, 1.35, -0.2]} rotation={[0, -Math.PI / 2, 0]}>
-        <planeGeometry args={[0.62, 0.5]} />
-        <meshStandardMaterial color="#aebcc4" roughness={0.06} metalness={0.85} />
-      </mesh>
-      <B p={[3.78, 0.18, 0.45]} s={[0.36, 0.36, 0.48]} c="#f2efe9" r={0.3} />
-      <GlassBox position={[3.62, 1.0, 0.15]} args={[0.04, 1.5, 0.7]} />
+const PIECES = {
+  tv: TvUnit,
+  sofa: ({ scale }) => <Sofa position={[0, 0, 0]} rotation={[0, Math.PI, 0]} scale={scale} />,
+  coffee: CoffeeTable,
+  dining: DiningSet,
+  chair: () => <Chair p={[0, 0, 0]} />,
+  bed: ({ scale }) => <Bed position={[0, 0, 0]} scale={scale} />,
+  nightstand: Nightstand,
+  wardrobe: Wardrobe,
+  desk: Desk,
+  counter: Counter,
+  upper: Upper,
+  fridge: Fridge,
+  washer: Washer,
+  rack: Rack,
+  vanity: Vanity,
+  toilet: Toilet,
+  shoe: ShoeCabinet,
+  plant: Plant,
+  planter: Planter,
+  disc: Disc,
+}
 
-      {/* ---------------- 玄关鞋柜 / 避难所储物 ---------------- */}
-      <B p={[2.22, 0.45, 2.6]} s={[0.32, 0.9, 1.15]} c={MAT.woodDark} r={0.65} />
-      <B p={[4.7, 0.7, 3.15]} s={[0.7, 1.3, 0.35]} c="#c8c2b6" r={0.7} />
-      <B p={[4.55, 0.28, 3.7]} s={[0.4, 0.32, 0.4]} c="#8a7b68" r={0.8} />
-      <B p={[4.15, 0.22, 4.05]} s={[0.45, 0.28, 0.35]} c="#6f6358" r={0.85} />
+export default function Furniture() {
+  const { furniture } = usePlan()
+  return (
+    <group>
+      {furniture.map((f, i) => {
+        if (f.type === 'glass') return <GlassBox key={i} position={f.pos} args={f.size} />
+        if (f.type === 'box') return <B key={i} p={f.pos} s={f.size} c={f.color} r={0.75} />
+        const Piece = PIECES[f.type]
+        if (!Piece) return null
+        // 缩放类家具（床、沙发）自己处理 scale，其余整组缩放
+        const own = f.type === 'bed' || f.type === 'sofa' || f.type === 'plant'
+        return (
+          <group key={i} position={f.pos} rotation={[0, ((f.rot ?? 0) * Math.PI) / 180, 0]} scale={own ? 1 : f.scale ?? 1}>
+            <Piece {...f} scale={f.scale ?? 1} />
+          </group>
+        )
+      })}
     </group>
   )
 }

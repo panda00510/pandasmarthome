@@ -1,5 +1,19 @@
 import { create } from 'zustand'
 import { INITIAL_ENTITIES, SCENES } from './entities'
+import { PLANS, planFromURL, writePlanToURL } from '../plans'
+
+// 户型只带它装了的设备：热点表里出现的实体 + 环境传感器。
+// 面板分组、设备计数、场景都只作用在这个子集上。
+function entitiesFor(planId) {
+  const ids = new Set(PLANS[planId].hotspots.map((h) => h.id))
+  const out = {}
+  for (const [id, e] of Object.entries(INITIAL_ENTITIES)) {
+    if (ids.has(id) || e.domain === 'sensor') out[id] = structuredClone(e)
+  }
+  return out
+}
+
+const initialPlan = planFromURL()
 
 const OVERRIDE_KEY = 'showroom.hotspotOverrides'
 const UI_KEY = 'showroom.ui'
@@ -78,7 +92,8 @@ function applyPatch(entity, patch) {
 }
 
 export const useHA = create((set, get) => ({
-  entities: structuredClone(INITIAL_ENTITIES),
+  planId: initialPlan,
+  entities: entitiesFor(initialPlan),
   events: [],
   activeScene: null,
   selected: null,          // 当前在面板里展开的实体
@@ -112,8 +127,9 @@ export const useHA = create((set, get) => ({
   },
   setCalibrating: (v) => set({ calibrating: v, calibTarget: null, showLabels: v ? true : get().showLabels }),
   setCalibTarget: (id) => set({ calibTarget: id }),
+  // 标定坐标按户型分开存，键为 "户型:实体"
   setHotspotPos: (id, pos) => {
-    const next = { ...get().hotspotOverrides, [id]: pos.map((n) => Math.round(n * 100) / 100) }
+    const next = { ...get().hotspotOverrides, [`${get().planId}:${id}`]: pos.map((n) => Math.round(n * 100) / 100) }
     saveOverrides(next)
     set({ hotspotOverrides: next })
   },
@@ -245,7 +261,24 @@ export const useHA = create((set, get) => ({
   reset: () => {
     clearTimeout(heaterTimer)
     heaterTimer = null
-    set({ entities: structuredClone(INITIAL_ENTITIES), events: [], activeScene: null, selected: null })
+    set({ entities: entitiesFor(get().planId), events: [], activeScene: null, selected: null })
+  },
+
+  // 切户型：设备回到初始状态，相机回全屋
+  setPlan: (planId) => {
+    if (!PLANS[planId] || planId === get().planId) return
+    clearTimeout(heaterTimer)
+    heaterTimer = null
+    writePlanToURL(planId)
+    set({
+      planId,
+      entities: entitiesFor(planId),
+      events: [],
+      activeScene: null,
+      selected: null,
+      calibTarget: null,
+      view: 'overview',
+    })
   },
 }))
 
@@ -259,3 +292,6 @@ export const isOn = (e) => {
 
 // 灯的有效亮度 0..1
 export const lightLevel = (e) => (isOn(e) ? (e.attributes.brightness ?? 255) / 255 : 0)
+
+// 当前户型数据
+export const usePlan = () => PLANS[useHA((s) => s.planId)]

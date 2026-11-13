@@ -4,7 +4,20 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Panda Smart Home · Showroom</title>
+    <title>3D Smart Home Showroom — HDB Flat Demo | Panda Smart Home</title>
+    <meta name="description" content="Walk through an interactive 3D HDB flat (3-, 4- and 5-room) and try smart lights, curtains, aircon, door lock and scenes the way Panda Smart Home installs them in Singapore homes." />
+    <link rel="canonical" href="https://smartpanda.sg/showroom/" />
+    <meta name="theme-color" content="#120f0c" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Panda Smart Home" />
+    <meta property="og:title" content="3D Smart Home Showroom — HDB Flat Demo | Panda Smart Home" />
+    <meta property="og:description" content="Interactive 3D HDB flat showroom: switch between 3-, 4- and 5-room layouts and control lights, curtains, aircon and locks in real time." />
+    <meta property="og:url" content="https://smartpanda.sg/showroom/" />
+    <meta property="og:image" content="https://smartpanda.sg/og-image.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="3D Smart Home Showroom — HDB Flat Demo | Panda Smart Home" />
+    <meta name="twitter:description" content="Interactive 3D HDB flat showroom: switch between 3-, 4- and 5-room layouts and control lights, curtains, aircon and locks in real time." />
+    <meta name="twitter:image" content="https://smartpanda.sg/og-image.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -13,7 +26,18 @@
     />
   </head>
   <body>
-    <div id="root"></div>
+    <!-- 静态首屏：给不执行 JS 的爬虫 / AI bot 读；React 挂载后整块被替换 -->
+    <div id="root">
+      <main style="max-width:640px;margin:0 auto;padding:48px 20px;font:15px/1.6 system-ui,sans-serif;color:#e9dfd0;background:#120f0c">
+        <h1 style="font-size:22px;font-weight:500">Panda Smart Home — 3D HDB Flat Showroom</h1>
+        <p>An interactive 3D model of a typical Singapore HDB flat (3-room, 4-room and 5-room layouts). Turn lights on and off, open curtains, run the aircon, lock the door and try one-tap scenes such as Home, Movie and Sleep — the same way we set up real smart homes in Singapore.</p>
+        <p>互动 3D 组屋样板间：可切换三房、四房、五房户型，体验灯光、窗帘、空调、门锁与一键场景。</p>
+        <p><a href="https://smartpanda.sg/" style="color:#58c191">Back to smartpanda.sg</a> · <a href="https://smartpanda.sg/#contact" style="color:#58c191">Book a free home assessment</a></p>
+      </main>
+    </div>
+    <noscript>
+      <p style="text-align:center;font:14px system-ui,sans-serif;color:#e9dfd0">The 3D showroom needs JavaScript. Visit <a href="https://smartpanda.sg/" style="color:#58c191">smartpanda.sg</a> to learn about Panda Smart Home.</p>
+    </noscript>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

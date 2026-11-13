@@ -2,7 +2,8 @@
 title: Smart switch, smart bulb or dimmer — how to choose for each light
 description: Three ways to make a light smart, and each suits a different situation. How to decide light by light in a Singapore home, and what to check before you buy.
 published: 2026-11-06
-updated: 2026-11-06
+updated: 2026-11-13
+points: A smart switch suits fixed lights everyone uses; a smart bulb suits rentals and colour lamps | A smart bulb only responds while its wall switch is on | Dimmers need dimmable lights and drivers, otherwise they can flicker or buzz
 ---
 Lighting is where most people start with a smart home, and the first question is always the same: should I change the switch, the bulb, or add a dimmer? There is no single right answer. The best choice depends on the light, who uses it and whether you can change the wiring.
 

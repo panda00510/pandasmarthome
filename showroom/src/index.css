@@ -860,3 +860,18 @@ input[type="range"].is-cool::-webkit-slider-thumb {
   .view { min-height: 48px; }
 }
 .tool.is-back { display: inline-flex; align-items: center; white-space: nowrap; }
+
+/* 户型切换：图标 + 原生 select（文字隐藏在窄屏，select 仍铺满整个按钮可点） */
+.tool.is-plan { position: relative; width: auto; padding: 0 8px; gap: 6px; display: inline-flex; align-items: center; cursor: pointer; }
+.tool.is-plan select {
+  appearance: none; -webkit-appearance: none;
+  background: transparent; border: 0; color: inherit;
+  font: 500 11.5px/1 var(--font-mono); letter-spacing: .04em;
+  cursor: pointer; outline: none; padding: 0;
+}
+.tool.is-plan select option { background: #1c1915; color: #f0e2cd; }
+.tool.is-plan:focus-within { box-shadow: 0 0 0 1px var(--amber); }
+@media (max-width: 420px) {
+  .tool.is-plan { width: 44px; padding: 0; justify-content: center; }
+  .tool.is-plan select { position: absolute; inset: 0; opacity: 0; width: 100%; }
+}

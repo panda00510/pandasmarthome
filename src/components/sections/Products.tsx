@@ -1,6 +1,6 @@
-import { ArrowRight, ChevronDown, MessageCircle } from 'lucide-react'
+import { ChevronDown, MessageCircle } from 'lucide-react'
 import { ProductArt } from '../graphics/ProductFigures'
-import { Button, PhotoTag, SectionHeading } from '../ui'
+import { Button, PhotoTag } from '../ui'
 import { site } from '../../config/site'
 import { pageHref, useI18n } from '../../i18n/context'
 
@@ -37,60 +37,6 @@ function CustomTag({ children }: { children: string }) {
   )
 }
 
-/** Homepage band: four devices, each linking to its block on the products page. */
-export function ProductsStrip() {
-  const { t, lang } = useI18n()
-  const p = t.products
-
-  return (
-    <section id="products" className="band border-t border-ink-200/70">
-      <div className="shell">
-        <div className="flex flex-wrap items-end justify-between gap-4">
-          <SectionHeading eyebrow={p.eyebrow} title={p.homeTitle} lead={p.homeLead} />
-          <a
-            href={pageHref(lang, 'products/')}
-            className="inline-flex min-h-11 shrink-0 items-center gap-1.5 text-sm font-semibold text-bamboo-700 hover:text-bamboo-600"
-          >
-            {p.homeCta}
-            <ArrowRight size={15} aria-hidden="true" />
-          </a>
-        </div>
-        <p className="mt-3 max-w-3xl text-sm font-semibold text-bamboo-800">{p.homeCustom}</p>
-
-        <ul className="reveal-group mt-8 grid grid-cols-2 gap-3 lg:mt-12 lg:grid-cols-4 lg:gap-4">
-          {p.items.map((item) => (
-            <li key={item.id} data-reveal className="min-w-0">
-              <a
-                href={`${pageHref(lang, 'products/')}#${item.id}`}
-                className="card group flex h-full flex-col overflow-hidden transition-colors hover:border-bamboo-200"
-              >
-                <span className="relative block aspect-[4/3] bg-bamboo-50/60">
-                  <span className="absolute inset-1 sm:inset-2">
-                    <ProductArt id={item.id} lang={lang} />
-                  </span>
-                  <PhotoTag>{p.illustration}</PhotoTag>
-                </span>
-                <span className="flex min-w-0 flex-1 flex-col p-3 sm:p-4">
-                  <span className="flex flex-wrap gap-1.5">
-                    <StatusPill>{p.status}</StatusPill>
-                    <CustomTag>{p.custom.tag}</CustomTag>
-                  </span>
-                  <span className="mt-2 text-[0.9375rem] leading-snug font-semibold text-ink-950 group-hover:text-bamboo-800">
-                    {item.title}
-                  </span>
-                  <span className="mt-auto pt-3 text-sm font-semibold text-bamboo-700">
-                    {formatPrice(p.priceFrom, item.priceSgd)}
-                  </span>
-                </span>
-              </a>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </section>
-  )
-}
-
 export function ProductsPage() {
   const { t, lang } = useI18n()
   const p = t.products
@@ -103,7 +49,7 @@ export function ProductsPage() {
             <span aria-hidden="true" className="h-px w-6 bg-bamboo-500/50" />
             {p.eyebrow}
           </p>
-          <h1 className="mt-3 max-w-3xl text-[2rem] leading-[1.1] font-semibold tracking-[-0.03em] text-ink-950 sm:text-5xl">
+          <h1 className="mt-5 max-w-4xl text-[2.25rem] leading-[1.06] font-semibold tracking-[-0.035em] text-balance text-ink-950 sm:text-[3rem] lg:text-[3.5rem]">
             {p.title}
           </h1>
           <p className="mt-4 max-w-2xl text-base leading-relaxed text-ink-600 sm:text-lg">{p.lead}</p>

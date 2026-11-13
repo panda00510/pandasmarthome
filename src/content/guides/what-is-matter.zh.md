@@ -2,7 +2,8 @@
 title: Matter 是什么？买智能设备只认 Matter 就对了吗？
 description: Matter 是一套通用的智能家居标准。讲清它到底解决了什么、和 Thread 是什么关系，以及买设备前要看清的几件事。
 published: 2026-09-23
-updated: 2026-11-06
+updated: 2026-11-13
+points: Matter 是设备共用的语言，跑在 Wi-Fi、Thread 或以太网上 | Thread 设备需要家里网络上有 Thread 边界路由器 | 新设备可优先选 Matter，但能用的 Zigbee 或 Wi-Fi 设备不必换掉
 ---
 越来越多的智能家居产品包装上印着 Matter 标志。它确实是一个进步，但也容易被理解得比它实际承诺的更多。下面从准备装修、规划设备的角度，讲讲它在实际使用里意味着什么。
 

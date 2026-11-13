@@ -2,7 +2,8 @@
 title: Motorised curtains — what to decide before you choose a motor
 description: Track or roller, wired or battery, which protocol, and what to prepare during renovation. A practical checklist for motorised curtains in Singapore homes.
 published: 2026-09-23
-updated: 2026-11-06
+updated: 2026-11-13
+points: The type of curtain or blind decides the type of motor, so start there | Wired motors need a power point at the curtain box, best added during renovation | Zigbee or Matter motors usually keep working in local automations when the internet is down
 ---
 Motorised curtains are one of the smart home upgrades people notice every day: they open in the morning, close when the afternoon sun hits the west-facing windows, and shut together when you leave. Most of the decisions, though, have to be made before the motor is chosen — and some of them are much easier during a renovation than after.
 

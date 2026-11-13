@@ -33,7 +33,7 @@ export function HubPage({ hub }: { hub: Hub }) {
   return (
     <section className="band">
       <div className="shell">
-        <SectionHeading eyebrow={copy.eyebrow} title={copy.title} lead={copy.lead} />
+        <SectionHeading eyebrow={copy.eyebrow} title={copy.title} lead={copy.lead} level={1} />
         {hub === 'solutions' ? (
           <SolutionsMenu items={items} lang={lang} more={t.guides.learnMore} />
         ) : (

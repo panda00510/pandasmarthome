@@ -20,7 +20,7 @@ const SLOTS = meta.atlases.flatMap((a) => ['R', 'G', 'B'].map((ch) => a.channels
 const SCALES = meta.atlases.map((a) => a.scales)
 
 // Blender 的面光用瓦特、three.js 的点光源用坎德拉，两套单位不直接对应。
-// 这是把烘焙结果对齐到实时光照亮度的标定值，改 plan.json 的灯功率后要重标。
+// 这是把烘焙结果对齐到实时光照亮度的标定值，改 plans/<户型>.json 的灯功率后要重标。
 const CALIBRATION = 3.4
 
 // 材质名 -> 程序化贴图与铺贴密度（Blender 侧只给了纯色反照率）

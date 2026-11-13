@@ -1,8 +1,9 @@
 ---
 title: Wi-Fi for a smart home — do you need mesh, and where should the router go?
-description: Dozens of small devices put different demands on your Wi-Fi than phones and laptops. What matters for coverage, where to place access points, and what to sort out before renovation.
+description: Dozens of small devices ask more of Wi-Fi than phones do. What matters for coverage, where to place access points, and what to sort out before renovation.
 published: 2026-10-22
-updated: 2026-11-06
+updated: 2026-11-13
+points: Many smart devices are 2.4 GHz only and sit in spots where Wi-Fi reaches worst | Access points connected by network cable are usually more dependable than wireless mesh | Zigbee or Thread devices connect to a hub, which reduces the load on Wi-Fi
 ---
 Most smart home complaints that sound like "the device is bad" are really "the Wi-Fi does not reach there". A flat full of smart devices asks different things of a network than a few phones and laptops do, so it is worth planning rather than hoping the single router by the front door will cope.
 

@@ -1,8 +1,9 @@
 import { ChevronDown } from 'lucide-react'
 import { SectionHeading } from '../ui'
+import { LatestGuides } from './Guides'
 import { useI18n } from '../../i18n/context'
 
-const VISIBLE = 5
+const VISIBLE = 4
 
 /**
  * Built on native <details>/<summary>: keyboard access, screen-reader
@@ -52,6 +53,7 @@ export function Faq() {
               <div className="divide-y divide-ink-200 border-y border-ink-200">{rest.map(row)}</div>
             </details>
           ) : null}
+          <LatestGuides />
         </div>
       </div>
     </section>

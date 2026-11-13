@@ -1,10 +1,10 @@
 import { useMemo } from 'react'
 import { MeshStandardMaterial } from 'three'
-import { PLAN } from './utils'
+import { usePlan } from '../ha/store'
 import { getTextures, tiled } from './textures'
 
 // 旧的 Blender 烘焙贴图是上一版 198 ㎡ 户型的，套到新墙上会对不齐。
-// gi !== 'baked' 时整屋壳体在这里按 plan.json 实时生成，点光源直接照到墙和地面。
+// gi !== 'baked' 时整屋壳体在这里按 plans/<户型>.json 实时生成，点光源直接照到墙和地面。
 
 function segments(start, end, holes, height) {
   const segs = []
@@ -47,13 +47,17 @@ function Floor({ room }) {
 }
 
 function Walls({ material }) {
+  const PLAN = usePlan()
   const boxes = useMemo(() => {
     const H = PLAN.wallH
     const out = []
     for (const w of [...PLAN.exterior, ...PLAN.interior]) {
       const T = w.thickness || PLAN.wallT
-      for (const [a, b, y0, y1] of segments(w.from, w.to, w.holes, H)) {
+      for (let [a, b, y0, y1] of segments(w.from, w.to, w.holes, H)) {
         if (b - a < 1e-3 || y1 - y0 < 1e-3) continue
+        // 墙按中线定义，两端各补半个墙厚，转角处才不会留一个缺口
+        if (Math.abs(a - w.from) < 1e-4) a -= PLAN.wallT / 2
+        if (Math.abs(b - w.to) < 1e-4) b += PLAN.wallT / 2
         const mid = (a + b) / 2
         const midY = (y0 + y1) / 2
         if (w.axis === 'x') {
@@ -64,7 +68,7 @@ function Walls({ material }) {
       }
     }
     return out
-  }, [])
+  }, [PLAN])
 
   return boxes.map((b, i) => (
     <mesh key={i} position={b.pos} castShadow receiveShadow material={material}>
@@ -75,6 +79,7 @@ function Walls({ material }) {
 
 export default function ProceduralShell() {
   const wallMat = useWallMaterial()
+  const PLAN = usePlan()
   return (
     <group>
       {/* 没有烘焙间接光，补一层很弱的天光，避免内房全黑，同时灯的开关仍然看得出。 */}

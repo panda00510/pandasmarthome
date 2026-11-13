@@ -23,9 +23,9 @@ export function Homes() {
   const { t, lang } = useI18n()
 
   return (
-    <section id="homes" className="band border-t border-ink-200/70 bg-paper-alt">
+    <section id="homes" className="band">
       <div className="shell">
-        <SectionHeading eyebrow={t.homes.eyebrow} title={t.homes.title} lead={t.homes.lead} shortOnPhone />
+        <SectionHeading eyebrow={t.homes.eyebrow} title={t.homes.title} lead={t.homes.lead} shortOnPhone split />
 
         <ul className="reveal-group mt-8 grid grid-cols-2 gap-3 lg:mt-12 lg:grid-cols-4 lg:gap-4">
           {t.homes.items.map((item) => {
@@ -55,7 +55,7 @@ export function Homes() {
                     <span className="mt-1.5 block text-[1rem] leading-snug font-semibold text-ink-950 lg:text-[1.0625rem]">
                       {item.title}
                     </span>
-                    <span className="mt-2 hidden text-[0.9375rem] leading-relaxed text-ink-600 sm:block lg:text-sm">
+                    <span className="mt-2 hidden text-[0.9375rem] leading-relaxed text-ink-600 sm:block lg:hidden">
                       {item.body}
                     </span>
                     <span className="mt-auto inline-flex min-h-11 items-center gap-1.5 pt-2 text-sm font-semibold text-bamboo-700">

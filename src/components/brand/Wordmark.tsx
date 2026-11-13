@@ -22,7 +22,7 @@ export function Wordmark({ className, compact = false }: Props) {
     <span className={`inline-flex min-w-0 items-center gap-2.5 ${className ?? ''}`}>
       <PandaMark className="h-8 w-8 shrink-0" />
       <span
-        className={`text-[0.98rem] min-w-0 truncate leading-none font-semibold tracking-[-0.015em] ${
+        className={`text-[0.94rem] min-w-0 truncate sm:text-[0.98rem] leading-none font-semibold tracking-[-0.015em] ${
           compact ? 'hidden sm:inline' : ''
         }`}
       >

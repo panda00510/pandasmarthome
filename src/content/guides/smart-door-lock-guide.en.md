@@ -2,7 +2,8 @@
 title: Smart door locks — types, backup plans and what to check before buying
 description: Retrofit or full replacement, fingerprint or PIN, and what happens when the battery dies. A practical guide to choosing a smart door lock for a Singapore home.
 published: 2026-10-28
-updated: 2026-11-08
+updated: 2026-11-13
+points: Retrofit locks fit over your existing lock and suit rentals; full replacements modify the door | Check what happens when the batteries run flat, and keep a mechanical key override | Anyone inside must always be able to open the door quickly without a code, key or phone
 ---
 A smart door lock is one of the first things many people want and one of the easiest to get wrong. The door is the one place where a failed gadget locks you out of your own home, so the choice deserves more care than a light bulb. This guide covers the main types, the backup questions to ask, and how a lock fits with the rest of a smart home.
 

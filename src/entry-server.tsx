@@ -1,10 +1,10 @@
 import { renderToString } from 'react-dom/server'
 import App from './App'
-import { brandAssets } from './config/brand'
+import { brand, brandAssets } from './config/brand'
 import { site } from './config/site'
 import { en } from './content/en'
 import { zh } from './content/zh'
-import { guidePath, guidesIn, latestGuideUpdate, pageMeta, pagePaths, pagesIn } from './content/guides'
+import { findGuide, guidePath, guidesIn, latestGuideUpdate, pageMeta, pagePaths, pagesIn } from './content/guides'
 import { dictionaries, langPath, type Lang } from './i18n/context'
 import { LanguageProvider } from './i18n/LanguageProvider'
 
@@ -36,6 +36,13 @@ export function render(lang: Lang, path: string) {
         `<link rel="alternate" hreflang="zh-Hans" href="${url('zh')}" />`,
         `<link rel="alternate" hreflang="x-default" href="${url('en')}" />`,
         `<meta property="og:url" content="${url(lang)}" />`,
+        // Freshness signals for guides (the visible date is on the page too).
+        ...(guide?.kind === 'guide'
+          ? [
+              `<meta property="article:published_time" content="${guide.published}" />`,
+              `<meta property="article:modified_time" content="${guide.updated}" />`,
+            ]
+          : []),
       ].join('\n    ')
     : ''
 
@@ -51,6 +58,7 @@ export function render(lang: Lang, path: string) {
       type: guide ? 'article' : 'website',
       locale: lang === 'zh' ? 'zh_SG' : 'en_SG',
       localeAlt: lang === 'zh' ? 'en_SG' : 'zh_SG',
+      ogImageAlt: t.meta.ogImageAlt,
     },
   }
 }
@@ -73,7 +81,7 @@ export function crawlerFiles(dates: { site: string; showroom: string }) {
     'User-agent: *',
     'Allow: /',
     '',
-    ...['GPTBot', 'OAI-SearchBot', 'ChatGPT-User', 'ClaudeBot', 'Claude-SearchBot', 'PerplexityBot', 'Google-Extended', 'Applebot-Extended', 'Bingbot']
+    ...['GPTBot', 'OAI-SearchBot', 'ChatGPT-User', 'ClaudeBot', 'Claude-SearchBot', 'Claude-User', 'PerplexityBot', 'Perplexity-User', 'Google-Extended', 'Applebot', 'Applebot-Extended', 'Bingbot', 'DuckAssistBot']
       .flatMap((bot) => [`User-agent: ${bot}`, 'Allow: /', '']),
     site.url ? `Sitemap: ${site.url}/sitemap.xml` : '',
   ].join('\n')
@@ -88,6 +96,7 @@ ${routes
     <lastmod>${lastmod(path)}</lastmod>
     <xhtml:link rel="alternate" hreflang="en" href="${page('en', path)}"/>
     <xhtml:link rel="alternate" hreflang="zh-Hans" href="${page('zh', path)}"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="${page('en', path)}"/>
   </url>`,
   )
   .join('\n')}
@@ -109,6 +118,27 @@ ${routes
     '',
     site.url ? `Website: ${page('en')} (中文: ${page('zh')})` : '',
     '',
+    '## About',
+    `- Who: ${brand.name} (${brand.nameZh}), a smart home design and installation business.`,
+    '- Where: across Singapore (all five regions, listed below) — HDB (BTO and resale), condominium and landed homes.',
+    '- Languages: English and Simplified Chinese; every page exists in both.',
+    '- Approach: lighting, aircon, curtains, locks and cameras on one local system, on open platforms, with no vendor lock-in.',
+    '- Prices on this site are indicative starting prices in SGD, not checkout prices; the amount is agreed before anything is ordered.',
+    site.email ? `- Email: ${site.email}` : '',
+    site.url ? `- Contact form: ${page('en')}#contact` : '',
+    '',
+    '## Core pages',
+    ...pagePaths
+      .filter((path) => !findGuide('en', path))
+      .map((path) => {
+        const { title, description } = pageMeta('en', path)
+        return `- [${title}](${page('en', path)}) (中文: ${page('zh', path)}): ${description}`
+      }),
+    site.url
+      ? `- [Interactive 3D HDB show flat](${site.url}/showroom/) (中文: ${site.url}/showroom/?lang=zh): a browser demo of a smart HDB flat — tap lights, curtains and aircon to see what each control does.`
+      : '',
+    site.url ? `- Full text of every guide: ${site.url}/llms-full.txt` : '',
+    '',
     '## Services',
     ...en.solutions.items.map((item) => `- ${item.title}: ${item.body}`),
     '',
@@ -125,6 +155,11 @@ ${routes
     ...en.software.packages.map(
       (item) => `- ${item.title}: ${item.body} Indicative price from S$${item.priceSgd}. ${en.software.support}`,
     ),
+    '',
+    `## ${en.hardware.title} (prototypes and one-off builds; quoted in writing; no list prices)`,
+    en.hardware.lead,
+    ...en.hardware.groups.map((group) => `- ${group.title}: ${group.body}`),
+    ...en.hardware.finePrint.map((line) => `- ${line}`),
     '',
     `## ${en.upcoming.eyebrow} (${en.upcoming.status}, not on sale yet)`,
     ...en.upcoming.items.map((item) => `- ${item.title}: ${item.body}`),
@@ -185,5 +220,31 @@ ${items}
   }
   const feeds = site.url ? { en: feed('en'), zh: feed('zh') } : null
 
-  return { robots, sitemap, llms, feeds }
+  // llms-full.txt — the full text of every guide and topic page, so an
+  // assistant can quote the source rather than a summary of it.
+  const absolute = (body: string) => (site.url ? body.replace(/\]\(\//g, `](${site.url}/`) : body)
+  const llmsFull = [
+    `# ${en.meta.title} — full guide text`,
+    '',
+    `> ${en.meta.description}`,
+    '',
+    ...LANGS.flatMap((lang) =>
+      [...guidesIn(lang), ...pagesIn(lang)].flatMap((item) => [
+        `## ${item.title}`,
+        '',
+        `URL: ${page(lang, item.path)}`,
+        `Language: ${lang === 'zh' ? 'zh-Hans' : 'en'} · Published ${item.published} · Updated ${item.updated}`,
+        '',
+        `> ${item.description}`,
+        '',
+        ...(item.points.length ? [...item.points.map((point) => `- ${point}`), ''] : []),
+        absolute(item.body).replace(/^(#{2,3}) /gm, '#$1 '),
+        '',
+        '---',
+        '',
+      ]),
+    ),
+  ].join('\n')
+
+  return { robots, sitemap, llms, llmsFull, feeds }
 }

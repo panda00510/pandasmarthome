@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { Color, DoubleSide } from 'three'
-import { useHA, lightLevel } from '../ha/store'
-import { kelvinToColor, rgbArrayToColor, damp, PLAN } from './utils'
+import { useHA, lightLevel, usePlan } from '../ha/store'
+import { kelvinToColor, rgbArrayToColor, damp } from './utils'
 import { latheGeometry, PROFILES } from './shapes'
 import { SHELL_LAYER } from './layers'
 
@@ -19,11 +19,11 @@ function shades() {
   return SHADES
 }
 
-// 灯具位置来自 src/plan.json（和 Blender 烘焙共用同一份）。
+// 灯具位置来自当前户型的 plans/<户型>.json。
 // 壳体的漫反射由烘焙贴图提供，这些实时点光源主要负责照亮家具和产生高光。
 const POWER_TO_CANDELA = 0.27
 
-export const LAMPS = PLAN.lamps.map((l) => ({
+const toLamp = (l) => ({
   id: l.id,
   kind: l.kind,
   pos: l.pos,
@@ -32,7 +32,7 @@ export const LAMPS = PLAN.lamps.map((l) => ({
   span: l.span ?? 1.2,
   power: l.power * POWER_TO_CANDELA,
   dist: l.kind === 'table' ? 3.2 : l.kind === 'floor' ? 4.2 : l.kind === 'spots' ? 4.4 : l.kind === 'pendant' ? 4.2 : 6.2,
-}))
+})
 
 // 实时壳体没有烘焙遮挡。点光源要投射阴影，灯才不会穿墙照到隔壁。
 // 同时亮着的灯太多会超出纹理单元，只给照得最远的几盏开阴影。
@@ -292,7 +292,7 @@ function LightStrip({ conf }) {
 }
 
 // 电视开机时对客厅的补光
-function ScreenGlow() {
+function ScreenGlow({ position }) {
   const tv = useHA((s) => s.entities['media_player.living_tv'])
   const ref = useRef()
   const level = useRef(0)
@@ -307,7 +307,7 @@ function ScreenGlow() {
       ref.current.visible = level.current > 0.01
     }
   })
-  return <pointLight ref={ref} position={[-4.55, 1.15, -2.35]} color="#8fc4ff" distance={4.5} decay={2} intensity={0} />
+  return <pointLight ref={ref} position={position} color="#8fc4ff" distance={4.5} decay={2} intensity={0} />
 }
 
 // 室外日光：强度与色温随时间变化，窗帘因投影自然遮挡
@@ -374,6 +374,8 @@ function Daylight() {
 }
 
 export default function Fixtures() {
+  const plan = usePlan()
+  const LAMPS = useMemo(() => plan.lamps.map(toLamp), [plan])
   return (
     <group>
       <ShadowBudget />
@@ -383,7 +385,7 @@ export default function Fixtures() {
       {LAMPS.filter((c) => c.kind === 'strip').map((conf) => (
         <LightStrip key={conf.id} conf={conf} />
       ))}
-      <ScreenGlow />
+      {plan.tvGlow && <ScreenGlow position={plan.tvGlow} />}
       <Daylight />
     </group>
   )
