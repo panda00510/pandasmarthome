@@ -118,25 +118,25 @@ function Mug({ p, c = '#cfc6bb' }) {
 export default function Decor() {
   return (
     <group>
-      <Art p={[-1.08, 1.5, -3.45]} w={0.62} h={0.78} axis="x" frame="#5a4e40" art="art1" flip />
-      <Books p={[-4.15, 0.4, -2.55]} rot={0.2} />
-      <Mug p={[-4.5, 0.45, -2.25]} />
-      <Box p={[-4.55, 0.74, 0.15]} s={[0.32, 0.008, 0.22]} c="#a8967f" r={0.95} radius={0.004} />
-      <Vase p={[-3.95, 0.86, 0.35]} />
+      <Art p={[-2.58, 1.5, -1.7]} w={0.62} h={0.78} axis="x" frame="#5a4e40" art="art1" flip />
+      <Books p={[-3.98, 0.4, -2.05]} rot={0.2} />
+      <Mug p={[-4.33, 0.45, -1.75]} />
+      <Box p={[-4.3, 0.74, 1.25]} s={[0.32, 0.008, 0.22]} c="#a8967f" r={0.95} radius={0.004} />
+      <Vase p={[-3.7, 0.86, 1.45]} />
 
-      <Books p={[2.28, 0.42, -3.62]} rot={-0.2} colors={['#6b7f8a', '#c9b7a0']} />
-      <Art p={[4.9, 1.55, -4.06]} w={0.36} h={0.48} frame="#6b5c4a" art="art2" axis="z" />
+      <Books p={[3.78, 0.42, -3.1]} rot={-0.2} colors={['#6b7f8a', '#c9b7a0']} />
+      <Art p={[3.85, 1.55, -3.56]} w={0.36} h={0.48} frame="#6b5c4a" art="art2" axis="z" />
 
-      <Box p={[-4.7, 0.94, 3.4]} s={[0.32, 0.02, 0.22]} c="#a37f52" r={0.7} radius={0.01} />
-      <Bowl p={[-4.15, 0.95, 4.05]} r={0.85} />
+      <Box p={[1.9, 0.94, 0.95]} s={[0.32, 0.02, 0.22]} c="#a37f52" r={0.7} radius={0.01} />
+      <Bowl p={[0.8, 0.95, 3.34]} r={0.85} />
       {[0, 1, 2].map((i) => (
-        <mesh key={i} position={[-4.55, 0.98, 2.7 + i * 0.12]} castShadow>
+        <mesh key={i} position={[0.55 + i * 0.12, 0.98, 0.82]} castShadow>
           <cylinderGeometry args={[0.028, 0.028, 0.12, 10]} />
           <meshStandardMaterial color={['#8e7b60', '#a8946f', '#6f6a58'][i]} roughness={0.5} />
         </mesh>
       ))}
 
-      <Mug p={[-0.35, 0.88, 1.95]} c="#dfe3e2" />
+      <Mug p={[3.0, 0.88, 2.2]} c="#dfe3e2" />
     </group>
   )
 }

@@ -119,9 +119,9 @@ export default function Shell() {
         <Door key={i} axis={d.axis} at={d.at} from={d.from} to={d.to} height={d.y1} />
       ))}
 
-      <Rug x={-3.7} z={-2.35} w={2.5} d={2.15} />
-      <Rug x={3.15} z={-2.95} w={2.05} d={1.45} color="#b3a897" />
-      <Rug x={0.35} z={-3.15} w={1.45} d={1.15} color="#a8a196" />
+      <Rug x={-4.2} z={-1.9} w={2.5} d={2.15} />
+      <Rug x={4.6} z={-2.0} w={2.05} d={1.45} color="#b3a897" />
+      <Rug x={-1.45} z={-2.4} w={1.45} d={1.15} color="#a8a196" />
     </group>
   )
 }

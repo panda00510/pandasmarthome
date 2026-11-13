@@ -22,14 +22,19 @@ import Surroundings from './Surroundings'
 const MODEL_URL = import.meta.env.VITE_HOUSE_MODEL || null
 
 export const VIEWS = {
-  overview: { name: { en: 'Overview', zh: '全屋' }, pos: [10.1, 12.7, 13.0], target: [-0.2, 0.35, 0.2] },
-  // 机位都在房间内部，视线不穿实墙。客厅从餐厅一侧看向沙发，主卧靠近房门看向床。
-  living: { name: { en: 'Living', zh: '客厅' }, pos: [-2.2, 2.05, 2.05], target: [-3.7, 0.9, -2.2] },
-  bedroom: { name: { en: 'Master', zh: '主卧' }, pos: [4.15, 1.85, -1.5], target: [3.5, 0.75, -3.3] },
-  second: { name: { en: 'Bed 2', zh: '次卧' }, pos: [0.45, 1.75, -1.45], target: [0.4, 0.65, -3.55] },
-  kitchen: { name: { en: 'Kitchen', zh: '厨房' }, pos: [-3.4, 1.9, 1.65], target: [-4.6, 0.8, 3.55] },
-  bath: { name: { en: 'Bath', zh: '卫生间' }, pos: [0.1, 1.7, 0.45], target: [-0.4, 0.95, 1.75] },
+  // 12.6 m × 7.4 m 的长条户型：从南侧偏东俯视，1440×900 开面板时约占空闲区宽度的 83%
+  overview: { name: { en: 'Overview', zh: '全屋' }, pos: [4.5, 16.5, 16.5], target: [-0.5, 0, 0.6] },
+  // 房间视角是从南侧上方俯视的“剖面”机位：模型没有天花板，站在房间里用 36° 视场角只能看到家具局部。
+  // 俯角 64°–74°，近侧 2.6 m 的墙只挡住约 1 m 的地面。
+  living: { name: { en: 'Living', zh: '客厅' }, pos: [-3.0, 9.9, 2.9], target: [-4.4, 0.5, -1.5] },
+  bedroom: { name: { en: 'Master', zh: '主卧' }, pos: [6.2, 9.5, 2.6], target: [4.9, 0.5, -1.6] },
+  second: { name: { en: 'Bed 2', zh: '次卧' }, pos: [0.1, 8.7, 1.3], target: [-1.0, 0.5, -2.2] },
+  kitchen: { name: { en: 'Kitchen', zh: '厨房' }, pos: [2.1, 8.7, 5.5], target: [1.0, 0.5, 2.0] },
+  bath: { name: { en: 'Bath', zh: '卫生间' }, pos: [4.1, 7.2, 3.4], target: [3.55, 0.5, 1.55] },
 }
+
+// 手机画布只有屏幕上方 62%，换一个更高、更正的机位
+const MOBILE_OVERVIEW = { pos: [3.2, 16.5, 13.5], target: [-0.35, 1.5, -0.9] }
 
 const MOBILE_FOV = 60
 const DESKTOP_FOV = 36
@@ -146,7 +151,7 @@ export default function Scene() {
   const views = useMemo(
     () =>
       isMobile
-        ? { ...VIEWS, overview: { ...VIEWS.overview, pos: [9.4, 13.2, 12.4], target: [-0.15, 0.25, 0.25] } }
+        ? { ...VIEWS, overview: { ...VIEWS.overview, ...MOBILE_OVERVIEW } }
         : VIEWS,
     [isMobile]
   )
@@ -157,7 +162,7 @@ export default function Scene() {
       dpr={isMobile ? [1, 1.5] : [1, 1.8]}
       gl={{ antialias: true, powerPreference: 'high-performance' }}
       camera={{
-        position: isMobile ? [9.4, 13.2, 12.4] : [10.1, 12.7, 13.0],
+        position: isMobile ? MOBILE_OVERVIEW.pos : VIEWS.overview.pos,
         fov: isMobile ? MOBILE_FOV : DESKTOP_FOV,
         near: 0.1,
         far: 400,
@@ -171,11 +176,11 @@ export default function Scene() {
         <HdriEnvironment url={hdriUrl} />
       </Suspense>
 
-      <ContactShadows position={[0, -0.31, 0.15]} opacity={0.45} scale={18} blur={2.6} far={5} resolution={512} color="#05070b" />
+      <ContactShadows position={[0, -0.31, 0]} opacity={0.45} scale={18} blur={2.6} far={5} resolution={512} color="#05070b" />
 
       <OrbitControls
         makeDefault
-        target={[0.05, 0.55, 0.15]}
+        target={VIEWS.overview.target}
         minDistance={2.0}
         maxDistance={64}
         maxPolarAngle={Math.PI / 2.12}

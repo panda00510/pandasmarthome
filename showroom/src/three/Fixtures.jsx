@@ -307,7 +307,7 @@ function ScreenGlow() {
       ref.current.visible = level.current > 0.01
     }
   })
-  return <pointLight ref={ref} position={[-4.55, 1.15, -2.35]} color="#8fc4ff" distance={4.5} decay={2} intensity={0} />
+  return <pointLight ref={ref} position={[-5.65, 1.15, -1.9]} color="#8fc4ff" distance={4.5} decay={2} intensity={0} />
 }
 
 // 室外日光：强度与色温随时间变化，窗帘因投影自然遮挡
@@ -359,10 +359,10 @@ function Daylight() {
         castShadow
         intensity={0}
         shadow-mapSize={[2048, 2048]}
-        shadow-camera-left={-7}
-        shadow-camera-right={7}
-        shadow-camera-top={7}
-        shadow-camera-bottom={-7}
+        shadow-camera-left={-8.5}
+        shadow-camera-right={8.5}
+        shadow-camera-top={8.5}
+        shadow-camera-bottom={-8.5}
         shadow-camera-near={0.5}
         shadow-camera-far={60}
         shadow-bias={-0.0009}

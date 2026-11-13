@@ -79,7 +79,7 @@ function StorageHeater() {
   const e = useHA((s) => s.entities['switch.bath_heater'])
   const on = isOn(e)
   return (
-    <group position={[-0.55, 2.02, 1.55]}>
+    <group position={[4.28, 2.02, 1.0]}>
       <mesh rotation={[Math.PI / 2, 0, 0]} castShadow>
         <cylinderGeometry args={[0.15, 0.15, 0.5, 20]} />
         <meshStandardMaterial color="#e7e1d8" roughness={0.35} metalness={0.2} />
@@ -111,7 +111,7 @@ function EntryHardware() {
 
   return (
     <group>
-      <group position={[2.98, 1.05, 4.36]}>
+      <group position={[-4.77, 1.05, 3.56]}>
         <RoundedBox args={[0.16, 0.28, 0.045]} radius={0.012} smoothness={2} castShadow>
           <meshStandardMaterial color="#2a2e33" roughness={0.4} metalness={0.55} />
         </RoundedBox>
@@ -121,7 +121,7 @@ function EntryHardware() {
         </mesh>
       </group>
 
-      <group position={[3.32, 1.42, 4.58]}>
+      <group position={[-4.43, 1.42, 3.78]}>
         <RoundedBox args={[0.09, 0.16, 0.04]} radius={0.01} smoothness={2} castShadow>
           <meshStandardMaterial color="#23272b" roughness={0.45} metalness={0.4} />
         </RoundedBox>
@@ -131,7 +131,7 @@ function EntryHardware() {
         </mesh>
       </group>
 
-      <group position={[2.16, 1.45, 3.55]} rotation={[0, Math.PI / 2, 0]}>
+      <group position={[-6.18, 1.45, 3.25]} rotation={[0, Math.PI / 2, 0]}>
         <RoundedBox args={[0.02, 0.16, 0.11]} radius={0.006} smoothness={2}>
           <meshStandardMaterial color="#2c3136" roughness={0.5} />
         </RoundedBox>
@@ -151,13 +151,13 @@ function EntryHardware() {
 export default function Devices() {
   return (
     <group>
-      <SplitUnit id="climate.living_ac" position={[-1.16, 2.2, -2.55]} />
-      <SplitUnit id="climate.bedroom_ac" position={[4.98, 2.16, -2.55]} scale={0.9} />
-      <SplitUnit id="climate.second_ac" position={[-0.8, 2.16, -2.75]} rotation={[0, Math.PI, 0]} scale={0.88} />
+      <SplitUnit id="climate.living_ac" position={[-2.66, 2.2, -2.9]} />
+      <SplitUnit id="climate.bedroom_ac" position={[6.14, 2.16, -2.0]} scale={0.9} />
+      <SplitUnit id="climate.second_ac" position={[0.34, 2.16, -2.4]} scale={0.88} />
 
-      <CeilingFan id="fan.living_ceiling" position={[-3.35, 2.08, -1.15]} />
-      <CeilingFan id="fan.bedroom_ceiling" position={[3.45, 2.08, -2.05]} />
-      <CeilingFan id="fan.second_ceiling" position={[0.35, 2.08, -2.15]} />
+      <CeilingFan id="fan.living_ceiling" position={[-4.4, 2.08, -0.9]} />
+      <CeilingFan id="fan.bedroom_ceiling" position={[4.7, 2.08, -0.9]} />
+      <CeilingFan id="fan.second_ceiling" position={[-0.6, 2.08, -1.5]} />
 
       <StorageHeater />
       <EntryHardware />

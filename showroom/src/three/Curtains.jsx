@@ -93,9 +93,9 @@ function Curtain({ entityId, x0, x1, z, top = 2.45, bottom = 0.04, color = '#e6d
 export default function Curtains() {
   return (
     <group>
-      <Curtain entityId="cover.living_curtain" x0={-4.5} x1={-1.6} z={-4.05} top={2.32} />
-      <Curtain entityId="cover.second_curtain" x0={-0.5} x1={1.3} z={-4.05} top={2.22} color="#d8cfc2" />
-      <Curtain entityId="cover.bedroom_curtain" x0={2.35} x1={4.55} z={-4.05} top={2.22} color="#d8cfc2" />
+      <Curtain entityId="cover.living_curtain" x0={-5.85} x1={-2.95} z={-3.55} top={2.32} />
+      <Curtain entityId="cover.second_curtain" x0={-1.85} x1={-0.15} z={-3.55} top={2.22} color="#d8cfc2" />
+      <Curtain entityId="cover.bedroom_curtain" x0={4.25} x1={5.85} z={-3.55} top={2.22} color="#d8cfc2" />
     </group>
   )
 }
