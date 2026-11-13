@@ -1,10 +1,11 @@
 import { useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { RoundedBox } from '@react-three/drei'
-import { DoubleSide } from 'three'
+import { CanvasTexture, SRGBColorSpace } from 'three'
+import { PANDA_PATH } from '../ui/PandaLogo'
 import { useHA, isOn, usePlan } from '../ha/store'
 import { MAT, damp } from './utils'
-import { getTextures, tiled } from './textures'
+import { getMat, metersUV } from './materials'
 import SofaModel from './SofaModel'
 import {
   pillowGeometry,
@@ -45,47 +46,36 @@ function geo() {
     duvet: pillowGeometry(1.9, 0.12, 1.64, 8),
     pillow: pillowGeometry(0.62, 0.17, 0.38, 3.4),
   }
+  // 软包件基于 BoxGeometry，UV 是每面 0..1；改成按米，布纹密度才与尺寸无关
+  for (const k of ['sofaSeat', 'sofaBack', 'sofaArm', 'throwPillow', 'blanketTop', 'blanketFall', 'mattress', 'headboard', 'duvet', 'pillow']) metersUV(CACHE[k])
   return CACHE
 }
 
-// 通用长方体，带倒角
-function B({ p, s, c = MAT.white, r = 0.8, m = 0, tex, soft = false, ...rest }) {
-  const maps = useMemo(
-    () => (tex ? tiled(getTextures()[tex], Math.max(1, s[0] / 0.5), Math.max(1, s[1] / 0.5)) : null),
-    [tex, s[0], s[1]]
-  )
+// 通用长方体，带倒角。mat 选 materials.js 里的材质，c / r / m 覆盖颜色、粗糙度、金属度。
+// RoundedBox 是 ExtrudeGeometry，UV 天生按米，木皮 / 石英石纹理密度不随尺寸变。
+function B({ p, s, c, r, m, mat = 'lacquer', soft = false, ...rest }) {
+  const o = {}
+  if (c != null) o.color = c
+  if (r != null) o.roughness = r
+  if (m != null) o.metalness = m
   const radius = Math.min(soft ? 0.07 : 0.02, Math.min(s[0], s[1], s[2]) * 0.32)
   return (
-    <RoundedBox args={s} radius={radius} smoothness={soft ? 3 : 2} position={p} castShadow receiveShadow {...rest}>
-      <meshStandardMaterial color={c} roughness={r} metalness={m} normalScale={[0.7, 0.7]} {...(maps || {})} />
-    </RoundedBox>
+    <RoundedBox args={s} radius={radius} smoothness={soft ? 3 : 2} position={p} castShadow receiveShadow
+      material={getMat(mat, Object.keys(o).length ? o : undefined)} {...rest} />
   )
 }
 
-// 共享几何 + 纹理的软包件
-function Soft({ g, p, rot, tex = 'sofa', c, r = 0.97, repeat = 3 }) {
-  const maps = useMemo(() => tiled(getTextures()[tex], repeat, repeat), [tex, repeat])
-  return (
-    <mesh geometry={g} position={p} rotation={rot} castShadow receiveShadow>
-      <meshStandardMaterial color={c} roughness={r} metalness={0} normalScale={[0.9, 0.9]} {...maps} />
-    </mesh>
-  )
+// 共享几何 + 织物材质（sheen）的软包件
+function Soft({ g, p, rot, tex = 'fabric', c }) {
+  return <mesh geometry={g} position={p} rotation={rot} castShadow receiveShadow material={getMat(tex, c ? { color: c } : undefined)} />
 }
 
-function Wood({ g, p, rot, c = MAT.woodLight, r = 0.55 }) {
-  return (
-    <mesh geometry={g} position={p} rotation={rot} castShadow receiveShadow>
-      <meshStandardMaterial color={c} roughness={r} metalness={0} />
-    </mesh>
-  )
+function Wood({ g, p, rot, c = MAT.woodLight }) {
+  return <mesh geometry={g} position={p} rotation={rot} castShadow receiveShadow material={getMat('veneer', { color: c })} />
 }
 
 function Metal({ g, p, rot, c = MAT.metal }) {
-  return (
-    <mesh geometry={g} position={p} rotation={rot} castShadow receiveShadow>
-      <meshStandardMaterial color={c} roughness={0.35} metalness={0.65} />
-    </mesh>
-  )
+  return <mesh geometry={g} position={p} rotation={rot} castShadow receiveShadow material={getMat('blackMetal', { color: c, roughness: 0.35 })} />
 }
 
 // 沙发有两套实现，切这个开关即可对比：
@@ -107,7 +97,7 @@ function Sofa({ position, rotation = [0, 0, 0], scale = 1 }) {
 
   return (
     <group position={position} rotation={rotation} scale={scale}>
-      <Wood g={g.sofaBase} p={[0, 0.24, 0]} c="#6f5540" r={0.65} />
+      <Wood g={g.sofaBase} p={[0, 0.24, 0]} c="#6f5540" />
       {[0, 1, 2, 3].map((i) => {
         const x = i < 2 ? -1.28 : 1.28
         const z = i % 2 === 0 ? -0.38 : 0.38
@@ -124,10 +114,10 @@ function Sofa({ position, rotation = [0, 0, 0], scale = 1 }) {
         <Soft key={x} g={g.sofaArm} p={[x, 0.48, 0]} />
       ))}
 
-      <Soft g={g.throwPillow} p={[-0.94, 0.63, 0.19]} rot={[0.3, 0.22, 0.14]} tex="linen" c="#e0c9ac" repeat={2} />
-      <Soft g={g.throwPillow} p={[0.96, 0.63, 0.19]} rot={[0.28, -0.2, -0.12]} tex="linen" c="#b9c4b4" repeat={2} />
-      <Soft g={g.blanketTop} p={[1.31, 0.737, -0.06]} tex="linen" c="#a8836a" repeat={2} r={1} />
-      <Soft g={g.blanketFall} p={[1.45, 0.56, -0.06]} rot={[0, 0, 0.06]} tex="linen" c="#a8836a" repeat={2} r={1} />
+      <Soft g={g.throwPillow} p={[-0.94, 0.63, 0.19]} rot={[0.3, 0.22, 0.14]} tex="linen" c="#e0c9ac" />
+      <Soft g={g.throwPillow} p={[0.96, 0.63, 0.19]} rot={[0.28, -0.2, -0.12]} tex="linen" c="#b9c4b4" />
+      <Soft g={g.blanketTop} p={[1.31, 0.737, -0.06]} tex="linen" c="#a8836a" />
+      <Soft g={g.blanketFall} p={[1.45, 0.56, -0.06]} rot={[0, 0, 0.06]} tex="linen" c="#a8836a" />
     </group>
   )
 }
@@ -140,7 +130,7 @@ function Chair({ p, ry = 0 }) {
       <Wood g={g.chairBack} p={[0, 0.69, -0.2]} rot={[0.11, 0, 0]} />
       {[[-0.17, -0.17, -0.05, -0.05], [0.17, -0.17, 0.05, -0.05], [-0.17, 0.17, -0.05, 0.05], [0.17, 0.17, 0.05, 0.05]].map(
         ([x, z, rz, rx], i) => (
-          <Wood key={i} g={g.chairLeg} p={[x, 0.22, z]} rot={[rx, 0, rz]} c={MAT.woodDark} r={0.6} />
+          <Wood key={i} g={g.chairLeg} p={[x, 0.22, z]} rot={[rx, 0, rz]} c={MAT.woodDark} />
         )
       )}
     </group>
@@ -151,40 +141,87 @@ function Bed({ position, rotation = [0, 0, 0], scale = 1 }) {
   const g = geo()
   return (
     <group position={position} rotation={rotation} scale={scale}>
-      <Wood g={g.bedBase} p={[0, 0.25, 0]} c="#6b4f35" r={0.7} />
-      <Soft g={g.mattress} p={[0, 0.47, 0]} tex="linen" c="#efe9df" repeat={4} />
-      <Soft g={g.headboard} p={[0, 0.8, -1.06]} tex="sofa" c="#d6c4ad" repeat={3} />
-      <Soft g={g.duvet} p={[0, 0.64, 0.28]} tex="sofa" c="#c6d0da" repeat={3} />
-      <Soft g={g.pillow} p={[-0.41, 0.69, -0.74]} rot={[0, 0.06, 0]} tex="linen" c="#f4f1ea" repeat={2} />
-      <Soft g={g.pillow} p={[0.41, 0.69, -0.74]} rot={[0, -0.06, 0]} tex="linen" c="#f4f1ea" repeat={2} />
+      <Wood g={g.bedBase} p={[0, 0.25, 0]} c="#8a6a4c" />
+      <Soft g={g.mattress} p={[0, 0.47, 0]} tex="linen" c="#efe9df" />
+      <Soft g={g.headboard} p={[0, 0.8, -1.06]} tex="fabric" c="#d6c4ad" />
+      <Soft g={g.duvet} p={[0, 0.64, 0.28]} tex="fabric" c="#c6d0da" />
+      <Soft g={g.pillow} p={[-0.41, 0.69, -0.74]} rot={[0, 0.06, 0]} tex="linen" c="#f4f1ea" />
+      <Soft g={g.pillow} p={[0.41, 0.69, -0.74]} rot={[0, -0.06, 0]} tex="linen" c="#f4f1ea" />
     </group>
   )
 }
 
-// 电视：开机时屏幕自发光并缓动。本地 +Z 为屏幕朝向。
+// 电视开机画面：深色品牌画面 + 居中熊猫标识 + smartpanda 字样，画到 16:9 的 CanvasTexture 上，
+// 作为 emissiveMap。亮度峰值压在 Bloom 阈值附近，不会糊成一团白。
+let TV_TEX = null
+function tvTexture() {
+  if (TV_TEX) return TV_TEX
+  const W = 1024
+  const H = 576
+  const c = document.createElement('canvas')
+  c.width = W
+  c.height = H
+  const g = c.getContext('2d')
+  const bg = g.createRadialGradient(W / 2, H * 0.42, 20, W / 2, H / 2, W * 0.7)
+  bg.addColorStop(0, '#16352a')
+  bg.addColorStop(0.55, '#0b1a15')
+  bg.addColorStop(1, '#05090a')
+  g.fillStyle = bg
+  g.fillRect(0, 0, W, H)
+  // 熊猫标识：与页头同一条 path（viewBox 28 58 418 354），必须 evenodd 才有镂空
+  const logoH = 190
+  const k = logoH / 354
+  g.save()
+  g.translate(W / 2 - (418 * k) / 2 - 28 * k, H * 0.4 - logoH / 2 - 58 * k)
+  g.scale(k, k)
+  g.fillStyle = '#6fd3a4'
+  g.fill(new Path2D(PANDA_PATH), 'evenodd')
+  g.restore()
+  g.textAlign = 'center'
+  g.fillStyle = '#e9f3ee'
+  g.font = '500 64px "DM Mono", ui-monospace, Menlo, monospace'
+  g.fillText('smartpanda', W / 2, H * 0.4 + logoH / 2 + 78)
+  g.fillStyle = 'rgba(200,225,214,0.6)'
+  g.font = '28px "DM Mono", ui-monospace, Menlo, monospace'
+  g.fillText('smartpanda.sg', W / 2, H * 0.4 + logoH / 2 + 124)
+  TV_TEX = new CanvasTexture(c)
+  TV_TEX.colorSpace = SRGBColorSpace
+  TV_TEX.anisotropy = 4
+  return TV_TEX
+}
+
+const REDUCED_MOTION = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+// 电视：开机时屏幕显示品牌画面并淡入；关机是黑色镜面（清漆层反射环境），右下角一个待机红点。
+// 本地 +Z 为屏幕朝向，平面 UV 标准方向，所以画面不镜像、不倒置（三个户型的电视朝向靠家具 rot 统一处理）。
 function Television() {
-  const tv = useHA((s) => s.entities['media_player.living_tv'])
   const screen = useRef()
+  const standby = useRef()
   const level = useRef(0)
+  const map = useMemo(() => tvTexture(), [])
   useFrame((state, dt) => {
-    level.current = damp(level.current, isOn(tv) ? 1 : 0, 6, dt)
+    const tv = useHA.getState().entities['media_player.living_tv']
+    const on = isOn(tv)
+    level.current = damp(level.current, on ? 1 : 0, 3.2, dt)
     if (screen.current) {
-      const t = state.clock.elapsedTime
-      const scene = 0.9 + Math.sin(t * 0.55) * 0.06
-      screen.current.emissiveIntensity = level.current * scene * 0.6
-      screen.current.emissive.setRGB(
-        0.24 + Math.sin(t * 0.28) * 0.07,
-        0.5 + Math.sin(t * 0.22) * 0.06,
-        1.0
-      )
+      // 很慢的呼吸（±3%），尊重减少动态效果
+      const breathe = REDUCED_MOTION ? 1 : 0.97 + Math.sin(state.clock.elapsedTime * 0.5) * 0.03
+      screen.current.emissiveIntensity = level.current * 0.95 * breathe
     }
+    if (standby.current) standby.current.visible = !on
   })
   return (
     <group>
-      <B p={[0, 1.12, 0.02]} s={[1.55, 0.9, 0.06]} c="#15181c" r={0.4} />
-      <mesh position={[0, 1.12, 0.06]}>
+      <B p={[0, 1.12, 0.02]} s={[1.55, 0.9, 0.06]} mat="blackMetal" c="#15181c" r={0.4} m={0.3} />
+      <mesh position={[0, 1.12, 0.0505]}>
         <planeGeometry args={[1.46, 0.82]} />
-        <meshStandardMaterial ref={screen} color="#0d1014" emissive="#7fb8ff" emissiveIntensity={0} roughness={0.25} />
+        <meshPhysicalMaterial ref={screen} color="#050608" emissive="#ffffff" emissiveMap={map} emissiveIntensity={0}
+          roughness={0.06} clearcoat={1} clearcoatRoughness={0.03} toneMapped={false} />
+      </mesh>
+      {/* 待机红点：毫米级，不照亮环境、不进 Bloom */}
+      <mesh ref={standby} position={[0.7, 0.69, 0.051]}>
+        <circleGeometry args={[0.005, 12]} />
+        <meshBasicMaterial color="#7a1c14" toneMapped={false} />
       </mesh>
     </group>
   )
@@ -192,9 +229,8 @@ function Television() {
 
 function GlassBox({ position, args }) {
   return (
-    <mesh position={position}>
+    <mesh position={position} material={getMat('showerGlass')}>
       <boxGeometry args={args} />
-      <meshStandardMaterial color="#b8ccd4" roughness={0.05} metalness={0.1} transparent opacity={0.22} />
     </mesh>
   )
 }
@@ -203,13 +239,12 @@ function GlassBox({ position, args }) {
 // 每件家具都在自己的本地坐标里建模：正面朝 +z，长度沿 x。
 // 户型 JSON 里给 pos（地面中心）、rot（角度）、len / scale 等参数。
 
-const QUARTZ = '#3f4348'
 const CABINET = '#e2ded6'
 
 function TvUnit() {
   return (
     <group>
-      <B p={[0, 0.2, -0.02]} s={[1.7, 0.4, 0.38]} c={MAT.woodDark} r={0.6} />
+      <B p={[0, 0.2, -0.02]} s={[1.7, 0.4, 0.38]} c={MAT.woodDark} />
       <Television />
     </group>
   )
@@ -220,7 +255,7 @@ function CoffeeTable() {
   return (
     <group>
       <Wood g={g.tableTop} p={[0, 0.36, 0]} />
-      <Wood g={g.tableShelf} p={[0, 0.14, 0]} c={MAT.woodDark} r={0.65} />
+      <Wood g={g.tableShelf} p={[0, 0.14, 0]} c={MAT.woodDark} />
       {[[-0.55, -0.28], [0.55, -0.28], [-0.55, 0.28], [0.55, 0.28]].map(([x, z], i) => (
         <Metal key={i} g={g.tableLeg} p={[x, 0.18, z]} />
       ))}
@@ -235,7 +270,7 @@ function DiningSet() {
     <group>
       <Wood g={g.diningTop} p={[0, 0.72, 0]} />
       {[[-0.7, -0.33], [0.7, -0.33], [-0.7, 0.33], [0.7, 0.33]].map(([x, z], i) => (
-        <Wood key={i} g={g.diningLeg} p={[x, 0.35, z]} c={MAT.woodDark} r={0.6} />
+        <Wood key={i} g={g.diningLeg} p={[x, 0.35, z]} c={MAT.woodDark} />
       ))}
       <Chair p={[-0.5, 0, -0.63]} />
       <Chair p={[0.5, 0, -0.63]} />
@@ -246,7 +281,7 @@ function DiningSet() {
 }
 
 function Nightstand() {
-  return <B p={[0, 0.2, 0]} s={[0.4, 0.4, 0.36]} c={MAT.woodDark} r={0.6} />
+  return <B p={[0, 0.2, 0]} s={[0.4, 0.4, 0.36]} c={MAT.woodDark} />
 }
 
 // 到顶衣柜：柜体 + 门缝 + 拉手条
@@ -254,14 +289,13 @@ function Wardrobe({ len = 1.6 }) {
   const doors = Math.max(2, Math.round(len / 0.5))
   return (
     <group>
-      <B p={[0, 1.07, 0]} s={[len, 2.14, 0.58]} c="#d6cdbf" r={0.7} />
+      <B p={[0, 1.07, 0]} s={[len, 2.14, 0.58]} mat="veneer" c="#e3d6c4" />
       {Array.from({ length: doors - 1 }, (_, i) => -len / 2 + (len * (i + 1)) / doors).map((x) => (
-        <mesh key={x} position={[x, 1.07, 0.292]}>
+        <mesh key={x} position={[x, 1.07, 0.292]} material={getMat('lacquer', { color: '#8c8072', roughness: 0.8 })}>
           <boxGeometry args={[0.006, 2.04, 0.004]} />
-          <meshStandardMaterial color="#9c9286" roughness={0.8} />
         </mesh>
       ))}
-      <B p={[0, 1.05, 0.3]} s={[len - 0.08, 0.02, 0.02]} c="#8d8378" r={0.35} m={0.7} />
+      <B p={[0, 1.05, 0.3]} s={[len - 0.08, 0.02, 0.02]} mat="brass" />
     </group>
   )
 }
@@ -269,9 +303,9 @@ function Wardrobe({ len = 1.6 }) {
 function Desk({ len = 1.1 }) {
   return (
     <group>
-      <B p={[0, 0.735, 0]} s={[len, 0.03, 0.55]} c={MAT.woodLight} r={0.55} />
+      <B p={[0, 0.735, 0]} s={[len, 0.03, 0.55]} mat="veneer" c={MAT.woodLight} />
       {[-1, 1].map((sx) => (
-        <B key={sx} p={[sx * (len / 2 - 0.03), 0.36, 0]} s={[0.03, 0.72, 0.5]} c={MAT.metal} r={0.4} m={0.5} />
+        <B key={sx} p={[sx * (len / 2 - 0.03), 0.36, 0]} s={[0.03, 0.72, 0.5]} mat="blackMetal" c={MAT.metal} r={0.4} />
       ))}
     </group>
   )
@@ -282,24 +316,27 @@ function Counter({ len = 2, sink, hob }) {
   return (
     <group>
       <B p={[0, 0.06, 0.02]} s={[len, 0.12, 0.5]} c="#b9b2a7" r={0.8} />
-      <B p={[0, 0.5, 0]} s={[len, 0.76, 0.56]} c={CABINET} r={0.6} />
-      <B p={[0, 0.905, 0]} s={[len + 0.02, 0.04, 0.6]} c={QUARTZ} r={0.3} m={0.15} />
+      <B p={[0, 0.5, 0]} s={[len, 0.76, 0.56]} c={CABINET} />
+      {/* 柜门分缝 */}
+      {Array.from({ length: Math.max(1, Math.round(len / 0.5)) - 1 }, (_, i) => -len / 2 + (len * (i + 1)) / Math.max(1, Math.round(len / 0.5))).map((x) => (
+        <mesh key={x} position={[x, 0.5, 0.281]} material={getMat('lacquer', { color: '#a69d90', roughness: 0.8 })}>
+          <boxGeometry args={[0.005, 0.72, 0.003]} />
+        </mesh>
+      ))}
+      <B p={[0, 0.905, 0]} s={[len + 0.02, 0.04, 0.6]} mat="quartz" />
       {sink != null && (
         <group position={[sink, 0.928, 0.02]}>
-          <mesh>
+          <mesh material={getMat('steel', { roughness: 0.32 })}>
             <boxGeometry args={[0.62, 0.006, 0.4]} />
-            <meshStandardMaterial color="#9ea4a8" roughness={0.25} metalness={0.85} />
           </mesh>
-          <mesh position={[0, 0.16, -0.22]}>
+          <mesh position={[0, 0.16, -0.22]} material={getMat('steel')}>
             <cylinderGeometry args={[0.014, 0.014, 0.32, 10]} />
-            <meshStandardMaterial color="#c4c8cb" roughness={0.2} metalness={0.9} />
           </mesh>
         </group>
       )}
       {hob != null && (
-        <mesh position={[hob, 0.927, 0.02]}>
+        <mesh position={[hob, 0.927, 0.02]} material={getMat('screen')}>
           <boxGeometry args={[0.6, 0.006, 0.5]} />
-          <meshStandardMaterial color="#121416" roughness={0.12} metalness={0.3} />
         </mesh>
       )}
     </group>
@@ -308,18 +345,18 @@ function Counter({ len = 2, sink, hob }) {
 
 // 吊柜：pos.y 是柜底高度
 function Upper({ len = 1.5 }) {
-  return <B p={[0, 0.35, 0]} s={[len, 0.7, 0.35]} c={CABINET} r={0.6} />
+  return <B p={[0, 0.35, 0]} s={[len, 0.7, 0.35]} c={CABINET} />
 }
 
 function Fridge() {
   return (
     <group>
-      <B p={[0, 0.88, 0]} s={[0.65, 1.76, 0.65]} c="#b9bec4" r={0.3} m={0.6} />
+      <B p={[0, 0.88, 0]} s={[0.65, 1.76, 0.65]} mat="steel" c="#b9bec4" r={0.34} />
       <mesh position={[0, 1.18, 0.328]}>
         <boxGeometry args={[0.6, 0.006, 0.004]} />
         <meshStandardMaterial color="#6e7378" />
       </mesh>
-      <B p={[0.26, 1.0, 0.345]} s={[0.025, 0.5, 0.025]} c="#8a8f94" r={0.3} m={0.8} />
+      <B p={[0.26, 1.0, 0.345]} s={[0.025, 0.5, 0.025]} mat="steel" c="#8a8f94" />
     </group>
   )
 }
@@ -341,43 +378,20 @@ function Washer() {
   )
 }
 
-// 吊顶晾衣架：两根杆沿本地 z
-function Rack({ len = 1.6 }) {
-  return (
-    <group>
-      {[-0.15, 0.15].map((x) => (
-        <mesh key={x} position={[x, 0, 0]} rotation={[Math.PI / 2, 0, 0]} castShadow>
-          <cylinderGeometry args={[0.015, 0.015, len, 8]} />
-          <meshStandardMaterial color="#c4c8cb" roughness={0.3} metalness={0.8} />
-        </mesh>
-      ))}
-      {[-len / 2 + 0.1, len / 2 - 0.1].map((z) => (
-        <mesh key={z} position={[0, 0.15, z]} castShadow>
-          <boxGeometry args={[0.34, 0.3, 0.02]} />
-          <meshStandardMaterial color="#c4c8cb" roughness={0.3} metalness={0.8} />
-        </mesh>
-      ))}
-      <mesh position={[0.15, -0.28, 0.2]} castShadow>
-        <boxGeometry args={[0.02, 0.55, 0.5]} />
-        <meshStandardMaterial color="#d9cfc2" roughness={1} side={DoubleSide} />
-      </mesh>
-    </group>
-  )
-}
-
 // 悬挂浴室柜 + 台盆 + 镜子（镜子贴背墙，本地 -z）
 function Vanity({ len = 0.8 }) {
   return (
     <group>
-      <B p={[0, 0.62, 0]} s={[len, 0.42, 0.46]} c="#7a6553" r={0.6} />
-      <B p={[0, 0.85, 0]} s={[len + 0.02, 0.04, 0.48]} c="#efedea" r={0.25} />
-      <mesh position={[0, 0.875, 0.03]}>
+      <B p={[0, 0.62, 0]} s={[len, 0.42, 0.46]} mat="veneer" c="#8a6f58" />
+      <B p={[0, 0.85, 0]} s={[len + 0.02, 0.04, 0.48]} mat="ceramic" c="#efedea" />
+      <mesh position={[0, 0.875, 0.03]} material={getMat('ceramic')}>
         <cylinderGeometry args={[0.17, 0.15, 0.01, 24]} />
-        <meshStandardMaterial color="#f7f6f3" roughness={0.15} />
       </mesh>
-      <mesh position={[0, 1.45, -0.225]}>
+      <mesh position={[0, 0.95, -0.17]} material={getMat('steel')}>
+        <cylinderGeometry args={[0.012, 0.012, 0.2, 10]} />
+      </mesh>
+      <mesh position={[0, 1.45, -0.225]} material={getMat('mirror')}>
         <planeGeometry args={[len * 0.92, 0.72]} />
-        <meshStandardMaterial color="#aebcc4" roughness={0.05} metalness={0.9} />
       </mesh>
     </group>
   )
@@ -387,8 +401,8 @@ function Vanity({ len = 0.8 }) {
 function Toilet() {
   return (
     <group>
-      <B p={[0, 0.2, 0.02]} s={[0.36, 0.4, 0.5]} c="#f2efe9" r={0.3} />
-      <B p={[0, 0.5, -0.2]} s={[0.38, 0.32, 0.16]} c="#f2efe9" r={0.3} />
+      <B p={[0, 0.2, 0.02]} s={[0.36, 0.4, 0.5]} mat="ceramic" />
+      <B p={[0, 0.5, -0.2]} s={[0.38, 0.32, 0.16]} mat="ceramic" />
     </group>
   )
 }
@@ -397,7 +411,7 @@ function Toilet() {
 function ShoeCabinet({ len = 1.2 }) {
   return (
     <group>
-      <B p={[0, 0.65, 0]} s={[len, 1.0, 0.35]} c={MAT.woodDark} r={0.6} />
+      <B p={[0, 0.65, 0]} s={[len, 1.0, 0.35]} c={MAT.woodDark} />
       <B p={[0, 1.165, 0]} s={[len + 0.02, 0.03, 0.37]} c="#d9d2c6" r={0.4} />
       <B p={[-len / 4, 0.03, 0.05]} s={[0.26, 0.04, 0.1]} c="#8d7d6d" r={0.9} />
     </group>
@@ -434,16 +448,6 @@ function Planter({ len = 2 }) {
   )
 }
 
-// 吸顶装饰灯盘（不接实体）
-function Disc() {
-  return (
-    <mesh position={[0, -0.1, 0]}>
-      <cylinderGeometry args={[0.18, 0.18, 0.03, 20]} />
-      <meshStandardMaterial color="#f3f0ea" roughness={0.6} />
-    </mesh>
-  )
-}
-
 const PIECES = {
   tv: TvUnit,
   sofa: ({ scale }) => <Sofa position={[0, 0, 0]} rotation={[0, Math.PI, 0]} scale={scale} />,
@@ -458,13 +462,11 @@ const PIECES = {
   upper: Upper,
   fridge: Fridge,
   washer: Washer,
-  rack: Rack,
   vanity: Vanity,
   toilet: Toilet,
   shoe: ShoeCabinet,
   plant: Plant,
   planter: Planter,
-  disc: Disc,
 }
 
 export default function Furniture() {

@@ -1,9 +1,11 @@
-import { useHA, isOn } from '../ha/store'
+import { memo, useMemo, useRef } from 'react'
+import { useShallow } from 'zustand/react/shallow'
+import { useHA, isOn, isReadOnly, usePlan } from '../ha/store'
 import { AREAS, SCENES } from '../ha/entities'
-import { stateText, pct } from '../ha/format'
+import { stateText, pct, estimatePower } from '../ha/format'
 import { useT } from '../i18n'
 import { useIsMobile } from '../hooks'
-import Icon, { iconFor } from './icons'
+import Icon, { iconFor, SCENE_ICON } from './icons'
 
 function Slider({ label, value, unit = '', min, max, step = 1, cool, onChange }) {
   return (
@@ -53,7 +55,7 @@ function Detail({ entity, id }) {
         )}
         {a.supported?.includes('rgb') && (
           <div className="ctl">
-            <div className="ctl-head"><span className="ctl-label">颜色</span></div>
+            <div className="ctl-head"><span className="ctl-label">{t('ctl_colour')}</span></div>
             <div className="swatches">
               {COLORS.map(([key, rgb]) => (
                 <button
@@ -81,7 +83,9 @@ function Detail({ entity, id }) {
           onChange={(v) => call('cover', 'set_cover_position', id, { position: v })}
         />
         <div className="ctl seg">
-          {[['cover_open', 100], ['cover_half', 50], ['cover_shut', 0]].map(([key, p]) => (
+          {(a.device_class === 'rack'
+            ? [['rack_raise', 100], ['rack_stop_mid', 50], ['rack_lower', 0]]
+            : [['cover_open', 100], ['cover_half', 50], ['cover_shut', 0]]).map(([key, p]) => (
             <button
               key={key}
               className={a.current_position === p ? 'is-on' : ''}
@@ -172,96 +176,252 @@ function Detail({ entity, id }) {
     )
   }
 
+  if (entity.domain === 'humidifier') {
+    return (
+      <div className="dev-detail">
+        <div className="ctl">
+          <div className="ctl-head"><span className="ctl-label">{t('ctl_humidity')}</span></div>
+          <div className="stepper">
+            <button onClick={() => call('humidifier', 'set_humidity', id, { humidity: Math.max(a.min_humidity, a.humidity - 5) })} aria-label={t('ctl_humidity')}>−</button>
+            <span className="stepper-value">{a.humidity}<i>%</i></span>
+            <button onClick={() => call('humidifier', 'set_humidity', id, { humidity: Math.min(a.max_humidity, a.humidity + 5) })} aria-label={t('ctl_humidity')}>+</button>
+            <span className="stepper-note">{t('ctl_now', a.current_humidity)}</span>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  if (entity.domain === 'vacuum') {
+    return (
+      <div className="dev-detail">
+        <div className="ctl seg">
+          <button className={entity.state === 'cleaning' ? 'is-on' : ''} onClick={() => call('vacuum', 'start', id)}>{t('vac_start')}</button>
+          <button className={entity.state !== 'cleaning' ? 'is-on' : ''} onClick={() => call('vacuum', 'return_to_base', id)}>{t('vac_dock')}</button>
+        </div>
+      </div>
+    )
+  }
+
+  if (entity.domain === 'lock' && a.auto_lock) {
+    return <div className="dev-detail"><p className="dev-note">{t('lock_auto')}</p></div>
+  }
+
   return null
 }
 
-const HAS_DETAIL = ['light', 'cover', 'climate', 'fan']
 
-const METRIC_LABEL = {
-  'sensor.living_temperature': 'metric_temp',
-  'sensor.living_humidity': 'metric_humidity',
-  'sensor.living_pm25': 'metric_pm25',
-}
+// ============================================================
+// 墙装触摸屏式面板：顶部房间标签 + 两列大磁贴。点磁贴 = 开 / 关；
+// 需要调节的设备右上角一个"⋯"，在磁贴下方展开内联调节条（一次只展开一个）。
+// 切换房间标签时相机缓动飞到该房间视角（拖动即可打断）。
+// ============================================================
 
-function Device({ id }) {
+// 有内联调节条的设备
+const adjustable = (e) =>
+  (e.domain === 'light' && e.attributes.supported?.includes('brightness')) ||
+  ['cover', 'climate', 'fan', 'humidifier'].includes(e.domain) ||
+  e.attributes?.auto_off_min != null
+
+// 环境读数只放首页
+const ENV = { temperature: 'metric_temp', humidity: 'metric_humidity', pm25: 'metric_pm25' }
+const isEnv = (e) => e.domain === 'sensor' && ENV[e.attributes.device_class]
+
+// 可控设备磁贴：每块只订阅自己的实体；memo 让父组件重渲时不连带
+const Tile = memo(function Tile({ id }) {
   const t = useT()
   const entity = useHA((s) => s.entities[id])
   const toggle = useHA((s) => s.toggle)
-  const selected = useHA((s) => s.selected)
+  const open = useHA((s) => s.selected === id)
   const setSelected = useHA((s) => s.setSelected)
-
   const on = isOn(entity)
-  const open = selected === id
-  const expandable = HAS_DETAIL.includes(entity.domain) || entity.attributes?.auto_off_min != null
-
+  const tone = entity.domain === 'light' ? 'is-lamp' : 'is-dev'
   return (
-    <div className={`dev${on ? ' is-on' : ''}${open ? ' is-open' : ''}`}>
-      <div
-        className={`dev-row${expandable ? ' is-clickable' : ''}`}
-        onClick={() => expandable && setSelected(open ? null : id)}
-      >
-        <span className="dev-icon"><Icon name={iconFor(id, entity.domain)} size={18} /></span>
-        <span className="dev-meta">
-          <span className="dev-name">{t.pick(entity.name)}</span>
-          <span className="dev-state">{stateText(entity, t)}</span>
-          {open && <span className="dev-id">{id}</span>}
-        </span>
-        <button
-          className="toggle"
-          aria-label={`${entity.domain === 'lock' ? (on ? t('state_unlocked') : t('state_locked')) : (on ? t('state_off') : t('state_on'))} · ${t.pick(entity.name)}`}
-          aria-pressed={on}
-          onClick={(e) => { e.stopPropagation(); toggle(id) }}
-        />
+    <>
+      <div className={`tile ${tone}${on ? ' is-on' : ''}${open ? ' is-open' : ''}`}>
+        <button className="tile-main" aria-pressed={on} onClick={() => toggle(id)}>
+          <Icon name={iconFor(id, entity.domain)} size={22} className="tile-icon" />
+          <span className="tile-name">{t.pick(entity.name)}</span>
+          <span className="tile-state">{stateText(entity, t)}</span>
+        </button>
+        {adjustable(entity) && (
+          <button
+            className="tile-more"
+            aria-expanded={open}
+            aria-label={`${t('tile_adjust')} · ${t.pick(entity.name)}`}
+            onClick={() => setSelected(open ? null : id)}
+          >
+            <Icon name="sliders" size={15} />
+          </button>
+        )}
       </div>
-      {open && expandable && <Detail entity={entity} id={id} />}
+      {open && (
+        <div className="tile-adjust" role="group" aria-label={t.pick(entity.name)}>
+          <Detail entity={entity} id={id} />
+        </div>
+      )}
+    </>
+  )
+})
+
+// 只读传感器：不可点击的小状态磁贴（人体传感器带"模拟有人经过"）
+const SensorTile = memo(function SensorTile({ id }) {
+  const t = useT()
+  const entity = useHA((s) => s.entities[id])
+  const call = useHA((s) => s.callService)
+  const active = entity.domain === 'binary_sensor' && entity.state === 'on'
+  const alarm = active && ['smoke', 'moisture'].includes(entity.attributes.device_class)
+  return (
+    <div className={`stile${active ? ' is-active' : ''}${alarm ? ' is-alarm' : ''}`}>
+      <Icon name={iconFor(id, entity.domain)} size={16} className="stile-icon" />
+      <span className="stile-text">
+        <span className="stile-name">{t.pick(entity.name)}</span>
+        <span className="stile-state">{stateText(entity, t)}</span>
+      </span>
+      {entity.attributes.device_class === 'occupancy' && (
+        <button className="stile-btn" onClick={() => call('binary_sensor', 'simulate', id)}>{t('sim_walk')}</button>
+      )}
     </div>
+  )
+})
+
+// 全屋用电：按设备状态推算的演示估算
+function EnergyCard() {
+  const t = useT()
+  const entities = useHA((s) => s.entities)
+  const { total, items } = useMemo(() => estimatePower(entities), [entities])
+  return (
+    <div className="energy">
+      <div className="energy-head">
+        <span className="energy-label">{t('energy_title')}</span>
+        <span className="energy-value">{total >= 1000 ? (total / 1000).toFixed(2) : Math.round(total)}<i>{total >= 1000 ? 'kW' : 'W'}</i></span>
+      </div>
+      <div className="energy-bar">
+        {items.slice(0, 5).map((it) => <span key={it.id} style={{ flexGrow: it.w }} />)}
+      </div>
+      <div className="energy-top">
+        {items.slice(0, 3).map((it) => (
+          <span key={it.id}>{t.pick(entities[it.id].name)} <b>{Math.round(it.w)} W</b></span>
+        ))}
+      </div>
+      <p className="energy-note">{t('energy_note')}</p>
+    </div>
+  )
+}
+
+function HomePage({ envIds, onCount, total }) {
+  const t = useT()
+  const activeScene = useHA((s) => s.activeScene)
+  const activateScene = useHA((s) => s.activateScene)
+  const allOff = useHA((s) => s.allOff)
+  const env = useHA(useShallow((s) => envIds.map((id) => s.entities[id]?.state)))
+  const entities = useHA.getState().entities
+  return (
+    <>
+      <div className="env">
+        {envIds.map((id, i) => (
+          <div className="env-item" key={id}>
+            <span className="env-value">{env[i]}<i>{entities[id].attributes.unit_of_measurement}</i></span>
+            <span className="env-label">{t(ENV[entities[id].attributes.device_class])}</span>
+          </div>
+        ))}
+      </div>
+      <div className="tiles">
+        {SCENES.map((sc) => (
+          <button
+            key={sc.id}
+            className={`tile tile-main is-scene${activeScene === sc.id ? ' is-on' : ''}`}
+            aria-pressed={activeScene === sc.id}
+            onClick={() => activateScene(sc.id)}
+          >
+            <Icon name={SCENE_ICON[sc.id]} size={22} className="tile-icon" />
+            <span className="tile-name">{t.pick(sc.name)}</span>
+            <span className="tile-state">{t('scene_tap')}</span>
+          </button>
+        ))}
+        <button className="tile tile-main is-alloff" onClick={allOff}>
+          <Icon name="power" size={22} className="tile-icon" />
+          <span className="tile-name">{t('all_off')}</span>
+          <span className="tile-state">{t('panel_running', onCount, total)}</span>
+        </button>
+      </div>
+      <EnergyCard />
+    </>
   )
 }
 
 export default function ControlPanel() {
   const t = useT()
-  const entities = useHA((s) => s.entities)
-  const activeScene = useHA((s) => s.activeScene)
   const isMobile = useIsMobile()
   const open = useHA((s) => s.sheetOpen)
   const setOpen = useHA((s) => s.setSheetOpen)
   const collapsed = useHA((s) => s.panelCollapsed)
   const setPanelCollapsed = useHA((s) => s.setPanelCollapsed)
   const toggle = useHA((s) => s.toggle)
+  const tab = useHA((s) => s.panelTab)
+  const setTab = useHA((s) => s.setPanelTab)
+  const setView = useHA((s) => s.setView)
+  const plan = usePlan()
+  const tabRefs = useRef({})
 
-  const ids = Object.keys(entities)
-  const sensors = ids.filter((id) => entities[id].domain === 'sensor')
-  const controllable = ids.filter((id) => entities[id].domain !== 'sensor')
-  const onCount = controllable.filter((id) => isOn(entities[id])).length
-  const scene = SCENES.find((s) => s.id === activeScene)
-  const sceneName = scene ? t.pick(scene.name) : t('panel_custom')
+  // 扁平视图：id|域|区域|开关|只读。shallow 比较 —— 调亮度、温度不会让整个面板重渲
+  const rows = useHA(useShallow((s) => Object.entries(s.entities).map(([id, e]) =>
+    `${id}|${e.domain}|${e.area}|${isOn(e) ? 1 : 0}|${isReadOnly(e) ? 1 : 0}|${isEnv(e) ? 1 : 0}`)))
+  const parsed = rows.map((r) => {
+    const [id, domain, area, on, ro, env] = r.split('|')
+    return { id, domain, area, on: on === '1', ro: ro === '1', env: env === '1' }
+  })
+  const controllable = parsed.filter((r) => !r.ro)
+  const onCount = controllable.filter((r) => r.on).length
+  const envIds = parsed.filter((r) => r.env).map((r) => r.id)
+  const rooms = Object.keys(AREAS).filter((k) => parsed.some((r) => r.area === k && !r.env))
+  const current = tab === 'home' || rooms.includes(tab) ? tab : 'home'
+  const tabs = ['home', ...rooms]
+  const tabName = (k) => (k === 'home' ? t('tab_home') : t.pick(AREAS[k]))
+
+  // 切标签 = 切房间：相机缓动到该房间视角（有的话）；首页回全屋
+  const choose = (k) => {
+    setTab(k)
+    useHA.getState().setSelected(null)
+    const v = k === 'home' ? 'overview' : Object.entries(plan.views).find(([, vv]) => vv.area === k)?.[0]
+    if (v) setView(v)
+  }
+  const onTabKey = (e) => {
+    const step = { ArrowRight: 1, ArrowLeft: -1 }[e.key]
+    if (!step) return
+    e.preventDefault()
+    const next = tabs[(tabs.indexOf(current) + step + tabs.length) % tabs.length]
+    choose(next)
+    tabRefs.current[next]?.focus()
+  }
 
   // 收起态：只留一列设备图标，占 58px，仍然能直接开关
   if (!isMobile && collapsed) {
+    const entities = useHA.getState().entities
     return (
       <aside className="rail float">
         <button className="rail-btn is-expand" onClick={() => setPanelCollapsed(false)} title={t('panel_expand')}>
           <Icon name="sliders" size={17} />
         </button>
         <span className="rail-rule" />
-        {controllable.map((id) => {
-          const e = entities[id]
-          const on = isOn(e)
-          return (
-            <button
-              key={id}
-              className={`rail-btn${on ? ' is-on' : ''}`}
-              onClick={() => toggle(id)}
-              title={`${t.pick(e.name)} · ${stateText(e, t)}`}
-              aria-label={`${on ? t('state_off') : t('state_on')} · ${t.pick(e.name)}`}
-            >
-              <Icon name={iconFor(id, e.domain)} size={17} />
-            </button>
-          )
-        })}
+        {controllable.map(({ id, on }) => (
+          <button
+            key={id}
+            className={`rail-btn${on ? ' is-on' : ''}`}
+            onClick={() => toggle(id)}
+            title={`${t.pick(entities[id].name)} · ${stateText(entities[id], t)}`}
+            aria-label={`${on ? t('state_off') : t('state_on')} · ${t.pick(entities[id].name)}`}
+          >
+            <Icon name={iconFor(id, entities[id].domain)} size={17} />
+          </button>
+        ))}
       </aside>
     )
   }
+
+  const list = parsed.filter((r) => r.area === current && !r.env)
+  const ctl = list.filter((r) => !r.ro)
+  const sensors = list.filter((r) => r.ro)
 
   return (
     <aside className={`panel float${isMobile ? ' is-sheet' : ''}${isMobile && open ? ' is-open' : ''}`}>
@@ -276,16 +436,14 @@ export default function ControlPanel() {
         </button>
       )}
 
-      <div className="panel-head" onClick={() => isMobile && setOpen(!open)}>
+      <div className="panel-head">
         <div className="panel-heading">
-          <div>
-            <div className="panel-eyebrow">{t('panel_eyebrow')}</div>
-            <h2 className="panel-title">{sceneName}</h2>
-          </div>
+          <h2 className="panel-title" onClick={() => isMobile && setOpen(!open)}>{tabName(current)}</h2>
+          <span className="panel-sub">{t('panel_running', onCount, controllable.length)}</span>
           {!isMobile && (
             <button
               className="panel-collapse"
-              onClick={(e) => { e.stopPropagation(); setPanelCollapsed(true) }}
+              onClick={() => setPanelCollapsed(true)}
               title={t('panel_collapse')}
               aria-label={t('panel_collapse')}
             >
@@ -293,40 +451,40 @@ export default function ControlPanel() {
             </button>
           )}
         </div>
-        <p className="panel-sub">{t('panel_running', onCount, controllable.length)}</p>
+        <div className="tabs" role="tablist" aria-label={t('tabs_label')} onKeyDown={onTabKey}>
+          {tabs.map((k) => (
+            <button
+              key={k}
+              ref={(el) => (tabRefs.current[k] = el)}
+              role="tab"
+              id={`tab-${k}`}
+              aria-selected={current === k}
+              aria-controls="panel-tabpanel"
+              tabIndex={current === k ? 0 : -1}
+              className={`tab${current === k ? ' is-on' : ''}`}
+              onClick={() => { choose(k); if (isMobile) setOpen(true) }}
+            >
+              {tabName(k)}
+            </button>
+          ))}
+        </div>
       </div>
 
-      <div className="panel-body">
-        <div className="climate-strip">
-          {sensors.map((id) => {
-            const e = entities[id]
-            return (
-              <div className="metric" key={id}>
-                <Icon name={iconFor(id, e.domain)} size={15} className="metric-icon" />
-                <div className="metric-value">
-                  {e.state}<i>{e.attributes.unit_of_measurement}</i>
-                </div>
-                <div className="metric-label">{METRIC_LABEL[id] ? t(METRIC_LABEL[id]) : t.pick(e.name)}</div>
+      <div className="panel-body" role="tabpanel" id="panel-tabpanel" aria-labelledby={`tab-${current}`}>
+        {current === 'home' ? (
+          <HomePage envIds={envIds} onCount={onCount} total={controllable.length} />
+        ) : (
+          <>
+            <div className="tiles">
+              {ctl.map((r) => <Tile key={r.id} id={r.id} />)}
+            </div>
+            {sensors.length > 0 && (
+              <div className="stiles">
+                {sensors.map((r) => <SensorTile key={r.id} id={r.id} />)}
               </div>
-            )
-          })}
-        </div>
-
-        {Object.entries(AREAS).map(([areaKey, areaName]) => {
-          const list = controllable.filter((id) => entities[id].area === areaKey)
-          if (!list.length) return null
-          const lit = list.filter((id) => isOn(entities[id])).length
-          return (
-            <section className="area" key={areaKey}>
-              <div className="area-head">
-                <span className="area-name">{t.pick(areaName)}</span>
-                <span className="area-rule" />
-                <span className="area-count">{lit}/{list.length}</span>
-              </div>
-              {list.map((id) => <Device key={id} id={id} />)}
-            </section>
-          )
-        })}
+            )}
+          </>
+        )}
       </div>
     </aside>
   )

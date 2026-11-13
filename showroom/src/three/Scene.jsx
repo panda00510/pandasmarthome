@@ -1,7 +1,8 @@
 import { Suspense, useEffect, useMemo, useRef } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { OrbitControls, ContactShadows } from '@react-three/drei'
-import { EffectComposer, Bloom, Vignette, N8AO } from '@react-three/postprocessing'
+import { EffectComposer, Bloom, Vignette, N8AO, ToneMapping } from '@react-three/postprocessing'
+import { ToneMappingMode } from 'postprocessing'
 import { Vector3, Color, Fog } from 'three'
 import { useHA, usePlan } from '../ha/store'
 import hdriUrl from '../assets/hdri/studio_small_09_1k.hdr?url'
@@ -17,6 +18,7 @@ import ExternalHouse from './ExternalHouse'
 import HdriEnvironment from './HdriEnvironment'
 import { SHELL_LAYER } from './layers'
 import Surroundings from './Surroundings'
+import { startTextures, startProceduralTextures } from './materials'
 
 // 换成自己的模型：在 .env 里设置 VITE_HOUSE_MODEL=/house.glb
 const MODEL_URL = import.meta.env.VITE_HOUSE_MODEL || null
@@ -118,9 +120,22 @@ function Atmosphere() {
   return null
 }
 
+// 挂在 Suspense 里面：HDRI、户型几何都就绪后才会挂载。useFrame 在渲染前调用，
+// 数到第 2 帧时第 1 帧已经真正画出来了，此时通知加载屏淡出，再开始后台生成纹理。
+function FirstFrame() {
+  const n = useRef(0)
+  useFrame(() => {
+    if (++n.current !== 2) return
+    useHA.getState().setSceneReady(true)
+    startProceduralTextures()
+  })
+  return null
+}
+
 function World() {
   const bindings = useRef(null)
   const planId = useHA((s) => s.planId)
+  const [cx, cz] = usePlan().center
   // 按户型整组重挂：灯、家具、热点都从新户型的数据重建
   return (
     <group key={planId}>
@@ -138,6 +153,9 @@ function World() {
       <Fixtures />
       <Surroundings />
       <Hotspots />
+      {/* 地台下的接触阴影只算一次（场景静态），不再每帧重绘 */}
+      <ContactShadows position={[cx, -0.31, cz]} opacity={0.45} scale={18} blur={2.6} far={5} resolution={512} color="#05070b" frames={1} />
+      <FirstFrame />
     </group>
   )
 }
@@ -152,14 +170,18 @@ export default function Scene() {
         : plan.views,
     [isMobile, plan]
   )
-  const [cx, cz] = plan.center
   const start = views.overview
 
   return (
     <Canvas
       shadows
-      dpr={isMobile ? [1, 1.5] : [1, 1.8]}
+      dpr={isMobile ? [1, 1.5] : [1, 1.75]}
       gl={{ antialias: true, powerPreference: 'high-performance' }}
+      onCreated={(state) => {
+        startTextures(state.gl)
+        // 仅开发环境：给截图 / 排查脚本一个拿相机的入口，生产构建会被摇树掉
+        if (import.meta.env.DEV) window.__r3f = state.get
+      }}
       camera={{
         position: start.pos,
         fov: isMobile ? MOBILE_FOV : DESKTOP_FOV,
@@ -175,7 +197,6 @@ export default function Scene() {
         <HdriEnvironment url={hdriUrl} />
       </Suspense>
 
-      <ContactShadows position={[cx, -0.31, cz]} opacity={0.45} scale={18} blur={2.6} far={5} resolution={512} color="#05070b" />
 
       <OrbitControls
         makeDefault
@@ -201,8 +222,11 @@ export default function Scene() {
           quality={isMobile ? 'low' : 'medium'}
           halfRes={isMobile}
         />
-        <Bloom mipmapBlur luminanceThreshold={0.95} luminanceSmoothing={0.45} intensity={0.7} levels={isMobile ? 5 : 6} />
+        {/* 只有真正的灯罩（自发光 > 1）会起光晕；热点、指示灯、电视画面都压在阈值以下 */}
+        <Bloom mipmapBlur luminanceThreshold={1} luminanceSmoothing={0.3} intensity={0.55} levels={isMobile ? 4 : 6} />
         <Vignette offset={0.26} darkness={0.5} />
+        {/* 合成器把渲染器的 toneMapping 关掉了，必须在最后补一道，否则高光直接截断发白 */}
+        <ToneMapping mode={ToneMappingMode.AGX} />
       </EffectComposer>
     </Canvas>
   )

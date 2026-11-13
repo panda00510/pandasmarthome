@@ -1,5 +1,4 @@
 import { useHA, usePlan } from '../ha/store'
-import { PLANS } from '../plans'
 import { useT } from '../i18n'
 import Icon from './icons'
 import PandaLogo from './PandaLogo'
@@ -14,8 +13,6 @@ export default function Brand() {
   const setFocusMode = useHA((s) => s.setFocusMode)
   const lang = useHA((s) => s.lang)
   const setLang = useHA((s) => s.setLang)
-  const planId = useHA((s) => s.planId)
-  const setPlan = useHA((s) => s.setPlan)
   const plan = usePlan()
   // 样板间部署在 /showroom/，官网在上一级；中文回到 /zh/
   const siteHref = lang === 'zh' ? '../zh/' : '../'
@@ -35,16 +32,6 @@ export default function Brand() {
           <Icon name="exit" />
           <span className="tool-label">{t('back_site')}</span>
         </a>
-        <span className="tool-rule" />
-        {/* 户型切换：原生 select，手机上弹系统选择器，占位只有一个按钮宽 */}
-        <label className="tool is-plan" title={t('tool_plan')}>
-          <Icon name="cube" size={15} />
-          <select value={planId} onChange={(e) => setPlan(e.target.value)} aria-label={t('tool_plan')}>
-            {Object.entries(PLANS).map(([id, p]) => (
-              <option key={id} value={id}>{t.pick(p.short)}</option>
-            ))}
-          </select>
-        </label>
         <span className="tool-rule" />
         <button
           className="tool is-lang"

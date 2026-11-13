@@ -8,6 +8,8 @@ import ControlPanel from './ui/ControlPanel'
 import EventLog from './ui/EventLog'
 import CalibrationBar from './ui/CalibrationBar'
 import Assess from './ui/Assess'
+import Loader from './ui/Loader'
+import PlanSwitch from './ui/PlanSwitch'
 import Icon from './ui/icons'
 import { useT } from './i18n'
 
@@ -31,12 +33,14 @@ export default function App() {
       </div>
 
       <Brand />
+      <PlanSwitch />
       <ViewRail />
       <Assess />
       <Console />
       <ControlPanel />
       <EventLog />
       <CalibrationBar />
+      <Loader />
 
       {focusMode && (
         <button className="focus-exit float" onClick={() => setFocusMode(false)}>

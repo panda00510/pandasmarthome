@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 import { useFrame } from '@react-three/fiber'
-import { Html, TransformControls } from '@react-three/drei'
+import { Html, TransformControls, Billboard } from '@react-three/drei'
 import { useHA, isOn, usePlan } from '../ha/store'
 import { stateText } from '../ha/format'
 import { useT } from '../i18n'
@@ -50,7 +50,11 @@ function Hotspot({ conf, rank }) {
     if (dot.current) dot.current.scale.setScalar(scale.current)
   })
 
-  const color = calibrating ? (isCalibTarget ? '#86a9b4' : '#8a8175') : on ? '#e5b571' : '#7b7267'
+  // 热点只是"可点击的标记"，不是灯：不自发光、不进 Bloom（颜色值都压在 Bloom 阈值以下），
+  // 开 / 关只用颜色区分 —— 开 = 琥珀实心 + 琥珀描边，关 = 灰色。
+  // 以前这里 emissiveIntensity 2.4 + 一个半透明光晕球，被 Bloom 放大后，
+  // 电视、空调、窗帘、门锁、门铃"开"的时候各自旁边都像多了一盏灯 —— 就是这一处通用代码。
+  const color = calibrating ? (isCalibTarget ? '#86a9b4' : '#8a8175') : on ? '#c99a5c' : '#6f675d'
 
   const handleClick = (e) => {
     e.stopPropagation()
@@ -61,8 +65,8 @@ function Hotspot({ conf, rank }) {
   return (
     <>
       <group ref={group} position={pos}>
+      {/* 点击判定用的透明球，比可见圆点大一圈，好点 */}
       <mesh
-        ref={dot}
         onClick={handleClick}
         onPointerOver={(e) => {
           e.stopPropagation()
@@ -74,18 +78,20 @@ function Hotspot({ conf, rank }) {
           document.body.style.cursor = 'auto'
         }}
       >
-        <sphereGeometry args={[isMobile ? 0.11 : 0.075, 18, 14]} />
-        <meshStandardMaterial
-          color={color}
-          emissive={color}
-          emissiveIntensity={on || isCalibTarget ? 2.4 : 0.5}
-          toneMapped={false}
-        />
+        <sphereGeometry args={[isMobile ? 0.12 : 0.08, 10, 8]} />
+        <meshBasicMaterial transparent opacity={0} depthWrite={false} />
       </mesh>
-      <mesh scale={2.6}>
-        <sphereGeometry args={[isMobile ? 0.11 : 0.075, 12, 10]} />
-        <meshBasicMaterial color={color} transparent opacity={on || isCalibTarget ? 0.13 : 0.06} depthWrite={false} />
+      <mesh ref={dot}>
+        <sphereGeometry args={[isMobile ? 0.07 : 0.045, 18, 14]} />
+        <meshBasicMaterial color={color} transparent opacity={0.9} depthWrite={false} toneMapped={false} />
       </mesh>
+      {/* 描边环：始终朝向相机，标记"这里可以点"，本身不发光 */}
+      <Billboard>
+        <mesh>
+          <ringGeometry args={[isMobile ? 0.085 : 0.058, isMobile ? 0.1 : 0.07, 32]} />
+          <meshBasicMaterial color={on ? '#d7b07a' : '#d8d0c4'} transparent opacity={on ? 0.85 : 0.5} depthWrite={false} toneMapped={false} />
+        </mesh>
+      </Billboard>
 
         {visible && (
           <Html position={[0, 0.2, 0]} center zIndexRange={[8, 0]}>

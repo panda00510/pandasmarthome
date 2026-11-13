@@ -42,7 +42,8 @@ public_html/showroom/
 ├── .htaccess
 ├── index.html
 ├── assets/
-│   ├── index-xxxx.js          ~1.5 MB（gzip 后 ~440 KB）
+│   ├── index-xxxx.js          ~1.6 MB（gzip 后 ~480 KB）
+│   ├── map/normal/rough-xxxx.webp   CC0 材质贴图，合计约 1.9 MB（按需懒加载）
 │   ├── index-xxxx.css
 │   └── studio_small_09_1k-xxxx.hdr   1.5 MB
 ├── models/sofa_03.glb          888 KB
@@ -56,13 +57,13 @@ public_html/showroom/
 
 **2. MIME 类型** — `.glb` 和 `.hdr` 在多数共享主机上没有默认 MIME 类型，服务器可能按 `text/plain` 返回导致加载失败。`public/.htaccess` 里已经声明好了，**别忘了上传这个隐藏文件**（cPanel 文件管理器要先勾选「显示隐藏文件」）。
 
-**3. gzip** — 未压缩的 JS 有 1.5 MB，gzip 后 440 KB。`.htaccess` 里配了 `mod_deflate`，如果主机没开这个模块，可以在 cPanel 的「优化网站」里打开压缩。
+**3. gzip** — 未压缩的 JS 约 1.6 MB，gzip 后约 480 KB。`.htaccess` 里配了 `mod_deflate`，如果主机没开这个模块，可以在 cPanel 的「优化网站」里打开压缩。
 
 ### 另一种更省事的方式
 
-`npm run build:single` 产出的 `dist-single/index.html` 是**自包含单文件**（3.6 MB，HDRI 都内联了）。直接把这一个文件传上去改名即可，不用管 MIME 和路径。
+`npm run build:single` 产出的 `dist-single/index.html` 是**自包含单文件**（约 7.3 MB，HDRI 和材质贴图都内联了）。直接把这一个文件传上去改名即可，不用管 MIME 和路径。
 
-代价是每次访问都要重新下载完整的 3.6 MB —— HDRI 无法被单独缓存。**给客户临时看用它，正式挂官网上用 `dist/`。**
+代价是每次访问都要重新下载完整的 7 MB 多 —— HDRI 和贴图无法被单独缓存。**给客户临时看用它，正式挂官网上用 `dist/`。**
 
 ## 嵌入到官网
 
@@ -81,7 +82,7 @@ public_html/showroom/
 几点提醒：
 
 - 页面是全屏 3D 应用，iframe 要给足高度（建议 `aspect-ratio` 而不是固定 px），太矮会挤掉底部控制台。
-- `loading="lazy"` 很重要 —— 首屏就加载一个含 HDRI 的 3.6 MB 页面会拖慢官网。
+- `loading="lazy"` 很重要 —— 首屏就加载一个含 HDRI 和贴图的 7 MB 页面会拖慢官网。
 - 官网页头已经有 logo，嵌进去会重复。可以在样板间里开**专注模式**当默认（`store.js` 把 `focusMode` 初值改成 `true`），或者干脆把 `<Brand />` 从 `App.jsx` 去掉。
 - 官网是浅色、样板间是深色，这个对比是刻意的：深色展示区嵌在浅色页面里是常规做法，不用强行统一。
 
@@ -98,9 +99,10 @@ Blender 脚本（`tools/plan.py`，`PLAN=3room` 选户型）读同一份。
 
 ### 户型切换
 
-- 顶部工具条的户型下拉（原生 `<select>`，手机上弹系统选择器）；当前户型在 store 的 `planId`。
+- 当前户型在 store 的 `planId`。
 - 深链 `?plan=3room` / `4room` / `5room`，切换时用 `history.replaceState` 把参数写回地址栏，复制即可分享。
-- 切户型会把设备重置为初始状态、相机回全屋；户型只带它热点表里出现的实体（加环境传感器），面板分组和设备计数随之变化。
+- 户型切换是画面左上方品牌区下方单独一行的分段按钮（radiogroup，方向键可切；手机排在顶部第二行），首次进入有一次性提示，已看过记在 localStorage。
+- 切户型会把设备重置为初始状态、相机回全屋，加载屏在新户型首帧前盖住画面；户型只带它热点表里出现的实体（加环境传感器、所属插座在场时的功率传感器），面板标签和设备计数随之变化。
 - 标定模式导出的是当前户型 JSON 的 `hotspots` 片段，标定值按 `户型:实体` 分开存。
 
 ### 户型与真实组屋的对照
@@ -125,14 +127,19 @@ npm run dev
 | 能力 | 说明 |
 |---|---|
 | 3D 户型 | **HDB 三房 / 四房 / 五房可切换**（66 / 90 / 110 ㎡）：玄关、半开放厨房 + 服务阳台、家庭避难所、主卧带套卫、公共卫生间；四房五房带小阳台 |
-| 灯光联动 | 6 路灯具，支持开关、亮度、色温、RGB 调色，光照实时反映在场景中 |
+| 灯光联动 | 每个房间都有灯（四房卧室 3、五房书房与起居角也补齐了），支持开关、亮度、色温、RGB 调色，光照实时反映在场景中 |
 | 窗帘 | 按 `current_position` 0–100 平滑开合，并真实遮挡阳光投影 |
 | 电视 | 开机时屏幕自发光、画面亮度起伏，并向客厅投出冷色补光 |
-| 空调 / 吊扇 / 热水器 / 门锁 | 客厅和两间卧室的分体空调、三档吊扇、浴室储水式热水器（定时关闭）、大门电子锁和可视门铃 |
-| 场景 | 回家 / 观影 / 用餐 / 睡眠 / 离家，一键切换整屋状态与时间氛围 |
+| 空调 / 吊扇 / 热水器 | 分体空调（导风板 + 淡气流 + 毫米级运行灯）、三档吊扇、公卫与主卫储水式热水器（定时关闭） |
+| 门锁 / 门磁 | 开锁 → 门向内打开（门磁 `binary_sensor.entry_door` on）→ 6 s 后关门 → 1.5 s 后自动反锁；锁面指示点：锁=红、开=绿；每一步都进事件流 |
+| 新加坡特色设备 | 服务阳台智能晾衣架（升降 cover + 风干 fan + 照明 light）、洗衣机旁漏水传感器、厨房烟雾燃气报警、主卧除湿机（humidifier）、扫地机器人（vacuum，按路径清扫后回充） |
+| 自动化演示 | 走廊人体存在传感器 +「有人自动开灯」开关；电视柜 / 书桌智能插座带功率读数；首页「当前功率」按设备状态推算（标注为演示估算） |
+| 场景 | 回家 / 观影 / 用餐 / 睡眠 / 离家，一键切换整屋状态与时间氛围（在右侧面板「首页」页） |
+| 控制面板 | 墙装触摸屏式：顶部房间标签（切标签相机缓动到该房间）+ 两列大磁贴，点一下开关，右上角「调节」展开内联滑块；只读传感器是虚线小状态条 |
+| 加载屏 | `index.html` 里纯 CSS 的品牌加载屏（JS 执行前就可见），React 接管后盖到场景真正出第一帧再 400 ms 淡出；有贴图下载时显示真实的文件计数进度 |
 | 时间轴 | 拖动即可从清晨到深夜，日光强度与色温连续变化 |
 | 事件流 | 左下角实时打印 `state_changed`，结构与真实 HA 一致 |
-| 材质 | 木地板、瓷砖、布纹、地毯全部用 Canvas 2D 程序化生成，含法线与粗糙度贴图，不引用任何图片文件 |
+| 材质 | 木地板、地砖、墙砖、乳胶漆、布艺、木皮、石英石用 CC0 PBR 贴图（Poly Haven / ambientCG，合计约 1.9 MB WebP，来源见仓库根 `ASSET_SOURCES.md`）；混凝土剖面、窗帘、地毯是程序化纹理；图片加载失败自动回退程序化 |
 | 热点标定 | 顶栏「标定」进入后可拖动 3D 里的设备锚点，导出坐标表，换模型后重新定位用 |
 | 手机端 | 竖屏自适应：视场角与机位切换、控制面板变底部抽屉、标签默认收起 |
 
@@ -190,6 +197,24 @@ npx gltf-transform prune step2.glb public/models/sofa_03.glb
 ```
 
 没用 `gltf-transform optimize --texture-compress`，因为那需要 `sharp` 编译原生二进制。用系统自带的 `sips` 降分辨率效果一样，2K→1K 体积就降到四分之一。
+
+## 材质与贴图
+
+**材质只在一处定义：`src/three/materials.js` 的 `MATERIALS` 表**。组件里一律 `getMat('veneer', { color })` 取共享材质（同参数只建一份）。
+
+- 几何 UV 一律按「米」给：`RoundedBox` / 挤出体天生如此，墙地面在 `ProceduralShell` 里按世界坐标算，盒子类几何用 `metersUV()`。所以贴图密度只由表里的 `meters`（一张贴图对应的真实边长）决定，不会随房间、家具尺寸拉伸。地面按房间错开 UV 相位，木地板顺着房间长边铺。
+- `img`：`src/assets/textures/<集>/{map,normal,rough}.webp`，canvas 创建时就开始懒加载（与 HDRI 并行，进度条可见）；手机加载 512 版本、跳过法线。
+- `tex`：程序化回退（`textures.js`），首帧之后才逐张生成，不拖慢首帧。
+- 换贴图：把新文件放进对应目录、在 `ASSET_SOURCES.md` 登记即可，组件不用改。
+- 墙体：每段墙的两个大面按「朝向哪个房间」选材质 —— 厨卫贴砖到顶、居室乳胶漆 + 踢脚线、外立面单独一种漆、墙顶截面是混凝土剖面色。全部按材质合并成几张大网格（一种材质一次 draw call）。
+
+## 光照与性能
+
+- **开关灯绝不改变灯的数量或投影灯数量**：`light.visible` / `castShadow` 一变，three 会重编译全部 shader（以前点一下灯卡 0.9–2 s）。现在所有灯始终挂载、只改强度；投影灯在户型加载时固定选 4 盏主灯（手机 2 盏），点光源阴影只渲染一次（`shadow.autoUpdate = false`）。
+- 3D 设备在 `useFrame` 里用 `useHA.getState()` 读状态，开关一个设备不触发 React 重渲；面板磁贴各自订阅自己的实体。
+- 合成器会关掉渲染器的 tone mapping，所以后处理末尾补了一道 `ToneMapping(AgX)`；Bloom 阈值 1.0，只有灯罩会起光晕。
+- **只有 light 域可以"发光"**：热点标记、设备指示灯、电视画面全部压在 Bloom 阈值以下，不照亮环境。
+- `ContactShadows` 只算一帧；DPR 桌面 ≤1.75、手机 ≤1.5。
 
 ## 程序化建模
 
@@ -252,16 +277,20 @@ src/
     Furniture.jsx  家具
     Fixtures.jsx   灯具与光照（受实体状态驱动）
     Curtains.jsx   窗帘动画
-    Devices.jsx    分体空调、吊扇、热水器、门锁与门铃
+    Devices.jsx    分体空调、吊扇、热水器、门铃、晾衣架、扫地机、除湿机、插座、各类传感器
     Hotspots.jsx   3D 内可点击热点 + 拖拽标定
-    textures.js    程序化材质生成（噪声、木纹、布纹、法线贴图）
+    materials.js   材质唯一定义处 + 贴图加载（图片 / 程序化回退）
+    textures.js    程序化纹理（回退用）、挂画
+    EntryDoor.jsx  大门：门扇开合 + 电子锁锁体
     Scene.jsx      Canvas 组装、相机预设、后处理
     ExternalHouse.jsx  外部 glTF 模型加载（可选）
   ui/
     Brand.jsx      左上品牌与工具按钮
     ViewRail.jsx   左侧视角切换
     Console.jsx    底部场景与时间轴
-    ControlPanel.jsx 右侧设备面板（手机上变底部抽屉）
+    ControlPanel.jsx 右侧触摸屏式面板（房间标签 + 磁贴；手机上变底部抽屉）
+    PlanSwitch.jsx 户型分段按钮（首次进入有一次性提示）
+    Loader.jsx     品牌加载屏（与 index.html 静态首屏同一套样式）
     EventLog.jsx   事件流
     CalibrationBar.jsx 标定面板
     icons.jsx      线性 SVG 图标集
@@ -270,11 +299,11 @@ src/
 
 ## 增加一个设备
 
-1. 在 `src/ha/entities.js` 的 `INITIAL_ENTITIES` 里加一条，实体 ID 按 HA 规范写成 `domain.name`。
-2. 如果它需要在 3D 里有光或有动画，在 `src/three/Fixtures.jsx` 的 `LAMPS` 或 `Devices.jsx` 里加对应表现。
-3. 在 `src/three/Hotspots.jsx` 的 `HOTSPOTS` 里加一个锚点坐标。
+1. 在 `src/ha/entities.js` 的 `INITIAL_ENTITIES` 里加一条，实体 ID 按 HA 规范写成 `domain.name`，`area` 决定它出现在面板的哪个房间标签；场景里需要的状态加到 `SCENES`。
+2. 在各户型 JSON 的 `hotspots` 里加锚点（户型只带热点表里出现的实体）；灯加到 `lamps`，其他设备加到 `devices`（类型见 `Devices.jsx` 的 `KINDS`）。
+3. 联动逻辑（定时、互锁）写在 `store.js` 的 `automations()`。
 
-右侧控制面板会自动按 `domain` 渲染对应控件，不用改 UI 代码。
+右侧面板按 `domain` 自动生成磁贴和调节条，不用改 UI 代码。
 
 ## 调整设备热点位置
 

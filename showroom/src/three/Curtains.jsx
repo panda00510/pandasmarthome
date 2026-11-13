@@ -1,9 +1,9 @@
 import { useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
-import { PlaneGeometry, DoubleSide } from 'three'
+import { PlaneGeometry } from 'three'
 import { useHA, usePlan } from '../ha/store'
 import { damp } from './utils'
-import { getTextures, tiled } from './textures'
+import { getMat } from './materials'
 
 const FOLDS = 7        // 褶皱数
 const SEGMENTS = 40    // 横向细分，够画出圆滑的波
@@ -13,6 +13,9 @@ const SEGMENTS = 40    // 横向细分，够画出圆滑的波
 function makeGeometry(height) {
   const g = new PlaneGeometry(1, height, SEGMENTS, 1)
   g.userData.base = Float32Array.from(g.attributes.position.array)
+  // 布纹按米：横向按收拢前的整幅宽（约 1.6 m，褶皱里布更多），纵向按高度
+  const uv = g.attributes.uv
+  for (let i = 0; i < uv.count; i++) uv.setXY(i, uv.getX(i) * 1.6, uv.getY(i) * height)
   return g
 }
 
@@ -22,7 +25,6 @@ function Curtain({ entityId, x0, x1, z, top = 2.45, bottom = 0.04, color = '#e6d
   const half = (x1 - x0) / 2
   const openW = 0.3
 
-  const maps = useMemo(() => tiled(getTextures().curtain, 2.2, Math.max(1, h / 0.5)), [h])
   const geoL = useMemo(() => makeGeometry(h), [h])
   const geoR = useMemo(() => makeGeometry(h), [h])
 
@@ -36,6 +38,9 @@ function Curtain({ entityId, x0, x1, z, top = 2.45, bottom = 0.04, color = '#e6d
     // 0 = 完全摊开, 1 = 完全收拢
     const gather = half > openW ? 1 - (w - openW) / (half - openW) : 1
     const amp = 0.015 + gather * 0.085
+    // 停稳后不再每帧重算顶点和法线
+    if (Math.abs(amp - (left.current?.userData.amp ?? -1)) < 1e-5) return
+    if (left.current) left.current.userData.amp = amp
 
     const panels = [
       [left, geoL, x0 + w / 2],
@@ -62,9 +67,8 @@ function Curtain({ entityId, x0, x1, z, top = 2.45, bottom = 0.04, color = '#e6d
   return (
     <group>
       {/* 窗帘杆 */}
-      <mesh position={[(x0 + x1) / 2, top + 0.09, z]} rotation={[0, 0, Math.PI / 2]}>
+      <mesh position={[(x0 + x1) / 2, top + 0.09, z]} rotation={[0, 0, Math.PI / 2]} material={getMat('brass', { color: '#4a4038' })}>
         <cylinderGeometry args={[0.022, 0.022, x1 - x0 + 0.3, 10]} />
-        <meshStandardMaterial color="#4a4038" roughness={0.45} metalness={0.55} />
       </mesh>
 
       {[[left, geoL], [right, geoR]].map(([ref, geo], i) => (
@@ -75,16 +79,8 @@ function Curtain({ entityId, x0, x1, z, top = 2.45, bottom = 0.04, color = '#e6d
           position={[0, bottom + h / 2, z]}
           castShadow
           receiveShadow
-        >
-          <meshStandardMaterial
-            color={color}
-            roughness={0.98}
-            metalness={0}
-            side={DoubleSide}
-            normalScale={[1.2, 1.2]}
-            {...maps}
-          />
-        </mesh>
+          material={getMat('curtain', { color })}
+        />
       ))}
     </group>
   )

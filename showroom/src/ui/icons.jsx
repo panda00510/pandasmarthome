@@ -14,6 +14,15 @@ const PATHS = {
   lock: 'M8 11V8.2a4 4 0 0 1 8 0V11M6.5 11h11v9h-11z',
   doorbell: 'M9 10.5a3 3 0 0 1 6 0c0 3.2 1.6 4.2 1.6 4.2H7.4S9 13.7 9 10.5M10.2 18.2a1.8 1.8 0 0 0 3.6 0',
   heater: 'M8 4.5h8v15H8zM10.2 8h3.6M10.2 11.2h3.6M10.2 14.4h3.6',
+  rack: 'M3.5 4.5h17M7 4.5v4M17 4.5v4M4.5 8.5h15M7.5 8.5l-1.5 7h4l-1-7M14.5 8.5l1 9h3l-1.5-9',
+  vacuum: 'M12 3.5a8.5 8.5 0 1 0 0 17 8.5 8.5 0 0 0 0-17zM12 7.5a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9zM12 3.5v4',
+  dehumid: 'M7 3.5h10v17H7zM9.5 7h5M12 11.5c-1.4 1.8-2.1 3-2.1 3.9a2.1 2.1 0 0 0 4.2 0c0-.9-.7-2.1-2.1-3.9z',
+  plug: 'M9 3.5v4M15 3.5v4M6.5 7.5h11v4a5.5 5.5 0 0 1-11 0zM12 17v3.5',
+  door: 'M6 20.5V3.5h12v17M3.5 20.5h17M14.5 12h.01',
+  smoke: 'M12 3.5a8.5 3 0 1 0 0 6 8.5 3 0 0 0 0-6zM5 12.5c1.2 1 2.4 1 3.5 0s2.3-1 3.5 0 2.3 1 3.5 0 2.3-1 3.5 0M5 16.5c1.2 1 2.4 1 3.5 0s2.3-1 3.5 0 2.3 1 3.5 0 2.3-1 3.5 0',
+  leak: 'M12 3c-2.6 3.4-4 5.7-4 7.5a4 4 0 0 0 8 0C16 8.7 14.6 6.4 12 3zM4 19.5c1.3 1 2.7 1 4 0s2.7-1 4 0 2.7 1 4 0 2.7-1 4 0',
+  motion: 'M13.5 4.5a1.5 1.5 0 1 0 0 .01M10 21l2.2-6.5 2.8 2.5v4.5M8.5 11l3-3.5 3.5 1.5 2 3.5M12.2 14.5L11.5 8',
+  auto: 'M12 3.5a8.5 8.5 0 1 0 8.5 8.5M20.5 3.5v5h-5M9 15.5l3-7.5 3 7.5M10.1 13h3.8',
   // 传感器
   thermo: 'M14 14.9V4.5a2 2 0 1 0-4 0v10.4a4 4 0 1 0 4 0z',
   droplet: 'M12 21.5a6.9 6.9 0 0 0 6.9-6.9c0-4-6.9-12.1-6.9-12.1S5.1 10.6 5.1 14.6A6.9 6.9 0 0 0 12 21.5z',
@@ -77,6 +86,19 @@ const BY_ENTITY = {
   'fan.living_ceiling': 'fan',
   'fan.bedroom_ceiling': 'fan',
   'fan.second_ceiling': 'fan',
+  'switch.mbath_heater': 'heater',
+  'light.lounge_floor': 'floorLamp',
+  'cover.yard_rack': 'rack',
+  'fan.yard_rack_dry': 'fan',
+  'binary_sensor.entry_door': 'door',
+  'binary_sensor.kitchen_smoke': 'smoke',
+  'binary_sensor.yard_leak': 'leak',
+  'binary_sensor.hall_motion': 'motion',
+  'input_boolean.hall_auto': 'auto',
+  'vacuum.robot': 'vacuum',
+  'humidifier.bedroom_dehumidifier': 'dehumid',
+  'switch.tv_plug': 'plug',
+  'switch.desk_plug': 'plug',
 }
 
 const BY_DOMAIN = {
@@ -87,6 +109,10 @@ const BY_DOMAIN = {
   switch: 'power',
   fan: 'fan',
   sensor: 'thermo',
+  binary_sensor: 'door',
+  vacuum: 'vacuum',
+  humidifier: 'dehumid',
+  input_boolean: 'auto',
 }
 
 export const iconFor = (id, domain) => BY_ENTITY[id] ?? BY_DOMAIN[domain] ?? 'power'

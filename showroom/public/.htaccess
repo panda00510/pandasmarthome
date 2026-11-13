@@ -5,8 +5,9 @@
 AddType model/gltf-binary .glb
 AddType image/vnd.radiance .hdr
 AddType font/woff2 .woff2
+AddType image/webp .webp
 
-# 压缩：JS 未压缩 1.5 MB，gzip 后约 440 KB，差别很大
+# 压缩：JS 未压缩约 1.6 MB，gzip 后约 480 KB，差别很大
 <IfModule mod_deflate.c>
   AddOutputFilterByType DEFLATE text/html text/plain text/css
   AddOutputFilterByType DEFLATE application/javascript application/json
@@ -23,6 +24,7 @@ AddType font/woff2 .woff2
   ExpiresByType text/css                "access plus 1 year"
   ExpiresByType model/gltf-binary       "access plus 1 year"
   ExpiresByType image/vnd.radiance      "access plus 1 year"
+  ExpiresByType image/webp              "access plus 1 year"
 </IfModule>
 
 <IfModule mod_headers.c>

@@ -1,10 +1,26 @@
 import { useEffect, useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
-import { Color, DoubleSide } from 'three'
+import { Color, DoubleSide, AdditiveBlending, CanvasTexture } from 'three'
+import { MOBILE_QUERY } from '../hooks'
 import { useHA, lightLevel, usePlan } from '../ha/store'
 import { kelvinToColor, rgbArrayToColor, damp } from './utils'
 import { latheGeometry, PROFILES } from './shapes'
 import { SHELL_LAYER } from './layers'
+
+// 竖向渐隐（上亮下暗）的小贴图，给灯槽洗墙光用
+function washGradient() {
+  const c = document.createElement('canvas')
+  c.width = 4
+  c.height = 64
+  const g = c.getContext('2d')
+  const grd = g.createLinearGradient(0, 0, 0, 64)
+  grd.addColorStop(0, 'rgba(255,255,255,1)')
+  grd.addColorStop(0.35, 'rgba(255,255,255,0.35)')
+  grd.addColorStop(1, 'rgba(255,255,255,0)')
+  g.fillStyle = grd
+  g.fillRect(0, 0, 4, 64)
+  return new CanvasTexture(c)
+}
 
 // 灯罩是典型的旋转体，用轮廓转出来比堆圆柱像得多
 let SHADES = null
@@ -31,38 +47,46 @@ const toLamp = (l) => ({
   along: l.along || 'x',
   span: l.span ?? 1.2,
   power: l.power * POWER_TO_CANDELA,
+  wash: l.wash,
   dist: l.kind === 'table' ? 3.2 : l.kind === 'floor' ? 4.2 : l.kind === 'spots' ? 4.4 : l.kind === 'pendant' ? 4.2 : 6.2,
 })
 
-// 实时壳体没有烘焙遮挡。点光源要投射阴影，灯才不会穿墙照到隔壁。
-// 同时亮着的灯太多会超出纹理单元，只给照得最远的几盏开阴影。
-const SHADOW_LIGHTS = new Set()
-const MAX_POINT_SHADOWS = 5
+// 实时壳体没有烘焙遮挡，主灯要投射阴影，灯才不会穿墙照到隔壁。
+// 关键：开关灯绝不能改变"有几盏灯 / 几盏投影"——light.visible 或 castShadow 一变，
+// three 会把场景里所有材质的 shader 重新编译一遍（点一下卡 100–300 ms，就是老板说的"延迟"）。
+// 所以：所有灯始终挂载、始终 visible，只改 intensity；投影灯在户型加载时固定选好，之后不变。
+// 壳体和家具是静态的，点光源阴影只渲染一次（autoUpdate = false），每盏投影灯省掉每帧 6 次场景重绘。
+const MAX_POINT_SHADOWS = typeof window !== 'undefined' && window.matchMedia(MOBILE_QUERY).matches ? 2 : 4
 
-function rememberLight(light, reach) {
-  if (!light) return
-  light.userData.reach = reach
-  SHADOW_LIGHTS.add(light)
+function pickShadowLamps(lamps) {
+  return new Set(
+    lamps
+      .filter((l) => l.kind === 'ceiling')
+      .sort((a, b) => b.power - a.power)
+      .slice(0, MAX_POINT_SHADOWS)
+      .map((l) => l.id)
+  )
 }
 
-function forgetLight(light) {
-  if (light) SHADOW_LIGHTS.delete(light)
-}
-
-function ShadowBudget() {
-  useFrame(() => {
-    const on = []
-    for (const light of SHADOW_LIGHTS) {
-      if (light.intensity > 0.02 && light.visible) on.push(light)
-      else light.castShadow = false
-    }
-    on.sort((a, b) => (b.userData.reach || 0) - (a.userData.reach || 0))
-    on.forEach((light, i) => {
-      light.castShadow = i < MAX_POINT_SHADOWS
+// 点光源阴影：静态烘一次。挂载后等两帧（家具都已上场）再要求更新一次。
+function useStaticShadow(ref, enabled) {
+  useEffect(() => {
+    const light = ref.current
+    if (!light || !enabled) return
+    light.castShadow = true
+    light.shadow.autoUpdate = false
+    light.shadow.needsUpdate = true      // 第一帧就要分配阴影贴图，否则 shader 里的阴影采样器拿不到纹理
+    let n = 0
+    let id = requestAnimationFrame(function tick() {
+      if (++n < 3) id = requestAnimationFrame(tick)
+      else light.shadow.needsUpdate = true
     })
-  })
-  return null
+    return () => cancelAnimationFrame(id)
+  }, [ref, enabled])
 }
+
+// 灯光渐变的跟手程度：12 ≈ 90% 在 0.2 s 内到位，仍保留一点柔和
+const LIGHT_LAMBDA = 12
 
 function Fixture({ kind, matRef, span = 1.2, along = 'z' }) {
   const S = shades()
@@ -155,15 +179,17 @@ function Fixture({ kind, matRef, span = 1.2, along = 'z' }) {
   }
 }
 
-function Lamp({ conf }) {
-  const entity = useHA((s) => s.entities[conf.id])
+function Lamp({ conf, shadow }) {
   const lightRef = useRef()
   const matRef = useRef()
   const level = useRef(0)
   const color = useMemo(() => new Color('#ffffff'), [])
 
+  // 每帧直接读 store，不靠 React 重渲染：开关一个灯不会让其他组件跟着重渲
   useFrame((_, dt) => {
-    level.current = damp(level.current, lightLevel(entity), 7, dt)
+    const entity = useHA.getState().entities[conf.id]
+    if (!entity) return
+    level.current = damp(level.current, lightLevel(entity), LIGHT_LAMBDA, dt)
     const a = entity.attributes
     if (a.rgb_color) rgbArrayToColor(a.rgb_color, color)
     else kelvinToColor(a.color_temp_kelvin ?? 3000, color)
@@ -171,21 +197,17 @@ function Lamp({ conf }) {
     if (lightRef.current) {
       lightRef.current.intensity = level.current * conf.power
       lightRef.current.color.copy(color)
-      lightRef.current.visible = level.current > 0.004
     }
     if (matRef.current) {
       matRef.current.emissive.copy(color)
-      matRef.current.emissiveIntensity = 0.05 + level.current * 2.6
+      // 灯罩亮度封顶 1.8：仍会有一点光晕，但不再是过曝的白斑
+      matRef.current.emissiveIntensity = 0.04 + level.current * 1.8
     }
   })
 
   const lightY = conf.kind === 'floor' ? 1.55 : conf.kind === 'table' ? 0.33 : -0.06
 
-  useEffect(() => {
-    const light = lightRef.current
-    rememberLight(light, conf.dist)
-    return () => forgetLight(light)
-  }, [conf.dist])
+  useStaticShadow(lightRef, shadow)
 
   return (
     <group position={conf.pos}>
@@ -196,20 +218,20 @@ function Lamp({ conf }) {
         distance={conf.dist}
         decay={2}
         intensity={0}
-        castShadow={false}
-        shadow-mapSize={[256, 256]}
+        castShadow={shadow}
+        shadow-mapSize={[512, 512]}
         shadow-camera-near={0.08}
         shadow-camera-far={conf.dist}
-        shadow-bias={-0.001}
-        shadow-normalBias={0.02}
+        shadow-bias={-0.002}
+        shadow-normalBias={0.03}
+        shadow-radius={4}
       />
     </group>
   )
 }
 
 // 灯带：沿客厅北墙顶部的一条发光条，用两颗点光源铺开
-function LightStrip({ conf }) {
-  const entity = useHA((s) => s.entities[conf.id])
+function LightStrip({ conf, center }) {
   const matRef = useRef()
   const l1 = useRef()
   const l2 = useRef()
@@ -217,20 +239,24 @@ function LightStrip({ conf }) {
   const color = useMemo(() => new Color('#ffffff'), [])
 
   useFrame((_, dt) => {
-    level.current = damp(level.current, lightLevel(entity), 7, dt)
+    const entity = useHA.getState().entities[conf.id]
+    if (!entity) return
+    level.current = damp(level.current, lightLevel(entity), LIGHT_LAMBDA, dt)
     const a = entity.attributes
     if (a.rgb_color) rgbArrayToColor(a.rgb_color, color)
     else kelvinToColor(a.color_temp_kelvin ?? 2800, color)
     for (const ref of [l1, l2]) {
       if (ref.current) {
-        ref.current.intensity = level.current * 8
+        ref.current.intensity = level.current * conf.power * 0.7
         ref.current.color.copy(color)
-        ref.current.visible = level.current > 0.004
       }
     }
     if (matRef.current) {
       matRef.current.emissive.copy(color)
-      matRef.current.emissiveIntensity = 0.05 + level.current * 3.2
+      matRef.current.emissiveIntensity = 0.03 + level.current * 1.6
+    }
+    if (washRef.current) {
+      washRef.current.color.copy(color).multiplyScalar(level.current * 0.22)
     }
   })
 
@@ -240,20 +266,19 @@ function LightStrip({ conf }) {
   const args = along === 'z' ? [thick, 0.035, length] : [length, 0.035, thick]
   const [x, y, z] = conf.pos
   const spread = Math.min(length * 0.32, 0.85)
-  const p1 = along === 'z' ? [x, y - 0.08, z - spread] : [x - spread, y - 0.08, z]
-  const p2 = along === 'z' ? [x, y - 0.08, z + spread] : [x + spread, y - 0.08, z]
+  // 点光源从灯条往房间里挪 25 cm：贴着墙放会在亮面瓷砖 / 玻璃上打出一个过曝的白斑
+  const off = along === 'z' ? Math.sign(center[0] - x) * 0.25 : Math.sign(center[1] - z) * 0.25
+  const p1 = along === 'z' ? [x + off, y - 0.08, z - spread] : [x - spread, y - 0.08, z + off]
+  const p2 = along === 'z' ? [x + off, y - 0.08, z + spread] : [x + spread, y - 0.08, z + off]
   const reach = 4.2
 
-  useEffect(() => {
-    rememberLight(l1.current, reach)
-    rememberLight(l2.current, reach)
-    const a = l1.current
-    const b = l2.current
-    return () => {
-      forgetLight(a)
-      forgetLight(b)
-    }
-  }, [])
+  const washRef = useRef()
+  // 洗墙光晕：灯槽下方一条往下渐隐的竖向光带，让它读得出是"沿天花的线形灯槽"，而不是一个孤立的光点
+  const washTex = useMemo(() => washGradient(), [])
+  // conf.wash：灯槽到背后墙面的有向距离（米），洗墙光画在那面墙上；只照过梁那一段，不压到窗玻璃
+  const wallSide = conf.wash ?? 0
+  const washH = 0.24
+  const washPos = along === 'z' ? [x + wallSide, y - washH / 2 + 0.03, z] : [x, y - washH / 2 + 0.03, z + wallSide]
 
   return (
     <group>
@@ -261,18 +286,18 @@ function LightStrip({ conf }) {
         <boxGeometry args={args} />
         <meshStandardMaterial ref={matRef} color="#fff2dd" emissive="#ffb066" emissiveIntensity={0} toneMapped={false} />
       </mesh>
+      {wallSide !== 0 && (
+        <mesh position={washPos} rotation={along === 'z' ? [0, wallSide < 0 ? Math.PI / 2 : -Math.PI / 2, 0] : [0, wallSide < 0 ? 0 : Math.PI, 0]}>
+          <planeGeometry args={[length * 1.05, washH]} />
+          <meshBasicMaterial ref={washRef} color="#000000" map={washTex} transparent blending={AdditiveBlending} depthWrite={false} />
+        </mesh>
+      )}
       <pointLight
         ref={l1}
         position={p1}
         distance={reach}
         decay={2}
         intensity={0}
-        castShadow={false}
-        shadow-mapSize={[256, 256]}
-        shadow-camera-near={0.08}
-        shadow-camera-far={reach}
-        shadow-bias={-0.001}
-        shadow-normalBias={0.02}
       />
       <pointLight
         ref={l2}
@@ -280,34 +305,21 @@ function LightStrip({ conf }) {
         distance={reach}
         decay={2}
         intensity={0}
-        castShadow={false}
-        shadow-mapSize={[256, 256]}
-        shadow-camera-near={0.08}
-        shadow-camera-far={reach}
-        shadow-bias={-0.001}
-        shadow-normalBias={0.02}
       />
     </group>
   )
 }
 
-// 电视开机时对客厅的补光
+// 电视开机时，从屏幕向前（朝沙发）投出的一点柔和冷光。始终挂载，只改强度。
 function ScreenGlow({ position }) {
-  const tv = useHA((s) => s.entities['media_player.living_tv'])
   const ref = useRef()
   const level = useRef(0)
-  useFrame((state, dt) => {
-    const on = tv.state === 'on' ? 1 : 0
-    level.current = damp(level.current, on, 5, dt)
-    if (ref.current) {
-      // 轻微闪烁，模拟画面变化
-      // 保留一点点画面变化的感觉，但幅度压到基本察觉不到
-      const flicker = 0.95 + Math.sin(state.clock.elapsedTime * 0.7) * 0.05
-      ref.current.intensity = level.current * 12.5 * flicker
-      ref.current.visible = level.current > 0.01
-    }
+  useFrame((_, dt) => {
+    const tv = useHA.getState().entities['media_player.living_tv']
+    level.current = damp(level.current, tv?.state === 'on' ? 1 : 0, 5, dt)
+    if (ref.current) ref.current.intensity = level.current * 3.2
   })
-  return <pointLight ref={ref} position={position} color="#8fc4ff" distance={4.5} decay={2} intensity={0} />
+  return <pointLight ref={ref} position={position} color="#9cc6ff" distance={3.6} decay={2} intensity={0} />
 }
 
 // 室外日光：强度与色温随时间变化，窗帘因投影自然遮挡
@@ -344,10 +356,9 @@ function Daylight() {
         3 + elevation * 10,
         -10
       )
-      sun.current.visible = sun.current.intensity > 0.01
     }
     if (hemi.current) {
-      hemi.current.intensity = damp(hemi.current.intensity, 0.05 + day * 0.16, 4, dt)
+      hemi.current.intensity = damp(hemi.current.intensity, 0.04 + day * 0.3, 4, dt)
     }
   })
 
@@ -376,14 +387,14 @@ function Daylight() {
 export default function Fixtures() {
   const plan = usePlan()
   const LAMPS = useMemo(() => plan.lamps.map(toLamp), [plan])
+  const shadows = useMemo(() => pickShadowLamps(plan.lamps), [plan])
   return (
     <group>
-      <ShadowBudget />
       {LAMPS.filter((c) => c.kind !== 'strip').map((conf) => (
-        <Lamp key={conf.id} conf={conf} />
+        <Lamp key={conf.id} conf={conf} shadow={shadows.has(conf.id)} />
       ))}
       {LAMPS.filter((c) => c.kind === 'strip').map((conf) => (
-        <LightStrip key={conf.id} conf={conf} />
+        <LightStrip key={conf.id} conf={conf} center={plan.center} />
       ))}
       {plan.tvGlow && <ScreenGlow position={plan.tvGlow} />}
       <Daylight />

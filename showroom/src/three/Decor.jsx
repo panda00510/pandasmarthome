@@ -1,5 +1,5 @@
 import { RoundedBox } from '@react-three/drei'
-import { getTextures } from './textures'
+import { artMap } from './textures'
 import { usePlan } from '../ha/store'
 import { latheGeometry, PROFILES } from './shapes'
 
@@ -35,7 +35,7 @@ function Box({ p, s, c, r = 0.7, m = 0, radius = 0.008, rot }) {
 // 挂画：画框 + 程序化生成的画芯
 function Art({ p, w, h, frame = '#4a4038', art = 'art1', axis = 'x', flip = false }) {
   const d = 0.035
-  const map = getTextures()[art]
+  const map = artMap(art)
   const size = axis === 'x' ? [d, h, w] : [w, h, d]
   const face = axis === 'x' ? [h - 0.1, w - 0.1] : [w - 0.1, h - 0.1]
   const offset = (flip ? -1 : 1) * (d * 0.55)

@@ -5,7 +5,7 @@ import { Color, SRGBColorSpace } from 'three'
 import { useHA, lightLevel } from '../ha/store'
 import { kelvinToColor, rgbArrayToColor, damp } from './utils'
 import { LightmapMaterial } from './LightmapMaterial'
-import { getTextures, tiled } from './textures'
+import { textureSet } from './textures'
 import { SHELL_LAYER } from './layers'
 import meta from './lightmaps.json'
 import GLB from '../assets/baked/house.glb?url'
@@ -25,10 +25,10 @@ const CALIBRATION = 3.4
 
 // 材质名 -> 程序化贴图与铺贴密度（Blender 侧只给了纯色反照率）
 const SURFACE = {
-  M_woodFloor: ['woodFloor', 8, 11],
-  M_woodFloorWarm: ['woodFloorWarm', 5, 5.5],
-  M_tile: ['tile', 5, 5],
-  M_wall: ['wall', 3.2, 2.2],
+  M_woodFloor: ['oak', 8, 11],
+  M_woodFloorWarm: ['oakWarm', 5, 5.5],
+  M_tile: ['floorTile', 5, 5],
+  M_wall: ['plaster', 3.2, 2.2],
 }
 
 export default function BakedShell() {
@@ -51,7 +51,6 @@ export default function BakedShell() {
   }, [maps])
 
   useEffect(() => {
-    const tex = getTextures()
     scene.traverse((o) => {
       if (!o.isMesh) return
       o.castShadow = true
@@ -66,7 +65,11 @@ export default function BakedShell() {
       const surface = SURFACE[src?.name ?? '']
       if (surface) {
         const [key, w, h] = surface
-        Object.assign(m, tiled(tex[key], w / 0.95, h / 1.4))
+        const set = textureSet(key)
+        for (const slot of ['map', 'normalMap', 'roughnessMap']) {
+          m[slot] = set[slot].clone()
+          m[slot].repeat.set(w / 0.95, h / 1.4)
+        }
         m.color.set('#ffffff')
         m.normalScale.set(0.5, 0.5)
       } else if (src?.color) {

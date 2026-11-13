@@ -138,7 +138,36 @@ Icons throughout the interface come from **[Lucide](https://lucide.dev)**
 
 ---
 
-## 6. Replacing an asset
+## 6. 3D showroom textures (`showroom/`)
+
+PBR texture sets used by the 3D showroom (`showroom/src/assets/textures/<set>/`).
+All are **CC0 1.0** (public domain dedication): free for commercial use, no
+attribution required — credited here anyway. Downloaded at 1K, converted with
+`sharp` to WebP (`map` colour q80, `normal` OpenGL convention q88, `rough`
+greyscale q80; 1024 px plus a 512 px copy of `map`/`rough` for phones).
+Sets marked *greyscale* had their colour map desaturated and flattened so the
+showroom tints them per object. Originals are not stored in the repository.
+The 3D scene also keeps procedural fallbacks (`showroom/src/three/textures.js`)
+used if a file fails to load.
+
+| Set | Used for | Source asset | Author | Licence | Source page | Real-world size |
+| --- | --- | --- | --- | --- | --- | --- |
+| `oak` | Bedroom laminate floor | Laminate Floor 02 | Charlotte Baglioni (photo), Dario Barresi (processing) | CC0 | [Poly Haven](https://polyhaven.com/a/laminate_floor_02) | 1.7 × 1.7 m |
+| `oakWarm` | Master bedroom wood floor | Wood Floor | Dimitrios Savva | CC0 | [Poly Haven](https://polyhaven.com/a/wood_floor) | 1.7 × 1.7 m |
+| `tiles` | Living 600×600 tiles; kitchen / bath 300×300 floor tiles (tinted) | Tiles 002 | Lennart Demes (ambientCG) | CC0 | [ambientCG](https://ambientcg.com/view?id=Tiles002) | 2.4 m (living) / 1.2 m (wet areas) |
+| `wallTile` | Kitchen / bathroom wall tiles to ceiling | Tiles 036 | Lennart Demes (ambientCG) | CC0 | [ambientCG](https://ambientcg.com/view?id=Tiles036) | 1.6 × 1.6 m |
+| `plaster` | Painted plaster walls (normal + roughness only) | White Stucco | Amal Kumar | CC0 | [Poly Haven](https://polyhaven.com/a/white_stucco) | 2 × 2 m |
+| `fabric` | Sofa, headboard, duvet (greyscale) | Cotton Jersey | colormass (photo), Rico Cilliers (processing) | CC0 | [Poly Haven](https://polyhaven.com/a/cotton_jersey) | 0.26 × 0.26 m |
+| `linen` | Bed linen, cushions, throws (greyscale) | Rough Linen | colormass (photo), Rico Cilliers (processing) | CC0 | [Poly Haven](https://polyhaven.com/a/rough_linen) | 0.27 × 0.27 m |
+| `veneer` | Cabinets, TV console, tables (greyscale) | Oak Veneer 01 | Jenelle van Heerden | CC0 | [Poly Haven](https://polyhaven.com/a/oak_veneer_01) | 1.83 × 1.83 m |
+| `quartz` | Kitchen worktops | Marble 012 | Lennart Demes (ambientCG) | CC0 | [ambientCG](https://ambientcg.com/view?id=Marble012) | ~1 × 1 m (no published size) |
+
+The HDRI `studio_small_09_1k.hdr` and the `sofa_03` model are Poly Haven CC0
+assets recorded in `showroom/README.md`.
+
+---
+
+## 7. Replacing an asset
 
 1. Drop the new file into the relevant folder under `src/assets/`.
 2. Update the `import` in the component that uses it.
