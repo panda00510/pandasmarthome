@@ -9,6 +9,7 @@ import {
   TOPIC_IDS,
   type Guide,
 } from '../../content/guides'
+import '../../content/guideDescriptions'
 import { pageHref, useI18n, type Lang } from '../../i18n/context'
 import { GuideFigure } from '../graphics/GuideFigures'
 import { Button } from '../ui'
@@ -66,43 +67,6 @@ function GuideCard({
         {guide.description}
       </p>
     </a>
-  )
-}
-
-/** Homepage: the three newest guides as a compact list, under the FAQ heading. */
-export function LatestGuides() {
-  const { t, lang } = useI18n()
-  const latest = guidesIn(lang).slice(0, 3)
-  if (!latest.length) return null
-
-  return (
-    <div id="guides" className="mt-10 scroll-mt-24">
-      <h3 className="text-xs font-semibold tracking-[0.14em] text-bamboo-700 uppercase">{t.guides.eyebrow}</h3>
-      <ul className="mt-3 divide-y divide-ink-200 border-y border-ink-200">
-        {latest.map((guide) => (
-          <li key={guide.slug}>
-            <a
-              href={pageHref(lang, guide.path)}
-              className="group flex min-h-12 items-start justify-between gap-4 py-3 text-[0.9375rem] leading-snug font-medium text-ink-800 transition-colors hover:text-bamboo-700"
-            >
-              {guide.heading}
-              <ArrowRight
-                size={15}
-                aria-hidden="true"
-                className="mt-0.5 shrink-0 text-ink-400 transition-transform group-hover:translate-x-0.5 group-hover:text-bamboo-700 motion-reduce:transition-none"
-              />
-            </a>
-          </li>
-        ))}
-      </ul>
-      <a
-        href={pageHref(lang, 'guides/')}
-        className="mt-2 inline-flex min-h-11 items-center gap-1.5 text-sm font-semibold text-bamboo-700 hover:text-bamboo-600"
-      >
-        {t.guides.all}
-        <ArrowRight size={15} aria-hidden="true" />
-      </a>
-    </div>
   )
 }
 

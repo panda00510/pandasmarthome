@@ -63,6 +63,14 @@ export const site = {
    */
   formAccessKey: env('VITE_FORM_ACCESS_KEY'),
 
+  /**
+   * Optional, cookie-free conversion counting (src/lib/track.ts). Unset = no
+   * analytics script is ever loaded. Either or both may be set.
+   */
+  plausibleDomain: env('VITE_PLAUSIBLE_DOMAIN'),
+  plausibleSrc: env('VITE_PLAUSIBLE_SRC') ?? 'https://plausible.io/js/script.js',
+  gaMeasurementId: env('VITE_GA_MEASUREMENT_ID'),
+
   /** Canonical origin, no trailing slash. Used for canonical + og:url. */
   url: (env('VITE_SITE_URL') ?? '').replace(/\/+$/, '') || null,
 

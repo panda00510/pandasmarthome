@@ -3,29 +3,17 @@ import { MessageCircle } from 'lucide-react'
 import { Footer } from './components/layout/Footer'
 import { Header } from './components/layout/Header'
 import { Seo } from './components/Seo'
-import { Contact } from './components/sections/Contact'
-import { Faq } from './components/sections/Faq'
-import { GuidePage, GuidesIndex } from './components/sections/Guides'
-import { Hero } from './components/sections/Hero'
-import { HubPage } from './components/sections/Hub'
-import { Homes } from './components/sections/Homes'
-import { Platform } from './components/sections/Platform'
-import { Process } from './components/sections/Process'
-import { Solutions } from './components/sections/Solutions'
-import { ProductsPage } from './components/sections/Products'
-import { SoftwarePage } from './components/sections/Software'
-import { Custom } from './components/sections/Custom'
-import { HardwarePage } from './components/sections/Hardware'
-import { SignagePage } from './components/sections/Signage'
-import { Upcoming } from './components/sections/Upcoming'
 import { site } from './config/site'
-import { findGuide, hubOf } from './content/guides'
+import { NotFound } from './components/sections/NotFound'
+import { findGuide, hubOf, pagePaths, type Guide } from './content/guides'
 import { useReveal } from './hooks/motion'
 import { useI18n } from './i18n/context'
+import { viewOf, views } from './views'
 
 export default function App() {
   const { t, lang, path } = useI18n()
   const guide = findGuide(lang, path)
+  const notFound = !pagePaths.includes(path)
   useReveal()
 
   // The floating WhatsApp button would sit on top of the form fields, so it steps aside there.
@@ -42,7 +30,8 @@ export default function App() {
 
   return (
     <>
-      <Seo />
+      {/* A 404 has no canonical or structured data; its head is set by the prerender. */}
+      {notFound ? null : <Seo />}
 
       <a
         href="#main"
@@ -54,33 +43,7 @@ export default function App() {
       <Header />
 
       <main id="main">
-        {guide ? (
-          <GuidePage guide={guide} />
-        ) : hubOf(path) ? (
-          <HubPage hub={hubOf(path)!} />
-        ) : path === 'guides/' ? (
-          <GuidesIndex />
-        ) : path === 'products/' ? (
-          <ProductsPage />
-        ) : path === 'software/' ? (
-          <SoftwarePage />
-        ) : path === 'custom-hardware/' ? (
-          <HardwarePage />
-        ) : path === 'signage/' ? (
-          <SignagePage />
-        ) : (
-          <>
-            <Hero />
-            <Solutions />
-            <Custom />
-            <Homes />
-            <Process />
-            <Platform />
-            <Faq />
-            <Upcoming />
-            <Contact />
-          </>
-        )}
+        {notFound ? <NotFound /> : <Page path={path} guide={guide} />}
       </main>
 
       <Footer />
@@ -92,6 +55,7 @@ export default function App() {
           target="_blank"
           rel="noopener noreferrer"
           aria-label={t.contact.whatsappCta}
+          data-track-source="floating"
           className="fixed right-4 bottom-4 z-40 inline-flex size-14 items-center justify-center gap-2 rounded-full bg-[#25d366] text-white shadow-lift transition-transform hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink-950 motion-reduce:transition-none sm:right-6 sm:bottom-6 sm:size-auto sm:px-5 sm:py-3.5"
         >
           <MessageCircle size={24} aria-hidden="true" />
@@ -102,4 +66,37 @@ export default function App() {
       ) : null}
     </>
   )
+}
+
+/** The page body, from the chunk main.tsx loaded for it (see src/views.ts). */
+function Page({ path, guide }: { path: string; guide: Guide | undefined }) {
+  const { lang } = useI18n()
+  const view = viewOf(lang, path)
+  const v = views
+  if (view === 'guides') {
+    const { GuidePage, GuidesIndex } = v.guides!
+    return guide ? <GuidePage guide={guide} /> : <GuidesIndex />
+  }
+  if (view === 'hub') {
+    const { HubPage } = v.hub!
+    return <HubPage hub={hubOf(path)!} />
+  }
+  if (view === 'products') {
+    const { ProductsPage } = v.products!
+    return <ProductsPage />
+  }
+  if (view === 'software') {
+    const { SoftwarePage } = v.software!
+    return <SoftwarePage />
+  }
+  if (view === 'hardware') {
+    const { HardwarePage } = v.hardware!
+    return <HardwarePage />
+  }
+  if (view === 'signage') {
+    const { SignagePage } = v.signage!
+    return <SignagePage />
+  }
+  const { HomePage } = v.home!
+  return <HomePage />
 }

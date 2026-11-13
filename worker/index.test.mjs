@@ -42,3 +42,39 @@ for (const path of ['/', '/showroom/', '/showroom/index.html', '/showroom/favico
 const missing = await worker.fetch(new Request('https://smartpanda.sg/showroom/assets/gone-AAAAAAAA.js'), { ...env, ASSETS: { fetch: () => new Response('nope', { status: 404 }) } })
 assert.equal(missing.headers.get('cache-control'), null)
 console.log('cache headers ok')
+
+// Unknown pages: branded 404 page in the right language, status stays 404. Files keep a bare 404.
+const sitePages = {
+  '/404': '<html lang="en">not found</html>',
+  '/zh/404': '<html lang="zh-Hans">找不到</html>',
+}
+const siteEnv = {
+  ...env,
+  ASSETS: {
+    fetch: (req) => {
+      const body = sitePages[new URL(req.url).pathname]
+      return body
+        ? new Response(body, { headers: { 'content-type': 'text/html; charset=utf-8' } })
+        : new Response(null, { status: 404 })
+    },
+  },
+}
+const page = (url, accept = 'text/html,application/xhtml+xml') =>
+  worker.fetch(new Request(url, { headers: { accept } }), siteEnv)
+const unknown = await page('https://smartpanda.sg/no-such-page/')
+assert.equal(unknown.status, 404)
+assert.match(unknown.headers.get('content-type'), /text\/html/)
+assert.match(await unknown.text(), /lang="en"/)
+assert.equal(unknown.headers.get('x-content-type-options'), 'nosniff')
+const unknownZh = await page('https://smartpanda.sg/zh/no-such-page')
+assert.equal(unknownZh.status, 404)
+assert.match(await unknownZh.text(), /找不到/)
+const curl = await page('https://smartpanda.sg/no-such-page', '*/*')
+assert.equal(curl.status, 404)
+assert.match(await curl.text(), /not found/)
+for (const path of ['/assets/gone-AAAAAAAA.js', '/missing.webp', '/zh/missing.png']) {
+  const res = await page(`https://smartpanda.sg${path}`, '*/*')
+  assert.equal(res.status, 404, path)
+  assert.equal(await res.text(), '', path)
+}
+console.log('404 page ok')

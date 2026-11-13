@@ -2,6 +2,7 @@ import { ArrowRight, Blinds, Gauge, History, LayoutDashboard, Lightbulb, Lock, T
 import type { LucideIcon } from 'lucide-react'
 import { responsive } from '../../content/photos'
 import { pagesIn, type Guide, type Hub } from '../../content/guides'
+import '../../content/guideDescriptions'
 import { pageHref, useI18n, type Lang } from '../../i18n/context'
 import { PhotoTag, SectionHeading } from '../ui'
 

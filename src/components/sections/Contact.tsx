@@ -14,6 +14,7 @@ import lighting from '../../assets/photos/bedroom-lighting.webp'
 import { formattedAddress, hasAnyContactDetail, site } from '../../config/site'
 import { Button, SectionHeading } from '../ui'
 import { useI18n } from '../../i18n/context'
+import { track } from '../../lib/track'
 
 type Status = 'idle' | 'submitting' | 'success' | 'mailto' | 'error'
 type Errors = { name?: string; contact?: string }
@@ -92,6 +93,7 @@ export function Contact() {
       // Deliberately NOT "sent": it only counts once they press send in their
       // mail app, and the page has no way to know whether they did.
       setStatus('mailto')
+      track('contact_form_submit', { method: 'mailto' })
       return
     }
 
@@ -123,9 +125,11 @@ export function Contact() {
       })
       if (!response.ok) throw new Error(`Form endpoint returned ${response.status}`)
       setStatus('success')
+      track('contact_form_submit', { method: 'endpoint' })
       form.reset()
     } catch {
       setStatus('error')
+      track('contact_form_error')
     }
   }
 

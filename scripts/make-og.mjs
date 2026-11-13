@@ -3,6 +3,7 @@
  *
  *   public/og-image.svg -> public/og-image.png      (1200x630 social card)
  *   public/favicon.svg  -> public/apple-touch-icon.png, icon-192.png, icon-512.png
+ *   src/config/ogImages.ts -> public/og/<key>-<lang>.png (per-page cards, macOS only)
  *
  * Social platforms (Facebook, LinkedIn, X, WhatsApp) and iOS home screens do
  * not accept SVG, so these PNGs are what the meta tags and web manifest point
@@ -87,4 +88,118 @@ for (const [name, size] of [
       .png({ compressionLevel: 9 })
       .toBuffer(),
   )
+}
+
+// --- Per-page social cards ---------------------------------------------------
+// public/og/<key>-<lang>.png, one per entry in src/config/ogImages.ts (the same
+// table the site uses to point each page at its card). Rendered on macOS only:
+// the Chinese cards use PingFang SC, which Linux runners do not have — there
+// librsvg would silently swap in another font or draw tofu. So the PNGs are
+// committed and CI never regenerates them.
+if (process.platform !== 'darwin') {
+  console.warn('og/*.png             skipped: per-page cards are rendered on macOS only (PingFang SC)')
+} else {
+  const { OG_CARDS, ogImagePath } = await import('../src/config/ogImages.ts')
+  const { mkdir } = await import('node:fs/promises')
+  await mkdir(at('og'), { recursive: true })
+
+  const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;')
+  const FONT = {
+    en: 'Helvetica Neue, Arial, sans-serif',
+    zh: 'PingFang SC, Hiragino Sans GB, Helvetica Neue, sans-serif',
+  }
+  // Line art on the right, drawn in a 360x360 box. Ink lines, one bamboo accent.
+  const L = 'fill="none" stroke="#4a5463" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"'
+  const G = 'fill="none" stroke="#6fc79f" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"'
+  const P = 'fill="#171b21" stroke="#4a5463" stroke-width="3"'
+  const ART = {
+    home: `<path d="M40 180 L180 70 L320 180" ${L}/><path d="M70 160 V310 H290 V160" ${P}/>
+      <rect x="150" y="220" width="60" height="90" rx="6" ${L}/>
+      <path d="M130 150 a70 70 0 0 1 100 0 M150 172 a42 42 0 0 1 60 0" ${G}/><circle cx="180" cy="194" r="7" fill="#6fc79f"/>`,
+    solutions: `<rect x="40" y="90" width="130" height="200" rx="18" ${P}/>
+      <rect x="66" y="120" width="78" height="40" rx="8" ${G}/><rect x="66" y="176" width="78" height="40" rx="8" ${L}/><rect x="66" y="232" width="78" height="40" rx="8" ${L}/>
+      <circle cx="270" cy="150" r="52" ${P}/><path d="M250 202 V232 H290 V202" ${L}/><path d="M256 248 H284" ${L}/>
+      <path d="M270 70 V84 M196 150 H210 M330 150 H344 M218 98 l10 10 M322 98 l-10 10" ${G}/>`,
+    homes: `<rect x="40" y="60" width="150" height="250" rx="6" ${P}/>
+      ${[0, 1, 2, 3, 4].map((r) => [0, 1, 2].map((c) => `<rect x="${62 + c * 44}" y="${84 + r * 44}" width="22" height="24" rx="3" ${r === 2 && c === 1 ? G : L}/>`).join('')).join('')}
+      <path d="M210 200 L265 150 L320 200" ${L}/><path d="M222 190 V310 H308 V190" ${P}/><rect x="252" y="250" width="26" height="60" rx="4" ${G}/>
+      <path d="M20 310 H340" ${L}/>`,
+    products: `<rect x="60" y="70" width="240" height="170" rx="22" ${P}/><rect x="82" y="92" width="196" height="126" rx="10" ${L}/>
+      <rect x="104" y="118" width="96" height="14" rx="7" fill="#6fc79f"/><rect x="104" y="146" width="140" height="8" rx="4" fill="#4a5463"/><rect x="104" y="166" width="110" height="8" rx="4" fill="#4a5463"/>
+      <circle cx="246" cy="190" r="14" ${G}/><path d="M150 240 L130 300 H230 L210 240" ${L}/><path d="M100 300 H260" ${L}/>`,
+    software: `<rect x="30" y="70" width="300" height="220" rx="16" ${P}/><path d="M30 110 H330" ${L}/>
+      <circle cx="56" cy="90" r="6" fill="#4a5463"/><circle cx="78" cy="90" r="6" fill="#4a5463"/><circle cx="100" cy="90" r="6" fill="#4a5463"/>
+      ${[0, 1, 2].map((r) => [0, 1, 2, 3].map((c) => `<rect x="${56 + c * 40}" y="${132 + r * 44}" width="28" height="30" rx="4" ${r === 1 && c === 2 ? G : L}/>`).join('')).join('')}
+      <path d="M232 140 H306 a10 10 0 0 1 10 10 V196 a10 10 0 0 1 -10 10 H262 L244 224 V206 H232 a10 10 0 0 1 -10 -10 V150 a10 10 0 0 1 10 -10 Z" ${G}/>
+      <path d="M240 162 H298 M240 182 H282" ${L}/>`,
+    'custom-hardware': `<rect x="50" y="70" width="260" height="220" rx="14" ${P}/>
+      <rect x="130" y="130" width="100" height="100" rx="8" ${G}/><path d="M154 156 H206 V204 H154 Z" ${L}/>
+      ${[0, 1, 2, 3, 4].map((i) => `<path d="M${146 + i * 17} 130 V112 M${146 + i * 17} 230 V248 M130 ${146 + i * 17} H112 M230 ${146 + i * 17} H248" ${L}/>`).join('')}
+      <circle cx="80" cy="100" r="8" ${L}/><circle cx="280" cy="100" r="8" ${L}/><circle cx="80" cy="260" r="8" ${L}/><circle cx="280" cy="260" r="8" ${L}/>
+      <path d="M250 180 H290 M70 180 H110" ${G}/>`,
+    signage: `<rect x="20" y="50" width="250" height="160" rx="14" ${P}/><rect x="36" y="66" width="140" height="96" rx="6" ${L}/>
+      <path d="M44 150 L84 110 L110 134 L126 120 L168 150" ${L}/><rect x="190" y="66" width="64" height="40" rx="6" ${L}/><rect x="190" y="120" width="64" height="42" rx="6" ${L}/>
+      <rect x="36" y="176" width="218" height="20" rx="4" ${L}/><path d="M130 210 L120 236 H170 L160 210" ${L}/>
+      <rect x="220" y="190" width="120" height="130" rx="14" ${P}/><rect x="238" y="232" width="84" height="30" rx="6" fill="#1f8a5f"/>
+      <path d="M238 214 H300 M238 282 H310 M238 298 H286" ${L}/>`,
+    showroom: `<path d="M180 70 L330 155 L180 240 L30 155 Z" ${P}/>
+      <path d="M30 155 V200 L180 285 V240 M330 155 V200 L180 285" ${L}/>
+      <path d="M105 112 L255 197 M180 70 L180 155 L105 198 M180 155 L255 112" ${L}/>
+      <circle cx="140" cy="150" r="9" fill="#6fc79f"/><circle cx="230" cy="165" r="9" fill="#6fc79f" opacity="0.6"/>
+      <path d="M140 150 m-24 0 a24 24 0 0 1 48 0" ${G}/>`,
+    guides: `<path d="M180 100 C140 80 80 78 40 92 V290 C80 276 140 278 180 298 Z" ${P}/>
+      <path d="M180 100 C220 80 280 78 320 92 V290 C280 276 220 278 180 298 Z" ${P}/>
+      <path d="M70 130 H150 M70 160 H150 M70 190 H130 M210 130 H290 M210 160 H270" ${L}/>
+      <path d="M210 196 L232 218 L280 170" ${G}/>`,
+    'how-it-works': `<path d="M60 180 H300" ${L}/>
+      ${[0, 1, 2, 3, 4].map((i) => `<circle cx="${60 + i * 60}" cy="180" r="${i === 4 ? 26 : 20}" ${i === 4 ? 'fill="#171b21" stroke="#6fc79f" stroke-width="3"' : P}/>`).join('')}
+      <path d="M288 180 L298 190 L314 170" ${G}/>
+      <rect x="80" y="240" width="200" height="70" rx="10" ${P}/><path d="M100 262 H220 M100 286 H180" ${L}/>
+      <path d="M90 120 H270" ${L} stroke-dasharray="2 12"/>`,
+  }
+
+  const card = (lang, key, c) => {
+    const f = FONT[lang]
+    const tight = lang === 'en' ? 'letter-spacing="-1.6"' : ''
+    const head = c.lines
+      .map((line, i) => `<text x="88" y="${290 + i * 76}" fill="${i ? '#6fc79f' : '#fbfbf9'}" font-family="${f}" font-size="62" font-weight="700" ${tight}>${esc(line)}</text>`)
+      .join('\n  ')
+    const subY = 290 + (c.lines.length - 1) * 76 + 66
+    const sub = c.sub
+      .map((line, i) => `<text x="88" y="${subY + i * 36}" fill="#b2b9c3" font-family="${f}" font-size="25">${esc(line)}</text>`)
+      .join('\n  ')
+    // Header, glyph badge and gradient are lifted from og-image.svg so the
+    // family stays one design.
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="plate" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#171b21"/><stop offset="1" stop-color="#0c0f13"/></linearGradient>
+    <radialGradient id="glow" cx="0.82" cy="0.12" r="0.72"><stop offset="0" stop-color="#1f8a5f" stop-opacity="0.34"/><stop offset="1" stop-color="#1f8a5f" stop-opacity="0"/></radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#plate)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+  <g transform="translate(88 84)">
+    <rect x="-4" y="-4" width="68" height="68" rx="16" fill="#fbfbf9"/>
+    <g transform="translate(30 30) scale(0.132) translate(-237 -235)"><path d="${pandaPath}" fill="#0c0f13" fill-rule="evenodd"/></g>
+    <text x="86" y="36" fill="#fbfbf9" font-family="${f}" font-size="27" font-weight="600">${lang === 'zh' ? 'Panda智能家居' : 'Panda Smart Home'}</text>
+  </g>
+  <text x="88" y="212" fill="#87909e" font-family="${f}" font-size="22" font-weight="600" ${lang === 'en' ? 'letter-spacing="2"' : ''}>${esc(c.eyebrow)}</text>
+  ${head}
+  ${sub}
+  <rect x="88" y="540" width="132" height="4" rx="2" fill="#1f8a5f"/>
+  <g transform="translate(770 150)">${ART[key]}</g>
+</svg>`
+  }
+
+  for (const [key, langs] of Object.entries(OG_CARDS)) {
+    for (const [lang, c] of Object.entries(langs)) {
+      const name = ogImagePath(key, lang).slice(1)
+      await write(
+        name,
+        await sharp(Buffer.from(card(lang, key, c)), { density: 144 })
+          .resize(1200, 630, { fit: 'fill' })
+          .png({ compressionLevel: 9, palette: true })
+          .toBuffer(),
+      )
+    }
+  }
 }

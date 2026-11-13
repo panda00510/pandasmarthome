@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Menu, X, Box, ChevronDown } from 'lucide-react'
 import { Wordmark } from '../brand/Wordmark'
 import { Button } from '../ui'
+import { pagePaths } from '../../content/guides'
 import { pageHref, useI18n, type Lang } from '../../i18n/context'
 
 const LANGS: { code: Lang; label: string }[] = [
@@ -139,11 +140,13 @@ export function Header() {
         </nav>
 
         <div className="flex shrink-0 items-center gap-2 sm:gap-3">
-          <LangToggle lang={lang} path={path} label={t.a11y.languageSwitcher} dark={dark} />
+          {/* On a 404 the other language's copy of the address is a 404 too, so the toggle goes to its home. */}
+          <LangToggle lang={lang} path={pagePaths.includes(path) ? path : ''} label={t.a11y.languageSwitcher} dark={dark} />
 
           <Button
             as="a"
             href={`${home}#contact`}
+            data-track="nav_cta_click"
             size="sm"
             variant={dark ? 'glow' : 'primary'}
             className="hidden sm:inline-flex"
@@ -205,6 +208,7 @@ export function Header() {
           <Button
             as="a"
             href={`${home}#contact`}
+            data-track="nav_cta_click"
             size="lg"
             className="mt-3 w-full"
             onClick={() => setOpen(false)}
@@ -316,6 +320,8 @@ function LangToggle({ lang, path, label, dark }: { lang: Lang; path: string; lab
             key={option.code}
             href={pageHref(option.code, path)}
             aria-current={active ? 'page' : undefined}
+            data-track="lang_switch"
+            data-track-to={option.code}
             lang={option.code === 'zh' ? 'zh-Hans' : 'en'}
             hrefLang={option.code === 'zh' ? 'zh-Hans' : 'en'}
             className={`inline-flex h-11 min-w-10 items-center justify-center rounded-full px-2 text-sm sm:min-w-11 sm:px-3 font-semibold whitespace-nowrap transition-colors ${

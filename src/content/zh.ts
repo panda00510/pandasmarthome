@@ -6,7 +6,7 @@ export const zh: Content = {
   meta: {
     title: 'Panda智能家居｜新加坡开放式智能家居解决方案',
     description:
-      'Panda智能家居为全新加坡的组屋、预购组屋、公寓与有地住宅提供智能家居设计与安装。灯光、空调、窗帘、门锁与摄像头接入同一套本地系统，不绑定单一品牌。',
+      'Panda智能家居为全新加坡的组屋、预购组屋、公寓与有地住宅提供智能家居设计与安装。灯光、空调、窗帘、门锁与摄像头接入同一套本地系统，不绑定单一品牌。另提供 Panda Signage 信息屏系统、ESP32 AI 硬件定制与软件定制。',
     keywords:
       '新加坡智能家居, 新加坡智能家居安装, 新加坡智能家居公司, 新加坡全屋智能, 全屋智能家居, 智能家居方案, 家居自动化, 组屋智能家居, 组屋装修, BTO 智能家居, BTO 装修, 公寓智能家居, 有地住宅智能家居, 智能灯光, 智能开关, 无零线开关, 空调智能控制, 智能窗帘, 电动窗帘, 电动百叶窗, 智能门锁, 电子门锁, 监控摄像头安装, 家居安防, 能耗监测, Matter, Zigbee, Thread, 苹果家庭, Google Home, Alexa',
     ogImageAlt: 'Panda智能家居 — 新加坡开放式智能家居解决方案',
@@ -49,6 +49,12 @@ export const zh: Content = {
       '开灯不需要月费订阅',
       '完整文档，系统交到你手上',
     ],
+    also: {
+      label: '我们还做',
+      signage: 'Panda Signage 信息屏',
+      hardware: 'AI 硬件定制',
+      software: '软件定制',
+    },
     imageAlt: '示意图：配有转角沙发、窗帘和轨道灯的现代客厅',
     panel: {
       title: '我的家',
@@ -1229,6 +1235,17 @@ export const zh: Content = {
     keyPoints: '先看这几点',
     contents: '本页目录',
     showMore: '显示更多指南',
+  },
+
+  notFound: {
+    metaTitle: '找不到页面｜Panda智能家居',
+    metaDescription: '这个页面不存在。可以从这里前往 Panda智能家居的服务、产品、指南和 3D 样板间。',
+    eyebrow: '错误 404',
+    title: '这个页面不存在。',
+    lead: '链接可能已经过期或输入有误。其他内容都还在，选一个地方继续浏览吧。',
+    linksTitle: '接下来去哪',
+    home: '首页',
+    contact: '联系我们',
   },
 
   footer: {

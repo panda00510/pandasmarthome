@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { brand, brandAssets } from '../config/brand'
+import { ogImageFor } from '../config/ogImages'
 import { hasAddress, site, socialLinks } from '../config/site'
 import { hubOf, pageMeta } from '../content/guides'
 import { langPath, useI18n } from '../i18n/context'
@@ -42,6 +43,8 @@ export function Seo() {
   const { lang, t, path } = useI18n()
   const { title, description, guide } = pageMeta(lang, path)
   const url = site.url ? site.url + langPath(lang, path) : undefined
+  // Per-page share card; same lookup as the prerender (entry-server.tsx).
+  const card = ogImageFor(lang, path)
   // Stable node ids so the graph's pieces reference each other.
   const id = (node: string) => (url ? `${url}#${node}` : undefined)
   const ref = (node: string) => (url ? { '@id': `${url}#${node}` } : undefined)
@@ -55,7 +58,7 @@ export function Seo() {
     setMeta('property', 'og:type', guide ? 'article' : 'website')
     setMeta('property', 'og:title', title)
     setMeta('property', 'og:description', description)
-    setMeta('property', 'og:image:alt', t.meta.ogImageAlt)
+    setMeta('property', 'og:image:alt', card?.alt ?? t.meta.ogImageAlt)
     setMeta('property', 'og:locale', lang === 'zh' ? 'zh_SG' : 'en_SG')
     setMeta('property', 'og:locale:alternate', lang === 'zh' ? 'en_SG' : 'zh_SG')
     setMeta('name', 'twitter:title', title)
@@ -69,10 +72,10 @@ export function Seo() {
       setLink('alternate', site.url + langPath('zh', path), 'zh-Hans')
       setLink('alternate', site.url + langPath('en', path), 'x-default')
       setMeta('property', 'og:url', url)
-      setMeta('property', 'og:image', site.url + brandAssets.ogImage)
-      setMeta('name', 'twitter:image', site.url + brandAssets.ogImage)
+      setMeta('property', 'og:image', site.url + (card?.src ?? brandAssets.ogImage))
+      setMeta('name', 'twitter:image', site.url + (card?.src ?? brandAssets.ogImage))
     }
-  }, [lang, t, path, title, description, guide, url])
+  }, [lang, t, path, title, description, guide, url, card?.src, card?.alt])
 
   // Singapore plus its five planning regions, so "smart home in Tampines"-style
   // queries have something explicit to match against.

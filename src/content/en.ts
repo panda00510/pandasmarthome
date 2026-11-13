@@ -6,7 +6,7 @@ export const en: Content = {
   meta: {
     title: 'Panda Smart Home | Open Smart Home Solutions Singapore',
     description:
-      'Smart home design and installation for HDB, BTO, condo and landed homes in Singapore. Lighting, aircon, curtains, locks and cameras on one local system.',
+      'Smart home design and installation for HDB, BTO, condo and landed homes in Singapore. Also Panda Signage displays, custom AI hardware and custom software.',
     keywords:
       'smart home Singapore, smart home installation Singapore, smart home company Singapore, smart home solutions Singapore, home automation Singapore, smart home system Singapore, whole home automation, HDB smart home, BTO smart home, BTO renovation smart home, condo smart home, landed house smart home, smart lighting Singapore, smart switch Singapore, no neutral smart switch, smart aircon control Singapore, smart curtains Singapore, motorised curtains Singapore, motorised blinds Singapore, digital lock Singapore, smart door lock Singapore, CCTV installation Singapore, home security Singapore, energy monitoring, Matter, Zigbee, Thread, Apple Home, Google Home, Alexa',
     ogImageAlt: 'Panda Smart Home — open smart home solutions in Singapore',
@@ -49,6 +49,12 @@ export const en: Content = {
       'No subscription to switch on a light',
       'Documented and handed over to you',
     ],
+    also: {
+      label: 'Also from Panda',
+      signage: 'Panda Signage',
+      hardware: 'Custom AI hardware',
+      software: 'Custom software',
+    },
     imageAlt:
       'Illustrative photo: modern living room with a corner sofa, curtains and track lighting',
     panel: {
@@ -1277,6 +1283,17 @@ export const en: Content = {
     keyPoints: 'The short version',
     contents: 'On this page',
     showMore: 'Show more guides',
+  },
+
+  notFound: {
+    metaTitle: 'Page not found | Panda Smart Home',
+    metaDescription: 'This page does not exist. Find smart home services, products, guides and the 3D showroom from Panda Smart Home.',
+    eyebrow: 'Error 404',
+    title: 'This page doesn’t exist.',
+    lead: 'The link may be old or mistyped. Everything else is still here — pick a place to continue.',
+    linksTitle: 'Where to next',
+    home: 'Home',
+    contact: 'Contact us',
   },
 
   footer: {

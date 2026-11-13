@@ -34,3 +34,4 @@ public/asset-sources.txt
 
 # Local tooling
 .playwright-mcp/
+.claude/

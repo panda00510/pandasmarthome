@@ -1,11 +1,18 @@
 import { createContext, useContext } from 'react'
 import type { Content } from '../content/types'
-import { en } from '../content/en'
-import { zh } from '../content/zh'
 
 export type Lang = 'en' | 'zh'
 
-export const dictionaries: Record<Lang, Content> = { en, zh }
+/**
+ * Copy per language, filled before the first render: in the browser by
+ * loadDictionary() (main.tsx loads only the page's language), in the
+ * prerender by entry-server.tsx (both, statically).
+ */
+export const dictionaries = {} as Record<Lang, Content>
+
+export async function loadDictionary(lang: Lang) {
+  dictionaries[lang] ??= lang === 'zh' ? (await import('../content/zh')).zh : (await import('../content/en')).en
+}
 
 export type I18nValue = {
   lang: Lang

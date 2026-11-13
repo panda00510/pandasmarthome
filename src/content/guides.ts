@@ -28,11 +28,17 @@ export type Guide = {
   title: string
   /** Visible heading: the front-matter `heading`, or the title. */
   heading: string
-  description: string
   published: string
   updated: string
+  /** Source file, e.g. "./guides/what-is-matter.en.md". */
+  file: string
+  /** Reading time in minutes, counted at build time from the full text. */
+  minutes: number
+  /** Empty until guideDescriptions.ts or the body is loaded (see fillDescriptions). */
+  description: string
+  /** Markdown body. Empty until loadGuideBody() (browser) or fillGuideBodies() (prerender). */
   body: string
-  /** Optional "short version" bullets from the `points:` front-matter line. */
+  /** Optional "short version" bullets from the `points:` front-matter line. Loaded with the body. */
   points: string[]
   /** One of TOPIC_IDS; drives the filter on /guides/. */
   topic: string
@@ -40,11 +46,15 @@ export type Guide = {
   faq: { q: string; a: string }[]
 }
 
+// Front matter only (plus `minutes`), via the guide-front-matter plugin in
+// vite.config.ts: every list needs it. Bodies are ~110 KB gzipped together,
+// so each loads as its own chunk, and only on its own page.
 const files = import.meta.glob<string>(['./guides/*.md', './pages/*.md'], {
-  query: '?raw',
+  query: '?front',
   import: 'default',
   eager: true,
 })
+const bodies = import.meta.glob<string>(['./guides/*.md', './pages/*.md'], { query: '?raw', import: 'default' })
 
 /** Filter groups on /guides/. A guide without an entry falls under "start". */
 export const TOPIC_IDS = ['start', 'renovation', 'energy', 'care', 'security'] as const
@@ -83,12 +93,8 @@ export const FEATURED = [
   'local-smart-home-vs-google-apple-smartthings',
 ]
 
-/** Rough reading time: ~200 English words or ~450 Chinese characters a minute. */
-export function readMinutes(guide: Guide) {
-  const text = guide.body.replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
-  const units = guide.lang === 'zh' ? text.replace(/\s/g, '').length / 450 : text.split(/\s+/).length / 200
-  return Math.max(1, Math.round(units))
-}
+/** Rough reading time (counted in vite.config.ts). */
+export const readMinutes = (guide: Guide) => guide.minutes
 
 const DATE = /^\d{4}-\d{2}-\d{2}$/
 
@@ -120,7 +126,8 @@ function parse(file: string, raw: string): Guide & { draft: boolean } {
       return [line.slice(0, i).trim(), line.slice(i + 1).trim()]
     }),
   )
-  for (const key of ['title', 'description', 'published', 'updated']) {
+  // `description` is checked by the guide-front-matter plugin (vite.config.ts), which keeps it out of `?front`.
+  for (const key of ['title', 'published', 'updated']) {
     if (!meta[key]) throw new Error(`${file}: missing "${key}"`)
   }
   if (!DATE.test(meta.published) || !DATE.test(meta.updated)) {
@@ -140,9 +147,11 @@ function parse(file: string, raw: string): Guide & { draft: boolean } {
     lang: name[2] as Lang,
     title: meta.title,
     heading: meta.heading || meta.title,
-    description: meta.description,
+    description: meta.description ?? '',
     published: meta.published,
     updated: meta.updated,
+    file,
+    minutes: Number(meta.minutes),
     body: parts[2].trim(),
     points: (meta.points ?? '').split('|').map((point) => point.trim()).filter(Boolean),
     topic: TOPICS[name[1]] ?? 'start',
@@ -157,6 +166,15 @@ const everything: Guide[] = Object.entries(files)
   .filter((guide) => import.meta.env.DEV || !guide.draft)
   .sort((a, b) => b.published.localeCompare(a.published) || a.slug.localeCompare(b.slug))
 
+/**
+ * Descriptions are kept out of `?front` (half its size) because only the
+ * guide and hub views list them; those import guideDescriptions.ts, which
+ * fills them in. The current page's own description comes with its body.
+ */
+export function fillDescriptions(descriptions: Record<string, string>) {
+  for (const guide of everything) guide.description ||= descriptions[guide.file]
+}
+
 export const guides = everything.filter((item) => item.kind === 'guide')
 export const topicPages = everything.filter((item) => item.kind === 'page')
 
@@ -164,6 +182,25 @@ for (const guide of everything) {
   if (!everything.some((other) => other.slug === guide.slug && other.lang !== guide.lang)) {
     throw new Error(`guides/${guide.slug}: needs both .en.md and .zh.md`)
   }
+}
+
+/** Give a guide its body, FAQ, points and description from the full Markdown file. */
+function setBody(guide: Guide, raw: string) {
+  const full = parse(guide.file, raw)
+  guide.description = full.description
+  guide.body = full.body
+  guide.faq = full.faq
+  guide.points = full.points
+}
+
+/** Browser: fetch the current article's body before the first render. */
+export async function loadGuideBody(guide: Guide) {
+  if (!guide.body) setBody(guide, await bodies[guide.file]())
+}
+
+/** Prerender: every body at once, keyed like the glob above (e.g. "./guides/x.en.md"). */
+export function fillGuideBodies(raw: Record<string, string>) {
+  for (const guide of everything) setBody(guide, raw[guide.file])
 }
 
 export const guidePath = (slug: string) => `guides/${slug}/`
@@ -232,6 +269,9 @@ export function pageMeta(lang: Lang, path: string) {
   }
   if (path === 'signage/') {
     return { title: t.signage.metaTitle, description: t.signage.metaDescription, guide: null }
+  }
+  if (path && !pagePaths.includes(path)) {
+    return { title: t.notFound.metaTitle, description: t.notFound.metaDescription, guide: null }
   }
   return { title: t.meta.title, description: t.meta.description, guide: null }
 }

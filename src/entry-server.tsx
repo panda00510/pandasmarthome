@@ -1,17 +1,56 @@
 import { renderToString } from 'react-dom/server'
 import App from './App'
 import { brand, brandAssets } from './config/brand'
+import { ogImageFor } from './config/ogImages'
 import { site } from './config/site'
 import { en } from './content/en'
 import { zh } from './content/zh'
-import { findGuide, guidePath, guidesIn, latestGuideUpdate, pageMeta, pagePaths, pagesIn } from './content/guides'
+import { fillGuideBodies, findGuide, guidePath, guidesIn, latestGuideUpdate, pageMeta, pagePaths, pagesIn } from './content/guides'
 import { dictionaries, langPath, type Lang } from './i18n/context'
 import { LanguageProvider } from './i18n/LanguageProvider'
+import * as Guides from './components/sections/Guides'
+import * as Hardware from './components/sections/Hardware'
+import * as Home from './components/sections/Home'
+import * as Hub from './components/sections/Hub'
+import * as Products from './components/sections/Products'
+import * as Signage from './components/sections/Signage'
+import * as Software from './components/sections/Software'
+import { viewFiles, viewOf, views } from './views'
+
+// The browser loads copy, page chunks and article bodies on demand (main.tsx);
+// the prerender has everything up front, so render() stays synchronous.
+Object.assign(dictionaries, { en, zh })
+Object.assign(views, { guides: Guides, hardware: Hardware, home: Home, hub: Hub, products: Products, signage: Signage, software: Software })
+fillGuideBodies(
+  Object.fromEntries(
+    Object.entries(
+      import.meta.glob<string>(['./content/guides/*.md', './content/pages/*.md'], { query: '?raw', import: 'default', eager: true }),
+    ).map(([file, raw]) => [file.replace('./content/', './'), raw]),
+  ),
+)
 
 const LANGS: Lang[] = ['en', 'zh']
 
 /** Every page to prerender: each path in each language. */
 export const routes = LANGS.flatMap((lang) => pagePaths.map((path) => ({ lang, path })))
+
+/**
+ * Source files (Vite manifest keys) of the chunks a page loads before its
+ * first render, beyond the main bundle: its language, its view, its article.
+ * scripts/prerender.mjs turns them into <link rel="modulepreload">.
+ */
+export function pageModules(lang: Lang, path: string) {
+  const view = viewOf(lang, path)
+  const guide = findGuide(lang, path)
+  return [
+    `src/content/${lang}.ts`,
+    ...(view ? [viewFiles[view]] : []),
+    ...(guide ? [`src/content/${guide.file.slice(2)}?raw`] : []),
+  ]
+}
+
+/** The 404 page in each language, written to dist/[zh/]404.html. Not in the sitemap or llms.txt. */
+export const notFoundRoutes = LANGS.map((lang) => ({ lang, path: '404/' }))
 
 /**
  * Build-time render of one page (see scripts/prerender.mjs). Search and AI
@@ -28,8 +67,10 @@ export function render(lang: Lang, path: string) {
   const t = dictionaries[lang]
   const { title, description, guide } = pageMeta(lang, path)
   const url = (l: Lang) => `${site.url}${langPath(l, path)}`
+  const notFound = !pagePaths.includes(path)
+  const card = ogImageFor(lang, path)
 
-  const head = site.url
+  const head = site.url && !notFound
     ? [
         `<link rel="canonical" href="${url(lang)}" />`,
         `<link rel="alternate" hreflang="en" href="${url('en')}" />`,
@@ -49,7 +90,8 @@ export function render(lang: Lang, path: string) {
   return {
     html,
     head,
-    ogImage: site.url ? site.url + brandAssets.ogImage : null,
+    notFound,
+    ogImage: site.url ? site.url + (card?.src ?? brandAssets.ogImage) : null,
     meta: {
       htmlLang: t.htmlLang,
       title,
@@ -58,7 +100,7 @@ export function render(lang: Lang, path: string) {
       type: guide ? 'article' : 'website',
       locale: lang === 'zh' ? 'zh_SG' : 'en_SG',
       localeAlt: lang === 'zh' ? 'en_SG' : 'zh_SG',
-      ogImageAlt: t.meta.ogImageAlt,
+      ogImageAlt: card?.alt ?? t.meta.ogImageAlt,
     },
   }
 }
@@ -122,6 +164,7 @@ ${routes
     `- Who: ${brand.name} (${brand.nameZh}), a smart home design and installation business.`,
     '- Where: across Singapore (all five regions, listed below) — HDB (BTO and resale), condominium and landed homes.',
     '- Languages: English and Simplified Chinese; every page exists in both.',
+    '- Also: Panda Signage (self-hosted digital signage displays), custom ESP32 AI hardware (prototypes and one-off builds) and custom software — each has its own page, listed below.',
     '- Approach: lighting, aircon, curtains, locks and cameras on one local system, on open platforms, with no vendor lock-in.',
     '- Prices on this site are indicative starting prices in SGD, not checkout prices; the amount is agreed before anything is ordered.',
     site.email ? `- Email: ${site.email}` : '',

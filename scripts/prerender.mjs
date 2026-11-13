@@ -8,10 +8,30 @@ import { mkdir, readFile, rm, writeFile } from 'node:fs/promises'
 import { fileURLToPath } from 'node:url'
 
 const at = (p) => fileURLToPath(new URL(`../${p}`, import.meta.url))
-const { render, routes, crawlerFiles } = await import(new URL('../dist-ssr/entry-server.js', import.meta.url))
+const { render, routes, notFoundRoutes, pageModules, crawlerFiles } = await import(new URL('../dist-ssr/entry-server.js', import.meta.url))
 
 const template = await readFile(at('dist/index.html'), 'utf8')
 if (!template.includes('<div id="root"></div>')) throw new Error('dist/index.html has no empty #root')
+
+// Chunks a page awaits before its first render (its language, view and
+// article; see src/main.tsx). Listed as modulepreload so they download in
+// parallel with the main bundle, which Vite already preloads.
+const manifest = JSON.parse(await readFile(at('dist/.vite/manifest.json'), 'utf8'))
+const base = process.env.BASE_PATH ?? '/'
+const chunks = (key, seen = new Set()) => {
+  if (!manifest[key]) throw new Error(`no chunk for ${key} in the Vite manifest`)
+  if (!seen.has(key)) {
+    seen.add(key)
+    for (const dep of manifest[key].imports ?? []) chunks(dep, seen)
+  }
+  return seen
+}
+const inEntry = chunks('index.html')
+const preloads = (lang, path) =>
+  [...new Set(pageModules(lang, path).flatMap((key) => [...chunks(key)]))]
+    .filter((key) => !inEntry.has(key))
+    .map((key) => `<link rel="modulepreload" crossorigin href="${base}${manifest[key].file}">`)
+    .join('\n    ')
 
 const attr = (value) =>
   value.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
@@ -23,8 +43,8 @@ function setMeta(page, key, value) {
   return page.replace(tag, (_, open, close) => open + attr(value) + close)
 }
 
-for (const { lang, path } of routes) {
-  const { html, head, ogImage, meta } = render(lang, path)
+for (const { lang, path } of [...routes, ...notFoundRoutes]) {
+  const { html, head, notFound, ogImage, meta } = render(lang, path)
   let page = template
     .replace('<html lang="en">', `<html lang="${meta.htmlLang}">`)
     .replace(/<title>[^<]*<\/title>/, () => `<title>${attr(meta.title)}</title>`)
@@ -45,12 +65,15 @@ for (const { lang, path } of routes) {
   }
   if (lang === 'zh') page = page.replace('href="/feed.xml"', 'href="/zh/feed.xml"')
   if (head) page = page.replace('</head>', () => `    ${head}\n  </head>`)
+  page = page.replace('</head>', () => `    ${preloads(lang, path)}\n  </head>`)
+  // The 404 page: never indexed, no canonical (render() returns no head for it).
+  if (notFound) page = setMeta(page, 'robots', 'noindex')
   // Social scrapers need an absolute og:image; the template only has a relative one.
   if (ogImage) page = page.replaceAll('content="/og-image.png"', `content="${ogImage}"`)
 
-  const dir = `dist/${lang === 'zh' ? 'zh/' : ''}${path}`
+  const dir = `dist/${lang === 'zh' ? 'zh/' : ''}${notFound ? '' : path}`
   await mkdir(at(dir), { recursive: true })
-  await writeFile(at(`${dir}index.html`), page)
+  await writeFile(at(`${dir}${notFound ? '404.html' : 'index.html'}`), page)
 }
 
 // Last commit touching each part of the site. Needs full history in CI
@@ -76,4 +99,5 @@ if (feeds) {
   await writeFile(at('dist/zh/feed.xml'), feeds.zh)
 }
 await rm(at('dist-ssr'), { recursive: true, force: true })
+await rm(at('dist/.vite'), { recursive: true, force: true })
 console.log(`prerendered ${routes.length} pages`)

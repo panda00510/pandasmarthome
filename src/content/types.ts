@@ -37,6 +37,8 @@ export type Content = {
     primaryCta: string
     secondaryCta: string
     trust: string[]
+    /** Compact row under the trust strip linking the other three lines of business. */
+    also: { label: string; signage: string; hardware: string; software: string }
     imageAlt: string
     panel: {
       title: string
@@ -459,6 +461,18 @@ export type Content = {
     keyPoints: string
     contents: string
     showMore: string
+  }
+
+  /** Page shown for an unknown address (served with HTTP 404, noindex). */
+  notFound: {
+    metaTitle: string
+    metaDescription: string
+    eyebrow: string
+    title: string
+    lead: string
+    linksTitle: string
+    home: string
+    contact: string
   }
 
   footer: {

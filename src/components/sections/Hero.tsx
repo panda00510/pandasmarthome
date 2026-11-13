@@ -1,8 +1,8 @@
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, CodeXml, Cpu, Monitor } from 'lucide-react'
 import { HomePanel } from '../graphics/HomePanel'
 import { Button } from '../ui'
 import { Showroom } from './Showroom'
-import { useI18n } from '../../i18n/context'
+import { pageHref, useI18n } from '../../i18n/context'
 
 /**
  * First screen, on ink. The headline is the LCP element (no photo above the
@@ -83,6 +83,25 @@ export function Hero() {
               </li>
             ))}
           </ul>
+
+          {/* The other lines of business: quiet links, so the smart home CTA stays the main action. */}
+          <nav aria-label={t.hero.also.label} className="mt-6 flex flex-wrap items-center gap-2 lg:mt-8">
+            <span className="mr-1 text-xs font-semibold tracking-[0.14em] text-ink-400 uppercase">{t.hero.also.label}</span>
+            {[
+              { href: pageHref(lang, 'signage/'), label: t.hero.also.signage, Icon: Monitor },
+              { href: pageHref(lang, 'custom-hardware/'), label: t.hero.also.hardware, Icon: Cpu },
+              { href: pageHref(lang, 'software/'), label: t.hero.also.software, Icon: CodeXml },
+            ].map(({ href, label, Icon }) => (
+              <a
+                key={href}
+                href={href}
+                className="inline-flex min-h-10 items-center gap-1.5 rounded-full border border-white/12 px-3 text-sm font-medium text-ink-200 transition-colors hover:border-white/30 hover:bg-white/6 hover:text-paper"
+              >
+                <Icon size={15} aria-hidden="true" className="text-bamboo-300" />
+                {label}
+              </a>
+            ))}
+          </nav>
         </div>
       </section>
 

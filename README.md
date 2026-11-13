@@ -86,6 +86,9 @@ is fine, and only that channel appears.
 | `VITE_FORM_ENDPOINT` | Enables the enquiry form (see below) |
 | `VITE_SITE_URL` | Required for correct `canonical`, `hreflang`, `og:url` and absolute `og:image` |
 | `VITE_SOCIAL_*` | Adds footer links and JSON-LD `sameAs` entries |
+| `VITE_PLAUSIBLE_DOMAIN` | Counts the conversion events below in Plausible (cookie-free) |
+| `VITE_PLAUSIBLE_SRC` | Plausible script URL; defaults to `https://plausible.io/js/script.js` (set for self-hosted or proxied Plausible) |
+| `VITE_GA_MEASUREMENT_ID` | `G-…` ID; counts the same events in Google Analytics 4, with consent mode set to *denied* so no cookies are written |
 
 Values that still contain the example placeholder text (`TODO`, `TBD`,
 `your-…`) are treated as unset, so a half-filled `.env.local` cannot leak
@@ -93,6 +96,33 @@ placeholders onto the page.
 
 Restart the dev server after editing `.env.local`; env values are inlined at
 build time, so **production changes require a rebuild**.
+
+### Conversion events
+
+`src/lib/track.ts` sends a handful of events to whichever service is
+configured above (both at once is fine). **With neither variable set it does
+nothing and no third-party script is loaded** — same rule as the contact
+channels. The script is added after the page's `load` event, so it never
+delays the first screen.
+
+Clicks are picked up by one listener on `document`: links are recognised by
+their `href`, everything else opts in with `data-track="<event>"`
+(`data-track-<key>="…"` become props). Every event carries `page` (the path)
+and `lang`; nothing from the form and nothing about the visitor is ever sent.
+
+| Event | When | Extra props |
+| --- | --- | --- |
+| `whatsapp_click` | any `wa.me` link | `source`: `floating`, `contact`, `hero`, `footer`, `products`, `hardware`, `signage`, `software`, `guide`, or `data-track-source` |
+| `email_click` / `tel_click` | any `mailto:` / `tel:` link | — |
+| `showroom_open` | any link to `/showroom/` | — |
+| `nav_cta_click` | the header "Book a consultation" button | — |
+| `lang_switch` | the EN / 中文 toggle | `to` |
+| `contact_form_submit` | the form was accepted by the endpoint, or handed to the mail app | `method`: `endpoint` / `mailto` |
+| `contact_form_error` | the endpoint rejected or failed | — |
+
+The site sends no CSP header, so nothing needs allow-listing; if one is
+added, include the Plausible script host and/or `www.googletagmanager.com`
+plus the matching `connect-src`.
 
 ### The enquiry form
 
@@ -193,7 +223,9 @@ any submission where it is non-empty as spam.
 ## Project layout
 
 ```
+AGENTS.md            working rules for coding agents (Claude Code / Codex), in Chinese
 public/              favicon, social card, app icons, manifest
+  og/                per-page share cards, <key>-<lang>.png (npm run og, committed)
 scripts/make-og.mjs  rasterises the brand SVGs into PNGs (npm run og)
 scripts/prerender.mjs  writes one static HTML file per page into dist/
 scripts/indexnow.mjs   pings IndexNow with changed URLs after deploy
@@ -203,12 +235,15 @@ src/
   config/
     brand.ts         brand names + logo asset paths  ← change the brand here
     site.ts          company, contact, SEO and social config, read from env
+    ogImages.ts      per-page share cards: text, alt, and the path -> image lookup
   content/
     types.ts         shape of the site copy
     en.ts  zh.ts     all user-facing text, both languages
     guides/          articles, one Markdown file per language (see "Guides")
     guides.ts        loads the articles; page list and per-page title/description
   i18n/              language context and path helpers (/ vs /zh/)
+  lib/track.ts       optional conversion events (see "Conversion events")
+  views.ts           which chunk each page loads (see "Split per page")
   hooks/motion.ts    scroll reveal (never hides what is on screen at load)
   components/
     brand/           PandaMark (glyph) and Wordmark (lockup)
@@ -225,6 +260,8 @@ src/
       Custom.tsx     homepage band: custom hardware + custom software + signage
       Hardware.tsx   the /custom-hardware/ page
       Signage.tsx    the /signage/ page (Panda Signage)
+      Home.tsx       the homepage, section by section
+      NotFound.tsx   the 404 page
     ui.tsx           Button, SectionHeading, Chip, PhotoTag
     Seo.tsx          head sync + JSON-LD structured data
   entry-server.tsx   prerender entry: routes, sitemap, robots, llms.txt
@@ -289,6 +326,25 @@ script, done — do not hand-edit `public/favicon.svg`, it is overwritten.
 The panda motif is used sparingly — logo, favicon and share card only — and
 never inside page sections.
 
+### Per-page share cards
+
+Each main page has its own 1200×630 card in `public/og/<key>-<lang>.png`
+(Solutions, Homes, Products, Software, Custom hardware, Signage, Guides,
+How it works, the Chinese homepage, and an English one for the showroom).
+The text, `og:image:alt` and the lookup live in `src/config/ogImages.ts`;
+the prerender and `Seo.tsx` both use `ogImageFor(lang, path)`, matched on the
+first path segment, so `/solutions/…` sub-pages and every guide share their
+section's card. Anything unmatched, and the English homepage, falls back to
+`/og-image.png`. The showroom's card is referenced directly in
+`showroom/index.html`.
+
+**The cards are generated locally on macOS and committed — CI never renders
+them.** The Chinese cards use PingFang SC, which Ubuntu runners do not have;
+librsvg would silently substitute another font or draw empty boxes. `npm run og`
+skips the cards on any other OS. After editing a card, run `npm run og`, open
+each changed PNG to check for overflow and missing glyphs, then commit it
+(each card is ~45–55 KB; keep them under 60 KB).
+
 ---
 
 ## Internationalisation
@@ -322,6 +378,18 @@ fails the type check until the other is updated too.
   `dist/[zh/]<path>/index.html`, so crawlers that skip JavaScript (most AI bots, Bing's
   first pass) still see the full copy, JSON-LD and canonical links. The browser
   re-renders on load; there is no hydration to keep in sync.
+* **Split per page.** The browser bundle carries only React, the header,
+  footer and head sync; the page's language (`content/en.ts` *or* `zh.ts`),
+  its view (`src/views.ts`) and, on an article, its Markdown body are separate
+  chunks. `src/main.tsx` awaits exactly those, then renders — the
+  prerendered HTML stays on screen until then, so nothing flashes. The
+  prerender adds a `<link rel="modulepreload">` for each (from the Vite
+  manifest, deleted afterwards), and fills every chunk statically itself.
+  Guide lists use front matter only (`?front`, a small plugin in
+  `vite.config.ts` that also counts reading time).
+* **404.** Unknown addresses render the 404 view; the prerender writes it to
+  `dist/404.html` and `dist/zh/404.html` with `noindex` and no canonical, and
+  it is not in the sitemap or `llms.txt`.
 * `robots.txt` (explicitly allows Bingbot, Applebot and the named AI
   crawlers), `sitemap.xml` (with `en` / `zh-Hans` / `x-default` alternates),
   `llms.txt` (brand brief, core pages, services, guides) and `llms-full.txt`
@@ -425,7 +493,14 @@ exact failure that made the mirror render as unconfigured.
 
 `wrangler.jsonc` defines the Worker: a small script (`worker/index.js`) in
 front of the `dist` assets, with `not_found_handling: "none"` so unknown paths
-return a real 404 instead of soft-404ing the homepage. The script does the
+return a real 404 instead of soft-404ing the homepage. For a page request
+(`Accept: text/html`, or an address with no file extension) the Worker swaps
+that empty 404 for `dist/404.html` (`/zh/404.html` under `/zh/`), still with
+status 404; a missing `.js` or image keeps its bare 404. This is done in the
+Worker rather than with `not_found_handling: "404-page"`, which would answer
+missing files with HTML too. GitHub Pages serves the root `404.html` by
+itself (in English; a `/zh/…` miss turns Chinese once the script runs). The
+script does the
 host and moved-page 301s and adds the security headers (HSTS,
 `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy`) to every
 response — in code rather than `public/_headers`, because with
