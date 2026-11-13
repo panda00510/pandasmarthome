@@ -24,7 +24,8 @@ export function Hero() {
         />
 
         <div className="shell grid gap-6 pt-6 pb-10 sm:pt-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:items-center lg:gap-14 lg:pt-14 lg:pb-16">
-          <div className="animate-rise">
+          {/* No entrance on the copy: the headline is the LCP text and must be there at first paint. */}
+          <div>
             <p className="eyebrow">
               <span aria-hidden="true" className="h-px w-6 bg-bamboo-500/50" />
               {t.hero.eyebrow}
@@ -58,7 +59,7 @@ export function Hero() {
             </div>
           </div>
 
-          <div className="relative [animation-delay:160ms] animate-rise">
+          <div className="relative animate-rise">
             <div className="relative overflow-hidden rounded-panel border border-ink-200/80 shadow-lift">
               <img
                 src={photo.src}

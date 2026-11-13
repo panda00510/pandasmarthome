@@ -39,18 +39,19 @@ page needs one yet, so it is not in the repository.
 
 ### 1b. Wikimedia Commons
 
-| File | Where used | Author | Licence | Source page |
-| --- | --- | --- | --- | --- |
-| `src/assets/photos/bedroom-lighting.webp` (from `.jpg`) | "Get in touch" | SPL Interiors1 | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0) | [Commons](https://commons.wikimedia.org/wiki/File:Balanced_Modern_Bedroom_Design_with_Neutral_Tones_and_Layered_Lighting.jpg) |
+None in use. The last one, `bedroom-lighting`, was taken out of the contact
+section on 2026-11-12; its record is in 1c below.
 
 CC BY requires credit to the author, a licence statement and a link back to the
-source. This file satisfies that; it is published at `/asset-sources.txt` and
-linked from the site footer ("Image credits & licences").
+source. This file is published at `/asset-sources.txt` and linked from the site
+footer ("Image credits & licences"), so the credits for retired photographs
+stay public too.
 
 ### 1c. Retired photographs (record kept, files removed from the site)
 
-Replaced on 2026-11-08 by the Pexels photographs above. Their provenance stays
-in [`src/assets/photos/_credits.json`](src/assets/photos/_credits.json).
+Replaced on 2026-11-08 by the Pexels photographs above, except
+`bedroom-lighting`, which was removed on 2026-11-12 without a replacement.
+Their provenance stays in [`src/assets/photos/_credits.json`](src/assets/photos/_credits.json).
 
 | Former file | Former use | Author | Licence | Source page |
 | --- | --- | --- | --- | --- |
@@ -60,6 +61,7 @@ in [`src/assets/photos/_credits.json`](src/assets/photos/_credits.json).
 | `sg-condo-marina.jpg` | Condominiums | William Cho | CC BY-SA 2.0 | [Commons](https://commons.wikimedia.org/wiki/File:The_Sail_@_Marina_Bay,_Singapore.jpg) |
 | `sg-landed.jpg` | Landed homes | Osucheok | Public domain | [Commons](https://commons.wikimedia.org/wiki/File:YewLianPark1.jpg) |
 | `bedroom-curtains.jpg` | How it works | Shixart1985 | CC BY 2.0 | [Commons](https://commons.wikimedia.org/wiki/File:Cozy_modern_bedroom_with_plush_pillows_and_elegant_drapes_in_bright_daylight.jpg) |
+| `bedroom-lighting.webp` (from `.jpg`) | "Get in touch" | SPL Interiors1 | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0) | [Commons](https://commons.wikimedia.org/wiki/File:Balanced_Modern_Bedroom_Design_with_Neutral_Tones_and_Layered_Lighting.jpg) |
 
 ---
 

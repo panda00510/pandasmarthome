@@ -4,44 +4,49 @@ import { useI18n } from '../../i18n/context'
 
 /** The one thing to understand: a controller in the home, with devices around it. */
 function HubDiagram({ home, nodes }: { home: string; nodes: string[] }) {
-  const spots = [
-    { x: 64, y: 40 },
-    { x: 64, y: 140 },
-    { x: 336, y: 90 },
-  ]
+  // Nodes sit evenly on a ring around the hub, first one at the top, so any
+  // number of `platform.nodes` strings gets a place.
+  const cx = 180
+  const cy = 140
+  const ring = 112
+  const spots = nodes.map((_, i) => {
+    const angle = -Math.PI / 2 + (i * 2 * Math.PI) / nodes.length
+    return { x: cx + ring * Math.cos(angle), y: cy + ring * Math.sin(angle) }
+  })
   return (
     <svg
-      viewBox="0 0 400 180"
-      className="h-auto w-full"
+      viewBox="0 0 360 262"
+      className="mx-auto h-auto w-full max-w-[34rem]"
       role="img"
       aria-label={`${home}: ${nodes.join(', ')}`}
     >
+      <circle cx={cx} cy={cy} r={ring} fill="none" stroke="rgb(255 255 255 / 0.1)" />
       {spots.map((spot, i) => (
         <g key={i}>
           <path
-            d={`M200 90L${spot.x} ${spot.y}`}
+            d={`M${cx} ${cy}L${spot.x} ${spot.y}`}
             stroke="var(--color-bamboo-400)"
             strokeWidth="1.5"
             strokeDasharray="4 5"
             opacity="0.7"
           />
           <rect
-            x={spot.x - 52}
-            y={spot.y - 17}
-            width="104"
-            height="34"
-            rx="17"
-            fill="rgb(255 255 255 / 0.08)"
-            stroke="rgb(255 255 255 / 0.18)"
+            x={spot.x - 60}
+            y={spot.y - 20}
+            width="120"
+            height="40"
+            rx="20"
+            fill="#1d2329"
+            stroke="rgb(255 255 255 / 0.22)"
           />
-          <text x={spot.x} y={spot.y + 5} textAnchor="middle" fontSize="14" fill="#e3e7ea" fontFamily="inherit">
+          <text x={spot.x} y={spot.y + 5.5} textAnchor="middle" fontSize="16" fontWeight="500" fill="#e3e7ea" fontFamily="inherit">
             {nodes[i]}
           </text>
         </g>
       ))}
-      <circle cx="200" cy="90" r="46" fill="var(--color-bamboo-500)" opacity="0.18" />
-      <circle cx="200" cy="90" r="34" fill="var(--color-bamboo-500)" />
-      <text x="200" y="95" textAnchor="middle" fontSize="14" fontWeight="600" fill="#fff" fontFamily="inherit">
+      <circle cx={cx} cy={cy} r="62" fill="var(--color-bamboo-500)" opacity="0.18" />
+      <circle cx={cx} cy={cy} r="46" fill="var(--color-bamboo-500)" />
+      <text x={cx} y={cy + 6} textAnchor="middle" fontSize="17" fontWeight="600" fill="#fff" fontFamily="inherit">
         {home}
       </text>
     </svg>
@@ -67,9 +72,7 @@ export function Platform() {
               ))}
             </ul>
           </div>
-          <div className="rounded-panel border border-white/10 bg-white/[0.03] p-4 sm:p-6">
-            <HubDiagram home={p.hubLabel} nodes={p.nodes} />
-          </div>
+          <HubDiagram home={p.hubLabel} nodes={p.nodes} />
         </div>
 
         <details className="group mt-8 border-t border-white/10 pt-5">

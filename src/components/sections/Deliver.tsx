@@ -62,19 +62,23 @@ export function Deliver() {
   const d = t.deliver
 
   return (
-    <section id="deliver" className="band border-t border-ink-200/70 bg-paper-alt">
+    <section id="deliver" className="band border-t border-ink-200/70">
       <div className="shell">
         <SectionHeading eyebrow={d.eyebrow} title={d.title} lead={d.lead} shortOnPhone />
 
-        <ul className="reveal-group mt-8 grid gap-4 md:grid-cols-3 lg:mt-12">
+        {/* One panel, three columns divided by rules; stacked rows on a phone. */}
+        <ul
+          data-reveal
+          className="card mt-8 grid divide-y divide-ink-200 md:grid-cols-3 md:divide-x md:divide-y-0 lg:mt-10"
+        >
           {d.items.map((item) => {
             const Art = ART[item.id as keyof typeof ART] ?? ScopeArt
             return (
-              <li key={item.id} data-reveal className="card flex overflow-hidden md:flex-col">
-                <div className="w-28 shrink-0 border-r border-ink-100 bg-bamboo-50/60 p-2 sm:w-40 md:h-40 md:w-auto md:border-r-0 md:border-b md:p-3">
+              <li key={item.id} className="flex gap-4 p-4 md:flex-col md:gap-0 lg:p-6">
+                <div className="w-24 shrink-0 rounded-xl bg-bamboo-50/60 p-1.5 sm:w-36 md:h-36 md:w-auto md:p-3">
                   <Art />
                 </div>
-                <div className="flex min-w-0 flex-1 flex-col p-4 lg:p-6">
+                <div className="flex min-w-0 flex-1 flex-col md:mt-5">
                   <p className="eyebrow">{item.tag}</p>
                   <h3 className="mt-2 text-[1.0625rem] leading-snug font-semibold text-ink-950">{item.title}</h3>
                   <p className="mt-2 text-[0.9375rem] leading-relaxed text-ink-600">{item.body}</p>

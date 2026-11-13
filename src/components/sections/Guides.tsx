@@ -76,7 +76,7 @@ export function LatestGuides() {
   if (!latest.length) return null
 
   return (
-    <section id="guides" className="band border-t border-ink-200/70">
+    <section id="guides" className="band border-t border-ink-200/70 bg-paper-alt">
       <div className="shell">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <SectionHeading

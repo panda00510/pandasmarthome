@@ -156,31 +156,45 @@ export function Header() {
 }
 
 function LangToggle({ lang, path, label }: { lang: Lang; path: string; label: string }) {
+  // Phones get one link to the other language, so the full wordmark fits.
+  const other = LANGS.find((option) => option.code !== lang)!
+  const otherLang = other.code === 'zh' ? 'zh-Hans' : 'en'
   return (
-    <div
-      role="group"
-      aria-label={label}
-      className="flex items-center rounded-full bg-ink-100"
-    >
-      {LANGS.map((option) => {
-        const active = option.code === lang
-        return (
-          <a
-            key={option.code}
-            href={pageHref(option.code, path)}
-            aria-current={active ? 'page' : undefined}
-            lang={option.code === 'zh' ? 'zh-Hans' : 'en'}
-            hrefLang={option.code === 'zh' ? 'zh-Hans' : 'en'}
-            className={`inline-flex h-11 min-w-11 items-center justify-center rounded-full px-2.5 text-sm sm:px-3 font-semibold whitespace-nowrap transition-colors ${
-              active
-                ? 'bg-white text-ink-950 shadow-[0_1px_2px_rgb(12_15_19/0.08)]'
-                : 'text-ink-500 hover:text-ink-800'
-            }`}
-          >
-            {option.label}
-          </a>
-        )
-      })}
-    </div>
+    <>
+      <a
+        href={pageHref(other.code, path)}
+        lang={otherLang}
+        hrefLang={otherLang}
+        aria-label={`${label}: ${other.label}`}
+        className="inline-flex h-11 min-w-11 items-center justify-center rounded-full bg-ink-100 px-2.5 text-sm font-semibold whitespace-nowrap text-ink-800 transition-colors hover:bg-ink-200 sm:hidden"
+      >
+        {other.label}
+      </a>
+      <div
+        role="group"
+        aria-label={label}
+        className="hidden items-center rounded-full bg-ink-100 sm:flex"
+      >
+        {LANGS.map((option) => {
+          const active = option.code === lang
+          return (
+            <a
+              key={option.code}
+              href={pageHref(option.code, path)}
+              aria-current={active ? 'page' : undefined}
+              lang={option.code === 'zh' ? 'zh-Hans' : 'en'}
+              hrefLang={option.code === 'zh' ? 'zh-Hans' : 'en'}
+              className={`inline-flex h-11 min-w-11 items-center justify-center rounded-full px-2.5 text-sm sm:px-3 font-semibold whitespace-nowrap transition-colors ${
+                active
+                  ? 'bg-white text-ink-950 shadow-[0_1px_2px_rgb(12_15_19/0.08)]'
+                  : 'text-ink-500 hover:text-ink-800'
+              }`}
+            >
+              {option.label}
+            </a>
+          )
+        })}
+      </div>
+    </>
   )
 }

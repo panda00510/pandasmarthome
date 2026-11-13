@@ -15,7 +15,7 @@ import { Platform } from './components/sections/Platform'
 import { Process } from './components/sections/Process'
 import { Solutions } from './components/sections/Solutions'
 import { ProductsPage, ProductsStrip } from './components/sections/Products'
-import { SoftwareCard, SoftwarePage } from './components/sections/Software'
+import { SoftwarePage } from './components/sections/Software'
 import { Upcoming } from './components/sections/Upcoming'
 import { site } from './config/site'
 import { findGuide, hubOf } from './content/guides'
@@ -67,8 +67,8 @@ export default function App() {
           <>
             <Hero />
             <Solutions />
+            {/* Products and the software entry share one compact band. */}
             <ProductsStrip />
-            <SoftwareCard />
             <Deliver />
             <Homes />
             <Process />

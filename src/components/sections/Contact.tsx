@@ -10,7 +10,6 @@ import {
   Send,
   TriangleAlert,
 } from 'lucide-react'
-import lighting from '../../assets/photos/bedroom-lighting.webp'
 import { formattedAddress, hasAnyContactDetail, site } from '../../config/site'
 import { Button, SectionHeading } from '../ui'
 import { useI18n } from '../../i18n/context'
@@ -231,16 +230,6 @@ export function Contact() {
               </div>
             </div>
           ) : null}
-
-          <img
-            src={lighting}
-            alt=""
-            width={1280}
-            height={959}
-            loading="lazy"
-            decoding="async"
-            className="mt-8 hidden aspect-[16/7] w-full rounded-panel object-cover opacity-90 lg:block"
-          />
           </div>
         </div>
 

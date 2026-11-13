@@ -22,7 +22,7 @@ const PAGES: Record<string, string> = {
   security: 'solutions/smart-door-locks/',
 }
 
-/** The six services as compact, fully clickable cards. */
+/** The six services as a light hairline grid; each cell is one link. */
 export function Solutions() {
   const { t, lang } = useI18n()
 
@@ -36,20 +36,24 @@ export function Solutions() {
           shortOnPhone
         />
 
-        <ul className="reveal-group mt-8 grid grid-cols-2 gap-3 lg:mt-12 lg:grid-cols-3 lg:gap-4">
+        {/* Hairline grid, not boxed cards: the 1px gaps show the rule colour
+            behind the cells. Revealed as one block so the rules never show
+            through a half-faded cell. */}
+        <ul
+          data-reveal
+          className="mt-8 grid grid-cols-2 gap-px border-y border-ink-200 bg-ink-200 lg:mt-10 lg:grid-cols-3"
+        >
           {t.solutions.items.map((item) => {
             const Icon = ICONS[item.id] ?? Lightbulb
             return (
-              <li key={item.id} data-reveal>
+              <li key={item.id} className="bg-paper">
                 <a
                   href={pageHref(lang, PAGES[item.id] ?? 'solutions/')}
-                  className="card group flex h-full flex-col items-start gap-3 p-4 transition-colors hover:border-bamboo-200 sm:flex-row sm:gap-4 sm:p-5 lg:p-6"
+                  className="group flex h-full flex-col items-start gap-2.5 px-3 py-4 transition-colors hover:bg-white sm:flex-row sm:gap-4 sm:px-4 sm:py-6 lg:px-6"
                 >
-                  <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-bamboo-50 text-bamboo-700 ring-1 ring-bamboo-100 transition-colors group-hover:bg-brand group-hover:text-white">
-                    <Icon size={20} aria-hidden="true" />
-                  </span>
+                  <Icon size={22} strokeWidth={1.8} className="mt-0.5 shrink-0 text-bamboo-600" aria-hidden="true" />
                   <span className="min-w-0">
-                    <span className="block text-[1.0625rem] leading-snug font-semibold text-ink-950">
+                    <span className="block text-[1.0625rem] leading-snug font-semibold text-ink-950 group-hover:text-bamboo-700">
                       {item.title}
                     </span>
                     <span className="mt-1.5 hidden text-[0.9375rem] leading-relaxed text-ink-600 sm:block">

@@ -1,6 +1,6 @@
 import { ArrowRight, ChevronDown, MessageCircle } from 'lucide-react'
 import { ProductArt } from '../graphics/ProductFigures'
-import { Button, PhotoTag, SectionHeading } from '../ui'
+import { Button, PhotoTag } from '../ui'
 import { site } from '../../config/site'
 import { pageHref, useI18n } from '../../i18n/context'
 
@@ -37,48 +37,65 @@ function CustomTag({ children }: { children: string }) {
   )
 }
 
-/** Homepage band: four devices, each linking to its block on the products page. */
+/**
+ * Homepage band: the four devices plus one slim row for custom software.
+ * Pre-order, indicative prices and customization are said once, in the lead,
+ * not repeated as chips on every card. On a phone the cards are one swipeable
+ * row so the band stays short.
+ */
 export function ProductsStrip() {
   const { t, lang } = useI18n()
   const p = t.products
+  const s = t.software
 
   return (
-    <section id="products" className="band border-t border-ink-200/70">
+    <section id="products" className="border-t border-ink-200/70 bg-paper-alt py-10 lg:py-14">
       <div className="shell">
-        <div className="flex flex-wrap items-end justify-between gap-4">
-          <SectionHeading eyebrow={p.eyebrow} title={p.homeTitle} lead={p.homeLead} />
+        <div data-reveal className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between lg:gap-10">
+          <div className="max-w-3xl">
+            <p className="eyebrow">
+              <span aria-hidden="true" className="h-px w-6 bg-bamboo-500/50" />
+              {p.eyebrow}
+            </p>
+            <h2 className="mt-3 text-[1.5rem] leading-[1.15] font-semibold tracking-[-0.025em] text-ink-950 sm:text-[2rem]">
+              {p.homeTitle}
+            </h2>
+            <p className="mt-2 text-[0.9375rem] leading-relaxed text-ink-600 sm:text-base">
+              {p.homeLead} <span className="font-semibold text-bamboo-800">{p.homeCustom}</span>
+            </p>
+          </div>
           <a
             href={pageHref(lang, 'products/')}
-            className="inline-flex min-h-11 shrink-0 items-center gap-1.5 text-sm font-semibold text-bamboo-700 hover:text-bamboo-600"
+            className="inline-flex min-h-11 shrink-0 items-center gap-1.5 self-start text-sm font-semibold text-bamboo-700 hover:text-bamboo-600 lg:self-auto"
           >
             {p.homeCta}
             <ArrowRight size={15} aria-hidden="true" />
           </a>
         </div>
-        <p className="mt-3 max-w-3xl text-sm font-semibold text-bamboo-800">{p.homeCustom}</p>
 
-        <ul className="reveal-group mt-8 grid grid-cols-2 gap-3 lg:mt-12 lg:grid-cols-4 lg:gap-4">
+        {/* Phone/tablet: one scroll-snap row that bleeds to the screen edge.
+            lg: a plain four-column grid. */}
+        <ul
+          data-reveal
+          className="-mx-5 mt-5 flex snap-x snap-mandatory scroll-px-5 gap-3 overflow-x-auto px-5 pb-2 md:-mx-8 md:scroll-px-8 md:px-8 lg:mx-0 lg:mt-8 lg:grid lg:grid-cols-4 lg:gap-4 lg:overflow-visible lg:px-0 lg:pb-0"
+        >
           {p.items.map((item) => (
-            <li key={item.id} data-reveal className="min-w-0">
+            <li key={item.id} className="w-[62%] max-w-64 shrink-0 snap-start sm:w-[40%] lg:w-auto lg:max-w-none">
               <a
                 href={`${pageHref(lang, 'products/')}#${item.id}`}
                 className="card group flex h-full flex-col overflow-hidden transition-colors hover:border-bamboo-200"
               >
-                <span className="relative block aspect-[4/3] bg-bamboo-50/60">
+                <span className="relative block aspect-[16/10] bg-bamboo-50/60">
                   <span className="absolute inset-1 sm:inset-2">
                     <ProductArt id={item.id} lang={lang} />
                   </span>
                   <PhotoTag>{p.illustration}</PhotoTag>
                 </span>
-                <span className="flex min-w-0 flex-1 flex-col p-3 sm:p-4">
-                  <span className="flex flex-wrap gap-1.5">
-                    <StatusPill>{p.status}</StatusPill>
-                    <CustomTag>{p.custom.tag}</CustomTag>
-                  </span>
-                  <span className="mt-2 text-[0.9375rem] leading-snug font-semibold text-ink-950 group-hover:text-bamboo-800">
+                <span className="flex min-w-0 flex-1 flex-col p-3 sm:px-4">
+                  <span className="text-[0.9375rem] leading-snug font-semibold text-ink-950 group-hover:text-bamboo-800">
                     {item.title}
                   </span>
-                  <span className="mt-auto pt-3 text-sm font-semibold text-bamboo-700">
+                  <span className="mt-auto pt-1.5 text-sm font-semibold text-bamboo-700">
                     {formatPrice(p.priceFrom, item.priceSgd)}
                   </span>
                 </span>
@@ -86,6 +103,24 @@ export function ProductsStrip() {
             </li>
           ))}
         </ul>
+
+        <a
+          data-reveal
+          href={pageHref(lang, 'software/')}
+          className="card group mt-4 flex flex-col gap-2 px-4 py-3.5 transition-colors hover:border-bamboo-200 sm:flex-row sm:items-center sm:justify-between sm:gap-6 sm:px-5 lg:mt-5"
+        >
+          <span className="min-w-0">
+            <span className="eyebrow">{s.eyebrow}</span>
+            <span className="mt-1 block text-[1.0625rem] leading-snug font-semibold text-ink-950 group-hover:text-bamboo-800">
+              {s.homeTitle}
+            </span>
+            <span className="mt-1 block text-sm leading-relaxed text-ink-600">{s.homeLead}</span>
+          </span>
+          <span className="inline-flex min-h-11 shrink-0 items-center gap-1.5 text-sm font-semibold text-bamboo-700 group-hover:text-bamboo-600">
+            {s.homeCta}
+            <ArrowRight size={15} aria-hidden="true" />
+          </span>
+        </a>
       </div>
     </section>
   )
@@ -111,37 +146,6 @@ export function ProductsPage() {
           <div className="mt-5">
             <StatusPill>{p.status}</StatusPill>
           </div>
-
-          <aside id="customize" className="mt-8 scroll-mt-28 rounded-panel border border-bamboo-200 bg-bamboo-50 px-5 py-6 sm:px-7 sm:py-7">
-            <p className="eyebrow">{p.custom.eyebrow}</p>
-            <h2 className="mt-3 max-w-3xl text-[1.45rem] leading-snug font-semibold tracking-[-0.02em] text-ink-950 sm:text-[1.75rem]">
-              {p.custom.title}
-            </h2>
-            <p className="mt-3 max-w-3xl text-base leading-relaxed text-ink-700">{p.custom.body}</p>
-            <ul className="mt-4 flex flex-wrap gap-2">
-              {p.custom.examples.map((example) => (
-                <li
-                  key={example}
-                  className="rounded-full bg-white px-3 py-1.5 text-[0.8125rem] font-medium text-ink-800 ring-1 ring-bamboo-200"
-                >
-                  {example}
-                </li>
-              ))}
-            </ul>
-            <div className="mt-5">
-              <Button
-                as="a"
-                href={whatsappHref(p.custom.message)}
-                target="_blank"
-                rel="noopener noreferrer"
-                size="lg"
-                className="w-full sm:w-auto"
-              >
-                <MessageCircle size={18} aria-hidden="true" />
-                {p.custom.cta}
-              </Button>
-            </div>
-          </aside>
 
           <div className="mt-6">
             <Button
@@ -170,19 +174,12 @@ export function ProductsPage() {
               </li>
             ))}
           </ul>
-
-          <ul className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {p.points.map((point) => (
-              <li key={point.title} className="card p-4">
-                <p className="text-[0.9375rem] font-semibold text-ink-950">{point.title}</p>
-                <p className="mt-1.5 text-sm leading-relaxed text-ink-600">{point.body}</p>
-              </li>
-            ))}
-          </ul>
         </div>
       </section>
 
-      <section className="band" aria-label={p.eyebrow}>
+      {/* The devices come straight after the intro; customization and the
+          general points follow them. */}
+      <section className="band bg-paper-alt" aria-label={p.eyebrow}>
         <div className="shell">
           <ul className="grid gap-6">
             {p.items.map((item) => {
@@ -271,8 +268,52 @@ export function ProductsPage() {
         </div>
       </section>
 
-      <section className="border-t border-ink-200/70">
-        <div className="shell py-8 lg:py-10">
+      <section className="band border-t border-ink-200/70">
+        <div className="shell">
+          <aside id="customize" className="scroll-mt-28 rounded-panel border border-bamboo-200 bg-bamboo-50 px-5 py-6 sm:px-7 sm:py-7">
+            <p className="eyebrow">{p.custom.eyebrow}</p>
+            <h2 className="mt-3 max-w-3xl text-[1.45rem] leading-snug font-semibold tracking-[-0.02em] text-ink-950 sm:text-[1.75rem]">
+              {p.custom.title}
+            </h2>
+            <p className="mt-3 max-w-3xl text-base leading-relaxed text-ink-700">{p.custom.body}</p>
+            <ul className="mt-4 flex flex-wrap gap-2">
+              {p.custom.examples.map((example) => (
+                <li
+                  key={example}
+                  className="rounded-full bg-white px-3 py-1.5 text-[0.8125rem] font-medium text-ink-800 ring-1 ring-bamboo-200"
+                >
+                  {example}
+                </li>
+              ))}
+            </ul>
+            <div className="mt-5">
+              <Button
+                as="a"
+                href={whatsappHref(p.custom.message)}
+                target="_blank"
+                rel="noopener noreferrer"
+                size="lg"
+                className="w-full sm:w-auto"
+              >
+                <MessageCircle size={18} aria-hidden="true" />
+                {p.custom.cta}
+              </Button>
+            </div>
+          </aside>
+
+          <ul className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {p.points.map((point) => (
+              <li key={point.title} className="card p-4">
+                <p className="text-[0.9375rem] font-semibold text-ink-950">{point.title}</p>
+                <p className="mt-1.5 text-sm leading-relaxed text-ink-600">{point.body}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <div className="shell pb-8 lg:pb-10">
           <ul className="max-w-3xl space-y-2 text-sm leading-relaxed text-ink-600">
             {p.finePrint.map((line) => (
               <li key={line}>{line}</li>
@@ -290,7 +331,7 @@ export function ProductsPage() {
         </div>
       </section>
 
-      <section className="band border-t border-ink-200/70">
+      <section className="band border-t border-ink-200/70 bg-paper-alt">
         <div className="shell grid gap-8 lg:grid-cols-[minmax(0,0.7fr)_minmax(0,1.3fr)] lg:gap-16">
           <h2 className="text-[1.75rem] leading-[1.15] font-semibold tracking-[-0.025em] text-ink-950 sm:text-4xl">
             {p.faqTitle}

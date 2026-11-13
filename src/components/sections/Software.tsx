@@ -27,35 +27,6 @@ function whatsappHref(message: string) {
   return `${PREORDER_WHATSAPP}?text=${encodeURIComponent(message)}`
 }
 
-/** A single card on the home page, linking to the software page. */
-export function SoftwareCard() {
-  const { t, lang } = useI18n()
-  const s = t.software
-
-  return (
-    <section className="border-t border-ink-200/70">
-      <div className="shell py-8 lg:py-10">
-        <a
-          href={pageHref(lang, 'software/')}
-          className="card group flex flex-col gap-4 p-5 transition-colors hover:border-bamboo-200 sm:flex-row sm:items-center sm:justify-between sm:p-6"
-        >
-          <span className="min-w-0">
-            <span className="eyebrow">{s.eyebrow}</span>
-            <span className="mt-2 block text-[1.25rem] leading-snug font-semibold tracking-[-0.02em] text-ink-950 sm:text-[1.4rem]">
-              {s.homeTitle}
-            </span>
-            <span className="mt-2 block max-w-2xl text-[0.9375rem] leading-relaxed text-ink-600">{s.homeLead}</span>
-          </span>
-          <span className="inline-flex min-h-11 shrink-0 items-center gap-1.5 text-sm font-semibold text-bamboo-700 group-hover:text-bamboo-600">
-            {s.homeCta}
-            <ArrowRight size={15} aria-hidden="true" />
-          </span>
-        </a>
-      </div>
-    </section>
-  )
-}
-
 export function SoftwarePage() {
   const { t, lang } = useI18n()
   const s = t.software
@@ -110,34 +81,41 @@ export function SoftwarePage() {
         </div>
       </section>
 
-      <section className="band" aria-label={s.eyebrow}>
+      <section className="band bg-paper-alt" aria-label={s.eyebrow}>
         <div className="shell">
           <ul className="grid gap-4 lg:grid-cols-2">
-            {s.packages.map((item) => {
+            {s.packages.map((item, i) => {
               const Icon = ICONS[item.id] ?? LayoutDashboard
               const price = formatPrice(s.priceFrom, item.priceSgd)
               const message = s.enquireTemplate.replaceAll('{package}', item.title)
+              // An odd card out spans the row on two columns, laid out sideways, so no cell is left empty.
+              const wide = i === s.packages.length - 1 && s.packages.length % 2 === 1
               return (
-                <li key={item.id}>
-                  <article id={item.id} className="card flex h-full scroll-mt-28 flex-col p-5 sm:p-6">
-                    <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-bamboo-50 text-bamboo-700 ring-1 ring-bamboo-100">
-                      <Icon size={20} aria-hidden="true" />
-                    </span>
-                    <h2 className="mt-4 text-[1.2rem] leading-snug font-semibold tracking-[-0.02em] text-ink-950">
-                      {item.title}
-                    </h2>
-                    <p className="mt-2 text-[0.9375rem] leading-relaxed text-ink-600">{item.body}</p>
-                    <ul className="mt-4 flex flex-wrap gap-2">
-                      {item.includes.map((line) => (
-                        <li
-                          key={line}
-                          className="rounded-full bg-ink-50 px-3 py-1.5 text-[0.8125rem] font-medium text-ink-700 ring-1 ring-ink-200"
-                        >
-                          {line}
-                        </li>
-                      ))}
-                    </ul>
-                    <div className="mt-auto pt-6">
+                <li key={item.id} className={wide ? 'lg:col-span-2' : undefined}>
+                  <article
+                    id={item.id}
+                    className={`card flex h-full scroll-mt-28 flex-col p-5 sm:p-6 ${wide ? 'lg:flex-row lg:gap-10' : ''}`}
+                  >
+                    <div className={wide ? 'lg:flex-1' : undefined}>
+                      <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-bamboo-50 text-bamboo-700 ring-1 ring-bamboo-100">
+                        <Icon size={20} aria-hidden="true" />
+                      </span>
+                      <h2 className="mt-4 text-[1.2rem] leading-snug font-semibold tracking-[-0.02em] text-ink-950">
+                        {item.title}
+                      </h2>
+                      <p className="mt-2 text-[0.9375rem] leading-relaxed text-ink-600">{item.body}</p>
+                      <ul className="mt-4 flex flex-wrap gap-2">
+                        {item.includes.map((line) => (
+                          <li
+                            key={line}
+                            className="rounded-full bg-ink-50 px-3 py-1.5 text-[0.8125rem] font-medium text-ink-700 ring-1 ring-ink-200"
+                          >
+                            {line}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    <div className={`mt-auto pt-6 ${wide ? 'lg:w-80 lg:shrink-0 lg:border-l lg:border-ink-100 lg:pt-0 lg:pl-10' : ''}`}>
                       <p className="text-xs font-semibold tracking-wide text-ink-500 uppercase">{s.priceLabel}</p>
                       <p className="mt-1 text-2xl font-semibold tracking-tight text-ink-950">{price}</p>
                       <p className="mt-1 text-sm leading-relaxed text-ink-600">{s.support}</p>
@@ -182,7 +160,7 @@ export function SoftwarePage() {
         </div>
       </section>
 
-      <section className="band border-t border-ink-200/70">
+      <section className="band border-t border-ink-200/70 bg-paper-alt">
         <div className="shell">
           <h2 className="max-w-3xl text-[1.75rem] leading-[1.15] font-semibold tracking-[-0.025em] text-ink-950 sm:text-4xl">
             {s.processTitle}
@@ -213,7 +191,7 @@ export function SoftwarePage() {
         </div>
       </section>
 
-      <section className="band border-t border-ink-200/70">
+      <section className="band border-t border-ink-200/70 bg-paper-alt">
         <div className="shell grid gap-8 lg:grid-cols-[minmax(0,0.7fr)_minmax(0,1.3fr)] lg:gap-16">
           <h2 className="text-[1.75rem] leading-[1.15] font-semibold tracking-[-0.025em] text-ink-950 sm:text-4xl">
             {s.faqTitle}

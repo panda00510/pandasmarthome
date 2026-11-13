@@ -24,7 +24,10 @@ export function useReveal() {
     const elements = Array.from(document.querySelectorAll<HTMLElement>('[data-reveal]'))
     if (elements.length === 0) return
 
-    for (const el of elements) el.classList.add('reveal-pending')
+    // Anything already on screen at load stays as painted: hiding it now
+    // would only make it blink.
+    const below = elements.filter((el) => el.getBoundingClientRect().top >= window.innerHeight)
+    for (const el of below) el.classList.add('reveal-pending')
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -34,12 +37,12 @@ export function useReveal() {
           observer.unobserve(entry.target)
         }
       },
-      // Trigger a little before the element reaches the bottom edge, so the
-      // motion finishes about when it is comfortably in view.
-      { rootMargin: '0px 0px -12% 0px', threshold: 0.08 },
+      // Start about a fifth of a screen *before* the element arrives, so the
+      // short fade is over by the time it is in view.
+      { rootMargin: '0px 0px 18% 0px', threshold: 0 },
     )
 
-    for (const el of elements) observer.observe(el)
+    for (const el of below) observer.observe(el)
     return () => observer.disconnect()
   }, [])
 }
