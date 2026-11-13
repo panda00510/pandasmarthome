@@ -69,6 +69,12 @@ const TOPICS: Record<string, (typeof TOPIC_IDS)[number]> = {
   'smart-door-lock-guide': 'security',
   'water-smoke-humidity-sensors-singapore': 'security',
   'smart-home-privacy-local-vs-cloud': 'security',
+  'after-installation-what-to-keep': 'start',
+  'zigbee-thread-wifi-which-for-what': 'start',
+  'scenes-households-actually-use': 'start',
+  'holiday-mode-away-from-home': 'security',
+  'know-what-each-appliance-uses': 'energy',
+  'water-heater-automation-singapore': 'energy',
 }
 
 /** Shown first on /guides/: one main pick, then two. */
