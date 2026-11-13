@@ -13,7 +13,7 @@ import {
 import lighting from '../../assets/photos/bedroom-lighting.webp'
 import { formattedAddress, hasAnyContactDetail, site } from '../../config/site'
 import { Button, SectionHeading } from '../ui'
-import { useI18n } from '../../i18n/context'
+import { pageHref, useI18n } from '../../i18n/context'
 import { track } from '../../lib/track'
 
 type Status = 'idle' | 'submitting' | 'success' | 'mailto' | 'error'
@@ -345,8 +345,6 @@ export function Contact() {
                 </div>
               </details>
 
-              <p className="text-xs leading-relaxed text-ink-500">{c.form.consent}</p>
-
               <Button type="submit" size="lg" className="w-full">
                 {status === 'submitting' ? (
                   c.form.submitting
@@ -361,6 +359,17 @@ export function Contact() {
                   </>
                 )}
               </Button>
+
+              <p className="text-xs leading-relaxed text-ink-500">
+                {c.form.consent.split('{privacy}')[0]}
+                <a
+                  href={pageHref(lang, 'privacy/')}
+                  className="underline decoration-ink-300 underline-offset-2 hover:text-bamboo-700"
+                >
+                  {c.form.privacyLink}
+                </a>
+                {c.form.consent.split('{privacy}')[1]}
+              </p>
             </fieldset>
           </form>
 

@@ -106,6 +106,11 @@ export function Footer() {
                   {t.faq.eyebrow}
                 </a>
               </li>
+              <li>
+                <a href={pageHref(lang, 'about/')} className={LINK}>
+                  {t.footer.about}
+                </a>
+              </li>
             </ul>
           </nav>
 
@@ -157,6 +162,9 @@ export function Footer() {
 
         {/* Credits and legal share one row; the disclaimers fold away but stay readable. */}
         <div className="mt-12 flex flex-wrap items-center gap-x-6 border-t border-white/10 pt-3 text-sm text-ink-400 lg:mt-12">
+          <a href={pageHref(lang, 'privacy/')} className={LINK_ICON + ' min-h-11'}>
+            {t.footer.privacy}
+          </a>
           {/* Served from public/ by the prebuild copy of ASSET_SOURCES.md.
               BASE_URL keeps it correct when the site lives at a sub-path. */}
           <a

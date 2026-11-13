@@ -148,7 +148,7 @@ export function Seo() {
   const article = guide
     ? [
         {
-          '@type': guide.kind === 'page' ? 'WebPage' : 'Article',
+          '@type': guide.kind === 'guide' ? 'Article' : guide.path === 'about/' ? 'AboutPage' : 'WebPage',
           '@id': id(guide.kind === 'page' ? 'webpage' : 'article'),
           isPartOf: site.url ? { '@id': `${site.url}#website` } : undefined,
           breadcrumb: ref('breadcrumb'),

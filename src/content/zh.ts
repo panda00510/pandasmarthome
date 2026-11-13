@@ -1174,7 +1174,8 @@ export const zh: Content = {
       submit: '发送咨询',
       submitViaEmail: '用邮件发送',
       submitting: '发送中…',
-      consent: '发送即表示同意我们使用以上信息回复你的咨询。',
+      consent: '提交即表示你同意我们按{privacy}处理你的联系信息。',
+      privacyLink: '隐私政策',
       viaEmailNote: '点击后会打开你的邮件应用并自动填好内容，在邮件应用中点击发送即可送达我们。',
     },
     states: {
@@ -1235,6 +1236,9 @@ export const zh: Content = {
     keyPoints: '先看这几点',
     contents: '本页目录',
     showMore: '显示更多指南',
+    companyTitle: '公司信息',
+    companyName: '名称',
+    registration: '注册号（UEN）',
   },
 
   notFound: {
@@ -1256,6 +1260,8 @@ export const zh: Content = {
     contactTitle: '联系',
     credits: '图片来源与许可',
     creditsHref: 'asset-sources.txt',
+    about: '关于我们',
+    privacy: '隐私政策',
     rights: '保留所有权利。',
     builtWith: '服务全新加坡组屋、公寓与有地住宅。',
     disclaimer:

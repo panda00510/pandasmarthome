@@ -1,6 +1,6 @@
 import { Fragment, useState, type ReactNode } from 'react'
 import { ArrowLeft, ArrowRight, ChevronDown, Clock, MessageCircle } from 'lucide-react'
-import { site } from '../../config/site'
+import { formattedAddress, site } from '../../config/site'
 import {
   FEATURED,
   guidesIn,
@@ -171,6 +171,7 @@ export function GuidePage({ guide }: { guide: Guide }) {
     ? guide.related.flatMap((slug) => guidesIn(lang).filter((other) => other.slug === slug)).slice(0, 3)
     : guidesIn(lang).filter((other) => other.slug !== guide.slug).slice(0, 3)
   const toc = isPage ? [] : headings(guide.body).filter((h) => h.text !== t.guides.related)
+  const legal = guide.path === 'about/' || guide.path === 'privacy/'
 
   return (
     <>
@@ -244,6 +245,10 @@ export function GuidePage({ guide }: { guide: Guide }) {
               <Markdown source={guide.body} slug={isPage ? '' : guide.slug} lang={lang} />
             </div>
 
+            {legal ? <CompanyDetails /> : null}
+
+            {/* The privacy policy carries no sales pitch. */}
+            {guide.path === 'privacy/' ? null : (
             <aside className="mt-12 rounded-panel bg-ink-950 p-6 text-paper sm:p-9">
               <h2 className="text-xl font-semibold">{t.guides.ctaTitle}</h2>
               <p className="mt-2 leading-relaxed text-[#c7cdd2]">{t.guides.ctaBody}</p>
@@ -266,6 +271,7 @@ export function GuidePage({ guide }: { guide: Guide }) {
                 ) : null}
               </div>
             </aside>
+            )}
           </div>
 
           {toc.length > 2 ? (
@@ -307,6 +313,42 @@ export function GuidePage({ guide }: { guide: Guide }) {
         </section>
       ) : null}
     </>
+  )
+}
+
+/**
+ * Who runs the site, on /about/ and /privacy/. The name falls back to the
+ * brand; every other row appears only when its VITE_* value is configured.
+ */
+function CompanyDetails() {
+  const { t, lang } = useI18n()
+  const rows = [
+    [t.guides.companyName, lang === 'zh' ? site.companyNameZh : site.companyName],
+    [t.guides.registration, site.registrationNumber],
+    [t.contact.labels.address, formattedAddress],
+    [t.contact.labels.email, site.email],
+    [t.contact.labels.serviceArea, lang === 'zh' ? site.serviceAreaZh : site.serviceArea],
+  ].filter((row): row is [string, string] => Boolean(row[1]))
+  return (
+    <section className="card mt-10 p-5 sm:p-6">
+      <h2 className="text-lg font-semibold text-ink-950">{t.guides.companyTitle}</h2>
+      <dl className="mt-3 grid gap-x-6 gap-y-2 text-[0.9375rem] leading-relaxed sm:grid-cols-[auto_minmax(0,1fr)]">
+        {rows.map(([label, value]) => (
+          <Fragment key={label}>
+            <dt className="font-medium text-ink-500">{label}</dt>
+            <dd className="-mt-2 break-words text-ink-800 sm:mt-0">
+              {value === site.email ? (
+                <a href={`mailto:${value}`} className="text-bamboo-700 underline underline-offset-2">
+                  {value}
+                </a>
+              ) : (
+                value
+              )}
+            </dd>
+          </Fragment>
+        ))}
+      </dl>
+    </section>
   )
 }
 

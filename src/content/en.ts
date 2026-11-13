@@ -1218,8 +1218,8 @@ export const en: Content = {
       submit: 'Send enquiry',
       submitViaEmail: 'Send by email',
       submitting: 'Sending…',
-      consent:
-        'By sending this enquiry you agree that we may use these details to respond to you.',
+      consent: 'By sending this enquiry you agree that we handle your contact details as described in our {privacy}.',
+      privacyLink: 'privacy policy',
       viaEmailNote:
         'This opens your email app with the enquiry filled in — press send there and it comes straight to us.',
     },
@@ -1283,6 +1283,9 @@ export const en: Content = {
     keyPoints: 'The short version',
     contents: 'On this page',
     showMore: 'Show more guides',
+    companyTitle: 'Company details',
+    companyName: 'Name',
+    registration: 'Registration no. (UEN)',
   },
 
   notFound: {
@@ -1304,6 +1307,8 @@ export const en: Content = {
     contactTitle: 'Contact',
     credits: 'Image credits & licences',
     creditsHref: 'asset-sources.txt',
+    about: 'About us',
+    privacy: 'Privacy policy',
     rights: 'All rights reserved.',
     builtWith: 'Serving HDB, condo and landed homes across Singapore.',
     disclaimer:

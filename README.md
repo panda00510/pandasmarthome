@@ -240,6 +240,7 @@ src/
     types.ts         shape of the site copy
     en.ts  zh.ts     all user-facing text, both languages
     guides/          articles, one Markdown file per language (see "Guides")
+    pages/           topic pages (solutions, home types, how-it-works, about, privacy), same format
     guides.ts        loads the articles; page list and per-page title/description
   i18n/              language context and path helpers (/ vs /zh/)
   lib/track.ts       optional conversion events (see "Conversion events")
@@ -270,7 +271,7 @@ src/
 
 Pages (each also under `/zh/`): `/`, `/solutions/…`, `/homes/…`,
 `/how-it-works/`, `/guides/…`, `/products/`, `/software/`,
-`/custom-hardware/`, `/signage/`. The 3D showroom is a separate build at `/showroom/`.
+`/custom-hardware/`, `/signage/`, `/about/`, `/privacy/`. The 3D showroom is a separate build at `/showroom/`.
 
 ---
 

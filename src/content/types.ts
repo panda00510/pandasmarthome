@@ -403,7 +403,9 @@ export type Content = {
       submit: string
       submitViaEmail: string
       submitting: string
+      /** Shown under the submit button; "{privacy}" becomes a link labelled privacyLink. */
       consent: string
+      privacyLink: string
       viaEmailNote: string
     }
     states: {
@@ -461,6 +463,10 @@ export type Content = {
     keyPoints: string
     contents: string
     showMore: string
+    /** Operator details block on /about/ and /privacy/; rows appear only when configured. */
+    companyTitle: string
+    companyName: string
+    registration: string
   }
 
   /** Page shown for an unknown address (served with HTTP 404, noindex). */
@@ -482,6 +488,8 @@ export type Content = {
     contactTitle: string
     credits: string
     creditsHref: string
+    about: string
+    privacy: string
     rights: string
     builtWith: string
     disclaimer: string

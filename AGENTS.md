@@ -13,7 +13,7 @@ Panda Smart Home（Panda智能家居）的双语静态营销站，线上 <https:
 - **产品**：桌面屏幕设备（预购中）+ 随方案供货安装的设备 —— `/products/`；Panda Signage 信息屏与会议室门牌 —— `/signage/`
 - **硬件定制**：ESP32 AI / IoT 设备 —— `/custom-hardware/`
 - **软件定制**：小店与小生意的预约、库存、机器人、内部工具 —— `/software/`
-- 另有 **3D 样板间** `/showroom/`（独立构建）
+- 另有 **3D 样板间** `/showroom/`（独立构建）；**关于我们** `/about/`、**隐私政策** `/privacy/`（`src/content/pages/` 下的 md）
 
 ## 权威文档
 
