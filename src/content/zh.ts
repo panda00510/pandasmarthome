@@ -180,11 +180,11 @@ export const zh: Content = {
 
   products: {
     eyebrow: '产品',
-    title: '插上就能用的桌面屏幕设备',
-    lead: '外壳、界面和固件都已装好的成品屏幕设备。目前还没有现货。下面的价格是参考起价，下单前在 WhatsApp 上确认。备货和支持都在新加坡。',
-    metaTitle: '可预订的桌面屏幕设备｜Panda智能家居',
+    title: '桌面屏幕设备与智能家居设备',
+    lead: '外壳、界面和固件都已装好的成品屏幕设备。目前还没有现货。下面的价格是参考起价，下单前在 WhatsApp 上确认。备货和支持都在新加坡。再往下是我们随方案供货并安装的智能家居设备。',
+    metaTitle: '桌面屏幕设备与智能家居设备｜Panda智能家居',
     metaDescription:
-      '预订新加坡本地支持的成品屏幕设备：AI 语音助手、Home Assistant 触控面板、32×8 像素时钟和天气钟。功能可以按需求定制。参考价，目前尚未现货。',
+      '可预订的成品屏幕设备：AI 语音助手、Home Assistant 触控面板、像素时钟和天气钟；以及我们随方案供货并安装的开关、传感器、窗帘电机、门锁和主机。',
     status: '预订中 / 即将上市',
     priceLabel: '参考价',
     priceFrom: '{amount} 起',
@@ -284,6 +284,7 @@ export const zh: Content = {
       '图画是示意图，不是成品照片。',
       '不附送电源适配器。设备使用 USB 5V 供电。',
     ],
+    nav: { group: '产品', devices: '桌面屏幕设备', install: '智能家居设备' },
     install: {
       eyebrow: '供货并安装',
       title: '我们供货并安装的智能家居设备',
@@ -481,9 +482,9 @@ export const zh: Content = {
 
   custom: {
     nav: '定制',
-    eyebrow: '定制开发',
-    title: '硬件和软件，按你的需要来做',
-    lead: '基于 ESP32 的 AI 与 IoT 小硬件、面向店铺和小团队的软件，以及我们自己的 Panda Signage 信息屏系统。一对一设计，开工前书面报价。',
+    eyebrow: '产品与定制',
+    title: '自有产品，以及按需求定制',
+    lead: '我们自己的 Panda Signage 信息屏系统，加上基于 ESP32 的 AI 与 IoT 小硬件、面向店铺和小团队的软件。开工前书面报价。',
     devicesCta: '或查看现成的带屏设备',
   },
 

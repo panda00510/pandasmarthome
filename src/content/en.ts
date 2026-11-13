@@ -183,11 +183,11 @@ export const en: Content = {
 
   products: {
     eyebrow: 'Products',
-    title: 'Desk devices you can plug in and use',
-    lead: 'Finished screen devices: an enclosure, an interface and firmware already installed. They are not in stock yet. The prices are indicative starting prices, confirmed on WhatsApp before you order. Stock and support are in Singapore.',
-    metaTitle: 'Desk Screen Devices to Pre-order | Panda Smart Home',
+    title: 'Desk screen devices and smart home devices',
+    lead: 'Finished screen devices: an enclosure, an interface and firmware already installed. They are not in stock yet. The prices are indicative starting prices, confirmed on WhatsApp before you order. Stock and support are in Singapore. Further down are the smart home devices we supply and install as part of a plan.',
+    metaTitle: 'Desk Screen Devices & Smart Home Devices | Panda',
     metaDescription:
-      'Pre-order desk devices in Singapore: an AI voice assistant, a Home Assistant touch panel, a pixel clock and a weather display. Indicative prices.',
+      'Pre-order desk screen devices in Singapore, plus the switches, sensors, curtain motors, locks and hubs we supply and install as part of a plan.',
     status: 'Pre-order / Coming soon',
     priceLabel: 'Indicative price',
     priceFrom: 'from {amount}',
@@ -294,6 +294,7 @@ export const en: Content = {
       'The drawings are illustrations, not photographs of finished units.',
       'No mains power adapter is included. Each device runs on USB 5V.',
     ],
+    nav: { group: 'Products', devices: 'Desk screen devices', install: 'Smart home devices' },
     install: {
       eyebrow: 'Supplied and installed',
       title: 'Smart home devices we supply and install',
@@ -516,9 +517,9 @@ export const en: Content = {
 
   custom: {
     nav: 'Custom',
-    eyebrow: 'Custom builds',
-    title: 'Hardware and software, made for the job',
-    lead: 'Small AI and IoT devices built on ESP32, software for shops and small teams, and our Panda Signage screen system. Designed one-to-one and quoted in writing before work starts.',
+    eyebrow: 'Products and custom builds',
+    title: 'Our own products, and builds made for the job',
+    lead: 'Our Panda Signage screen system, plus small AI and IoT devices built on ESP32 and software for shops and small teams. Quoted in writing before work starts.',
     devicesCta: 'Or see the ready-made screen devices',
   },
 

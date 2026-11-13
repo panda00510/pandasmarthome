@@ -61,7 +61,7 @@ export function Header() {
   // the page scrolls; then it becomes frosted paper everywhere.
   const dark = (path === '' || path === 'custom-hardware/' || path === 'signage/') && !scrolled && !open
 
-  // Primary row: services, your home, showroom, [Custom ▾], guides, process.
+  // Primary row: services, your home, showroom, [Products ▾], [Custom ▾], guides, process.
   const links: NavLink[] = [
     byId('solutions'),
     byId('homes'),
@@ -69,7 +69,17 @@ export function Header() {
     { key: 'guides', label: t.guides.eyebrow, href: pageHref(lang, 'guides/'), current: path === 'guides/' },
     byId('process'),
   ]
-  // The "Custom" group: AI hardware, signage, software, ready-made devices.
+  // "Products": things that exist already. "Custom": things built to order.
+  const productLinks: NavLink[] = [
+    { key: 'signage', label: t.signage.navLabel, href: pageHref(lang, 'signage/'), current: path === 'signage/' },
+    { key: 'devices', label: t.products.nav.devices, href: pageHref(lang, 'products/'), current: path === 'products/' },
+    {
+      key: 'install',
+      label: t.products.nav.install,
+      href: `${pageHref(lang, 'products/')}#smart-home-devices`,
+      current: false,
+    },
+  ]
   const customLinks: NavLink[] = [
     {
       key: 'hardware',
@@ -77,12 +87,14 @@ export function Header() {
       href: pageHref(lang, 'custom-hardware/'),
       current: path === 'custom-hardware/',
     },
-    { key: 'signage', label: t.signage.navLabel, href: pageHref(lang, 'signage/'), current: path === 'signage/' },
     byId('software'),
-    byId('products'),
+  ]
+  const groups = [
+    { id: 'products-menu', label: t.products.nav.group, items: productLinks },
+    { id: 'custom-menu', label: t.custom.nav, items: customLinks },
   ]
   const linkClass = (link: NavLink) =>
-    `inline-flex min-h-11 items-center gap-1 rounded-full px-2.5 text-sm font-medium whitespace-nowrap transition-colors ${
+    `inline-flex min-h-11 items-center gap-1 rounded-full px-2 text-sm font-medium whitespace-nowrap transition-colors ${
       dark
         ? 'text-ink-300 hover:bg-white/8 hover:text-paper'
         : link.current
@@ -107,9 +119,9 @@ export function Header() {
             : 'border-transparent bg-paper'
       }`}
     >
-      {/* Inline links need the full 1200px shell. Below that the wordmark
+      {/* Inline links (seven entries, two of them dropdowns) need the full 1200px shell, reached at 1280px. Below that the wordmark
           would shrink, so the menu button stays until then. */}
-      <div className="shell flex h-16 items-center justify-between gap-3 min-[1200px]:h-[4.5rem]">
+      <div className="shell flex h-16 items-center justify-between gap-3 min-[1280px]:h-[4.5rem]">
         <a
           href={`${home}#top`}
           className={`min-w-0 rounded-lg transition-opacity hover:opacity-70 ${dark ? 'text-paper' : 'text-ink-950'}`}
@@ -118,9 +130,11 @@ export function Header() {
           <Wordmark className="max-w-full" />
         </a>
 
-        <nav aria-label={t.a11y.navPrimary} className="hidden items-center gap-0.5 min-[1200px]:flex">
+        <nav aria-label={t.a11y.navPrimary} className="hidden items-center gap-0.5 min-[1280px]:flex">
           {links.slice(0, 3).map(desktopLink)}
-          <CustomMenu label={t.custom.nav} items={customLinks} dark={dark} />
+          {groups.map((group) => (
+            <NavMenu key={group.id} id={group.id} label={group.label} items={group.items} dark={dark} />
+          ))}
           {links.slice(3).map(desktopLink)}
         </nav>
 
@@ -143,7 +157,7 @@ export function Header() {
             aria-expanded={open}
             aria-controls="mobile-nav"
             aria-label={open ? t.a11y.closeMenu : t.a11y.openMenu}
-            className={`-mr-1 inline-flex h-11 w-11 items-center justify-center rounded-full transition-colors min-[1200px]:hidden ${
+            className={`-mr-1 inline-flex h-11 w-11 items-center justify-center rounded-full transition-colors min-[1280px]:hidden ${
               dark ? 'text-paper hover:bg-white/10' : 'text-ink-800 hover:bg-ink-100'
             }`}
           >
@@ -156,7 +170,7 @@ export function Header() {
       <div
         id="mobile-nav"
         hidden={!open}
-        className="border-t border-ink-200/70 bg-paper/95 backdrop-blur-xl min-[1200px]:hidden"
+        className="border-t border-ink-200/70 bg-paper/95 backdrop-blur-xl min-[1280px]:hidden"
       >
         <nav aria-label={t.a11y.navMobile} className="shell flex flex-col gap-1 py-4">
           {links.map((link) => (
@@ -170,19 +184,23 @@ export function Header() {
               {link.label}
             </a>
           ))}
-          <p className="mt-3 border-t border-ink-200/70 px-3 pt-4 text-xs font-semibold tracking-[0.14em] text-bamboo-700 uppercase">
-            {t.custom.nav}
-          </p>
-          {customLinks.map((link) => (
-            <a
-              key={link.key}
-              href={link.href}
-              aria-current={link.current ? 'page' : undefined}
-              onClick={() => setOpen(false)}
-              className="inline-flex min-h-12 items-center rounded-xl px-3 text-base font-medium text-ink-800 transition-colors hover:bg-ink-100"
-            >
-              {link.label}
-            </a>
+          {groups.map((group) => (
+            <div key={group.id} className="flex flex-col gap-1">
+              <p className="mt-3 border-t border-ink-200/70 px-3 pt-4 text-xs font-semibold tracking-[0.14em] text-bamboo-700 uppercase">
+                {group.label}
+              </p>
+              {group.items.map((link) => (
+                <a
+                  key={link.key}
+                  href={link.href}
+                  aria-current={link.current ? 'page' : undefined}
+                  onClick={() => setOpen(false)}
+                  className="inline-flex min-h-12 items-center rounded-xl px-3 text-base font-medium text-ink-800 transition-colors hover:bg-ink-100"
+                >
+                  {link.label}
+                </a>
+              ))}
+            </div>
           ))}
           <Button
             as="a"
@@ -200,10 +218,10 @@ export function Header() {
 }
 
 /**
- * "Custom" dropdown in the desktop nav. A disclosure button, not an ARIA menu:
+ * A dropdown group in the desktop nav. A disclosure button, not an ARIA menu:
  * Tab moves through the links; Escape, an outside click or tabbing away closes it.
  */
-function CustomMenu({ label, items, dark }: { label: string; items: NavLink[]; dark: boolean }) {
+function NavMenu({ id, label, items, dark }: { id: string; label: string; items: NavLink[]; dark: boolean }) {
   const [show, setShow] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
   const buttonRef = useRef<HTMLButtonElement>(null)
@@ -241,9 +259,9 @@ function CustomMenu({ label, items, dark }: { label: string; items: NavLink[]; d
         ref={buttonRef}
         type="button"
         aria-expanded={show}
-        aria-controls="custom-menu"
+        aria-controls={id}
         onClick={() => setShow((v) => !v)}
-        className={`inline-flex min-h-11 cursor-pointer items-center gap-1 rounded-full px-2.5 text-sm font-semibold whitespace-nowrap transition-colors ${
+        className={`inline-flex min-h-11 cursor-pointer items-center gap-1 rounded-full px-2 text-sm font-semibold whitespace-nowrap transition-colors ${
           dark
             ? 'text-bamboo-300 hover:bg-white/8 hover:text-bamboo-200'
             : current
@@ -259,7 +277,7 @@ function CustomMenu({ label, items, dark }: { label: string; items: NavLink[]; d
         />
       </button>
       <div
-        id="custom-menu"
+        id={id}
         hidden={!show}
         className="absolute top-full left-1/2 mt-2 w-64 -translate-x-1/2 rounded-2xl border border-ink-200/80 bg-paper p-2 text-ink-900 shadow-lift"
       >

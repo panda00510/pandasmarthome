@@ -121,6 +121,8 @@ export type Content = {
      * Smart home devices supplied and installed as part of a plan. No brand,
      * model, price or stock claim: these are quoted with the plan.
      */
+    /** Header "Products" dropdown: its label and the two entries for this page. */
+    nav: { group: string; devices: string; install: string }
     install: {
       eyebrow: string
       title: string
