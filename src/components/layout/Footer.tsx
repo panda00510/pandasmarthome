@@ -87,6 +87,11 @@ export function Footer() {
                 </a>
               </li>
               <li>
+                <a href={pageHref(lang, 'signage/')} className={LINK}>
+                  {t.signage.navLabel}
+                </a>
+              </li>
+              <li>
                 <a href={`${import.meta.env.BASE_URL}showroom/?lang=${lang}`} className={LINK}>
                   {t.nav.showroom}
                 </a>

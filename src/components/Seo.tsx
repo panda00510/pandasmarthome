@@ -319,6 +319,40 @@ export function Seo() {
         }
       : null
 
+  // Panda Signage: one Service with its capabilities as an OfferCatalog. No prices.
+  const signageService =
+    path === 'signage/'
+      ? {
+          '@type': 'Service',
+          name: t.signage.title,
+          serviceType: t.signage.eyebrow,
+          description: `${t.signage.lead} ${t.signage.priceBody}`,
+          provider: site.url ? { '@id': `${site.url}#business` } : undefined,
+          areaServed: { '@type': 'Country', name: 'Singapore' },
+          url: url ?? undefined,
+          hasOfferCatalog: {
+            '@type': 'OfferCatalog',
+            name: t.signage.groupsTitle,
+            itemListElement: t.signage.groups.map((group) => ({
+              '@type': 'Offer',
+              itemOffered: { '@type': 'Service', name: group.title, description: group.body },
+            })),
+          },
+        }
+      : null
+
+  const signageFaq =
+    path === 'signage/'
+      ? {
+          '@type': 'FAQPage',
+          mainEntity: t.signage.faq.map((item) => ({
+            '@type': 'Question',
+            name: item.q,
+            acceptedAnswer: { '@type': 'Answer', text: item.a },
+          })),
+        }
+      : null
+
   // Index pages (hubs, guides, products, software): a CollectionPage/WebPage
   // node with a two-step breadcrumb. Guides and topic pages have their own above.
   const indexPage =
@@ -358,7 +392,9 @@ export function Seo() {
             ? [softwareList, softwareFaq]
             : path === 'custom-hardware/'
               ? [hardwareService, hardwareFaq]
-              : article),
+              : path === 'signage/'
+                ? [signageService, signageFaq]
+                : article),
       ...indexPage,
       {
         '@type': 'WebSite',

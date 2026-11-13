@@ -252,6 +252,45 @@ export type Content = {
     faqTitle: string
     faq: { q: string; a: string }[]
   }
+  /**
+   * Panda Signage: digital signage and meeting-room displays, self-hosted.
+   * No prices, no client list, no screen-brand claims beyond Android 11+.
+   */
+  signage: {
+    /** Header dropdown and footer label. */
+    navLabel: string
+    sectionEyebrows: { capabilities: string; setup: string; process: string; related: string }
+    eyebrow: string
+    title: string
+    lead: string
+    metaTitle: string
+    metaDescription: string
+    whoTitle: string
+    audiences: string[]
+    groupsTitle: string
+    groups: { id: string; title: string; body: string; items: string[] }[]
+    setupTitle: string
+    /** Screens and deployment cards. */
+    setup: { id: string; title: string; body: string; items: string[] }[]
+    processTitle: string
+    steps: { title: string; body: string }[]
+    priceTitle: string
+    priceBody: string
+    relatedTitle: string
+    /** `id` picks the link target: hardware, software or home. */
+    related: { id: string; title: string; body: string; cta: string }[]
+    enquire: string
+    /** Page-level WhatsApp message. Complete. */
+    enquireAll: string
+    homeTitle: string
+    homeLead: string
+    homeCta: string
+    /** Text drawn inside the hero illustration. */
+    art: { headline: string; room: string; status: string; next: string; admin: string; screens: string }
+    finePrint: string[]
+    faqTitle: string
+    faq: { q: string; a: string }[]
+  }
   /** Products still in development — shown as "coming next", never as on sale. */
   upcoming: {
     eyebrow: string

@@ -189,6 +189,7 @@ export const pagePaths = [
   'products/',
   'software/',
   'custom-hardware/',
+  'signage/',
   ...guidesIn('en').map((guide) => guide.path),
   ...pagesIn('en').map((page) => page.path),
   ...HUBS.map((hub) => `${hub}/`),
@@ -228,6 +229,9 @@ export function pageMeta(lang: Lang, path: string) {
   }
   if (path === 'custom-hardware/') {
     return { title: t.hardware.metaTitle, description: t.hardware.metaDescription, guide: null }
+  }
+  if (path === 'signage/') {
+    return { title: t.signage.metaTitle, description: t.signage.metaDescription, guide: null }
   }
   return { title: t.meta.title, description: t.meta.description, guide: null }
 }

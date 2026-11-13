@@ -217,12 +217,14 @@ src/
       HomePanel.tsx        the hero control-panel illustration
       ShowroomPreview.tsx  drawn isometric floor plan for the 3D showroom band
       ProductFigures.tsx   desk-device drawings (products + custom hardware)
+      SignageFigures.tsx   signage hero drawing (screen + door panel + console)
       GuideFigures.tsx     article figures
     sections/        one file per page section, including:
       Hero.tsx       first screen + trust strip; renders Showroom after it
       Showroom.tsx   homepage 3D showroom band (links to /showroom/, ?plan=)
-      Custom.tsx     homepage band: custom hardware + custom software
+      Custom.tsx     homepage band: custom hardware + custom software + signage
       Hardware.tsx   the /custom-hardware/ page
+      Signage.tsx    the /signage/ page (Panda Signage)
     ui.tsx           Button, SectionHeading, Chip, PhotoTag
     Seo.tsx          head sync + JSON-LD structured data
   entry-server.tsx   prerender entry: routes, sitemap, robots, llms.txt
@@ -231,7 +233,7 @@ src/
 
 Pages (each also under `/zh/`): `/`, `/solutions/…`, `/homes/…`,
 `/how-it-works/`, `/guides/…`, `/products/`, `/software/`,
-`/custom-hardware/`. The 3D showroom is a separate build at `/showroom/`.
+`/custom-hardware/`, `/signage/`. The 3D showroom is a separate build at `/showroom/`.
 
 ---
 

@@ -1,5 +1,6 @@
 import { ArrowRight } from 'lucide-react'
-import { SectionHeading } from '../ui'
+import { SignageArt } from '../graphics/SignageFigures'
+import { PhotoTag, SectionHeading } from '../ui'
 import { pageHref, useI18n } from '../../i18n/context'
 
 /** A plain ESP32-style module drawing for the hardware card. Decoration only. */
@@ -32,15 +33,16 @@ function ModuleArt() {
 }
 
 /**
- * Homepage band for the two custom-build lines: AI hardware (dark card) and
- * software for small businesses (light card), with a quiet link to the
- * ready-made devices underneath.
+ * Homepage band for the custom-build lines: AI hardware (dark card) and
+ * software for small businesses (light card) side by side, Panda Signage as a
+ * full-width card under them, and a quiet link to the ready-made devices.
  */
 export function Custom() {
   const { t, lang } = useI18n()
   const c = t.custom
   const hw = t.hardware
   const sw = t.software
+  const sg = t.signage
 
   return (
     <section id="custom" className="band border-t border-ink-200/70 bg-paper-alt">
@@ -99,6 +101,42 @@ export function Custom() {
                 {sw.homeCta}
                 <ArrowRight size={17} aria-hidden="true" className="transition-transform group-hover:translate-x-0.5 motion-reduce:transition-none" />
               </span>
+            </span>
+          </a>
+
+          <a
+            href={pageHref(lang, 'signage/')}
+            data-reveal
+            className="card group grid items-center gap-8 p-6 sm:p-8 lg:col-span-2 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.8fr)] lg:gap-12"
+          >
+            <span className="flex flex-col">
+              <span className="eyebrow">{sg.eyebrow}</span>
+              <span className="mt-4 block text-[1.75rem] leading-[1.1] font-semibold tracking-[-0.03em] text-ink-950 sm:text-[2.25rem]">
+                {sg.homeTitle}
+              </span>
+              <span className="mt-4 block max-w-xl text-[0.9375rem] leading-relaxed text-ink-600 sm:text-base">
+                {sg.homeLead}
+              </span>
+              <ul className="mt-6 flex flex-wrap gap-2">
+                {sg.groups.slice(0, 6).map((g) => (
+                  <li key={g.id} className="rounded-full bg-ink-50 px-3 py-1.5 text-[0.8125rem] font-medium text-ink-700 ring-1 ring-ink-200">
+                    {g.title}
+                  </li>
+                ))}
+              </ul>
+              <span className="mt-8">
+                <span className="btn h-12 bg-brand px-6 text-[0.9375rem] text-white group-hover:bg-bamboo-800">
+                  {sg.homeCta}
+                  <ArrowRight size={17} aria-hidden="true" className="transition-transform group-hover:translate-x-0.5 motion-reduce:transition-none" />
+                </span>
+              </span>
+            </span>
+            <span aria-hidden="true" className="relative hidden overflow-hidden rounded-2xl bg-ink-950 p-5 sm:block">
+              <span className="stage-grid pointer-events-none absolute inset-0" />
+              <span className="relative block aspect-[13/10]">
+                <SignageArt labels={sg.art} />
+              </span>
+              <PhotoTag>{t.products.illustration}</PhotoTag>
             </span>
           </a>
         </div>

@@ -518,7 +518,7 @@ export const en: Content = {
     nav: 'Custom',
     eyebrow: 'Custom builds',
     title: 'Hardware and software, made for the job',
-    lead: 'Small AI and IoT devices built on ESP32, and software for shops and small teams. Designed one-to-one, quoted in writing before work starts, and handed over with the source.',
+    lead: 'Small AI and IoT devices built on ESP32, software for shops and small teams, and our Panda Signage screen system. Designed one-to-one and quoted in writing before work starts.',
     devicesCta: 'Or see the ready-made screen devices',
   },
 
@@ -644,6 +644,163 @@ export const en: Content = {
       {
         q: 'Do you take on a single-unit build?',
         a: 'Yes. A custom build can be a single device.',
+      },
+    ],
+  },
+
+  signage: {
+    navLabel: 'Panda Signage',
+    sectionEyebrows: { capabilities: 'Capabilities', setup: 'Screens and hosting', process: 'Process', related: 'Works with' },
+    eyebrow: 'Panda Signage',
+    title: 'Digital signage and meeting room displays, run from one place',
+    lead: 'Panda Signage is our own system for information screens and meeting room door panels. Manage every screen across your sites from one browser, keep content playing when the network drops, and run it on your own server.',
+    metaTitle: 'Digital Signage Singapore | Meeting Room Displays',
+    metaDescription:
+      'Digital signage and meeting room booking panels for Singapore offices, schools, clinics and shops. Self-hosted, plays offline, quoted in writing.',
+    whoTitle: 'Who this is for',
+    audiences: ['Offices', 'Coworking spaces', 'Schools and training centres', 'Clinics', 'Retail and F&B'],
+    groupsTitle: 'What it does',
+    groups: [
+      {
+        id: 'sites',
+        title: 'Many sites, many screens, one console',
+        body: 'Organise screens by client, location and folder. Each person sees only what their role allows.',
+        items: ['HQ admin', 'Site admin', 'Operator', 'Front desk'],
+      },
+      {
+        id: 'media',
+        title: 'Upload what you already have',
+        body: 'Images and videos, plus PDF and PowerPoint files that are turned into pages automatically. Large videos get a TV-compatible copy; the original is kept.',
+        items: ['Images', 'Video', 'PDF', 'PPT / PPTX'],
+      },
+      {
+        id: 'layout',
+        title: 'Drag-and-drop layouts and templates',
+        body: 'Build a screen from blocks and save it as a template for the next one.',
+        items: ['Images', 'Video', 'Text', 'Clock', 'Weather', 'RSS ticker'],
+      },
+      {
+        id: 'rooms',
+        title: 'Meeting room door panels and room lists',
+        body: 'Bookings that span several days or rooms, private meetings, a meeting shown up to four hours before it starts, and arrows that point people the right way.',
+        items: ['Room bookings', 'Multi-room', 'Private meetings', 'Show ahead', 'Wayfinding arrows'],
+      },
+      {
+        id: 'frontdesk',
+        title: 'Quick text edits and emergency messages',
+        body: 'Front-desk staff can change marked text on a screen, or put an emergency notice over every screen at a location, without touching the layout.',
+        items: ['Quick text edit', 'Emergency notice'],
+      },
+      {
+        id: 'offline',
+        title: 'Keeps playing without the network',
+        body: 'Content is cached on each player, so a dropped connection does not blank the screen. You can also export an offline pack and update a player from a USB drive.',
+        items: ['Local cache', 'USB offline pack'],
+      },
+      {
+        id: 'updates',
+        title: 'Remote player updates, in batches',
+        body: 'Update the player app on a few screens first, then the rest. Pause or cancel a rollout if something looks wrong.',
+        items: ['Batched rollout', 'Pause / cancel'],
+      },
+      {
+        id: 'language',
+        title: 'English and Chinese console',
+        body: 'The management console is available in English and Simplified Chinese.',
+        items: ['English', '简体中文'],
+      },
+    ],
+    setupTitle: 'What you need, and where it runs',
+    setup: [
+      {
+        id: 'screens',
+        title: 'Screens and players',
+        body: 'The player runs on Android 11 or later: an Android media player behind any TV or monitor, or a commercial display with Android built in. Other platforms are assessed on request.',
+        items: ['Android 11+ player box', 'Android commercial display', 'Other platforms: on request'],
+      },
+      {
+        id: 'hosting',
+        title: 'Your server, your data',
+        body: 'Panda Signage is a self-hosted system. It is installed on your own server or office network, so your content and bookings stay with you. If you would rather not run a server, we can look at hosting it for you, assessed per project.',
+        items: ['Your own server', 'Office network', 'Hosting by us: assessed per project'],
+      },
+    ],
+    processTitle: 'How a rollout runs',
+    steps: [
+      { title: 'Talk it through', body: 'How many screens and sites, what they should show, and who will update them.' },
+      { title: 'Written quote', body: 'Scope, screens, deployment and price, in writing before anything starts.' },
+      { title: 'Install and configure', body: 'We install the system, set up sites, roles and the first templates, and connect the players.' },
+      { title: 'Trial and adjust', body: 'Your team uses it on real screens; we adjust layouts and settings.' },
+      { title: 'Handover and training', body: 'We show your team how to update content, bookings and emergency notices.' },
+    ],
+    priceTitle: 'Pricing',
+    priceBody:
+      'Quoted in writing, based on the number of screens, the number of sites and how it is deployed. There is no fixed price list; the quote sets out what is included before work starts.',
+    relatedTitle: 'Goes well with',
+    related: [
+      {
+        id: 'hardware',
+        title: 'Custom ESP32 screens',
+        body: 'Small dedicated screens, such as a queue number display or a counter menu screen, built on ESP32.',
+        cta: 'Custom hardware',
+      },
+      {
+        id: 'software',
+        title: 'Custom software',
+        body: 'Booking pages, back offices and small tools for shops and teams, designed around how you work.',
+        cta: 'Custom software',
+      },
+      {
+        id: 'home',
+        title: 'Smart home and room control',
+        body: 'Lighting, aircon and curtains on one local system. Tying a room to its meeting schedule is assessed per project.',
+        cta: 'Services',
+      },
+    ],
+    enquire: 'Discuss your screens',
+    enquireAll: "Hi Panda Smart Home, I'd like to discuss Panda Signage. Number of screens / sites: ",
+    homeTitle: 'Panda Signage',
+    homeLead:
+      'Information screens and meeting room door panels for offices, schools, clinics and shops, managed from one console and hosted on your own server.',
+    homeCta: 'Explore Panda Signage',
+    art: {
+      headline: 'Welcome',
+      room: 'Room 3',
+      status: 'Available',
+      next: 'Next 14:00',
+      admin: 'Console',
+      screens: 'Screens',
+    },
+    finePrint: [
+      'The drawings on this page are illustrations, not screenshots of a live system.',
+      'Features are delivered as set out in the written scope at the time of delivery.',
+      'Screens and players must run Android 11 or later; other platforms are assessed on request.',
+    ],
+    faqTitle: 'Before you ask for a quote',
+    faq: [
+      {
+        q: 'Does it keep playing if the internet goes down?',
+        a: 'Yes. Content is cached on each player and keeps playing. Changes reach the screen once it is back online. A player can also be updated from a USB drive with an exported offline pack.',
+      },
+      {
+        q: 'Which screens does it support?',
+        a: 'Android 11 or later: an Android media player connected to a TV or monitor, or a commercial display with Android built in. We do not promise other platforms; they are assessed on request.',
+      },
+      {
+        q: 'Who updates the content, and is it hard?',
+        a: 'Your own team, from a web browser. Layouts are built by drag and drop, PDF and PowerPoint files are converted automatically, and front-desk staff can change marked text without touching the layout. Training is part of the handover.',
+      },
+      {
+        q: 'Where is our data kept?',
+        a: 'On the server where the system is installed, which is normally your own server or office network. If we host it for you, where it runs is written into the quote.',
+      },
+      {
+        q: 'Can it show meeting room bookings?',
+        a: 'Yes. Bookings are entered in the console and appear on the door panel and on room list screens. Connecting an existing booking system is assessed per project.',
+      },
+      {
+        q: 'Do you take on a single screen?',
+        a: 'Yes. A rollout can start with one screen and grow later.',
       },
     ],
   },
@@ -1026,6 +1183,7 @@ export const en: Content = {
         'Controls & dashboards',
         'Energy & monitoring',
         'Custom AI hardware (ESP32)',
+        'Digital signage',
         'Not sure yet, advise me',
       ],
       message: 'What would you like to solve? (optional)',

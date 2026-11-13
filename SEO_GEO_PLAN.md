@@ -115,13 +115,14 @@ Matter 选题已有 `what-is-matter`，没有重复写。
 - `en.ts` 里首页、/products/、/custom-hardware/ 的 meta description 超过 160 字符（178 / 212 / 198）。
 - 首页可以加一段 2–3 句的"我们是谁、在哪、做什么"答案式段落（便于 AI 直接引用）。
 
-## 5. 关键词（三条业务线）
+## 5. 关键词（四条业务线）
 
 | 业务线 | 英文 | 中文 |
 | --- | --- | --- |
 | 全屋智能家居安装 | smart home Singapore、smart home installation Singapore、BTO smart home、HDB renovation smart home、condo smart home upgrade、no neutral smart switch、smart aircon control Singapore、motorised curtains Singapore | 新加坡智能家居、组屋智能家居、BTO 装修 智能家居、公寓 智能家居 |
 | ESP32 AI 硬件定制 | ESP32 custom hardware Singapore、custom AI voice assistant device、ESP32-S3 voice assistant、Home Assistant touch panel custom、ESPHome custom device Singapore | 小智 AI 定制、ESP32 定制开发 新加坡、AI 语音助手 硬件定制 |
 | 小企业软件定制 | custom software small business Singapore、booking system Singapore SME、WhatsApp bot Singapore | 新加坡 小企业 软件定制、预约系统 定制 |
+| Panda Signage 信息屏系统（`/signage/`） | digital signage Singapore、meeting room display、room booking panel、digital signage software self-hosted | 信息屏系统 新加坡、会议室门牌、会议预约屏、信息发布系统 |
 
 ## 6. 内容日历（3 个月，每两周 1 篇，中英同发）
 

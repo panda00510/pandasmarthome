@@ -59,7 +59,7 @@ export function Header() {
   }
   // On the homepage the header starts on the ink hero, so it is dark until
   // the page scrolls; then it becomes frosted paper everywhere.
-  const dark = (path === '' || path === 'custom-hardware/') && !scrolled && !open
+  const dark = (path === '' || path === 'custom-hardware/' || path === 'signage/') && !scrolled && !open
 
   // Primary row: services, your home, showroom, [Custom ▾], guides, process.
   const links: NavLink[] = [
@@ -69,7 +69,7 @@ export function Header() {
     { key: 'guides', label: t.guides.eyebrow, href: pageHref(lang, 'guides/'), current: path === 'guides/' },
     byId('process'),
   ]
-  // The "Custom" group: AI hardware, software, ready-made devices.
+  // The "Custom" group: AI hardware, signage, software, ready-made devices.
   const customLinks: NavLink[] = [
     {
       key: 'hardware',
@@ -77,6 +77,7 @@ export function Header() {
       href: pageHref(lang, 'custom-hardware/'),
       current: path === 'custom-hardware/',
     },
+    { key: 'signage', label: t.signage.navLabel, href: pageHref(lang, 'signage/'), current: path === 'signage/' },
     byId('software'),
     byId('products'),
   ]
