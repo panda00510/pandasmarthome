@@ -21,11 +21,11 @@
 | JSON-LD | 有 LocalBusiness、FAQPage、WebSite、Article、BreadcrumbList、Service；但节点大多无 `@id`、互不引用；索引页（/homes/、/solutions/、/guides/、/products/、/software/）无页面节点和面包屑；专题页面包屑漏了 hub 一层 | 已修（§2） |
 | SearchAction | 站内没有搜索功能，加了就是虚假声明 | **不加** |
 | og:image | 绝对 URL ✓；中文页 `og:image:alt` 仍是英文 | 已修 |
-| h1 | /homes/、/solutions/（中英 4 页）**没有 h1**；/guides/ 从 h1 直接跳 h3（卡片标题） | 组件在 `sections/`，不在本次改动范围，见 §4 |
+| h1 | 原先 /homes/、/solutions/ 没有 h1，/guides/ 从 h1 跳到 h3 | 已修（2026-11-18 核对 dist：六个索引页各一个 h1，层级 h1→h2→h3 不跳级） |
 | 孤儿页 | 无（每页都有站内入链） | — |
 | 图片 alt | 预渲染 HTML 里所有 `<img>` 都有 alt | — |
 | 答案式摘要 | guide 顶部显示 description；但 14 篇 guide 没有 `points:`（"简短版"三要点） | 已补齐 |
-| 作者 / 更新日期 | guide 页可见"更新于"日期；**无可见作者**；专题页（/homes/…、/solutions/…）不显示日期 | 见 §4（组件改动） |
+| 作者 / 更新日期 | 原先无可见作者，专题页不显示日期 | 已修：指南页和专题页都显示"Panda Smart Home 团队"和"更新于"（`Guides.tsx`；作者为团队，不写个人） |
 | 安全/信任响应头 | 线上无 HSTS、X-Content-Type-Options、Referrer-Policy、Permissions-Policy | 已在 worker 里加（§2） |
 
 ## 2. 已实施项
@@ -108,9 +108,6 @@ Matter 选题已有 `what-is-matter`，没有重复写。
 
 **仍待改的站内项（需组件改动，不在本次范围）**
 
-- `/homes/`、`/solutions/` 没有 h1：`HubPage` 里的 `SectionHeading` 需要一个 `as="h1"` 选项。
-- `/guides/` 从 h1 跳到 h3：`GuideCard` 标题改为 h2，或者在卡片前加一个 h2 分区标题。
-- guide 页显示可见作者（例如"Panda Smart Home 团队"，链接到 /how-it-works/）；专题页也显示"更新于"日期。
 - 仍偏长的英文 title 建议改写到 60 字符以内，同时把可见长标题移到 `heading:`：reduce-aircon-electricity-smart-home、smart-home-privacy-local-vs-cloud、local-smart-home-vs-google-apple-smartthings、water-smoke-humidity-sensors-singapore、radar-fall-detection 等。
 - `en.ts` 里首页、/products/、/custom-hardware/ 的 meta description 超过 160 字符（178 / 212 / 198）。
 - 首页可以加一段 2–3 句的"我们是谁、在哪、做什么"答案式段落（便于 AI 直接引用）。
