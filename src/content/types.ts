@@ -236,6 +236,8 @@ export type Content = {
     whoTitle: string
     audiences: string[]
     groupsTitle: string
+    /** Under the capability heading: the list is open-ended, and what runs on the chip versus in the cloud. */
+    groupsLead: string
     groups: { id: string; title: string; body: string; items: string[] }[]
     tiersTitle: string
     /** `priceSgd` is an indicative starting price, shown as "from S$X". */

@@ -569,19 +569,57 @@ export const zh: Content = {
     sectionEyebrows: { capabilities: '能做什么', levels: '定制层级', process: '流程' },
     eyebrow: 'AI 硬件定制',
     title: 'ESP32 AI 硬件定制，从想法到成品',
-    lead: '为新加坡的个人、店铺和小团队定制基于 ESP32 / ESP32-S3 的小设备：语音助手、触摸屏、传感器和控制器。做原型和单台定制，固件与源码交给你。',
+    lead: '为新加坡的个人、店铺和小团队定制基于 ESP32 / ESP32-S3 的小设备：语音助手、摄像头与视觉设备、AI 陪伴设备、触摸屏、传感器和控制器。做原型和单台定制，固件与源码交给你。',
     metaTitle: 'ESP32 AI 硬件定制（新加坡）| Panda Smart Home',
     metaDescription:
-      '新加坡 ESP32 / ESP32-S3 硬件定制：AI 语音助手、LVGL 触摸屏、传感器与继电器，接入 Home Assistant、ESPHome、MQTT、Matter。原型与单台定制，书面报价。',
+      '新加坡 ESP32 / ESP32-S3 AI 硬件定制：语音助手、摄像头视觉、AI 陪伴设备、触摸屏与传感器，接入 Home Assistant、MQTT。原型与单台定制，书面报价。',
     whoTitle: '适合谁',
     audiences: ['个人与创客', '店铺与餐饮', '办公室与小团队', '智能家居用户'],
     groupsTitle: '能做什么',
+    groupsLead:
+      '包括但不限于下面这些。把想法告诉我们，ESP32 做不做得到会直接说清楚。大模型在云端运行；唤醒词、简单语音指令和人脸检测可以直接在设备上跑。',
     groups: [
       {
         id: 'voice',
         title: 'AI 语音助手设备',
         body: '类似小智（Xiaozhi）的小音箱设备，接入大模型，人设和知识由你定义。',
         items: ['接入大模型', '自定义人设', '专属知识'],
+      },
+      {
+        id: 'agent',
+        title: '不只会聊天，还能动手',
+        body: '大模型可以调用工具：开关灯和继电器、读取传感器、设定时器、查询 Home Assistant，说一句话就能完成。',
+        items: ['语音控制设备', '工具调用（MCP）', '定时与提醒'],
+      },
+      {
+        id: 'offline',
+        title: '离线唤醒词和语音指令',
+        body: '唤醒词和一组固定的语音指令直接在芯片上运行，断网时基本控制照样可用。',
+        items: ['唤醒词', '中文或英文离线指令'],
+      },
+      {
+        id: 'vision',
+        title: '摄像头与视觉设备',
+        body: 'ESP32-S3 加摄像头：在设备上做人脸检测、扫二维码和条码，或者把画面发给视觉大模型，描述场景、识别文字。',
+        items: ['人脸检测', '二维码与条码识别', '视觉大模型看图识字'],
+      },
+      {
+        id: 'companion',
+        title: 'AI 陪伴设备与桌面机器人',
+        body: '有表情屏、会说话、可选舵机动作的小角色，放在桌上、店铺柜台或孩子房间，内容设置由你决定。',
+        items: ['表情屏', '舵机动作', '讲故事与聊天模式'],
+      },
+      {
+        id: 'translate',
+        title: '翻译与语言练习',
+        body: '按键说话的小设备：中英互译、朗读文字，或者当一个耐心的口语陪练。',
+        items: ['中英互译', '口语练习', '朗读'],
+      },
+      {
+        id: 'portable',
+        title: '电池供电与可穿戴设备',
+        body: '手持、夹在衣服上或工牌大小的设备，带充电电池，不用时深度休眠省电。',
+        items: ['充电电池', '低功耗休眠', '按键说话'],
       },
       {
         id: 'screen',
@@ -593,7 +631,7 @@ export const zh: Content = {
         id: 'sensor',
         title: '传感与自动化节点',
         body: '负责测量或开关的小节点：温湿度、人体存在雷达、电量计量和继电器。',
-        items: ['温湿度', '人体存在雷达', '电量计量', '继电器'],
+        items: ['温湿度', '人体存在雷达', '电量计量', '继电器', '手机提醒'],
       },
       {
         id: 'integration',
@@ -666,6 +704,10 @@ export const zh: Content = {
           multiple: true,
           options: [
             { id: 'voice', label: 'AI 语音助手' },
+            { id: 'vision', label: '摄像头或视觉设备' },
+            { id: 'companion', label: 'AI 陪伴设备或桌面机器人' },
+            { id: 'translate', label: '翻译或语言学习设备' },
+            { id: 'portable', label: '电池供电或可穿戴' },
             { id: 'screen', label: '触摸面板或桌面屏' },
             { id: 'sensor', label: '传感或自动化节点' },
             { id: 'integration', label: '给现有智能家居加设备' },

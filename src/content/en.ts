@@ -604,19 +604,57 @@ export const en: Content = {
     sectionEyebrows: { capabilities: 'Capabilities', levels: 'Levels', process: 'Process' },
     eyebrow: 'Custom AI hardware',
     title: 'Custom ESP32 AI and IoT devices, from idea to a working unit',
-    lead: 'Small devices built on ESP32 and ESP32-S3 for individuals, shops and small teams in Singapore: voice assistants, touch screens, sensors and controllers. Prototypes and one-off builds, with the firmware and source handed over to you.',
+    lead: 'Small devices built on ESP32 and ESP32-S3 for individuals, shops and small teams in Singapore: voice assistants, camera and vision devices, AI companions, touch screens, sensors and controllers. Prototypes and one-off builds, with the firmware and source handed over to you.',
     metaTitle: 'Custom ESP32 AI Hardware in Singapore | Panda Smart Home',
     metaDescription:
-      'Custom ESP32 devices in Singapore: AI voice assistants, touch panels, sensors and Home Assistant, ESPHome, MQTT or Matter integration. Quoted in writing.',
+      'Custom ESP32 AI devices in Singapore: voice assistants, camera vision, AI companions, touch panels and sensors for Home Assistant or MQTT. Quoted in writing.',
     whoTitle: 'Who this is for',
     audiences: ['Individuals and makers', 'Shops and F&B', 'Offices and small teams', 'Smart home owners'],
     groupsTitle: 'What we can build',
+    groupsLead:
+      'Including but not limited to the devices below. Tell us the idea and we will say plainly whether an ESP32 can do it. Large AI models run in the cloud; wake words, simple voice commands and face detection can run on the device itself.',
     groups: [
       {
         id: 'voice',
         title: 'AI voice assistant devices',
         body: 'A small speaker device in the style of Xiaozhi, connected to a large language model, with a persona and knowledge you define.',
         items: ['LLM connection', 'Custom persona', 'Your own knowledge'],
+      },
+      {
+        id: 'agent',
+        title: 'Voice that acts, not just talks',
+        body: 'The AI model can call tools: switch lights and relays, read sensors, set timers or ask Home Assistant, all from one spoken request.',
+        items: ['Device control by voice', 'Tool calls (MCP)', 'Timers and reminders'],
+      },
+      {
+        id: 'offline',
+        title: 'Offline wake word and voice commands',
+        body: 'A wake word and a set of fixed voice commands that run on the chip itself, so basic control keeps working without the internet.',
+        items: ['Wake word', 'Offline commands in Chinese or English'],
+      },
+      {
+        id: 'vision',
+        title: 'Camera and vision devices',
+        body: 'An ESP32-S3 with a camera: face detection and QR or barcode reading on the device, or a snapshot sent to a vision model to describe a scene or read text.',
+        items: ['Face detection', 'QR and barcode reading', 'Vision model for scenes and text'],
+      },
+      {
+        id: 'companion',
+        title: 'AI companions and desk robots',
+        body: "A character with an expressive screen, a voice and optional servo movement, for a desk, a shop counter or a child's room, with the content settings you choose.",
+        items: ['Expressive screen', 'Servo movement', 'Story and chat modes'],
+      },
+      {
+        id: 'translate',
+        title: 'Translation and language practice',
+        body: 'A push-to-talk device that translates between Chinese and English, reads text aloud or acts as a patient speaking partner.',
+        items: ['Chinese–English translation', 'Speaking practice', 'Read aloud'],
+      },
+      {
+        id: 'portable',
+        title: 'Battery-powered and wearable devices',
+        body: 'Handheld, clip-on or badge-sized builds with a rechargeable battery and deep sleep between uses.',
+        items: ['Rechargeable battery', 'Low-power sleep', 'Push-to-talk'],
       },
       {
         id: 'screen',
@@ -628,7 +666,7 @@ export const en: Content = {
         id: 'sensor',
         title: 'Sensor and automation nodes',
         body: 'Small nodes that measure or switch: temperature and humidity, presence radar, power metering and relays.',
-        items: ['Temperature and humidity', 'Presence radar', 'Power metering', 'Relays'],
+        items: ['Temperature and humidity', 'Presence radar', 'Power metering', 'Relays', 'Alerts to your phone'],
       },
       {
         id: 'integration',
@@ -704,6 +742,10 @@ export const en: Content = {
           multiple: true,
           options: [
             { id: 'voice', label: 'AI voice assistant' },
+            { id: 'vision', label: 'Camera or vision device' },
+            { id: 'companion', label: 'AI companion or desk robot' },
+            { id: 'translate', label: 'Translator or language device' },
+            { id: 'portable', label: 'Battery-powered or wearable' },
             { id: 'screen', label: 'Touch panel or desk display' },
             { id: 'sensor', label: 'Sensor or automation node' },
             { id: 'integration', label: 'Add-on for my smart home' },

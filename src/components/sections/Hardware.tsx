@@ -1,14 +1,20 @@
 import {
   ArrowRight,
+  AudioLines,
+  BatteryCharging,
+  Bot,
+  Camera,
   ChevronDown,
   CloudSun,
   Info,
+  Languages,
   ListOrdered,
   MessageCircle,
   Mic,
   MonitorSmartphone,
   Network,
   Radar,
+  Zap,
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { ProductArt } from '../graphics/ProductFigures'
@@ -24,6 +30,12 @@ import { pageHref, useI18n } from '../../i18n/context'
 
 const ICONS: Record<string, LucideIcon> = {
   voice: Mic,
+  agent: Zap,
+  offline: AudioLines,
+  vision: Camera,
+  companion: Bot,
+  translate: Languages,
+  portable: BatteryCharging,
   screen: MonitorSmartphone,
   sensor: Radar,
   integration: Network,
@@ -122,7 +134,7 @@ export function HardwarePage() {
       {/* What we can build */}
       <section id="capabilities" className="band scroll-mt-20">
         <div className="shell">
-          <SectionHeading eyebrow={h.sectionEyebrows.capabilities} title={h.groupsTitle} />
+          <SectionHeading eyebrow={h.sectionEyebrows.capabilities} title={h.groupsTitle} lead={h.groupsLead} />
           <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:mt-14 lg:grid-cols-3">
             {h.groups.map((group) => {
               const Icon = ICONS[group.id] ?? Network
