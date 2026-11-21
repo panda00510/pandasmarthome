@@ -1,5 +1,5 @@
 ---
-title: Digital signage for a small office or shop in Singapore: what you actually need
+title: Digital signage for a small office or shop in Singapore
 heading: Digital signage for a small office or shop: what you need
 description: A screen, a player, content and someone to update it. How to choose each, what happens when the network drops, and self-hosted versus subscription.
 published: 2026-11-13

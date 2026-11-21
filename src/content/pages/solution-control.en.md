@@ -1,5 +1,6 @@
 ---
-title: Control surfaces for the whole household — dashboards, keypads and switches
+title: Smart home controls: dashboards, keypads and switches
+heading: Control surfaces for the whole household — dashboards, keypads and switches
 description: A system is only as good as the way people reach it, including guests and helpers who never installed an app. How we design phone, tablet and wall controls.
 published: 2026-11-06
 updated: 2026-11-06

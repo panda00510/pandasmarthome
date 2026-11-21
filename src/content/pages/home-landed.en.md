@@ -1,6 +1,6 @@
 ---
 title: Smart home for landed and larger homes in Singapore
-description: Bigger homes need real network design before clever automations. Coverage across floors, a perimeter to watch, and controls that work for every generation in the house.
+description: Bigger homes need real network design before clever automations: coverage across floors, a perimeter to watch, and controls for every generation.
 published: 2026-11-06
 updated: 2026-11-06
 path: homes/landed-smart-home/

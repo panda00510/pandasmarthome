@@ -1,5 +1,6 @@
 ---
-title: Adding AI to your existing CCTV — what an edge analytics box can and cannot do
+title: Adding AI to existing CCTV: what an edge box can do
+heading: Adding AI to your existing CCTV — what an edge analytics box can and cannot do
 description: You often do not need new cameras for people counting and smarter alerts. How an AI edge box works with existing CCTV, what to check, and the privacy duties.
 published: 2026-11-05
 updated: 2026-11-13

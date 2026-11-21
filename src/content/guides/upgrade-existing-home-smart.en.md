@@ -1,6 +1,7 @@
 ---
-title: Upgrading an existing home to a smart home — where to start without a renovation
-description: You do not need a new build or a renovation to get a smart home. What can be done without opening walls, what needs more work, and how to roll it out one area at a time.
+title: Upgrading an existing home without a renovation
+heading: Upgrading an existing home to a smart home — where to start without a renovation
+description: You do not need a renovation to get a smart home. What works without opening walls, what needs more work, and how to roll it out one area at a time.
 published: 2026-11-06
 updated: 2026-11-13
 points: Start with the one problem that annoys you most, not with a shopping list | Retrofit modules, battery sensors, IR controllers and retrofit locks need no wall opening | Roll it out one area at a time, and keep wall switches and keys working

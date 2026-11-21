@@ -1,5 +1,6 @@
 ---
-title: Wi-Fi for a smart home — do you need mesh, and where should the router go?
+title: Wi-Fi for a smart home: mesh and router placement
+heading: Wi-Fi for a smart home — do you need mesh, and where should the router go?
 description: Dozens of small devices ask more of Wi-Fi than phones do. What matters for coverage, where to place access points, and what to sort out before renovation.
 published: 2026-10-22
 updated: 2026-11-13

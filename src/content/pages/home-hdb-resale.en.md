@@ -1,6 +1,6 @@
 ---
 title: Smart home upgrades for HDB resale and existing flats
-description: Existing flats can be upgraded without tearing up walls. How we survey what your wiring supports, which retrofit options fit, and how to roll it out one area at a time.
+description: Existing flats can be upgraded without tearing up walls. How we survey your wiring, which retrofit options fit, and how to roll it out one area at a time.
 published: 2026-11-06
 updated: 2026-11-06
 path: homes/hdb-resale-smart-home/

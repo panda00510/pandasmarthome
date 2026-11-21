@@ -1,6 +1,6 @@
 ---
 title: Motorised curtains and blinds for Singapore homes
-description: Morning light, afternoon heat and privacy handled without a remote. The kinds of motorised curtains and blinds we work with, and what to settle before you choose.
+description: Morning light, afternoon heat and privacy handled without a remote. The motorised curtains and blinds we work with, and what to settle before you choose.
 published: 2026-11-06
 updated: 2026-11-06
 path: solutions/motorised-curtains/

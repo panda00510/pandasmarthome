@@ -1,5 +1,6 @@
 ---
-title: Smart door locks — types, backup plans and what to check before buying
+title: Smart door locks: types, backup plans, what to check
+heading: Smart door locks — types, backup plans and what to check before buying
 description: Retrofit or full replacement, fingerprint or PIN, and what happens when the battery dies. A practical guide to choosing a smart door lock for a Singapore home.
 published: 2026-10-28
 updated: 2026-11-13

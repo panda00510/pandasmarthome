@@ -1,6 +1,6 @@
 ---
 title: Energy monitoring and safety sensors for Singapore homes
-description: See where the electricity actually goes, which matters in aircon-heavy homes, and add leak, smoke and gas sensors that alert you. What we set up and what to know first.
+description: See where the electricity goes in an aircon-heavy home, and add leak, smoke and gas sensors that alert you. What we set up and what to know first.
 published: 2026-11-06
 updated: 2026-11-06
 path: solutions/energy-monitoring/

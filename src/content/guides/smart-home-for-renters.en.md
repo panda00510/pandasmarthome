@@ -1,6 +1,7 @@
 ---
-title: Smart home when you rent — what you can do without touching the walls
-description: Renting in Singapore does not rule out a smart home. What works without drilling or rewiring, what needs the landlord's consent, and how to take it all with you.
+title: Smart home for renters: no drilling, no rewiring
+heading: Smart home when you rent — what you can do without touching the walls
+description: Renting in Singapore does not rule out a smart home. What works without drilling or rewiring, what needs the landlord's consent, and how to move it.
 published: 2026-10-16
 updated: 2026-11-13
 points: Smart bulbs, plugs, battery sensors, IR controllers and curtain robots need no alterations | Replacing switches or the door lock, or drilling, needs the landlord's consent in writing | Choose a hub you own, keep the original parts, and factory-reset devices before you move out

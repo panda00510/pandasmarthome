@@ -1,6 +1,7 @@
 ---
-title: Coming next — AI edge box for existing CCTV and camera-free fall detection
-description: Two products we are preparing: an AI edge box that adds people counting and alerts to cameras you already have, and a radar sensor that detects falls without a camera. Not on sale yet.
+title: Coming next: AI for existing CCTV and fall detection
+heading: Coming next — AI edge box for existing CCTV and camera-free fall detection
+description: Two products in preparation: an AI edge box that adds people counting and alerts to existing cameras, and a camera-free radar fall sensor. Not on sale yet.
 published: 2026-11-06
 updated: 2026-11-06
 path: solutions/upcoming-products/

@@ -1,5 +1,5 @@
 ---
-title: Google Home, Apple Home, SmartThings or a local open-source platform — how to choose
+title: Google Home, Apple Home, SmartThings or local control?
 heading: How to choose a smart home platform
 description: A plain comparison of where each smart home platform runs, what still works without the internet, and who each one suits. How to choose for a Singapore home.
 published: 2026-11-06

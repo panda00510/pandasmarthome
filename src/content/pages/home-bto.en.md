@@ -1,6 +1,6 @@
 ---
 title: Smart home planning for BTO flats in Singapore
-description: The cheapest time to prepare a smart home is before the walls are closed. What we check in a BTO layout, and how we plan it with your interior designer and electrician.
+description: The cheapest time to prepare a smart home is before the walls close. What we check in a BTO layout, and how we plan it with your designer and electrician.
 published: 2026-11-06
 updated: 2026-11-13
 path: homes/bto-smart-home/

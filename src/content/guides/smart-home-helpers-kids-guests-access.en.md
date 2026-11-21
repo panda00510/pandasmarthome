@@ -1,5 +1,5 @@
 ---
-title: Smart home with a helper, children and guests — who gets access to what
+title: Smart home access for a helper, children and guests
 heading: Smart home access for a helper, children and guests
 description: How to set access in a smart home shared with a helper, children and visitors, using door codes, simple controls and clear rules, with no app for everyone.
 published: 2026-11-08

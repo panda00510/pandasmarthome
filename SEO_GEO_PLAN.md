@@ -2,7 +2,7 @@
 
 > 正式域名：**https://smartpanda.sg/**（canonical）。`www.smartpanda.sg`、`pandasmarthome.xunleix8.workers.dev` 301 到它；GitHub Pages 副本的 canonical 也指向它。
 > GEO = 面向 ChatGPT / Perplexity / Google AI Overviews / Copilot 等生成式引擎的优化。
-> 本文最后更新：2026-11-13。
+> 本文最后更新：2026-11-21。
 
 ## 1. 现状审计结论（基于 `npm run build` 的 dist/ 实际产物）
 
@@ -11,8 +11,8 @@
 | 项 | 结论 | 处理 |
 | --- | --- | --- |
 | title 唯一性 | 无重复 | — |
-| title 长度 | 英文 guide 有 16 篇超过 70 字符（最长 122），品牌后缀把关键词挤出截断区 | 已修：超长时去掉品牌后缀（见 §2）；仍偏长的列在 §4 待改 |
-| description | 无重复；5 条英文 >160 字符 | 3 条 guide 已缩短；首页、/products/ 在 en.ts，留给内容同事 |
+| title 长度 | 原先英文 guide 有 16 篇超过 70 字符（最长 122） | 已修：超长时去掉品牌后缀；2026-11-21 把 18 个 `<title>` 改写到 65 宽以内（CJK 记 2），原长标题移到 `heading:`，页面标题与分享卡不变 |
+| description | 无重复；原先多条 >160 字符 | 已修：2026-11-21 起全站 description 都在 160 宽以内；中文首页去掉了副业务一句（各页有自己的描述） |
 | canonical / hreflang | 每页自指 canonical，en / zh-Hans / x-default 互指 | — |
 | sitemap | 有 en、zh-Hans alternates，缺 x-default；showroom 已在 | 已补 x-default |
 | lastmod | 真实（git 提交日期 / guide `updated`） | — |
@@ -106,11 +106,9 @@ Matter 选题已有 `what-is-matter`，没有重复写。
 - [ ] GitHub：ESP32 固件 / ESPHome 配置的开源仓库 README 链回 /custom-hardware/
 - [ ] 合作方：ID、电工、窗帘商互相在"合作伙伴"页链接（需真实合作关系）
 
-**仍待改的站内项（需组件改动，不在本次范围）**
+**站内项**
 
-- 仍偏长的英文 title 建议改写到 60 字符以内，同时把可见长标题移到 `heading:`：reduce-aircon-electricity-smart-home、smart-home-privacy-local-vs-cloud、local-smart-home-vs-google-apple-smartthings、water-smoke-humidity-sensors-singapore、radar-fall-detection 等。
-- `en.ts` 里首页、/products/、/custom-hardware/ 的 meta description 超过 160 字符（178 / 212 / 198）。
-- 首页可以加一段 2–3 句的"我们是谁、在哪、做什么"答案式段落（便于 AI 直接引用）。
+- 2026-11-21：首页 FAQ 第一条改为"Panda Smart Home 是做什么的？"（中英），答案只复述已有的业务描述，同时进入 FAQPage 结构化数据，便于 AI 直接引用。
 
 ## 5. 关键词（四条业务线）
 

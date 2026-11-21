@@ -1,5 +1,5 @@
 ---
-title: A smart home for elderly parents — looking out for them without cameras
+title: A smart home for elderly parents, without cameras
 heading: A smart home for elderly parents, without cameras
 description: Make a Singapore home safer for a parent living alone or with a helper, using night lights, door and motion sensors and simple controls, with their consent.
 published: 2026-11-06

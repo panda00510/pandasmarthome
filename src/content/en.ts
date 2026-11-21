@@ -1262,6 +1262,10 @@ export const en: Content = {
     lead: 'The things people actually want to know, answered without marketing gloss.',
     items: [
       {
+        q: 'What does Panda Smart Home do?',
+        a: 'We design and install smart homes in Singapore — HDB, BTO, condo and landed homes. Lighting, aircon, curtains, locks and cameras from different brands run on one local system you own, with no vendor lock-in. We also build Panda Signage displays, custom ESP32 hardware and custom software for small businesses.',
+      },
+      {
         q: 'Which areas of Singapore do you cover?',
         a: 'Homes across Singapore — HDB estates, condos and landed properties in every region, from Punggol and Tampines to Jurong, Woodlands and the city centre.',
       },

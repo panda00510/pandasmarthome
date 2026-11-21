@@ -1,5 +1,5 @@
 ---
-title: Smart home privacy — what stays at home with local control and what goes to the cloud
+title: Smart home privacy: local control vs the cloud
 heading: Smart home privacy: local control or cloud
 description: What data a smart home can collect, the difference between local and cloud control, and practical steps to keep your routines private in a Singapore home.
 published: 2026-11-08

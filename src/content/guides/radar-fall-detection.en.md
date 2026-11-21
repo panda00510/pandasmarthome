@@ -1,6 +1,7 @@
 ---
-title: Fall detection without a camera — how radar sensors work and where they fall short
-description: A radar sensor can notice a fall without recording images or sound. How it works, where it fits in a Singapore home, and the limits to understand before you rely on it.
+title: Camera-free fall detection: how radar sensors work
+heading: Fall detection without a camera — how radar sensors work and where they fall short
+description: A radar sensor can notice a fall without recording images or sound. How it works, where it fits in a Singapore home, and its limits.
 published: 2026-11-05
 updated: 2026-11-13
 points: A radar sensor notices falls from movement data, with no video, photo or microphone | False alarms and missed falls both happen, so treat it as a safety aid, not a medical device | Decide who receives each alert and who is the back-up, then test it

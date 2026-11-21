@@ -1,5 +1,6 @@
 ---
-title: Planning a smart home before renovation — what to prepare in a BTO or HDB flat
+title: Smart home planning before a BTO or HDB renovation
+heading: Planning a smart home before renovation — what to prepare in a BTO or HDB flat
 description: The cheapest moment to prepare for a smart home is before the walls close. What to decide on switches, wiring, network points and curtains during renovation.
 published: 2026-11-05
 updated: 2026-11-13

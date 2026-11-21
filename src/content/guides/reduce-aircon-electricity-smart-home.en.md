@@ -1,5 +1,5 @@
 ---
-title: Where the electricity goes in a Singapore home — and how monitoring and automation help with aircon use
+title: Aircon electricity in Singapore: monitoring and automation
 heading: Where the electricity goes in a Singapore home
 description: In most Singapore homes the aircon uses the most electricity. How to measure what actually runs, which automations help, and what to check on an energy label.
 published: 2026-11-06

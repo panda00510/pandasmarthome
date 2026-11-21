@@ -1,5 +1,6 @@
 ---
-title: Smart switches without a neutral wire — what to know before you buy
+title: Smart switches without a neutral wire: what to know
+heading: Smart switches without a neutral wire — what to know before you buy
 description: Many wall switch boxes in older homes have no neutral wire. How no-neutral smart switches work, their trade-offs, and the alternatives worth considering.
 published: 2026-09-23
 updated: 2026-11-13

@@ -1,7 +1,7 @@
 ---
-title: Leak, smoke and humidity sensors for a humid Singapore home — which ones to install
+title: Leak, smoke and humidity sensors for Singapore homes
 heading: Leak, smoke and humidity sensors for a Singapore home
-description: Which safety sensors are worth fitting in a Singapore home, where to place them, and what they can and cannot do. Leak, smoke, gas and humidity sensors explained.
+description: Which safety sensors are worth fitting in a Singapore home, where to place them, and what they can and cannot do: leak, smoke, gas and humidity.
 published: 2026-11-08
 updated: 2026-11-08
 points: Put a leak sensor where water collects first: under the sink and behind the washing machine | A connected smoke sensor adds alerts but is not a replacement for a home fire alarm device | Decide who receives each alert, and who is the back-up

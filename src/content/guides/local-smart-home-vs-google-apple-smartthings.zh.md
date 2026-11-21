@@ -1,5 +1,5 @@
 ---
-title: Google Home、Apple Home、SmartThings 还是本地运行的开源平台：智能家居平台怎么选
+title: Google Home、Apple Home、SmartThings 还是本地开源平台
 heading: 智能家居平台怎么选
 description: 平实地比较几个智能家居平台：大脑跑在哪里、断网时还有什么能用、各自适合什么人。新加坡家庭怎么选。
 published: 2026-11-06
