@@ -298,6 +298,7 @@ scripts/make-og.mjs  rasterises the brand SVGs into PNGs (npm run og)
 scripts/prerender.mjs  writes one static HTML file per page into dist/
 scripts/indexnow.mjs   pings IndexNow with changed URLs after deploy
 scripts/record-showroom.mjs  records the homepage showroom clip (see "Showroom clip")
+scripts/capture-showroom-stills.mjs  stills of the showroom for the homepage hero and picture cards (see "Showroom stills")
 serverless/          optional Cloudflare Worker: form -> Telegram relay
 src/
   index.css          the whole design system: colour, type, spacing, components
@@ -326,7 +327,8 @@ src/
       SignageFigures.tsx   signage hero drawing (screen + door panel + console)
       GuideFigures.tsx     article figures
     sections/        one file per page section, including:
-      Hero.tsx       first screen + trust strip; renders Showroom after it
+      Hero.tsx       first screen: headline, actions, showroom render + live panel, trust strip
+      Situations.tsx homepage band: the three pages by situation as picture cards, then the main actions
       Showroom.tsx   homepage 3D showroom band: lazy looping clip + links to /showroom/, ?plan=
       Custom.tsx     homepage band: custom hardware + custom software + signage
       Hardware.tsx   the /custom-hardware/ page
@@ -452,6 +454,19 @@ librsvg would silently substitute another font or draw empty boxes. `npm run og`
 skips the cards on any other OS. After editing a card, run `npm run og`, open
 each changed PNG to check for overflow and missing glyphs, then commit it
 (each card is ~45–55 KB; keep them under 60 KB).
+
+### Showroom stills
+
+The homepage hero, the service cards (lighting, curtains, security) and the
+three situation cards use stills of the showroom flat, not photographs:
+`src/assets/photos/showroom-{home,living,movie,sleep,away}-{480,800,1200,1600}.webp`
+and `showroom-door-{480,800}.webp` (cut from the away overview). Every one
+carries the "3D showroom render" label (`footer.renderTag`), so it cannot be
+taken for a real installation. Taken locally on macOS and committed:
+
+```bash
+node scripts/capture-showroom-stills.mjs   # builds showroom/, serves it on :4179, screenshots each demo step
+```
 
 ### Showroom clip
 

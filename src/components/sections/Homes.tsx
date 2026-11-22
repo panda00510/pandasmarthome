@@ -23,7 +23,7 @@ export function Homes() {
   const { t, lang } = useI18n()
 
   return (
-    <section id="homes" className="band">
+    <section id="homes" className="band border-t border-ink-200/70 bg-paper-alt">
       <div className="shell">
         <SectionHeading eyebrow={t.homes.eyebrow} title={t.homes.title} lead={t.homes.lead} shortOnPhone split />
 

@@ -132,6 +132,8 @@ observe, and they can be replaced freely.
 | `src/components/brand/PandaMark.tsx` | The panda glyph as a React component (see section 4) |
 | `src/components/brand/Wordmark.tsx` | Brand lockup (glyph + live text) |
 | `src/components/graphics/HomePanel.tsx` | The illustrative control panel in the hero — built from live DOM, not a screenshot of any real product |
+| `src/components/graphics/CardArt.tsx` | Drawings on the homepage aircon, controls and energy cards (no readings or numbers) |
+| `src/assets/photos/showroom-{home,living,movie,sleep,away}-*.webp`, `showroom-door-*.webp` | Stills of our own 3D showroom (`showroom/`), taken by `scripts/capture-showroom-stills.mjs`. Renders, not photographs of an installation: every use carries the "3D showroom render" label (`footer.renderTag`) |
 
 Icons throughout the interface come from **[Lucide](https://lucide.dev)**
 (`lucide-react`), [ISC licensed](https://github.com/lucide-icons/lucide/blob/main/LICENSE).

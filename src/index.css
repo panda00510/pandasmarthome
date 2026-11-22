@@ -511,6 +511,62 @@
     transform: translateX(3px);
   }
 
+  /* ---- Image cards ---------------------------------------------------------
+     A card whose picture fills it, with the text on a dark fade at the
+     bottom. The picture settles from a slight zoom as the card scrolls in
+     (only when JS has hidden it first, see .reveal-pending) and drifts in on
+     hover. Art cards (no picture) use the same frame on ink.               */
+  .media-card {
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    overflow: hidden;
+    border-radius: var(--radius-card);
+    background: var(--color-ink-950);
+    color: var(--color-paper);
+    box-shadow: var(--shadow-soft);
+  }
+  .media-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(to top, rgb(10 13 17 / 0.94) 0%, rgb(10 13 17 / 0.72) 42%, rgb(10 13 17 / 0) 78%);
+    pointer-events: none;
+  }
+  .media-img {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 1.1s var(--ease-out-soft);
+  }
+  .reveal-pending .media-img {
+    transform: scale(1.08);
+  }
+  .reveal-pending.reveal-in .media-img {
+    transform: none;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    a.media-card:hover .media-img {
+      transform: scale(1.045);
+    }
+  }
+  .media-card .link-more {
+    color: var(--color-bamboo-300);
+  }
+  /* Art card: a lit ink stage for the drawings that stand in where no render fits. */
+  .art-card {
+    background:
+      radial-gradient(28rem 18rem at 85% 0%, rgb(63 174 126 / 0.28), transparent 70%),
+      radial-gradient(20rem 14rem at 0% 100%, rgb(31 138 95 / 0.18), transparent 70%),
+      var(--color-ink-950);
+  }
+
   /* Soft lit stage behind product drawings and other illustrations. */
   .art-stage {
     background:
@@ -584,6 +640,25 @@
   }
 }
 
+/* Buttons: an arrow inside nudges forward on hover. */
+@media (hover: hover) and (pointer: fine) {
+  .btn .lucide-arrow-right {
+    transition: transform 0.25s var(--ease-out-soft);
+  }
+  .btn:hover .lucide-arrow-right {
+    transform: translateX(3px);
+  }
+  a.media-card {
+    transition:
+      transform 0.35s var(--ease-out-soft),
+      box-shadow 0.35s var(--ease-out-soft);
+  }
+  a.media-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lift);
+  }
+}
+
 /* Linked cards lift on hover. Unlayered on purpose: the components set
    `transition-colors` as a utility, which would otherwise win and make the
    lift jump instead of ease. Reduced motion keeps the colour change only. */
@@ -603,6 +678,9 @@
 }
 @media (prefers-reduced-motion: reduce) {
   a.card:hover,
+  a.media-card:hover,
+  a.media-card:hover .media-img,
+  .reveal-pending .media-img,
   .card.spotlight:hover,
   .btn:active {
     transform: none;

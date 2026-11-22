@@ -84,6 +84,8 @@ node scripts/check-form.mjs --dry                    # 每周表单自检的解�
 - 页眉与页脚分组一致：智能家居、产品、定制、资料与公司；页脚分组在 `Footer.tsx` 的 `columns`。新增页面要同时考虑这两处。
 - 熊猫标识几何**只在** `src/components/brand/pandaPath.ts`；favicon、og-image.svg、分享卡都由 `npm run og` 从它生成，别手抄 path、别手改 `public/favicon.svg`。熊猫只用于 logo / favicon / 分享卡。
 - 图库照片必须标明 illustrative（`PhotoTag` + alt 以 "Illustrative photo" 开头），不能冒充本公司案例。
+- 首页用的样板间截图（`showroom-*.webp`，`scripts/capture-showroom-stills.mjs` 生成）是渲染图，每处都要带 `footer.renderTag`（“3D 样板间渲染”）标签，alt 以 “3D render” / “3D … 渲染图”开头。没有渲染图可用的卡片用 `CardArt.tsx` 的线稿，线稿里不放读数和数字。
+- 首页区块深浅交替：hero（深）→ 服务（浅）→ 样板间（深）→ 情境（浅灰）→ 产品（浅）→ 住宅（浅灰）→ 流程（浅）→ 平台（深）。加区块时保持交替。
 - 分享卡（`public/og/*.png`）在 macOS 本机生成并**提交入库**，CI 不生成（Ubuntu 无苹方，中文会缺字）。改后逐张看图，每张 ≤ 60 KB。每篇指南另有一张 `public/og/guides/<slug>-<lang>.jpg`，由 `npm run og` 从 front matter 的标题生成；新增指南或改标题后要重跑并提交。
 
 ## 样板间约定（详见 showroom/README.md）

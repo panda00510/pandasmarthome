@@ -8,7 +8,7 @@ export function Process() {
   const { t, lang } = useI18n()
 
   return (
-    <section id="process" className="band border-t border-ink-200/70 bg-paper-alt">
+    <section id="process" className="band">
       <div className="shell">
         <SectionHeading eyebrow={t.process.eyebrow} title={t.process.title} lead={t.process.lead} shortOnPhone split />
 

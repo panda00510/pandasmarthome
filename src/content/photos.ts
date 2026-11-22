@@ -16,8 +16,9 @@ const WIDTHS = [480, 800, 1200, 1600] as const
 export function responsive(slug: string) {
   const url = (w: number) => urls[`../assets/photos/${slug}-${w}.webp`]
   return {
-    src: url(1200),
-    srcSet: WIDTHS.map((w) => `${url(w)} ${w}w`).join(', '),
+    src: url(1200) ?? url(800),
+    // Showroom crops come in fewer widths; list only what exists.
+    srcSet: WIDTHS.filter((w) => url(w)).map((w) => `${url(w)} ${w}w`).join(', '),
   }
 }
 

@@ -45,7 +45,7 @@ export function Custom() {
   const sg = t.signage
 
   return (
-    <section id="custom" className="band border-t border-ink-200/70 bg-paper-alt">
+    <section id="custom" className="band">
       <div className="shell">
         <SectionHeading eyebrow={c.eyebrow} title={c.title} lead={c.lead} shortOnPhone split />
 

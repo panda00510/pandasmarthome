@@ -6,6 +6,8 @@ import { Homes } from './Homes'
 import { Planner } from './Planner'
 import { Platform } from './Platform'
 import { Process } from './Process'
+import { Showroom } from './Showroom'
+import { Situations } from './Situations'
 import { Solutions } from './Solutions'
 import { Upcoming } from './Upcoming'
 
@@ -13,8 +15,12 @@ import { Upcoming } from './Upcoming'
 export function HomePage() {
   return (
     <>
+      {/* Light and ink bands alternate: hero (ink), services, showroom (ink),
+          situations (paper-alt), products, homes (paper-alt), process. */}
       <Hero />
       <Solutions />
+      <Showroom />
+      <Situations />
       <Custom />
       <Homes />
       <Process />

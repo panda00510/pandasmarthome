@@ -38,6 +38,10 @@ export type Content = {
     lead: string
     primaryCta: string
     secondaryCta: string
+    /** One line under the hero buttons: facts already stated elsewhere on the site (languages, home types, area). */
+    ctaNote: string
+    /** Alt text for the hero render of the showroom living room. */
+    renderAlt: string
     trust: string[]
     /** Compact row under the trust strip linking the other three lines of business. */
     also: { label: string; signage: string; hardware: string; software: string }
@@ -63,6 +67,14 @@ export type Content = {
     title: string
     lead: string
     items: { id: string; title: string; body: string; bullets: string[] }[]
+  }
+  /** Homepage band linking the three pages by situation (solutions/away-from-home/ …). */
+  situations: {
+    eyebrow: string
+    title: string
+    lead: string
+    items: { id: string; path: string; title: string; body: string; imageAlt: string }[]
+    cta: string
   }
   /** Index pages for the topic pages: /solutions/ and /homes/. */
   hubs: Record<
@@ -562,6 +574,8 @@ export type Content = {
     imageNote: string
     /** Corner label on every stock photo. */
     imageTag: string
+    /** Corner label on every still from our own 3D showroom (not a photo of an installation). */
+    renderTag: string
   }
   /**
    * Homepage "plan starter" (components/sections/Planner.tsx): three questions

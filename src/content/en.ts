@@ -44,6 +44,8 @@ export const en: Content = {
     lead: 'Lights, aircon, curtains, locks and cameras from different brands — running together on one local system you actually own.',
     primaryCta: 'Book a consultation',
     secondaryCta: 'See what we install',
+    ctaNote: 'In English or Chinese · HDB, condo and landed homes across Singapore',
+    renderAlt: '3D render of the showroom living room in the evening, with the lights on',
     trust: [
       'Runs locally, keeps working offline',
       'Mix brands without lock-in',
@@ -166,6 +168,36 @@ export const en: Content = {
         ],
       },
     ],
+  },
+
+  situations: {
+    eyebrow: 'By situation',
+    title: 'Planned around how your days actually go',
+    lead: 'Three situations that pull the lighting, aircon, locks and sensors together. Each page says what we set up and links to the guides behind it.',
+    items: [
+      {
+        id: 'away',
+        path: 'solutions/away-from-home/',
+        title: 'Away from home',
+        body: 'Everything off as you leave, alerts worth reading while you are out, and a cool room when you are back.',
+        imageAlt: '3D render of the showroom flat in away mode, lights off',
+      },
+      {
+        id: 'nights',
+        path: 'solutions/nights-and-sleep/',
+        title: 'Bedtime and nights',
+        body: 'A bedtime button by the bed, aircon that eases off once you are asleep, and a low light for the walk in the dark.',
+        imageAlt: '3D render of the showroom bedroom at night, one bedside lamp on',
+      },
+      {
+        id: 'family',
+        path: 'solutions/family-home/',
+        title: 'A home for the whole family',
+        body: 'Wall switches anyone can use, a door code for each person, and gentle checks on older parents without cameras.',
+        imageAlt: '3D render of the whole showroom flat in the evening, rooms lit',
+      },
+    ],
+    cta: 'Talk to us about your home',
   },
 
   hubs: {
@@ -1627,6 +1659,7 @@ export const en: Content = {
     disclaimer:
       'Panda Smart Home integrates compatible third-party products through supported connection methods. Product names and trademarks belong to their respective owners. Compatibility does not imply official partnership or endorsement.',
     imageTag: 'Illustrative photo',
+    renderTag: '3D showroom render',
     imageNote:
       'Photographs are illustrative stock images from Pexels. They are not Panda Smart Home installations or client projects.',
   },

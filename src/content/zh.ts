@@ -44,6 +44,8 @@ export const zh: Content = {
     lead: '不同品牌的灯光、空调、窗帘、门锁与摄像头，在一套完全属于你的本地系统上协同运作。',
     primaryCta: '预约咨询',
     secondaryCta: '查看安装内容',
+    ctaNote: '中英文均可沟通 · 全岛组屋、公寓与有地住宅',
+    renderAlt: '3D 样板间客厅的渲染图：傍晚，灯已打开',
     trust: [
       '本地运行，断网照常工作',
       '自由混搭品牌，不被绑定',
@@ -165,6 +167,36 @@ export const zh: Content = {
         ],
       },
     ],
+  },
+
+  situations: {
+    eyebrow: '按情境',
+    title: '按你家一天的节奏来规划',
+    lead: '三个把灯光、空调、门锁和传感器串在一起的情境。每一页都写明我们做哪些设置，并链到背后的指南。',
+    items: [
+      {
+        id: 'away',
+        path: 'solutions/away-from-home/',
+        title: '出门在外',
+        body: '出门一键全关，不在家时只收值得看的警报，回到家房间已经凉了。',
+        imageAlt: '3D 样板间离家模式的渲染图，灯已关闭',
+      },
+      {
+        id: 'nights',
+        path: 'solutions/nights-and-sleep/',
+        title: '睡前与夜间',
+        body: '床边一个睡前按键，入睡后空调自动放缓，夜里起身有低亮度的灯。',
+        imageAlt: '3D 样板间卧室夜间的渲染图，只开着一盏床头灯',
+      },
+      {
+        id: 'family',
+        path: 'solutions/family-home/',
+        title: '几代同住',
+        body: '谁都会用的墙面开关，每人一个门锁密码，不装摄像头也能照看长辈。',
+        imageAlt: '3D 样板间全屋傍晚的渲染图，各房间亮着灯',
+      },
+    ],
+    cta: '和我们聊聊你家',
   },
 
   hubs: {
@@ -1561,6 +1593,7 @@ export const zh: Content = {
     disclaimer:
       'Panda智能家居通过支持的连接方式集成兼容的第三方产品。相关产品名称及商标归各自所有，设备兼容不代表与相关品牌存在官方合作或认可关系。',
     imageTag: '示意图',
+    renderTag: '3D 样板间渲染',
     imageNote: '网站上的照片是来自 Pexels 的示意图库图片，不是 Panda 智能家居的安装现场或客户项目。',
   },
 
