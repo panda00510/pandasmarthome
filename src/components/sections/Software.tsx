@@ -149,7 +149,7 @@ export function SoftwarePage() {
             className="card group mt-4 flex flex-col gap-4 border-white/10 bg-ink-950 p-5 text-paper sm:flex-row sm:items-center sm:justify-between sm:p-7"
           >
             <span className="max-w-2xl">
-              <span className="block text-[1.25rem] leading-snug font-semibold tracking-[-0.02em] sm:text-[1.4rem]">
+              <span className="block title-group">
                 {t.hardware.pairTitle}
               </span>
               <span className="mt-2 block text-[0.9375rem] leading-relaxed text-ink-300">{t.hardware.pairBody}</span>

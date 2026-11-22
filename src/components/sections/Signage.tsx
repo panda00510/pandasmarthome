@@ -15,7 +15,9 @@ import {
   WifiOff,
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
+import { CardArt } from '../graphics/CardArt'
 import { SignageArt } from '../graphics/SignageFigures'
+import { FeatureCard } from '../FeatureCard'
 import { Button, PhotoTag, SectionHeading } from '../ui'
 import { enquiryHref } from '../../lib/whatsapp'
 import { pageHref, useI18n } from '../../i18n/context'
@@ -43,6 +45,9 @@ const RELATED: Record<string, string> = {
   software: 'software/',
   home: 'solutions/',
 }
+
+/** The two capabilities shown as large picture cards (drawings in CardArt). */
+const FEATURED = ['sites', 'rooms']
 
 const numeral = (i: number) => String(i + 1).padStart(2, '0')
 
@@ -123,8 +128,20 @@ export function SignagePage() {
       <section id="capabilities" className="band scroll-mt-20">
         <div className="shell">
           <SectionHeading eyebrow={s.sectionEyebrows.capabilities} title={s.groupsTitle} />
-          <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:mt-14 lg:grid-cols-4">
-            {s.groups.map((group) => {
+          <ul className="reveal-group mt-10 grid gap-4 lg:mt-14 lg:grid-cols-2">
+            {s.groups.filter((group) => FEATURED.includes(group.id)).map((group) => (
+              <FeatureCard
+                key={group.id}
+                tag={t.products.illustration}
+                title={group.title}
+                body={group.body}
+                items={group.items}
+                art={<CardArt id={group.id === 'sites' ? 'screens' : 'rooms'} />}
+              />
+            ))}
+          </ul>
+          <ul className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {s.groups.filter((group) => !FEATURED.includes(group.id)).map((group) => {
               const Icon = ICONS[group.id] ?? Monitor
               return (
                 <li key={group.id} className="card flex flex-col p-6">
@@ -218,7 +235,7 @@ export function SignagePage() {
             </Button>
           </div>
 
-          <h2 className="mt-14 text-[1.5rem] leading-snug font-semibold tracking-[-0.025em] text-ink-950 lg:mt-16">
+          <h2 className="mt-14 title-group text-ink-950 lg:mt-16">
             {s.relatedTitle}
           </h2>
           <ul className="mt-6 grid gap-4 md:grid-cols-3">
@@ -250,7 +267,7 @@ export function SignagePage() {
 
       <section className="band border-t border-ink-200/70">
         <div className="shell grid gap-8 lg:grid-cols-[minmax(0,0.7fr)_minmax(0,1.3fr)] lg:gap-16">
-          <h2 className="text-[2rem] leading-[1.1] font-semibold tracking-[-0.03em] text-ink-950 sm:text-[2.75rem]">
+          <h2 className="title-section text-ink-950">
             {s.faqTitle}
           </h2>
           <div className="divide-y divide-ink-200 border-y border-ink-200">

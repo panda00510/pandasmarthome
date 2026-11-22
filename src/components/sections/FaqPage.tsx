@@ -43,7 +43,7 @@ export function FaqPage() {
           <section key={group.id} aria-labelledby={group.id}>
             <h2
               id={group.id}
-              className="scroll-mt-24 border-b border-ink-200 pb-3 text-[1.5rem] font-semibold tracking-[-0.02em] text-ink-950"
+              className="scroll-mt-24 border-b border-ink-200 pb-3 title-group text-ink-950"
             >
               {group.title}
             </h2>

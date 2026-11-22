@@ -1,5 +1,7 @@
-import { ChevronDown, Cpu, DoorClosed, Lightbulb, MessageCircle, Radar, type LucideIcon } from 'lucide-react'
+import { ArrowRight, ChevronDown, MessageCircle, SlidersHorizontal } from 'lucide-react'
+import { CardArt } from '../graphics/CardArt'
 import { ProductArt } from '../graphics/ProductFigures'
+import { responsive } from '../../content/photos'
 import { Button, PhotoTag } from '../ui'
 import { enquiryHref } from '../../lib/whatsapp'
 import { pageHref, useI18n } from '../../i18n/context'
@@ -10,11 +12,11 @@ import { pageHref, useI18n } from '../../i18n/context'
  * message that names the device.
  */
 
-const INSTALL_ICONS: Record<string, LucideIcon> = {
-  'switches-lighting': Lightbulb,
-  sensors: Radar,
-  'curtains-locks-security': DoorClosed,
-  'hubs-gateways': Cpu,
+/** Showroom stills for the installed-device groups; the hubs card gets a drawing instead. */
+const INSTALL_RENDERS: Record<string, ReturnType<typeof responsive>> = {
+  'switches-lighting': responsive('showroom-living'),
+  sensors: responsive('showroom-away'),
+  'curtains-locks-security': responsive('showroom-door'),
 }
 
 function formatPrice(template: string, amount: number) {
@@ -43,21 +45,62 @@ export function ProductsPage() {
 
   return (
     <>
-      <section className="border-b border-ink-200/70">
-        <div className="shell page-head pb-10 lg:pb-14">
-          <p className="eyebrow">
-            {p.eyebrow}
+      {/* Hero on ink, like the homepage: the four devices as picture cards that jump to their details. */}
+      <section className="relative isolate overflow-hidden bg-ink-950 text-paper">
+        <div aria-hidden="true" className="stage-grid pointer-events-none absolute inset-0 -z-10" />
+        <div aria-hidden="true" className="stage-glow pointer-events-none absolute -inset-[10%] -z-10" />
+        <div className="shell page-head pb-14 lg:pb-20">
+          <p className="eyebrow text-bamboo-300!">{p.eyebrow}</p>
+          <h1 className="mt-5 max-w-4xl title-display">{p.title}</h1>
+          <p className="mt-4 max-w-2xl text-lead text-ink-300">{p.lead}</p>
+          <p className="mt-5">
+            <span className="inline-flex rounded-full border border-white/20 px-2.5 py-1 text-[0.6875rem] leading-4 font-semibold text-ink-100">
+              {p.status}
+            </span>
           </p>
-          <h1 className="mt-5 max-w-4xl title-display text-ink-950">
-            {p.title}
-          </h1>
-          <p className="mt-4 max-w-2xl text-lead text-ink-600">{p.lead}</p>
-
-          <div className="mt-5">
-            <StatusPill>{p.status}</StatusPill>
+          <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:items-center">
+            <Button
+              as="a"
+              href={enquiryHref(p.enquireAll)}
+              target="_blank"
+              rel="noopener noreferrer"
+              variant="glow"
+              size="lg"
+              className="w-full sm:w-auto"
+            >
+              <MessageCircle size={18} aria-hidden="true" />
+              {p.enquire}
+            </Button>
+            <Button as="a" href="#customize" variant="outlineDark" size="lg" className="w-full sm:w-auto">
+              <SlidersHorizontal size={17} aria-hidden="true" />
+              {p.custom.cta}
+            </Button>
           </div>
 
-          <aside id="customize" className="mt-8 scroll-mt-28 rounded-panel border border-bamboo-200 bg-bamboo-50 px-5 py-6 sm:px-7 sm:py-7">
+          <ul className="reveal-group mt-10 grid grid-cols-2 gap-3 lg:mt-14 lg:grid-cols-4 lg:gap-4">
+            {p.items.map((item) => (
+              <li key={item.id} data-reveal className="flex">
+                <a href={`#${item.id}`} className="media-card art-card group w-full p-4 sm:p-5">
+                  <PhotoTag className="top-2.5! bottom-auto! left-2.5!">{p.illustration}</PhotoTag>
+                  <span aria-hidden="true" className="block aspect-[4/3] w-full pt-6 pb-2">
+                    <ProductArt id={item.id} lang={lang} />
+                  </span>
+                  <span className="block text-base font-semibold text-paper sm:text-lg">{item.short}</span>
+                  <span className="mt-0.5 block text-sm text-bamboo-300">{formatPrice(p.priceFrom, item.priceSgd)}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+          <a href="#smart-home-devices" className="link-more mt-6 text-bamboo-300! hover:text-bamboo-200!">
+            {p.install.title}
+            <ArrowRight size={15} aria-hidden="true" />
+          </a>
+        </div>
+      </section>
+
+      <section className="band pb-0!">
+        <div className="shell">
+          <aside id="customize" className="scroll-mt-28 rounded-panel border border-bamboo-200 bg-bamboo-50 px-5 py-6 sm:px-7 sm:py-7">
             <p className="eyebrow">{p.custom.eyebrow}</p>
             <h2 className="mt-3 max-w-3xl text-[1.45rem] leading-snug font-semibold tracking-[-0.02em] text-ink-950 sm:text-[1.75rem]">
               {p.custom.title}
@@ -87,43 +130,6 @@ export function ProductsPage() {
               </Button>
             </div>
           </aside>
-
-          <div className="mt-6">
-            <Button
-              as="a"
-              href={enquiryHref(p.enquireAll)}
-              target="_blank"
-              rel="noopener noreferrer"
-              size="lg"
-              className="w-full sm:w-auto"
-            >
-              <MessageCircle size={18} aria-hidden="true" />
-              {p.enquire}
-            </Button>
-          </div>
-
-          <ul className="mt-6 flex flex-wrap gap-2">
-            {p.items.map((item) => (
-              <li key={item.id}>
-                <a
-                  href={`#${item.id}`}
-                  className="inline-flex min-h-11 items-center rounded-full border border-ink-200 bg-white px-3.5 text-sm font-medium text-ink-800 transition-colors hover:border-bamboo-300 hover:text-bamboo-800"
-                >
-                  {item.short}
-                  <span className="ml-2 text-bamboo-700">{formatPrice(p.priceFrom, item.priceSgd)}</span>
-                </a>
-              </li>
-            ))}
-            <li>
-              <a
-                href="#smart-home-devices"
-                className="inline-flex min-h-11 items-center rounded-full border border-bamboo-200 bg-bamboo-50 px-3.5 text-sm font-medium text-bamboo-800 transition-colors hover:border-bamboo-300"
-              >
-                {p.install.title} ↓
-              </a>
-            </li>
-          </ul>
-
           <ul className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {p.points.map((point) => (
               <li key={point.title} className="card p-4">
@@ -231,33 +237,52 @@ export function ProductsPage() {
             {p.install.title}
           </h2>
           <p className="mt-4 max-w-3xl text-lg leading-relaxed text-ink-600">{p.install.lead}</p>
-          <ul className="mt-10 grid gap-4 sm:grid-cols-2">
+          <ul className="reveal-group mt-10 grid gap-4 sm:grid-cols-2">
             {p.install.groups.map((group) => {
-              const Icon = INSTALL_ICONS[group.id] ?? Cpu
+              const render = INSTALL_RENDERS[group.id]
               return (
-                <li key={group.id}>
-                  <article id={group.id} className="card flex h-full scroll-mt-28 flex-col p-5 sm:p-6">
-                    <span className="icon-tile">
-                      <Icon size={20} aria-hidden="true" />
-                    </span>
-                    <h3 className="mt-4 text-[1.2rem] leading-snug font-semibold tracking-[-0.02em] text-ink-950">
-                      {group.title}
-                    </h3>
-                    <p className="mt-2 text-[0.9375rem] leading-relaxed text-ink-600">{group.body}</p>
-                    <ul className="mt-4 space-y-1.5 text-[0.9375rem] leading-relaxed text-ink-800">
-                      {group.items.map((item) => (
-                        <li key={item} className="flex gap-2.5">
-                          <span className="mt-[0.6em] h-1 w-1 shrink-0 rounded-full bg-bamboo-600" aria-hidden="true" />
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                    <a
-                      href={pageHref(lang, group.path)}
-                      className="mt-auto inline-flex min-h-11 items-center pt-4 text-sm font-semibold text-bamboo-700 hover:text-bamboo-600"
-                    >
-                      {p.install.learn} →
-                    </a>
+                <li key={group.id} data-reveal className="flex">
+                  <article id={group.id} className="card flex w-full scroll-mt-28 flex-col overflow-hidden">
+                    <div className={`media-card art-card aspect-[16/9] rounded-none! shadow-none! ${render ? 'after:hidden' : ''}`}>
+                      {render ? (
+                        <>
+                          <img
+                            src={render.src}
+                            srcSet={render.srcSet}
+                            sizes="(min-width: 1200px) 580px, (min-width: 640px) 50vw, 100vw"
+                            alt=""
+                            width={1600}
+                            height={1000}
+                            loading="lazy"
+                            decoding="async"
+                            className={`media-img ${group.id === 'switches-lighting' ? 'object-[22%_50%]' : ''}`}
+                          />
+                          <PhotoTag className="top-3! bottom-auto! left-3!">{t.footer.renderTag}</PhotoTag>
+                        </>
+                      ) : (
+                        <span className="grid h-full place-items-center pb-4">
+                          <CardArt id="control" />
+                        </span>
+                      )}
+                    </div>
+                    <div className="flex flex-1 flex-col p-5 sm:p-6">
+                      <h3 className="text-[1.2rem] leading-snug font-semibold tracking-[-0.02em] text-ink-950">
+                        {group.title}
+                      </h3>
+                      <p className="mt-2 text-[0.9375rem] leading-relaxed text-ink-600">{group.body}</p>
+                      <ul className="mt-4 space-y-1.5 text-[0.9375rem] leading-relaxed text-ink-800">
+                        {group.items.map((item) => (
+                          <li key={item} className="flex gap-2.5">
+                            <span className="mt-[0.6em] h-1 w-1 shrink-0 rounded-full bg-bamboo-600" aria-hidden="true" />
+                            {item}
+                          </li>
+                        ))}
+                      </ul>
+                      <a href={pageHref(lang, group.path)} className="link-more mt-auto pt-4 hover:text-bamboo-600">
+                        {p.install.learn}
+                        <ArrowRight size={15} aria-hidden="true" />
+                      </a>
+                    </div>
                   </article>
                 </li>
               )
@@ -289,13 +314,13 @@ export function ProductsPage() {
             {p.preparing}{' '}
             <a
               href={pageHref(lang, 'solutions/upcoming-products/')}
-              className="font-semibold text-bamboo-700 hover:text-bamboo-600"
+              className="inline-block py-1 font-semibold text-bamboo-700 hover:text-bamboo-600"
             >
               {p.preparingLink}
             </a>
           </p>
           <p className="mt-2 text-sm">
-            <a href={pageHref(lang, 'compare/')} className="font-semibold text-bamboo-700 hover:text-bamboo-600">
+            <a href={pageHref(lang, 'compare/')} className="inline-block py-1 font-semibold text-bamboo-700 hover:text-bamboo-600">
               {t.compare.fromProducts}
             </a>
           </p>

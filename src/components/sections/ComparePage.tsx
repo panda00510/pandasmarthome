@@ -24,7 +24,7 @@ export function ComparePage() {
       <p className="mt-4 max-w-2xl text-lead text-ink-600">{c.lead}</p>
 
       <section aria-labelledby="devices" className="mt-12">
-        <h2 id="devices" className="scroll-mt-24 text-[1.5rem] font-semibold tracking-[-0.02em] text-ink-950">
+        <h2 id="devices" className="scroll-mt-24 title-group text-ink-950">
           {c.devicesTitle}
         </h2>
         <p className="mt-2 max-w-2xl text-[1.0625rem] leading-[1.65] text-ink-700">{c.devicesLead}</p>
@@ -73,7 +73,7 @@ export function ComparePage() {
       </section>
 
       <section aria-labelledby="services" className="mt-16">
-        <h2 id="services" className="scroll-mt-24 text-[1.5rem] font-semibold tracking-[-0.02em] text-ink-950">
+        <h2 id="services" className="scroll-mt-24 title-group text-ink-950">
           {c.servicesTitle}
         </h2>
         <p className="mt-2 max-w-2xl text-[1.0625rem] leading-[1.65] text-ink-700">{c.servicesLead}</p>

@@ -196,7 +196,7 @@ export function GuidePage({ guide }: { guide: Guide }) {
           <div className="min-w-0">
             <a
               href={pageHref(lang, hub ? `${hub}/` : isPage ? '' : 'guides/')}
-              className="eyebrow min-h-11 transition-colors hover:text-bamboo-500"
+              className="eyebrow min-h-11 transition-colors hover:text-bamboo-600"
             >
               <ArrowLeft size={14} aria-hidden="true" />
               {hub ? t.hubs[hub].all : isPage ? t.guides.backHome : t.guides.all}
@@ -272,8 +272,8 @@ export function GuidePage({ guide }: { guide: Guide }) {
             {/* The privacy policy carries no sales pitch. */}
             {guide.path === 'privacy/' ? null : (
             <aside className="mt-12 rounded-panel bg-ink-950 p-6 text-paper sm:p-9">
-              <h2 className="text-xl font-semibold">{t.guides.ctaTitle}</h2>
-              <p className="mt-2 leading-relaxed text-[#c7cdd2]">{t.guides.ctaBody}</p>
+              <h2 className="text-xl font-semibold sm:text-2xl">{t.guides.ctaTitle}</h2>
+              <p className="mt-2 max-w-2xl leading-relaxed text-[#c7cdd2]">{t.guides.ctaBody}</p>
               <div className="mt-6 flex flex-col gap-3 sm:flex-row">
                 <Button as="a" href={pageHref(lang, 'contact/')} variant="glow">
                   {t.guides.ctaButton}
@@ -285,7 +285,7 @@ export function GuidePage({ guide }: { guide: Guide }) {
                     href={whatsapp}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="border border-white/25 bg-transparent text-paper hover:bg-white/10"
+                    variant="outlineDark"
                   >
                     <MessageCircle size={16} aria-hidden="true" />
                     WhatsApp

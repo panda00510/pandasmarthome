@@ -368,10 +368,11 @@ tokens, so everything is available as normal utilities (`bg-bamboo-500`,
 * **Type** — Inter (self-hosted variable, Latin) with a native CJK stack for
   Chinese. `html:lang(zh)` switches `--font-zh` automatically. English pages
   preload the basic-Latin Inter file (added by `scripts/prerender.mjs`).
-  Three heading roles replace one-off sizes: `.title-display` (page and
+  Heading roles replace one-off sizes: `.title-display` (page and
   section titles, 32 → 44 → 56px; `SectionHeading` uses it), `.title-section`
   (a sub-section inside a page, 28 → 36px), `.title-article` (the h1 of a
-  guide or topic page, 30 → 40 → 44px) and `.title-card` (17px); `.text-lead`
+  guide or topic page, 30 → 40 → 44px), `.title-group` (a group heading in a
+  long list such as the FAQ or glossary, 22 → 24px) and `.title-card` (17px); `.text-lead`
   is the paragraph under a title. Inner pages start with `.page-head` (the
   same top padding everywhere). Colour stays a utility, so each role works on
   paper and on ink.

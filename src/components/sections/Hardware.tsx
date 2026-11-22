@@ -18,6 +18,7 @@ import {
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { ProductArt } from '../graphics/ProductFigures'
+import { FeatureCard } from '../FeatureCard'
 import { ProjectBrief } from '../ProjectBrief'
 import { Button, PhotoTag, SectionHeading } from '../ui'
 import { enquiryHref } from '../../lib/whatsapp'
@@ -42,6 +43,9 @@ const ICONS: Record<string, LucideIcon> = {
   local: CloudSun,
   shop: ListOrdered,
 }
+
+/** Capabilities shown as large picture cards, with the device drawing that matches each (the other nine fill a 3×3 grid). */
+const FEATURED: Record<string, string> = { voice: 'voice', screen: 'panel', local: 'weather' }
 
 const numeral = (i: number) => String(i + 1).padStart(2, '0')
 
@@ -134,8 +138,24 @@ export function HardwarePage() {
       <section id="capabilities" className="band scroll-mt-20">
         <div className="shell">
           <SectionHeading eyebrow={h.sectionEyebrows.capabilities} title={h.groupsTitle} lead={h.groupsLead} />
-          <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:mt-14 lg:grid-cols-3">
-            {h.groups.map((group) => {
+          <ul className="reveal-group mt-10 grid gap-4 lg:mt-14 lg:grid-cols-3">
+            {h.groups.filter((group) => FEATURED[group.id]).map((group) => (
+              <FeatureCard
+                key={group.id}
+                tag={t.products.illustration}
+                title={group.title}
+                body={group.body}
+                items={group.items}
+                art={
+                  <div className="aspect-[4/3] w-full max-w-xs">
+                    <ProductArt id={FEATURED[group.id]} lang={lang} />
+                  </div>
+                }
+              />
+            ))}
+          </ul>
+          <ul className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {h.groups.filter((group) => !FEATURED[group.id]).map((group) => {
               const Icon = ICONS[group.id] ?? Network
               return (
                 <li key={group.id} className="card flex flex-col p-6 lg:p-7">
@@ -213,7 +233,7 @@ export function HardwarePage() {
       <section className="border-t border-ink-200/70">
         <div className="shell grid gap-4 py-12 lg:grid-cols-2 lg:gap-6 lg:py-20">
           <div className="card flex flex-col p-6 sm:p-8">
-            <h2 className="text-[1.5rem] leading-snug font-semibold tracking-[-0.025em] text-ink-950">{h.priceTitle}</h2>
+            <h2 className="title-group text-ink-950">{h.priceTitle}</h2>
             <p className="mt-3 text-[0.9375rem] leading-relaxed text-ink-600">{h.priceBody}</p>
             <div className="mt-auto pt-6">
               <Button
@@ -233,7 +253,7 @@ export function HardwarePage() {
             href={pageHref(lang, 'software/')}
             className="card group flex flex-col border-white/10 bg-ink-950 p-6 text-paper sm:p-8"
           >
-            <span className="text-[1.5rem] leading-snug font-semibold tracking-[-0.025em]">{h.pairTitle}</span>
+            <span className="title-group">{h.pairTitle}</span>
             <span className="mt-3 text-[0.9375rem] leading-relaxed text-ink-300">{h.pairBody}</span>
             <span className="mt-auto inline-flex min-h-11 items-center gap-1.5 pt-6 text-sm font-semibold text-bamboo-300 group-hover:text-bamboo-200">
               {t.software.homeTitle}
@@ -255,7 +275,7 @@ export function HardwarePage() {
 
       <section className="band border-t border-ink-200/70">
         <div className="shell grid gap-8 lg:grid-cols-[minmax(0,0.7fr)_minmax(0,1.3fr)] lg:gap-16">
-          <h2 className="text-[2rem] leading-[1.1] font-semibold tracking-[-0.03em] text-ink-950 sm:text-[2.75rem]">
+          <h2 className="title-section text-ink-950">
             {h.faqTitle}
           </h2>
           <div className="divide-y divide-ink-200 border-y border-ink-200">

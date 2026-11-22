@@ -62,7 +62,7 @@ function SolutionsMenu({ items, lang, more, situations }: { items: Guide[]; lang
       <IconCards pages={items.filter((page) => ICONS[page.path])} icons={ICONS} lang={lang} more={more} />
       {situations && bySituation.length ? (
         <>
-          <h2 className="mt-12 text-xl font-semibold text-ink-950 lg:mt-16">{situations}</h2>
+          <h2 className="mt-12 title-group text-ink-950 lg:mt-16">{situations}</h2>
           <IconCards pages={bySituation} icons={SITUATIONS} lang={lang} more={more} heading="h3" />
         </>
       ) : null}

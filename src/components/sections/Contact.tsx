@@ -316,7 +316,7 @@ export function Contact() {
                 <p className="text-[0.9375rem] font-medium text-ink-900">
                   {c.states.unconfiguredTitle}
                 </p>
-                <p className="mt-1 text-sm leading-relaxed text-ink-600">
+                <p className="mt-1 text-sm leading-relaxed text-ink-700">
                   {c.states.unconfiguredBody}
                 </p>
               </div>

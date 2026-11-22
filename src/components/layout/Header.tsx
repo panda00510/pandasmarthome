@@ -72,9 +72,9 @@ export function Header() {
     const page = PAGE_ITEMS[id]
     return { key: id, label: item.label, href: pageHref(lang, page), current: inSection(page) }
   }
-  // On the homepage the header starts on the ink hero, so it is dark until
-  // the page scrolls; then it becomes frosted paper everywhere.
-  const dark = (path === '' || path === 'custom-hardware/' || path === 'signage/') && !scrolled && !open
+  // Pages that open on an ink hero start with a dark header until the page
+  // scrolls; then it becomes frosted paper everywhere.
+  const dark = (path === '' || path === 'products/' || path === 'custom-hardware/' || path === 'signage/') && !scrolled && !open
 
   // Primary row: services, your home, showroom, [Products ▾], [Custom ▾], guides, process.
   const links: NavLink[] = [
@@ -112,10 +112,10 @@ export function Header() {
     `inline-flex min-h-11 items-center gap-1 rounded-full px-2 text-sm font-medium whitespace-nowrap transition-colors ${
       dark
         ? link.current
-          ? 'bg-white/8 text-paper'
+          ? 'bg-white/10 text-bamboo-300'
           : 'text-ink-300 hover:bg-white/8 hover:text-paper'
         : link.current
-          ? 'bg-ink-100 text-ink-950'
+          ? 'bg-bamboo-50 text-bamboo-800'
           : 'text-ink-700 hover:bg-ink-100 hover:text-ink-950'
     }`
   const desktopLink = (link: NavLink) => (
@@ -199,7 +199,7 @@ export function Header() {
               href={link.href}
               aria-current={link.current ? 'page' : undefined}
               onClick={() => setOpen(false)}
-              className="inline-flex min-h-12 items-center gap-2 rounded-xl px-3 text-base font-medium text-ink-800 transition-colors hover:bg-ink-100 aria-[current=page]:bg-ink-100 aria-[current=page]:text-ink-950"
+              className="inline-flex min-h-12 items-center gap-2 rounded-xl px-3 text-base font-medium text-ink-800 transition-colors hover:bg-ink-100 aria-[current=page]:bg-bamboo-50 aria-[current=page]:text-bamboo-800"
             >
               {link.icon ? <Box size={17} aria-hidden="true" /> : null}
               {link.label}
@@ -216,7 +216,7 @@ export function Header() {
                   href={link.href}
                   aria-current={link.current ? 'page' : undefined}
                   onClick={() => setOpen(false)}
-                  className="inline-flex min-h-12 items-center rounded-xl px-3 text-base font-medium text-ink-800 transition-colors hover:bg-ink-100 aria-[current=page]:bg-ink-100 aria-[current=page]:text-ink-950"
+                  className="inline-flex min-h-12 items-center rounded-xl px-3 text-base font-medium text-ink-800 transition-colors hover:bg-ink-100 aria-[current=page]:bg-bamboo-50 aria-[current=page]:text-bamboo-800"
                 >
                   {link.label}
                 </a>
@@ -285,10 +285,12 @@ function NavMenu({ id, label, items, dark }: { id: string; label: string; items:
         onClick={() => setShow((v) => !v)}
         className={`inline-flex min-h-11 cursor-pointer items-center gap-1 rounded-full px-2 text-sm font-medium whitespace-nowrap transition-colors ${
           dark
-            ? `hover:bg-white/8 hover:text-paper ${show ? 'bg-white/8 text-paper' : 'text-ink-300'}`
-            : current || show
-              ? 'bg-ink-100 text-ink-950'
-              : 'text-ink-700 hover:bg-ink-100 hover:text-ink-950'
+            ? `hover:bg-white/8 ${current ? 'bg-white/10 text-bamboo-300' : show ? 'bg-white/8 text-paper' : 'text-ink-300 hover:text-paper'}`
+            : current
+              ? 'bg-bamboo-50 text-bamboo-800'
+              : show
+                ? 'bg-ink-100 text-ink-950'
+                : 'text-ink-700 hover:bg-ink-100 hover:text-ink-950'
         }`}
       >
         {label}
@@ -311,7 +313,7 @@ function NavMenu({ id, label, items, dark }: { id: string; label: string; items:
                 aria-current={item.current ? 'page' : undefined}
                 onClick={() => setShow(false)}
                 className={`flex min-h-11 items-center rounded-xl px-3 text-sm font-medium transition-colors hover:bg-ink-100 ${
-                  item.current ? 'bg-ink-100 text-ink-950' : 'text-ink-800'
+                  item.current ? 'bg-bamboo-50 text-bamboo-800' : 'text-ink-800'
                 }`}
               >
                 {item.label}
