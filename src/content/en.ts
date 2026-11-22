@@ -34,6 +34,7 @@ export const en: Content = {
     ],
     showroom: '3D showroom',
     cta: 'Book a consultation',
+    groups: { solutions: 'Solutions', products: 'Products', resources: 'Resources' },
   },
 
   hero: {
@@ -1620,7 +1621,7 @@ export const en: Content = {
     blurb:
       'Smart homes that run locally, mix brands and are handed over to you. Designed and installed across Singapore.',
     navTitle: 'Explore',
-    groups: { home: 'Smart home', resources: 'Resources' },
+    groups: { home: 'Solutions', resources: 'Resources' },
     legalTitle: 'Legal',
     contactTitle: 'Contact',
     credits: 'Image credits & licences',

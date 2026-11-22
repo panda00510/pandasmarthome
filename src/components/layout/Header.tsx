@@ -67,15 +67,15 @@ export function Header() {
   // Homepage and Products now open on sunlit travertine; only remaining dark-hero subpages keep the dark top bar.
   const dark = (path === 'custom-hardware/' || path === 'signage/') && !scrolled && !open
 
-  const links: NavLink[] = [
-    byId('solutions'),
-    byId('homes'),
-    { key: 'showroom', label: t.nav.showroom, href: showroom, current: false, icon: true },
-    { key: 'guides', label: t.guides.eyebrow, href: pageHref(lang, 'guides/'), current: inSection('guides/') },
-    byId('process'),
-  ]
+  const showroomLink: NavLink = {
+    key: 'showroom',
+    label: t.nav.showroom,
+    href: showroom,
+    current: false,
+    icon: true,
+  }
+  const solutionLinks: NavLink[] = [byId('solutions'), byId('homes'), byId('process')]
   const productLinks: NavLink[] = [
-    { key: 'signage', label: t.signage.navLabel, href: pageHref(lang, 'signage/'), current: path === 'signage/' },
     { key: 'devices', label: t.products.nav.devices, href: pageHref(lang, 'products/'), current: path === 'products/' },
     {
       key: 'install',
@@ -83,8 +83,7 @@ export function Header() {
       href: `${pageHref(lang, 'products/')}#smart-home-devices`,
       current: false,
     },
-  ]
-  const customLinks: NavLink[] = [
+    { key: 'signage', label: t.signage.navLabel, href: pageHref(lang, 'signage/'), current: path === 'signage/' },
     {
       key: 'hardware',
       label: t.hardware.navLabel,
@@ -93,9 +92,15 @@ export function Header() {
     },
     byId('software'),
   ]
+  const resourceLinks: NavLink[] = [
+    { key: 'guides', label: t.guides.eyebrow, href: pageHref(lang, 'guides/'), current: inSection('guides/') },
+    { key: 'faq', label: t.faq.eyebrow, href: pageHref(lang, 'faq/'), current: inSection('faq/') },
+    { key: 'compare', label: t.compare.navLabel, href: pageHref(lang, 'compare/'), current: inSection('compare/') },
+  ]
   const groups = [
-    { id: 'products-menu', label: t.products.nav.group, items: productLinks },
-    { id: 'custom-menu', label: t.custom.nav, items: customLinks },
+    { id: 'solutions-menu', label: t.nav.groups.solutions, items: solutionLinks },
+    { id: 'products-menu', label: t.nav.groups.products, items: productLinks },
+    { id: 'resources-menu', label: t.nav.groups.resources, items: resourceLinks },
   ]
 
   const linkClass = (link: NavLink) =>
@@ -137,11 +142,13 @@ export function Header() {
         </a>
 
         <nav aria-label={t.a11y.navPrimary} className="hidden items-center gap-0.5 min-[1280px]:flex">
-          {links.slice(0, 3).map(desktopLink)}
-          {groups.map((group) => (
+          {groups.slice(0, 2).map((group) => (
             <NavMenu key={group.id} id={group.id} label={group.label} items={group.items} dark={dark} />
           ))}
-          {links.slice(3).map(desktopLink)}
+          {desktopLink(showroomLink)}
+          {groups.slice(2).map((group) => (
+            <NavMenu key={group.id} id={group.id} label={group.label} items={group.items} dark={dark} />
+          ))}
         </nav>
 
         <div className="flex shrink-0 items-center gap-2 sm:gap-3">
@@ -183,23 +190,6 @@ export function Header() {
         className="border-t border-ink-950/12 bg-paper min-[1280px]:hidden"
       >
         <nav aria-label={t.a11y.navMobile} className="shell flex flex-col py-4">
-          <div className="divide-y divide-ink-950/10 border-y border-ink-950/10">
-            {links.map((link) => (
-              <a
-                key={link.key}
-                href={link.href}
-                aria-current={link.current ? 'page' : undefined}
-                onClick={() => setOpen(false)}
-                className="flex min-h-12 items-center justify-between gap-2 px-1 text-[0.9375rem] font-medium text-ink-900 transition-colors hover:text-brand aria-[current=page]:text-brand"
-              >
-                <span className="inline-flex items-center gap-2">
-                  {link.icon ? <Box size={16} aria-hidden="true" className="text-ember-500" /> : null}
-                  {link.label}
-                </span>
-                {link.current ? <span aria-hidden="true" className="h-1.5 w-1.5 bg-brand" /> : null}
-              </a>
-            ))}
-          </div>
           {groups.map((group) => (
             <div key={group.id} className="mt-5">
               <p className="font-mono text-[0.6875rem] font-semibold tracking-[0.16em] text-ember-500 uppercase">
@@ -221,12 +211,20 @@ export function Header() {
               </div>
             </div>
           ))}
+          <a
+            href={showroomLink.href}
+            onClick={() => setOpen(false)}
+            className="mt-5 flex min-h-12 items-center gap-2 px-1 text-[0.9375rem] font-medium text-ink-900 transition-colors hover:text-brand"
+          >
+            <Box size={16} aria-hidden="true" className="text-ember-500" />
+            {showroomLink.label}
+          </a>
           <Button
             as="a"
             href={contactHref}
             data-track="nav_cta_click"
             size="lg"
-            className="mt-5 w-full"
+            className="mt-2 w-full"
             onClick={() => setOpen(false)}
           >
             {t.nav.cta}

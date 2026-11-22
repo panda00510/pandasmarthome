@@ -54,7 +54,7 @@ export function Planner() {
         </div>
 
         <form
-          className="relative space-y-7 overflow-hidden rounded-panel border border-ink-950/16 bg-paper p-5 shadow-soft sm:p-8"
+          className="relative space-y-7 overflow-x-clip rounded-panel border border-ink-950/16 bg-paper p-5 shadow-soft sm:p-8"
           onSubmit={(event) => {
             event.preventDefault()
             if (!complete) return

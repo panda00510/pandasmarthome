@@ -28,6 +28,8 @@ export type Content = {
      *  anchors, this one leaves the page. */
     showroom: string
     cta: string
+    /** Top-level header/footer group labels (dropdowns, not pages). */
+    groups: { solutions: string; products: string; resources: string }
   }
   hero: {
     /** Overlay link on the hero photo into the 3D showroom. */

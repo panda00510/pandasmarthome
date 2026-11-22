@@ -27,7 +27,7 @@ export function Footer() {
   const navLabel = (id: string) => t.nav.items.find((item) => item.id === id)!.label
   const columns = [
     {
-      title: t.footer.groups.home,
+      title: t.nav.groups.solutions,
       links: [
         { href: page('solutions/'), label: navLabel('solutions') },
         { href: page('homes/'), label: navLabel('homes') },
@@ -37,22 +37,17 @@ export function Footer() {
       ],
     },
     {
-      title: t.products.nav.group,
+      title: t.nav.groups.products,
       links: [
-        { href: page('signage/'), label: t.signage.navLabel },
         { href: page('products/'), label: t.products.nav.devices },
         { href: `${page('products/')}#smart-home-devices`, label: t.products.nav.install },
-      ],
-    },
-    {
-      title: t.custom.nav,
-      links: [
+        { href: page('signage/'), label: t.signage.navLabel },
         { href: page('custom-hardware/'), label: t.hardware.navLabel },
         { href: page('software/'), label: navLabel('software') },
       ],
     },
     {
-      title: t.footer.groups.resources,
+      title: t.nav.groups.resources,
       links: [
         { href: page('guides/'), label: t.guides.eyebrow },
         { href: page('faq/'), label: t.faq.eyebrow },
@@ -145,7 +140,7 @@ export function Footer() {
           </div>
 
           {/* Four hairline-topped navigation columns */}
-          <nav aria-label={t.a11y.navFooter} className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-4">
+          <nav aria-label={t.a11y.navFooter} className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3">
             {columns.map((column, i) => (
               <div key={column.title} className="border-t border-paper/14 pt-4">
                 <span aria-hidden="true" className="numeral block text-[0.6875rem] text-ink-400">

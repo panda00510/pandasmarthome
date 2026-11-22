@@ -17,7 +17,7 @@ export function Choice({
   children: ReactNode
 }) {
   return (
-    <label className="inline-flex min-h-11 cursor-pointer items-center rounded-[3px] border border-ink-950/20 bg-paper px-4 text-sm font-medium text-ink-800 transition-all hover:border-ink-950/50 hover:bg-surface hover:text-ink-950 has-checked:border-ink-950 has-checked:bg-ink-950 has-checked:text-paper has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-brand">
+    <label className="inline-flex max-w-full min-h-11 cursor-pointer items-center rounded-[3px] border border-ink-950/20 bg-paper px-3 text-left text-sm font-medium text-ink-800 wrap-break-word transition-all hover:border-ink-950/50 hover:bg-surface hover:text-ink-950 has-checked:border-ink-950 has-checked:bg-ink-950 has-checked:text-paper has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-brand sm:px-4">
       <input
         type={type}
         name={name}

@@ -34,6 +34,7 @@ export const zh: Content = {
     ],
     showroom: '3D 样板间',
     cta: '预约咨询',
+    groups: { solutions: '方案', products: '产品', resources: '资料' },
   },
 
   hero: {
@@ -1554,7 +1555,7 @@ export const zh: Content = {
     blurb:
       '本地运行、品牌随意搭配、系统交到你手上的智能家居。全新加坡设计与安装。',
     navTitle: '浏览',
-    groups: { home: '智能家居', resources: '资料与公司' },
+    groups: { home: '方案', resources: '资料' },
     legalTitle: '法律信息',
     contactTitle: '联系',
     credits: '图片来源与许可',

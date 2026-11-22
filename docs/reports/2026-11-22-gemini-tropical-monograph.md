@@ -123,3 +123,17 @@ Vite 仍有原有的 `INEFFECTIVE_DYNAMIC_IMPORT` 警告（`entry-server.tsx` �
 ## 观感
 
 和当天稍早的深色 3D 样板间站（以及第一轮只做打磨的补丁）相比，这是一次真正的视觉换向：暖纸面、衬线大标题、目录式产品页、森林绿与黄铜点缀。3D 渲染还在，但不再是整站的舞台。系统衬线字体在不同操作系统上会略有差别；样板间、平台和页脚仍使用深色对比带，这是有意的。
+
+## 导航整理（同晚跟进）
+
+首屏上线后，把页眉从 7 个一级入口收成 4 组 + 预约按钮，页脚和手机菜单同步，页面和 URL 都没有删改：
+
+| 一级 | 英文 | 中文 | 内含 |
+|---|---|---|---|
+| 下拉 | Solutions | 方案 | Services / 服务，Your home / 适合你的家，How it works / 服务流程 |
+| 下拉 | Products | 产品 | Desk screen devices，Smart home devices，Panda Signage，Custom AI hardware，Software |
+| 直达 | 3D showroom | 3D 样板间 | `/showroom/` 或 `/showroom/zh/`（`showroomHref()`，未改路由） |
+| 下拉 | Resources | 资料 | Guides，FAQ，Compare（页脚资料栏另外保留 Glossary、About、Contact） |
+| 按钮 | Book a consultation | 预约咨询 | 首页 `#contact` 或 `/contact/` |
+
+提交与部署见随后的 `Design: consolidate header nav into Solutions, Products, Resources` 一类说明。
