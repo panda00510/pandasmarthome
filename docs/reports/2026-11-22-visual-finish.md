@@ -115,4 +115,15 @@
 
 ## 线上核对
 
-部署后补在下面。
+部署于提交 `cfb32e1`，GitHub Actions Deploy 运行 45014798434，结果 success。
+
+- **返回状态**：下面 17 个地址都返回 200。
+  - 首页、`/zh/`
+  - `/products/`、`/zh/products/`
+  - `/custom-hardware/`、`/zh/custom-hardware/`
+  - `/signage/`、`/zh/signage/`
+  - `/about/`、`/zh/about/`
+  - `/glossary/`、`/faq/`、`/compare/`、`/contact/`、`/solutions/`
+  - `/guides/what-is-matter/`、`sitemap.xml`
+- **线上产品页**：已是深色首屏加设备大图卡，供货安装区的渲染图正常加载。
+- **改版后截图**：部署后从线上截取，即 `after-*.webp`。
