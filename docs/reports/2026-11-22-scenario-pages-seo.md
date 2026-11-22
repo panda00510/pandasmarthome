@@ -58,6 +58,20 @@
 - 新页面的站内链接逐条比对 `dist/`，没有死链。
 - `/solutions/` 的 ItemList 有 10 项，`/zh/homes/` 有 5 项，`/compare/` 有 5 项；JSON-LD 的 `@graph` 里没有 null 节点。
 
-## 3. 上线核对
+## 3. 线上核对
 
-见下方“线上核对”一节，部署后补充。
+部署于提交 `28c1e8e`，GitHub Actions Deploy 运行 44986102873，结果 success。
+
+- **返回状态**：下面 16 个地址都返回 200。
+  - `/faq/`、`/compare/`、`/contact/`
+  - `/solutions/`、`/homes/`
+  - 三个新场景页
+  - 以上每个地址的 `/zh/` 版本
+- **sitemap**：`sitemap.xml` 返回 200，上面这 12 个地址都在里面：FAQ、对比、询价和三个场景页，中英各一份。
+- **标题与描述**：从线上 HTML 读取，与本地构建一致，都在长度限制内。
+- **结构化数据**（从线上 HTML 读取）：
+  - `/compare/`（中英）：WebPage + ItemList（5 项）+ BreadcrumbList。
+  - `/solutions/`（中英）：CollectionPage + ItemList（10 项，含三个场景页）。
+  - `/homes/`（中英）：CollectionPage + ItemList（5 项）。
+  - 三个场景页（中英）：WebPage + Service + FAQPage + BreadcrumbList。
+  - `/faq/`：FAQPage；`/contact/`：ContactPage。这两页和上一轮一样，没有改动。
