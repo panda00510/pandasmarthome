@@ -346,7 +346,9 @@ src/
   assets/            photos, fonts (all local)
 ```
 
-Pages (each also under `/zh/`): `/`, `/solutions/…`, `/homes/…`,
+Pages (each also under `/zh/`): `/`, `/solutions/…` (by device, plus three
+by situation: `away-from-home/`, `nights-and-sleep/`, `family-home/`, from
+`src/content/pages/scenario-*.md`), `/homes/…`,
 `/how-it-works/`, `/guides/…`, `/products/`, `/software/`,
 `/custom-hardware/`, `/signage/`, `/renovation-checklist/`, `/glossary/`, `/faq/`, `/compare/`, `/contact/`, `/about/`, `/privacy/`. The 3D showroom is a separate build at `/showroom/`.
 
@@ -533,7 +535,12 @@ fails the type check until the other is updated too.
   `src/content/guides.ts`).
 * JSON-LD nodes carry `@id`s (`#business`, `#website`, `#webpage`/`#article`,
   `#breadcrumb`, `#faq`) and reference each other; index pages get a
-  `CollectionPage`/`WebPage` node and a breadcrumb. SEO/GEO plan and the
+  `CollectionPage`/`WebPage` node and a breadcrumb. `/solutions/` and
+  `/homes/` add an `ItemList` (`#list`, the page's `mainEntity`) of their
+  topic pages; `/compare/` adds one of the five services it compares (the
+  pre-order devices stay out of it, as on `/products/`). Every page under
+  `/solutions/` gets `WebPage` + `Service` + `FAQPage` + `BreadcrumbList`
+  from its front matter, with no extra code. SEO/GEO plan and the
   owner's to-do list: [SEO_GEO_PLAN.md](SEO_GEO_PLAN.md).
 * Sitemap `lastmod` is real: guide pages use their `updated` date; other pages
   use the last git commit touching `src/` or `index.html` (the showroom uses

@@ -19,7 +19,7 @@ related: presence-sensor-mmwave-radar-vs-motion, no-neutral-smart-switches, reno
 
 - **傍晚：**太阳下山后，灯光变暖变暗。
 - **打扫：**一键全部调亮。
-- **夜灯：**去洗手间的路上亮一盏低亮度的灯。
+- **夜灯：**去洗手间的路上亮一盏低亮度的灯。可以看 [睡前与夜间](/zh/solutions/nights-and-sleep/)。
 - **出门：**在大门口一键全关。
 
 一个场景只有真有人会去按，才值得做。所以我们从你们家一天的动线开始。

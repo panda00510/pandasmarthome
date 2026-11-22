@@ -3,7 +3,7 @@ import { brand, brandAssets } from '../config/brand'
 import { ogImageFor } from '../config/ogImages'
 import { hasAddress, site, socialLinks } from '../config/site'
 import { faqGroups } from '../content/faqGroups'
-import { hubOf, pageMeta } from '../content/guides'
+import { hubOf, pageMeta, pagesIn } from '../content/guides'
 import { langPath, useI18n } from '../i18n/context'
 
 /** Upsert a `<meta>` tag by its name/property attribute. */
@@ -379,6 +379,30 @@ export function Seo() {
         }
       : null
 
+  // /solutions/ and /homes/ list their topic pages; /compare/ lists the services it
+  // compares (devices are left out: no Product markup for pre-order items, see above).
+  const hubName = hubOf(path)
+  const listed = hubName
+    ? pagesIn(lang)
+        .filter((page) => page.path.startsWith(`${hubName}/`))
+        .map((page) => ({ name: page.title, path: page.path }))
+    : path === 'compare/'
+      ? t.compare.services.map((item) => ({ name: item.title, path: item.path, description: item.fits }))
+      : null
+  const pageList =
+    listed && site.url
+      ? {
+          '@type': 'ItemList',
+          '@id': id('list'),
+          itemListElement: listed.map(({ path: itemPath, ...item }, index) => ({
+            '@type': 'ListItem',
+            position: index + 1,
+            ...item,
+            url: site.url + langPath(lang, itemPath),
+          })),
+        }
+      : null
+
   // Index pages (hubs, guides, products, software): a CollectionPage/WebPage
   // node with a two-step breadcrumb. Guides and topic pages have their own above.
   const indexPage =
@@ -394,7 +418,9 @@ export function Seo() {
             isPartOf: { '@id': `${site.url}#website` },
             about: businessRef,
             breadcrumb: ref('breadcrumb'),
+            mainEntity: pageList ? ref('list') : undefined,
           },
+          ...(pageList ? [pageList] : []),
           {
             '@type': 'BreadcrumbList',
             '@id': id('breadcrumb'),

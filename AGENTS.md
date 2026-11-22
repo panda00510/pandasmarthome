@@ -57,6 +57,7 @@ node scripts/check-form.mjs --dry                    # 每周表单自检的解�
 - 指南 / 专题页是 `src/content/guides/`、`src/content/pages/` 下的 `<slug>.en.md` + `.zh.md`，两种语言都必须有。
 - 常见问题页 `/faq/` 自动汇总首页、产品、软件、硬件定制、信息屏各页的 FAQ（`src/content/faqGroups.ts`），不单独写问题；改问题去各页的 content 块。
 - 询价页 `/contact/` 复用首页的 `Contact` 表单（同一端点、同一 CSP），文案在 content 的 `contactPage` 块；不承诺档期、不写回复时限。页眉“预约咨询”在首页跳 `#contact`，其他页打开 `/contact/`。
+- 场景方案页（`src/content/pages/scenario-*.md`，路径 `/solutions/away-from-home/`、`nights-and-sleep/`、`family-home/`）按使用情境把已有方案页和指南串起来：只复述那些页面已写明的能力，在 `Hub.tsx` 的 `SITUATIONS` 登记后显示在 /solutions/ 第二排。住宅类型（有地 / 公寓等）归 `/homes/`，不在这里重复。
 - 对比页 `/compare/` 的文案在 content 的 `compare` 块：设备列与 `products.items` 同 id、同顺序；只写各页已写明的能力，不写价格、不比竞品。产品说明改了要同步这里。
 - 术语表词条在 `src/content/glossary.en.ts` / `glossary.zh.ts`（只在 /glossary/ 加载；两边 id 必须一致、链接必须是站内真实页面，构建会检查）。每条只复述指南里已有的说法。
 - 所有 wa.me 链接走 `src/lib/whatsapp.ts`；各页预填开场白在 content 的 `whatsapp` 块，不带访客个人信息。
@@ -141,6 +142,7 @@ node scripts/check-form.mjs --dry                    # 每周表单自检的解�
   HDB 装修那篇里 "Directory of Renovation Contractors" 的中文名是自译，需核对。
 - 通读 2026-11-13 新增的两篇指南（信息屏选型、ESP32 定制还是买现成）和可打印清单 `/renovation-checklist/`（打印一次看看效果）。
 - 通读 2026-11-22 发布的两篇指南：多层有地住宅的网络规划（`landed-home-network-multi-floor`）、ESP32-S3 摄像头设备（`esp32-camera-vision-what-it-can-do`），中英文；后者提到 PDPA 摄像头告知义务，属一般性说明。
+- 通读 2026-11-22 新增的三个场景方案页：出门在外（`/solutions/away-from-home/`）、睡前与夜间（`nights-and-sleep/`）、几代同住（`family-home/`），中英文；内容都来自已有方案页和指南，确认这些组合与你实际做的方案一致。
 - 通读 2026-11-22 新增的两篇指南：人体存在传感器选型（`presence-sensor-mmwave-radar-vs-motion`）、主机的备份 / 更新 / 故障恢复（`home-assistant-controller-backups-updates`，提到“支持安排另行写明”），中英文。
 - 通读 2026-11-22 发布的另两篇指南：Home Assistant 触控面板怎么选（`home-assistant-touch-panel-buy-or-build`，提到自家触控面板，未写价格）、太阳能 / 充电桩家庭的用电监测（`solar-ev-charger-energy-monitoring`，提到 LTA 监管充电桩，只写“先查现行要求”），中英文。
 - 通读 2026-11-22 在 `/custom-hardware/` 新增的 6 类通用 AI 硬件能力（语音动手 / MCP、离线唤醒词、摄像头视觉、AI 陪伴与桌面机器人、翻译与口语练习、电池与可穿戴）和需求单新增的 4 个选项，确认都是你愿意接的活（content 的 `hardware.groups` / `hardware.brief`，中英文）。

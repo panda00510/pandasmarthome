@@ -12,7 +12,7 @@ related: smart-door-lock-guide, ai-upgrade-existing-cctv, smart-home-without-int
 
 - **数字门锁和大门状态**，放在同一个视图里。
 - **门、窗和人体移动传感器**，警报会告诉你发生了什么，不只是“有事发生”。
-- **离家、在家和夜间模式，**让房子在你出门或睡觉时有不同的行为。
+- **离家、在家和夜间模式，**让房子在你出门或睡觉时有不同的行为。可以看 [出门在外](/zh/solutions/away-from-home/) 和 [睡前与夜间](/zh/solutions/nights-and-sleep/)。
 - **摄像头本地录像，**摄像头支持的话，不用依赖厂商的云端。
 
 ## 选锁

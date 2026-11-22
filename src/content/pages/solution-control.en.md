@@ -23,6 +23,8 @@ A smart home that only works from one person's phone is a smart home that annoys
 2. **The rest of the household** gets a handful of obvious buttons.
 3. **Guests and helpers** get access that needs no app and no account, such as keypads and wall switches.
 
+For a home shared by several generations, see [a smart home for the whole family](/solutions/family-home/).
+
 ## Common questions
 
 ### What if someone does not want to use an app?

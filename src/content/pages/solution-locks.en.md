@@ -12,7 +12,7 @@ Security is where a smart home should be most dependable. We bring digital locks
 
 - **Digital lock and gate status** in one view.
 - **Door, window and motion sensors** with alerts that tell you what happened, not just that something did.
-- **Away, home and night modes,** so the house behaves differently when you leave or go to bed.
+- **Away, home and night modes,** so the house behaves differently when you leave or go to bed. See [away from home](/solutions/away-from-home/) and [bedtime and nights](/solutions/nights-and-sleep/).
 - **Cameras with local recording** where the camera supports it, instead of depending on a vendor cloud.
 
 ## Choosing a lock

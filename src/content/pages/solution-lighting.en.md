@@ -19,7 +19,7 @@ Good smart lighting is mostly about what happens when nobody is thinking about i
 
 - **Evening:** warmer and dimmer once the sun goes down.
 - **Cleaning:** everything bright with one press.
-- **Night path:** a low light for the walk to the bathroom.
+- **Night path:** a low light for the walk to the bathroom. See [bedtime and nights](/solutions/nights-and-sleep/).
 - **Leaving:** everything off from the front door.
 
 A scene is only worth building if someone will actually press it, so we start from how your household moves through the day.

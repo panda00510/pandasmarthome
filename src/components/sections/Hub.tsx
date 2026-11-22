@@ -1,4 +1,4 @@
-import { ArrowRight, Blinds, Gauge, History, LayoutDashboard, Lightbulb, Lock, Thermometer } from 'lucide-react'
+import { ArrowRight, Blinds, Gauge, History, LayoutDashboard, Lightbulb, Lock, Luggage, Moon, Thermometer, Users } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { responsive } from '../../content/photos'
 import { pagesIn, type Guide, type Hub } from '../../content/guides'
@@ -13,6 +13,13 @@ const ICONS: Record<string, LucideIcon> = {
   'solutions/smart-aircon-control/': Thermometer,
   'solutions/motorised-curtains/': Blinds,
   'solutions/smart-door-locks/': Lock,
+}
+
+/** Pages organised by situation rather than by device: a second row on /solutions/. */
+const SITUATIONS: Record<string, LucideIcon> = {
+  'solutions/away-from-home/': Luggage,
+  'solutions/nights-and-sleep/': Moon,
+  'solutions/family-home/': Users,
 }
 
 const PHOTOS: Record<string, ReturnType<typeof responsive>> = {
@@ -36,7 +43,7 @@ export function HubPage({ hub }: { hub: Hub }) {
       <div className="shell">
         <SectionHeading eyebrow={copy.eyebrow} title={copy.title} lead={copy.lead} level={1} />
         {hub === 'solutions' ? (
-          <SolutionsMenu items={items} lang={lang} more={t.guides.learnMore} />
+          <SolutionsMenu items={items} lang={lang} more={t.guides.learnMore} situations={copy.situations} />
         ) : (
           <HomesMenu items={items} lang={lang} more={t.guides.learnMore} tag={t.footer.imageTag} />
         )}
@@ -45,34 +52,18 @@ export function HubPage({ hub }: { hub: Hub }) {
   )
 }
 
-function SolutionsMenu({ items, lang, more }: { items: Guide[]; lang: Lang; more: string }) {
-  const main = items.filter((page) => ICONS[page.path])
+function SolutionsMenu({ items, lang, more, situations }: { items: Guide[]; lang: Lang; more: string; situations?: string }) {
   const upcoming = items.find((page) => page.path === UPCOMING)
+  const bySituation = Object.keys(SITUATIONS).flatMap((path) => items.filter((page) => page.path === path))
   return (
     <>
-      <ul className="reveal-group mt-8 grid gap-3 sm:grid-cols-2 lg:mt-12 lg:grid-cols-3 lg:gap-4">
-        {main.map((page) => {
-          const Icon = ICONS[page.path]
-          return (
-            <li key={page.path} data-reveal>
-              <a
-                href={pageHref(lang, page.path)}
-                className="card group flex h-full flex-col p-5 transition-colors hover:border-bamboo-200 lg:p-6"
-              >
-                <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-bamboo-50 text-bamboo-700 ring-1 ring-bamboo-100 transition-colors group-hover:bg-brand group-hover:text-white">
-                  <Icon size={24} aria-hidden="true" />
-                </span>
-                <h2 className="mt-4 text-[1.0625rem] leading-snug font-semibold text-ink-950">{page.title}</h2>
-                <p className="mt-2 line-clamp-3 text-[0.9375rem] leading-relaxed text-ink-600">{page.description}</p>
-                <span className="mt-auto inline-flex min-h-11 items-center gap-1.5 pt-3 text-sm font-semibold text-bamboo-700">
-                  {more}
-                  <ArrowRight size={15} aria-hidden="true" />
-                </span>
-              </a>
-            </li>
-          )
-        })}
-      </ul>
+      <IconCards pages={items.filter((page) => ICONS[page.path])} icons={ICONS} lang={lang} more={more} />
+      {situations && bySituation.length ? (
+        <>
+          <h2 className="mt-12 text-xl font-semibold text-ink-950 lg:mt-16">{situations}</h2>
+          <IconCards pages={bySituation} icons={SITUATIONS} lang={lang} more={more} heading="h3" />
+        </>
+      ) : null}
       {upcoming ? (
         <a
           href={pageHref(lang, upcoming.path)}
@@ -89,6 +80,36 @@ function SolutionsMenu({ items, lang, more }: { items: Guide[]; lang: Lang; more
         </a>
       ) : null}
     </>
+  )
+}
+
+type CardProps = { pages: Guide[]; icons: Record<string, LucideIcon>; lang: Lang; more: string; heading?: 'h2' | 'h3' }
+
+function IconCards({ pages, icons, lang, more, heading: Heading = 'h2' }: CardProps) {
+  return (
+      <ul className="reveal-group mt-8 grid gap-3 sm:grid-cols-2 lg:mt-12 lg:grid-cols-3 lg:gap-4">
+        {pages.map((page) => {
+          const Icon = icons[page.path]
+          return (
+            <li key={page.path} data-reveal>
+              <a
+                href={pageHref(lang, page.path)}
+                className="card group flex h-full flex-col p-5 transition-colors hover:border-bamboo-200 lg:p-6"
+              >
+                <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-bamboo-50 text-bamboo-700 ring-1 ring-bamboo-100 transition-colors group-hover:bg-brand group-hover:text-white">
+                  <Icon size={24} aria-hidden="true" />
+                </span>
+                <Heading className="mt-4 text-[1.0625rem] leading-snug font-semibold text-ink-950">{page.title}</Heading>
+                <p className="mt-2 line-clamp-3 text-[0.9375rem] leading-relaxed text-ink-600">{page.description}</p>
+                <span className="mt-auto inline-flex min-h-11 items-center gap-1.5 pt-3 text-sm font-semibold text-bamboo-700">
+                  {more}
+                  <ArrowRight size={15} aria-hidden="true" />
+                </span>
+              </a>
+            </li>
+          )
+        })}
+      </ul>
   )
 }
 

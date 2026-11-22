@@ -22,6 +22,8 @@ related: home-assistant-touch-panel-buy-or-build, home-assistant-controller-back
 2. **家里其他人**拿到几个明显的按钮。
 3. **客人和帮佣**使用不需要 App 和账号的方式，比如按键和墙上的开关。
 
+几代人同住的家，可以看 [一家几代同住的智能家居](/zh/solutions/family-home/)。
+
 ## 常见问题
 
 ### 有人不想用 App 怎么办？
