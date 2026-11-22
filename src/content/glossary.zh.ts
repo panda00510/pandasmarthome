@@ -178,7 +178,7 @@ export const glossary: Glossary = {
           id: 'presence-radar',
           term: '人体存在雷达',
           body: '用低功率无线电波判断人在哪里、怎么移动的传感器，有些型号还能识别跌倒，不需要摄像头或麦克风。雷达不依赖光线，房间再暗也没问题。误报和漏报都会发生，应把它当作安全辅助，而不是医疗设备。',
-          links: [g('radar-fall-detection'), g('smart-home-for-elderly-parents')],
+          links: [g('presence-sensor-mmwave-radar-vs-motion'), g('radar-fall-detection')],
         },
         {
           id: 'contact-sensor',

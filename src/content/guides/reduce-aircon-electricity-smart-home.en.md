@@ -31,7 +31,7 @@ When people see their numbers for the first time, the same things tend to appear
 
 Automations only help if they fit the household. Some that are worth considering:
 
-- **Switch off when the room is empty or a window is open,** using a presence or door and window sensor.
+- **Switch off when the room is empty or a window is open,** using a presence or door and window sensor. See [presence sensors: radar or motion](/guides/presence-sensor-mmwave-radar-vs-motion/).
 - **Ease the setting once you are asleep,** or switch off at a set time.
 - **Cool the room shortly before you arrive,** not hours earlier.
 - **Remind you** when the aircon has been on for a long time with no one in the room.

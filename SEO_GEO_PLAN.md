@@ -132,6 +132,8 @@ Matter 选题已有 `what-is-matter`，没有重复写。
 | 2026-12-25 | Meeting room booking panels: what to check before you buy | meeting room booking display Singapore、room booking panel、会议室门牌 | Panda Signage | 门牌真实截图（替换线稿）；能否对接 Google / Outlook 日历的确切答复（页面现写"按项目评估"） | 计划 |
 | 2026-11-22（原计划 2027-01-08，提前） | Wi-Fi and network planning for a multi-storey landed home（`landed-home-network-multi-floor`） | landed house Wi-Fi Singapore、multi-storey home network、有地住宅 网络 | 智能家居安装 | 无（通用知识即可写）；可选：真实布线照片 | **已发布** |
 | 2026-11-22（计划外新增） | ESP32-S3 camera devices: what on-device vision can do（`esp32-camera-vision-what-it-can-do`） | ESP32 camera Singapore、ESP32-S3 vision、ESP32 摄像头 定制 | 硬件定制 | 无（配合 /custom-hardware/ 新增的视觉能力） | **已发布** |
+| 2026-11-22（计划外新增） | Presence sensors: mmWave radar or a motion sensor?（`presence-sensor-mmwave-radar-vs-motion`） | mmWave presence sensor、PIR vs radar、人体存在传感器 | 智能家居安装 | 无（通用知识；术语表“人体存在雷达”已链入） | **已发布** |
+| 2026-11-22（计划外新增） | Looking after a home controller: backups, updates and failures（`home-assistant-controller-backups-updates`） | Home Assistant backup、smart home controller failure、智能家居主机 备份 | 智能家居安装 | 无（交付内容沿用站内已写明的管理员账号与文档、支持安排另行写明） | **已发布** |
 | 2027-01-22 | WhatsApp replies and bookings for a small shop: when custom is worth it | WhatsApp booking bot Singapore、SME booking system、小店 预约系统 定制 | 软件定制 | 是否使用 WhatsApp Business API 及其费用由谁承担；有无可演示的样例 | 计划 |
 | 2027-02-05 | How much does a smart home cost in Singapore? | smart home cost Singapore、新加坡智能家居 多少钱 | 智能家居安装 | **真实价格区间**（按户型或房间） | 待素材。备选题"太阳能 / EV 充电桩家庭的能耗监测"已于 2026-11-22 先行发布（`solar-ev-charger-energy-monitoring`），本题仍等真实价格区间 |
 

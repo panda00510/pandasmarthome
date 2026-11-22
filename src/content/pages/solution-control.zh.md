@@ -4,7 +4,7 @@ description: 一套系统好不好，要看人怎么去用它，包括从没装�
 published: 2026-11-06
 updated: 2026-11-06
 path: solutions/home-control/
-related: home-assistant-touch-panel-buy-or-build, smart-home-without-internet, what-is-matter
+related: home-assistant-touch-panel-buy-or-build, home-assistant-controller-backups-updates, smart-home-without-internet
 ---
 只有一个人的手机能控制的智能家居，会让其他所有人都觉得烦。我们设计的是人怎么用到这套系统，让老人、客人和帮佣，不用装任何东西，也能做他们需要的那些小事。
 

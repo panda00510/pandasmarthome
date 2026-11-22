@@ -53,6 +53,8 @@ An internet outage and a power cut are not the same thing. For short power inter
 
 Which platform runs locally and which relies on the cloud? See [how to choose a smart home platform](/guides/local-smart-home-vs-google-apple-smartthings/).
 
+A local system also needs looking after: see [backups, updates and what if the controller fails](/guides/home-assistant-controller-backups-updates/).
+
 Local control also keeps more data at home. See [smart home privacy](/guides/smart-home-privacy-local-vs-cloud/).
 
 Planning a new system? [Tell us about your home](/#contact) and we will mark which devices run locally before you buy anything.

@@ -179,7 +179,7 @@ export const glossary: Glossary = {
           id: 'presence-radar',
           term: 'Presence radar',
           body: 'A sensor that uses low-power radio waves to tell where a person is and how they move, and in some models whether they have fallen, without a camera or microphone. Radar does not depend on light, so a dark room is no problem. False alarms and missed falls both happen: treat it as a safety aid, not a medical device.',
-          links: [g('radar-fall-detection'), g('smart-home-for-elderly-parents')],
+          links: [g('presence-sensor-mmwave-radar-vs-motion'), g('radar-fall-detection')],
         },
         {
           id: 'contact-sensor',

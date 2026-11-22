@@ -53,6 +53,8 @@ points: 本地系统断网时，开关、场景按键、自动化和传感器照
 
 哪些平台在本地运行，哪些依赖云端？可以看[智能家居平台怎么选](/zh/guides/local-smart-home-vs-google-apple-smartthings/)。
 
+本地系统也需要维护：可以看 [主机的备份、更新与故障恢复](/zh/guides/home-assistant-controller-backups-updates/)。
+
 本地控制也会把更多数据留在家里。可以看[智能家居的隐私](/zh/guides/smart-home-privacy-local-vs-cloud/)。
 
 正在规划新系统？[说说你家的情况](/zh/#contact)，我们会在你购买之前标出哪些设备可以本地运行。
