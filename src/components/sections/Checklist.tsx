@@ -2,6 +2,7 @@ import { ArrowLeft, Printer } from 'lucide-react'
 import { brand } from '../../config/brand'
 import { site } from '../../config/site'
 import { langPath, pageHref, useI18n } from '../../i18n/context'
+import { PageCta } from '../PageCta'
 import { Button } from '../ui'
 
 /**
@@ -148,6 +149,8 @@ export function ChecklistPage() {
           ))}
         </ul>
       </nav>
+
+      <PageCta className="mt-10" />
 
       <p className="mt-8 border-t border-ink-200 pt-3 text-xs text-ink-500 print:mt-4">
         {lang === 'zh' ? brand.nameZh : brand.name}

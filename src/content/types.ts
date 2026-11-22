@@ -56,12 +56,6 @@ export type Content = {
       status: string
     }
   }
-  value: {
-    eyebrow: string
-    title: string
-    lead: string
-    items: { id: string; title: string; body: string }[]
-  }
   solutions: {
     eyebrow: string
     title: string

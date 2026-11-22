@@ -1,6 +1,7 @@
 import { site } from '../../config/site'
 import { findGuide, pageMeta } from '../../content/guides'
 import type { Glossary } from '../../content/types'
+import { PageCta } from '../PageCta'
 import { langPath, pageHref, useI18n, type Lang } from '../../i18n/context'
 
 /**
@@ -108,6 +109,7 @@ export function GlossaryPage({ glossaries }: { glossaries: Partial<Record<Lang, 
           </section>
         ))}
       </div>
+      <PageCta className="mt-14 lg:mt-20" />
     </article>
   )
 }

@@ -13,6 +13,7 @@ import '../../content/guideDescriptions'
 import { pageHref, useI18n, type Lang } from '../../i18n/context'
 import { GuideFigure } from '../graphics/GuideFigures'
 import { pageWhatsappMessage, whatsappHref } from '../../lib/whatsapp'
+import { PageCta } from '../PageCta'
 import { Button } from '../ui'
 
 function formatDate(date: string, lang: Lang) {
@@ -161,6 +162,8 @@ export function GuidesIndex() {
           <ChevronDown size={16} aria-hidden="true" />
         </button>
       ) : null}
+
+      <PageCta className="mt-14 lg:mt-20" />
     </section>
   )
 }
@@ -272,7 +275,7 @@ export function GuidePage({ guide }: { guide: Guide }) {
               <h2 className="text-xl font-semibold">{t.guides.ctaTitle}</h2>
               <p className="mt-2 leading-relaxed text-[#c7cdd2]">{t.guides.ctaBody}</p>
               <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-                <Button as="a" href={`${pageHref(lang)}#contact`} variant="inverse">
+                <Button as="a" href={pageHref(lang, 'contact/')} variant="glow">
                   {t.guides.ctaButton}
                   <ArrowRight size={16} aria-hidden="true" />
                 </Button>

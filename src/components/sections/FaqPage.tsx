@@ -1,5 +1,6 @@
 import { ArrowRight } from 'lucide-react'
 import { faqGroups } from '../../content/faqGroups'
+import { PageCta } from '../PageCta'
 import { pageHref, useI18n } from '../../i18n/context'
 
 /**
@@ -64,6 +65,7 @@ export function FaqPage() {
           </section>
         ))}
       </div>
+      <PageCta className="mt-14 lg:mt-20" />
     </article>
   )
 }

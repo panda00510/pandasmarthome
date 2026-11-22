@@ -60,6 +60,7 @@ node scripts/check-form.mjs --dry                    # 每周表单自检的解�
 - 场景方案页（`src/content/pages/scenario-*.md`，路径 `/solutions/away-from-home/`、`nights-and-sleep/`、`family-home/`）按使用情境把已有方案页和指南串起来：只复述那些页面已写明的能力，在 `Hub.tsx` 的 `SITUATIONS` 登记后显示在 /solutions/ 第二排。住宅类型（有地 / 公寓等）归 `/homes/`，不在这里重复。
 - 对比页 `/compare/` 的文案在 content 的 `compare` 块：设备列与 `products.items` 同 id、同顺序；只写各页已写明的能力，不写价格、不比竞品。产品说明改了要同步这里。
 - 术语表词条在 `src/content/glossary.en.ts` / `glossary.zh.ts`（只在 /glossary/ 加载；两边 id 必须一致、链接必须是站内真实页面，构建会检查）。每条只复述指南里已有的说法。
+- 每页末尾要有下一步：没有自己询价按钮的页面放 `src/components/PageCta.tsx`（文案在 content 的 `cta` 块，主按钮开 `/contact/`）。新增页面时一并检查。
 - 所有 wa.me 链接走 `src/lib/whatsapp.ts`；各页预填开场白在 content 的 `whatsapp` 块，不带访客个人信息。
 - 定制页需求单的文案在 `hardware.brief` / `software.brief`；选项只能是页面已写明的能力，不写价格、交期。
 - 首页需求小问卷的文案在 content 的 `planner` 块；只指向 `products.install` 的设备类别，不写价格、数量；WhatsApp 消息只带访客的选择。

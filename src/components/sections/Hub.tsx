@@ -4,6 +4,7 @@ import { responsive } from '../../content/photos'
 import { pagesIn, type Guide, type Hub } from '../../content/guides'
 import '../../content/guideDescriptions'
 import { pageHref, useI18n, type Lang } from '../../i18n/context'
+import { PageCta } from '../PageCta'
 import { PhotoTag, SectionHeading } from '../ui'
 
 const ICONS: Record<string, LucideIcon> = {
@@ -47,6 +48,7 @@ export function HubPage({ hub }: { hub: Hub }) {
         ) : (
           <HomesMenu items={items} lang={lang} more={t.guides.learnMore} tag={t.footer.imageTag} />
         )}
+        <PageCta className="mt-14 lg:mt-20" />
       </div>
     </section>
   )

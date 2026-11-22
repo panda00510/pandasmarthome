@@ -4,7 +4,7 @@ export const en: Content = {
   htmlLang: 'en',
 
   meta: {
-    title: 'Panda Smart Home | Open Smart Home Solutions Singapore',
+    title: 'Panda Smart Home | Smart Home Installation in Singapore',
     description:
       'Smart home design and installation for HDB, BTO, condo and landed homes in Singapore. Also Panda Signage displays, custom AI hardware and custom software.',
     keywords:
@@ -41,7 +41,7 @@ export const en: Content = {
     eyebrow: 'Open smart home · Singapore',
     titleLead: 'A home that answers to you,',
     titleAccent: 'not to the cloud.',
-    lead: 'Lights, aircon, curtains, locks and cameras from different brands — running together on one local system you actually own.',
+    lead: 'One app for the lights, aircon, curtains, locks and cameras, whatever the brand. It runs on a box in your home, keeps working when the internet drops, and the system itself has no monthly fee.',
     primaryCta: 'Book a consultation',
     secondaryCta: 'See what we install',
     ctaNote: 'In English or Chinese · HDB, condo and landed homes across Singapore',
@@ -50,7 +50,7 @@ export const en: Content = {
       'Runs locally, keeps working offline',
       'Mix brands without lock-in',
       'No subscription to switch on a light',
-      'Documented and handed over to you',
+      'Admin login and device list handed to you',
     ],
     also: {
       label: 'Also from Panda',
@@ -74,38 +74,11 @@ export const en: Content = {
     },
   },
 
-  value: {
-    eyebrow: 'Why open',
-    title: 'Most smart homes break at the seams between brands.',
-    lead: 'Every manufacturer wants its own app, its own account and its own hub. An open system removes those seams.',
-    items: [
-      {
-        id: 'local',
-        title: 'Local first, private by default',
-        body: 'Automations run on hardware in your home. Switches and sensors keep responding when the internet drops.',
-      },
-      {
-        id: 'brands',
-        title: 'One system, many brands',
-        body: 'Choose devices on merit, not on which hub you already own. One interface instead of six apps.',
-      },
-      {
-        id: 'nolockin',
-        title: 'No lock-in, no paywalls',
-        body: 'Built on open-source software. No subscription between you and your own light switch.',
-      },
-      {
-        id: 'handover',
-        title: 'Built to be handed over',
-        body: 'You get the admin credentials, a written device inventory and a walkthrough. Nothing is hidden.',
-      },
-    ],
-  },
 
   solutions: {
     eyebrow: 'Solutions',
-    title: 'What we design and install',
-    lead: 'Every home gets a different mix. These are the areas we work in most often.',
+    title: 'Six areas, one system',
+    lead: 'Start with one or two and add the rest later. Every area runs on the same controller, so nothing you install first has to be replaced.',
     items: [
       {
         id: 'lighting',
@@ -150,7 +123,7 @@ export const en: Content = {
       {
         id: 'control',
         title: 'Control surfaces',
-        body: 'A system is only as good as the way people reach it — including guests and helpers who never installed an app.',
+        body: 'Wall keypads, a wall tablet or a phone, so guests, helpers and grandparents can use it without installing an app.',
         bullets: [
           'Custom phone and tablet dashboards',
           'Wall-mounted tablet or scene keypads',
@@ -173,7 +146,7 @@ export const en: Content = {
   situations: {
     eyebrow: 'By situation',
     title: 'Planned around how your days actually go',
-    lead: 'Three situations that pull the lighting, aircon, locks and sensors together. Each page says what we set up and links to the guides behind it.',
+    lead: 'Leaving the house, going to bed, and a home shared by parents and children: what the home does for you in each, and how we set it up.',
     items: [
       {
         id: 'away',
@@ -225,7 +198,7 @@ export const en: Content = {
   products: {
     eyebrow: 'Products',
     title: 'Desk screen devices and smart home devices',
-    lead: 'Finished screen devices: an enclosure, an interface and firmware already installed. They are not in stock yet. The prices are indicative starting prices, confirmed on WhatsApp before you order. Stock and support are in Singapore. Further down are the smart home devices we supply and install as part of a plan.',
+    lead: 'Four finished desk devices with the enclosure, screen and firmware already in place: plug in and use. Open for pre-order at indicative prices, confirmed on WhatsApp before you order. Further down: the smart home devices we supply and install as part of a plan.',
     metaTitle: 'Desk Screen Devices & Smart Home Devices | Panda',
     metaDescription:
       'Pre-order desk screen devices in Singapore, plus the switches, sensors, curtain motors, locks and hubs we supply and install as part of a plan.',
@@ -432,7 +405,7 @@ export const en: Content = {
   software: {
     eyebrow: 'Software',
     title: 'Custom software for small businesses',
-    lead: 'Practical systems for shops and one-person businesses in Singapore. Built one-to-one, with the price written down before any work starts, and support in Chinese or English.',
+    lead: 'Stop doing bookings, stock counts and reminders by hand. We build small systems for Singapore shops and one-person businesses, with the price written down before work starts and support in English or Chinese.',
     metaTitle: 'Small Business Software in Singapore | Panda Smart Home',
     metaDescription:
       'Booking, inventory, WhatsApp bots and simple internal tools for Singapore shops. Indicative prices from S$600, one-to-one, in English or Chinese.',
@@ -1119,7 +1092,7 @@ export const en: Content = {
     lead: 'Open-source software on a controller in your home. No vendor cloud in the middle, and nothing that can be moved behind a paywall.',
     points: [
       {
-        title: 'A very wide device net',
+        title: 'Works with what you already own',
         body: 'Mainstream brands, aircon systems, inverters, routers and cameras — on one system.',
       },
       {
@@ -1154,14 +1127,14 @@ export const en: Content = {
 
   homes: {
     eyebrow: 'Your home',
-    title: 'Different homes, different constraints',
+    title: 'Your home type decides what is easy',
     lead: 'A resale flat, a BTO you have not collected yet and a condo with an MCST each need a different plan.',
     items: [
       {
         id: 'bto',
         title: 'BTO & new keys',
         subtitle: 'Best possible timing',
-        body: 'Before renovation is the cheapest moment to get this right. Switch positions, neutral wires and network points cost almost nothing at the layout stage — and hacking later.',
+        body: 'Before renovation is the cheapest moment to get this right. Switch positions, neutral wires and network points cost little at the layout stage, and mean hacking walls later.',
         bullets: [
           'Smart-ready electrical and network layout review',
           'Neutral wires and deeper back boxes where needed',
@@ -1224,7 +1197,7 @@ export const en: Content = {
   process: {
     eyebrow: 'How it works',
     title: 'From first conversation to handover',
-    lead: 'A predictable process, with a written plan before any device is bought.',
+    lead: 'Five steps. You see a written device list, network plan and scope before anything is bought, and you get the admin login at the end.',
     steps: [
       {
         title: 'Consultation',
@@ -1335,7 +1308,7 @@ export const en: Content = {
     more: 'More questions',
     eyebrow: 'FAQ',
     title: 'Questions worth asking before you start',
-    lead: 'The things people actually want to know, answered without marketing gloss.',
+    lead: 'Monthly fees, internet outages, rewiring, and family who will not use an app: answered plainly.',
     items: [
       {
         q: 'What does Panda Smart Home do?',
@@ -1402,7 +1375,7 @@ export const en: Content = {
   contact: {
     eyebrow: 'Get in touch',
     title: 'Tell us about your home',
-    lead: 'Share your home type and what you would like to solve first. We will come back with an honest view of what is worth doing, and in what order.',
+    lead: 'Share your home type and what you would like to solve first. We reply with what is worth doing first, what can wait, and what to skip.',
     detailsTitle: 'Contact',
     pendingDetails: 'Contact details to be confirmed',
     pendingDetailsNote:
@@ -1477,10 +1450,10 @@ export const en: Content = {
   },
 
   cta: {
-    title: 'Start with a conversation, not a shopping list.',
-    lead: 'The best systems begin with how a household actually lives.',
+    title: 'Not sure what your home needs?',
+    lead: 'Tell us the home type and what bothers you today. We reply in English or Chinese with what to do first, before you buy anything.',
     primary: 'Book a consultation',
-    secondary: 'Read the FAQ',
+    secondary: 'Try the 3D showroom',
   },
 
   guides: {
@@ -1498,8 +1471,8 @@ export const en: Content = {
     related: 'Related guides',
     learnMore: 'Learn more',
     pagesTitle: 'Solutions and home types',
-    ctaTitle: 'Planning a smart home?',
-    ctaBody: 'Tell us about your home and we will suggest what fits, in English or Chinese.',
+    ctaTitle: 'Want this worked out for your home?',
+    ctaBody: 'Tell us about your home, shop or project. We reply in English or Chinese with what fits and what to do first.',
     ctaButton: 'Book a consultation',
     topics: {
       renovation: 'Before renovation',
@@ -1645,7 +1618,7 @@ export const en: Content = {
 
   footer: {
     blurb:
-      'Open, local-first smart home design and installation for homes across Singapore.',
+      'Smart homes that run locally, mix brands and are handed over to you. Designed and installed across Singapore.',
     navTitle: 'Explore',
     groups: { home: 'Smart home', resources: 'Resources' },
     legalTitle: 'Legal',
@@ -1798,7 +1771,7 @@ export const en: Content = {
       'Four desk screen devices side by side, and which service fits: smart home installation, ready-made devices, custom hardware, software or Panda Signage.',
     eyebrow: 'Compare',
     title: 'Which one fits what you need',
-    lead: 'Our four desk devices side by side, then the five things we do and when each one fits. Everything here is from our own pages; prices stay on the product and service pages.',
+    lead: 'Our four desk devices side by side, then the five things we do and when each one fits. Prices are on each product and service page.',
     devicesTitle: 'The four desk screen devices',
     devicesLead: 'All four are finished devices with the enclosure, screen and firmware in place. They differ in what they show and whether they need Home Assistant.',
     rows: {

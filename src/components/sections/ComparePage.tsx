@@ -1,4 +1,5 @@
 import { ArrowRight } from 'lucide-react'
+import { PageCta } from '../PageCta'
 import { pageHref, useI18n } from '../../i18n/context'
 
 /**
@@ -99,6 +100,7 @@ export function ComparePage() {
           ))}
         </div>
       </section>
+      <PageCta className="mt-14 lg:mt-20" />
     </article>
   )
 }
