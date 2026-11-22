@@ -1,5 +1,7 @@
 # 2026-11-22 视觉收尾：产品与定制页大图卡、内页对齐、无障碍与对比度
 
+**后续说明（2026-11-22 晚）：** 本文记录的是当时仍在线上的深色 3D 样板间视觉方向。当晚已由 Gemini 的 “Tropical Monograph”（暖色石灰石纸面、植物绿、黄铜、衬线标题）替换为当前设计，见 [2026-11-22-gemini-tropical-monograph.md](2026-11-22-gemini-tropical-monograph.md)。下文仍是该次改版当时的记录。
+
 截图在 [visual-finish-2026-11-22/](visual-finish-2026-11-22/)，以 `/products/` 和 `/signage/` 为例：
 
 | 文件 | 内容 |

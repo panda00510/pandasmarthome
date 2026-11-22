@@ -80,14 +80,14 @@ node scripts/check-form.mjs --dry                    # 每周表单自检的解�
 
 ## 设计约定
 
-- bamboo 绿是唯一强调色；`ember` 只用于灯光 / 舒适度语境。设计令牌全在 `src/index.css`。
+- 当前视觉方向是 **Tropical Monograph**（暖色石灰石纸面 `#f4efe6`、植物绿墨 `#14221c` / 品牌绿 `#18523c`、黄铜 `ember`）。衬线标题（`--font-display` / `--font-display-zh`）配 Inter 正文与等宽规格标注。`ember` 用于眉标、编号和结构强调，不只用于灯光场景。设计令牌全在 `src/index.css`。详见 `docs/reports/2026-11-22-gemini-tropical-monograph.md`。
 - 标题用这几档类：`.title-display`（页 / 区块标题）、`.title-article`（指南和主题页的 h1）、`.title-section`（页内小节）、`.title-group`（FAQ / 术语表等长列表的分组标题）、`.title-card`（卡片标题），标题下的导语用 `.text-lead`，内页顶部留白用 `.page-head`，别再写一次性的字号。卡片图标用 `.icon-tile`，“了解更多 →”用 `.link-more`。区块眉标写成 `<p className="eyebrow">`（自带短横线），卡片里的眉标用 `<span>`。
 - 页眉与页脚分组一致：智能家居、产品、定制、资料与公司；页脚分组在 `Footer.tsx` 的 `columns`。新增页面要同时考虑这两处。
 - 熊猫标识几何**只在** `src/components/brand/pandaPath.ts`；favicon、og-image.svg、分享卡都由 `npm run og` 从它生成，别手抄 path、别手改 `public/favicon.svg`。熊猫只用于 logo / favicon / 分享卡。
 - 图库照片必须标明 illustrative（`PhotoTag` + alt 以 "Illustrative photo" 开头），不能冒充本公司案例。
 - 首页用的样板间截图（`showroom-*.webp`，`scripts/capture-showroom-stills.mjs` 生成）是渲染图，每处都要带 `footer.renderTag`（“3D 样板间渲染”）标签，alt 以 “3D render” / “3D … 渲染图”开头。没有渲染图可用的卡片用 `CardArt.tsx` 的线稿，线稿里不放读数和数字。
 - 产品、硬件定制、信息屏页与首页同风格：深色首屏（页眉在页顶随之变深，名单在 `Header.tsx` 的 `dark`）、大图卡（`FeatureCard.tsx` / `media-card`）。页眉当前页用绿字加浅绿底，不要只靠淡底色区分。
-- 首页区块深浅交替：hero（深）→ 服务（浅）→ 样板间（深）→ 情境（浅灰）→ 产品（浅）→ 住宅（浅灰）→ 流程（浅）→ 平台（深）。加区块时保持交替。
+- 首页以浅色纸面为主，深色植物绿只作对比色带：hero（纸面）→ 服务（浅）→ 样板间（深）→ 情境（浅灰）→ 产品 / 定制（浅）→ 住宅（浅灰）→ 流程（浅）→ 平台（深）→ 常见问题 / 问卷（浅）→ 联系（浅灰）→ 页脚（深）。加区块时保持浅色节奏，不要再把首屏做成通屏深色 3D 舞台。
 - 分享卡（`public/og/*.png`）在 macOS 本机生成并**提交入库**，CI 不生成（Ubuntu 无苹方，中文会缺字）。改后逐张看图，每张 ≤ 60 KB。每篇指南另有一张 `public/og/guides/<slug>-<lang>.jpg`，由 `npm run og` 从 front matter 的标题生成；新增指南或改标题后要重跑并提交。
 
 ## 样板间约定（详见 showroom/README.md）

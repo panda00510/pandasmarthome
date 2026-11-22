@@ -1,5 +1,7 @@
 # 2026-11-22 内页套用设计系统
 
+**后续说明（2026-11-22 晚）：** 本文记录的是当时仍在线上的深色 3D 样板间视觉方向。当晚已由 Gemini 的 “Tropical Monograph”（暖色石灰石纸面、植物绿、黄铜、衬线标题）替换为当前设计，见 [2026-11-22-gemini-tropical-monograph.md](2026-11-22-gemini-tropical-monograph.md)。下文仍是该次改版当时的记录。
+
 截图在 [inner-pages-2026-11-22/](inner-pages-2026-11-22/)：
 
 - 代表页面：`/products/`（产品页）和 `/solutions/away-from-home/`（场景页，和方案页、指南共用同一个模板）。

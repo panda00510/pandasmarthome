@@ -358,43 +358,58 @@ by situation: `away-from-home/`, `nights-and-sleep/`, `family-home/`, from
 
 ## Design system
 
-Defined once in [`src/index.css`](src/index.css) as Tailwind v4 `@theme`
-tokens, so everything is available as normal utilities (`bg-bamboo-500`,
-`text-ink-600`, `rounded-card`, `shadow-lift`).
+The current visual identity is **Tropical Monograph** (shipped 22 Nov 2026):
+sunlit travertine paper, deep botanical forest, and burnished brass, with
+editorial serif display type. Tokens live once in [`src/index.css`](src/index.css)
+as Tailwind v4 `@theme` utilities (`bg-paper`, `text-ink-950`, `bg-brand`,
+`text-ember-400`, `rounded-card`, `shadow-lift`). The 22 Nov design report is
+[`docs/reports/2026-11-22-gemini-tropical-monograph.md`](docs/reports/2026-11-22-gemini-tropical-monograph.md).
 
-* **Colour** — `ink` (near-black neutral ramp) and `paper` carry the page;
-  `bamboo` green is the single accent; `ember` is reserved for warmth in
-  lighting/comfort contexts only.
-* **Type** — Inter (self-hosted variable, Latin) with a native CJK stack for
-  Chinese. `html:lang(zh)` switches `--font-zh` automatically. English pages
-  preload the basic-Latin Inter file (added by `scripts/prerender.mjs`).
-  Heading roles replace one-off sizes: `.title-display` (page and
-  section titles, 32 → 44 → 56px; `SectionHeading` uses it), `.title-section`
-  (a sub-section inside a page, 28 → 36px), `.title-article` (the h1 of a
-  guide or topic page, 30 → 40 → 44px), `.title-group` (a group heading in a
-  long list such as the FAQ or glossary, 22 → 24px) and `.title-card` (17px); `.text-lead`
-  is the paragraph under a title. Inner pages start with `.page-head` (the
-  same top padding everywhere). Colour stays a utility, so each role works on
-  paper and on ink.
+* **Colour** — Warm architectural surfaces carry the page: `--color-paper`
+  `#f4efe6`, `--color-paper-alt` `#eae2d4`, `--color-surface` `#fcfaf6`.
+  Ink is a warm green-black ramp (`--color-ink-950` `#14221c` down to
+  `--color-ink-50` `#f7f3ec`). Brand green is `--color-brand` `#18523c`
+  (the `bamboo` ramp sits beside it). Burnished brass (`ember-300` `#e5c48c`
+  through `ember-600` `#784d1a`) is a structural accent — eyebrows, numerals,
+  hardware highlights — not only lighting scenes. `theme-color` is `#f4efe6`
+  in light, `#14221c` in dark; `color-scheme` is `light`.
+* **Type** — Display headings use a system editorial serif (`--font-display`:
+  Iowan Old Style, Palatino Linotype, Book Antiqua, Georgia, then Songti SC /
+  Noto Serif CJK SC). Chinese headings prefer `--font-display-zh` (Songti SC
+  first). Body is Inter (self-hosted variable, Latin) plus a native CJK sans
+  stack; `html:lang(zh)` switches `--font-zh`. Spec labels, protocol lists and
+  prices use `--font-mono`. English pages preload the basic-Latin Inter file
+  (added by `scripts/prerender.mjs`). Heading roles: `.title-display` (page
+  and section titles, 36 → 48 → 56px, weight 400; `SectionHeading` uses it),
+  `.title-section` (28 → 36px), `.title-article` (guide or topic h1, ~31 →
+  40 → 44px), `.title-group` (22 → 24px), `.title-card` (~19px); `.text-lead`
+  is the paragraph under a title. Inner pages start with `.page-head`.
+  Colour stays a utility, so each role works on paper and on ink.
 * **Layout** — `.shell` caps content at 1200px with 20px/32px gutters;
-  `.band` sets the vertical rhythm between sections.
+  `.band` sets the vertical rhythm between sections. The homepage hero is a
+  typographic editorial spread (metadata rail, monumental serif headline,
+  asymmetric action column, framed 3D showroom plate + Home panel), not a
+  full-bleed dark 3D stage. Existing showroom renders are labelled
+  “3D showroom render” plates. Radii are sharp and architectural:
+  `rounded-card` 0.25rem, `rounded-panel` 0.375rem.
 * **Components** — `.btn`, `.field`, `.card`, `.eyebrow` are the shared
   primitives; variants live in `src/components/ui.tsx`. Linked cards
   (`a.card`) lift on hover; reduced motion keeps only the colour change.
-  A section-level eyebrow (`p.eyebrow`) draws its own short rule; a card
-  eyebrow (`span.eyebrow`) does not. `.icon-tile` is the one icon square on
-  light cards (it fills with the brand colour when its link is hovered),
-  `.link-more` the "Learn more →" link, `.art-stage` the lit background
-  behind product drawings.
-* **Buttons** — `primary` (brand green), `secondary`, `ghost`, `inverse`, and
-  for ink bands `glow` (bright bamboo with dark text, ≈7:1) and `outlineDark`.
+  A section-level eyebrow (`p.eyebrow`) draws its own short brass rule; a
+  card eyebrow (`span.eyebrow`) does not. `.icon-tile` is the icon square on
+  light cards, `.link-more` the “Learn more →” link, `.art-stage` the
+  gridded background behind product drawings, `.plate-frame` the exhibition
+  plate around showroom stills and photos.
+* **Buttons** — `primary` (forest ink / brand green), `secondary`, `ghost`,
+  `inverse`, and for ink bands `glow` and `outlineDark`.
 * **Elevation** — `shadow-soft`, `shadow-lift`, plus `shadow-stage` (deep
-  shadow for panels on ink) and `shadow-glow` (the primary CTA on ink only).
-  Radii: `rounded-card` 1.25rem, `rounded-panel` 1.75rem.
-* **Dark bands** — `.stage-grid` (fine grid fading from the top) and
-  `.stage-glow` (slow green glow, stopped by reduced motion) behind the hero,
-  the showroom band and the custom-hardware hero. `.numeral` sets tabular
-  index numbers (01, 02 …). Bands alternate paper / paper-alt / ink.
+  shadow for plates) and `shadow-glow`.
+* **Dark bands** — Deep botanical forest (`bg-ink-950`) is used as contrast,
+  not as the default page identity: the showroom band, the platform band,
+  and the footer. `.stage-grid` and `.stage-glow` may still sit on those
+  ink bands (`.stage-glow` is stopped by reduced motion). `.numeral` sets
+  tabular index numbers (01, 02 …). Light bands alternate paper, paper-alt
+  and surface.
 * **Motion** — CSS transform and opacity only. First-screen content never
   depends on an animation or a scroll to be visible; `[data-reveal]` hiding
   is added by JS and only below the fold.
