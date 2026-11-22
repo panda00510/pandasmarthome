@@ -89,4 +89,22 @@
 
 ## 线上核对
 
-部署后补充，见下一节。
+部署于提交 `d99d02e`，GitHub Actions Deploy 运行 44991409906，结果 success。
+
+- **返回状态**：下面这些地址都返回 200。
+  - 首页、`/zh/`
+  - `/products/`、`/zh/products/`、`/solutions/`、`/zh/solutions/`、`/homes/`
+  - `/contact/`、`/faq/`、`/compare/`、`/guides/`
+  - `/signage/`、`/custom-hardware/`、`/software/`、`/about/`
+  - `sitemap.xml`
+- **线上首页**：
+  - 带 Inter 字体的预加载，字体文件返回 200。
+  - 住宅照片已经用上 480px 版本。
+- **线上图片下载量**（与改版前同样的测法）：
+
+  | 场景 | 改版前 | 改版后 |
+  |---|---|---|
+  | 桌面 1 倍屏 | 304 KB | 123 KB（−60%） |
+  | 手机 3 倍屏 | 216 KB | 216 KB |
+
+- **改版后截图**：部署后从线上截取，即 `after-*.webp`。
