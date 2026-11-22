@@ -4,7 +4,7 @@ description: 一套系统好不好，要看人怎么去用它，包括从没装�
 published: 2026-11-06
 updated: 2026-11-06
 path: solutions/home-control/
-related: smart-home-without-internet, what-is-matter, smart-home-for-renters
+related: home-assistant-touch-panel-buy-or-build, smart-home-without-internet, what-is-matter
 ---
 只有一个人的手机能控制的智能家居，会让其他所有人都觉得烦。我们设计的是人怎么用到这套系统，让老人、客人和帮佣，不用装任何东西，也能做他们需要的那些小事。
 
@@ -38,6 +38,6 @@ related: smart-home-without-internet, what-is-matter, smart-home-for-renters
 
 ## 下一步
 
-告诉我们家里住了谁，以及现在谁用 App 比较吃力。
+告诉我们家里住了谁，以及现在谁用 App 比较吃力。墙面和桌面屏幕怎么选，可以看 [Home Assistant 触控面板怎么选](/zh/guides/home-assistant-touch-panel-buy-or-build/)。
 
 想要全家人都能用的控制方式？[告诉我们家里住了哪些人](/zh/#contact)，我们帮你搭配面板、按键和开关。

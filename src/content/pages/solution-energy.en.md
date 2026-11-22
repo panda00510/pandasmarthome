@@ -4,7 +4,7 @@ description: See where the electricity goes in an aircon-heavy home, and add lea
 published: 2026-11-06
 updated: 2026-11-06
 path: solutions/energy-monitoring/
-related: smart-aircon-control, smart-home-without-internet, smart-door-lock-guide
+related: solar-ev-charger-energy-monitoring, reduce-aircon-electricity-smart-home, smart-home-without-internet
 ---
 Most of us only see one number at the end of the month. Monitoring shows where the electricity goes through the day, and for an aircon-heavy home that is where the answer usually is. The same system can also watch for a water leak, smoke or gas, and tell you before the problem grows.
 
@@ -39,6 +39,6 @@ Detection and automations run locally. Notifications to your phone need a connec
 
 ## Next step
 
-Tell us what you want to find out, such as aircon use, solar output or leak protection.
+Tell us what you want to find out, such as aircon use, solar output or leak protection. With solar panels or an EV charger, see [energy monitoring with solar or an EV charger](/guides/solar-ev-charger-energy-monitoring/).
 
 Curious where your electricity goes? [Tell us about your home](/#contact) and we will suggest what to measure.

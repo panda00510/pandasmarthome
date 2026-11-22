@@ -88,6 +88,8 @@ const TOPICS: Record<string, (typeof TOPIC_IDS)[number]> = {
   'esp32-ai-voice-assistant-what-it-can-do': 'business',
   'ai-upgrade-existing-cctv': 'business',
   'esp32-camera-vision-what-it-can-do': 'business',
+  'home-assistant-touch-panel-buy-or-build': 'business',
+  'solar-ev-charger-energy-monitoring': 'devices',
 }
 
 /** Shown first on /guides/: one main pick, then two. */

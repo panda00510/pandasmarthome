@@ -138,6 +138,7 @@ node scripts/check-form.mjs --dry                    # 每周表单自检的解�
   HDB 装修那篇里 "Directory of Renovation Contractors" 的中文名是自译，需核对。
 - 通读 2026-11-13 新增的两篇指南（信息屏选型、ESP32 定制还是买现成）和可打印清单 `/renovation-checklist/`（打印一次看看效果）。
 - 通读 2026-11-22 发布的两篇指南：多层有地住宅的网络规划（`landed-home-network-multi-floor`）、ESP32-S3 摄像头设备（`esp32-camera-vision-what-it-can-do`），中英文；后者提到 PDPA 摄像头告知义务，属一般性说明。
+- 通读 2026-11-22 发布的另两篇指南：Home Assistant 触控面板怎么选（`home-assistant-touch-panel-buy-or-build`，提到自家触控面板，未写价格）、太阳能 / 充电桩家庭的用电监测（`solar-ev-charger-energy-monitoring`，提到 LTA 监管充电桩，只写“先查现行要求”），中英文。
 - 通读 2026-11-22 在 `/custom-hardware/` 新增的 6 类通用 AI 硬件能力（语音动手 / MCP、离线唤醒词、摄像头视觉、AI 陪伴与桌面机器人、翻译与口语练习、电池与可穿戴）和需求单新增的 4 个选项，确认都是你愿意接的活（content 的 `hardware.groups` / `hardware.brief`，中英文）。
 - 通读 2026-11-14 新增的硬件 / 软件定制需求单（content 的 `hardware.brief` / `software.brief`，中英文），确认选项与你实际接的活一致（数量只列了“1 台”和“几台（2–10 台）”）。
 - 通读 2026-11-13 新增的首页需求小问卷（content 的 `planner` 块，中英文）并在手机上试一次；核对指南的四个分类是否合理。

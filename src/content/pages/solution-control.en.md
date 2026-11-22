@@ -5,7 +5,7 @@ description: A system is only as good as the way people reach it, including gues
 published: 2026-11-06
 updated: 2026-11-06
 path: solutions/home-control/
-related: smart-home-without-internet, what-is-matter, smart-home-for-renters
+related: home-assistant-touch-panel-buy-or-build, smart-home-without-internet, what-is-matter
 ---
 A smart home that only works from one person's phone is a smart home that annoys everyone else. We design how people reach the system, so that grandparents, guests and helpers can all do the small things they need without installing anything.
 
@@ -39,6 +39,6 @@ Where the devices and platform support it, they can sit alongside your own dashb
 
 ## Next step
 
-Tell us who lives in the home and who struggles with apps today.
+Tell us who lives in the home and who struggles with apps today. For wall and desk screens, see [choosing a Home Assistant touch panel](/guides/home-assistant-touch-panel-buy-or-build/).
 
 Want controls the whole household can use? [Tell us who lives in your home](/#contact) and we will suggest a mix of dashboards, keypads and switches.

@@ -4,7 +4,7 @@ description: 看清电到底用在了哪里，对空调用得多的家庭尤其�
 published: 2026-11-06
 updated: 2026-11-06
 path: solutions/energy-monitoring/
-related: smart-aircon-control, smart-home-without-internet, smart-door-lock-guide
+related: solar-ev-charger-energy-monitoring, reduce-aircon-electricity-smart-home, smart-home-without-internet
 ---
 多数人一个月只看到一个数字。用电监测能让你看到一天里电用在了哪里，对空调用得多的家庭来说，答案往往就在那里。同一套系统还能留意漏水、烟雾或燃气，在问题变大之前提醒你。
 
@@ -39,6 +39,6 @@ related: smart-aircon-control, smart-home-without-internet, smart-door-lock-guid
 
 ## 下一步
 
-告诉我们你想弄清什么，比如空调用电、太阳能发电量或漏水防护。
+告诉我们你想弄清什么，比如空调用电、太阳能发电量或漏水防护。家里有太阳能板或电动车充电桩的话，可以看 [太阳能与充电桩家庭的用电监测](/zh/guides/solar-ev-charger-energy-monitoring/)。
 
 想知道家里的电用到了哪里？[说说你家的情况](/zh/#contact)，我们帮你建议该测什么。
