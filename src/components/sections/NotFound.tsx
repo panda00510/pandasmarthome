@@ -22,8 +22,8 @@ export function NotFound() {
     <section className="band">
       <div className="shell max-w-3xl">
         <p className="eyebrow">{t.notFound.eyebrow}</p>
-        <h1 className="mt-4 text-4xl font-semibold tracking-[-0.03em] text-ink-950 sm:text-5xl">{t.notFound.title}</h1>
-        <p className="mt-5 max-w-xl text-lg leading-relaxed text-ink-600">{t.notFound.lead}</p>
+        <h1 className="title-display mt-4 text-ink-950">{t.notFound.title}</h1>
+        <p className="text-lead mt-5 max-w-xl text-ink-600">{t.notFound.lead}</p>
         <Button as="a" href={pageHref(lang)} size="lg" className="mt-8">
           {t.notFound.home}
           <ArrowRight size={17} aria-hidden="true" />

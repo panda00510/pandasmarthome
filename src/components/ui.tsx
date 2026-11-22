@@ -108,7 +108,7 @@ export function SectionHeading({
       </div>
       {lead ? (
         <p
-          className={`mt-4 max-w-2xl text-base leading-relaxed sm:mt-6 sm:text-lg lg:text-xl lg:leading-relaxed ${
+          className={`text-lead mt-4 max-w-2xl sm:mt-6 ${
             split ? 'lg:mt-0 lg:pb-1.5 lg:text-lg ' : ''
           }${
             shortOnPhone ? 'hidden sm:block ' : ''

@@ -44,14 +44,14 @@ export function ProductsPage() {
   return (
     <>
       <section className="border-b border-ink-200/70">
-        <div className="shell pt-10 pb-10 lg:pt-14 lg:pb-14">
+        <div className="shell page-head pb-10 lg:pb-14">
           <p className="eyebrow">
             {p.eyebrow}
           </p>
-          <h1 className="mt-5 max-w-4xl text-[2.25rem] leading-[1.06] font-semibold tracking-[-0.035em] text-balance text-ink-950 sm:text-[3rem] lg:text-[3.5rem]">
+          <h1 className="mt-5 max-w-4xl title-display text-ink-950">
             {p.title}
           </h1>
-          <p className="mt-4 max-w-2xl text-base leading-relaxed text-ink-600 sm:text-lg">{p.lead}</p>
+          <p className="mt-4 max-w-2xl text-lead text-ink-600">{p.lead}</p>
 
           <div className="mt-5">
             <StatusPill>{p.status}</StatusPill>

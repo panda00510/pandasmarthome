@@ -368,8 +368,11 @@ tokens, so everything is available as normal utilities (`bg-bamboo-500`,
   preload the basic-Latin Inter file (added by `scripts/prerender.mjs`).
   Three heading roles replace one-off sizes: `.title-display` (page and
   section titles, 32 → 44 → 56px; `SectionHeading` uses it), `.title-section`
-  (a sub-section inside a page, 28 → 36px) and `.title-card` (17px). Colour
-  stays a utility, so each role works on paper and on ink.
+  (a sub-section inside a page, 28 → 36px), `.title-article` (the h1 of a
+  guide or topic page, 30 → 40 → 44px) and `.title-card` (17px); `.text-lead`
+  is the paragraph under a title. Inner pages start with `.page-head` (the
+  same top padding everywhere). Colour stays a utility, so each role works on
+  paper and on ink.
 * **Layout** — `.shell` caps content at 1200px with 20px/32px gutters;
   `.band` sets the vertical rhythm between sections.
 * **Components** — `.btn`, `.field`, `.card`, `.eyebrow` are the shared
@@ -395,8 +398,9 @@ tokens, so everything is available as normal utilities (`bg-bamboo-500`,
 
 Breakpoints are Tailwind defaults. The layout was checked at 375, 390, 768
 and 1440 px. Navigation: the header and the footer use the same groups
-(smart home pages, Products, Custom, then resources); only the current page
-is highlighted in the header.
+(smart home pages, Products, Custom, then resources); the current section
+is highlighted in the header (a guide highlights Guides, a solution or scenario
+page highlights Services).
 
 ---
 

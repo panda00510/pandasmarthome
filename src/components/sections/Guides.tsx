@@ -96,14 +96,14 @@ export function GuidesIndex() {
   }
 
   return (
-    <section className="shell pt-10 pb-16 lg:pt-14 lg:pb-24">
+    <section className="shell page-head pb-16 lg:pb-24">
       <p className="eyebrow">
         {t.guides.eyebrow}
       </p>
-      <h1 className="mt-5 max-w-4xl text-[2.25rem] leading-[1.06] font-semibold tracking-[-0.035em] text-balance text-ink-950 sm:text-[3rem] lg:text-[3.5rem]">
+      <h1 className="mt-5 max-w-4xl title-display text-ink-950">
         {t.guides.title}
       </h1>
-      <p className="mt-4 max-w-2xl text-base leading-relaxed text-ink-600 sm:text-lg">{t.guides.lead}</p>
+      <p className="mt-4 max-w-2xl text-lead text-ink-600">{t.guides.lead}</p>
       <p className="mt-3 text-[0.9375rem] text-ink-600">
         <GlossaryNote />
       </p>
@@ -181,23 +181,24 @@ export function GuidePage({ guide }: { guide: Guide }) {
   const others = isPage
     ? guide.related.flatMap((slug) => guidesIn(lang).filter((other) => other.slug === slug)).slice(0, 3)
     : guidesIn(lang).filter((other) => other.slug !== guide.slug).slice(0, 3)
-  const toc = isPage ? [] : headings(guide.body).filter((h) => h.text !== t.guides.related)
+  // Topic pages get the contents list too, so the reading column sits beside it on desktop.
+  const toc = headings(guide.body).filter((h) => h.text !== t.guides.related)
   const legal = guide.path === 'about/' || guide.path === 'privacy/'
   const whatsapp = whatsappHref(pageWhatsappMessage(t, lang, guide.path))
 
   return (
     <>
-      <article className="shell pt-8 pb-14 lg:pt-12">
+      <article className="shell page-head pb-14">
         <div className="lg:grid lg:grid-cols-[minmax(0,41rem)_14rem] lg:justify-center lg:gap-14">
           <div className="min-w-0">
             <a
               href={pageHref(lang, hub ? `${hub}/` : isPage ? '' : 'guides/')}
-              className="inline-flex min-h-11 items-center gap-1.5 text-sm font-medium text-ink-600 hover:text-bamboo-700"
+              className="eyebrow min-h-11 transition-colors hover:text-bamboo-500"
             >
-              <ArrowLeft size={15} aria-hidden="true" />
+              <ArrowLeft size={14} aria-hidden="true" />
               {hub ? t.hubs[hub].all : isPage ? t.guides.backHome : t.guides.all}
             </a>
-            <h1 className="mt-4 text-[1.875rem] leading-[1.15] font-semibold tracking-[-0.03em] text-balance text-ink-950 sm:text-[2.75rem]">
+            <h1 className="title-article mt-2 text-ink-950">
               {guide.heading}
             </h1>
             <p className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-ink-600">
@@ -213,7 +214,7 @@ export function GuidePage({ guide }: { guide: Guide }) {
                 </span>
               )}
             </p>
-            <p className="mt-5 border-l-2 border-bamboo-500 pl-4 text-[1.0625rem] leading-relaxed text-ink-700 sm:text-lg">
+            <p className="text-lead mt-5 border-l-2 border-bamboo-500 pl-4 text-ink-700 lg:text-lg">
               {guide.description}
             </p>
 
@@ -319,7 +320,7 @@ export function GuidePage({ guide }: { guide: Guide }) {
       {others.length ? (
         <section className="border-t border-ink-200/70 bg-paper-alt">
           <div className="shell py-12 lg:py-16">
-            <h2 className="text-2xl font-semibold tracking-[-0.02em] text-ink-950">
+            <h2 className="title-section text-ink-950">
               {isPage ? t.guides.related : t.guides.more}
             </h2>
             <div className="mt-6 grid gap-4 md:grid-cols-3">

@@ -39,7 +39,7 @@ export function HubPage({ hub }: { hub: Hub }) {
   const items = pagesIn(lang).filter((page) => page.path.startsWith(`${hub}/`))
 
   return (
-    <section className="band">
+    <section className="page-head pb-16 lg:pb-24">
       <div className="shell">
         <SectionHeading eyebrow={copy.eyebrow} title={copy.title} lead={copy.lead} level={1} />
         {hub === 'solutions' ? (

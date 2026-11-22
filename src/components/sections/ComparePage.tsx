@@ -13,14 +13,14 @@ export function ComparePage() {
   const rows = Object.keys(c.rows) as (keyof typeof c.rows)[]
 
   return (
-    <article className="shell pt-10 pb-16 lg:pt-14 lg:pb-24">
+    <article className="shell page-head pb-16 lg:pb-24">
       <p className="eyebrow">
         {c.eyebrow}
       </p>
-      <h1 className="mt-5 max-w-4xl text-[2.25rem] leading-[1.06] font-semibold tracking-[-0.035em] text-balance text-ink-950 sm:text-[3rem]">
+      <h1 className="mt-5 max-w-4xl title-display text-ink-950">
         {c.title}
       </h1>
-      <p className="mt-4 max-w-2xl text-base leading-relaxed text-ink-600 sm:text-lg">{c.lead}</p>
+      <p className="mt-4 max-w-2xl text-lead text-ink-600">{c.lead}</p>
 
       <section aria-labelledby="devices" className="mt-12">
         <h2 id="devices" className="scroll-mt-24 text-[1.5rem] font-semibold tracking-[-0.02em] text-ink-950">

@@ -63,11 +63,14 @@ export function Header() {
     }
   }, [open])
 
+  // A section's own page and everything under it: /solutions/ also covers
+  // /solutions/smart-lighting/, /guides/ covers every guide.
+  const inSection = (page: string) => path === page || path.startsWith(page)
   // Seven entries: services, products, software, your home, showroom, guides, process.
   const byId = (id: string): NavLink => {
     const item = t.nav.items.find((entry) => entry.id === id)!
     const page = PAGE_ITEMS[id]
-    return { key: id, label: item.label, href: pageHref(lang, page), current: path === page }
+    return { key: id, label: item.label, href: pageHref(lang, page), current: inSection(page) }
   }
   // On the homepage the header starts on the ink hero, so it is dark until
   // the page scrolls; then it becomes frosted paper everywhere.
@@ -78,7 +81,7 @@ export function Header() {
     byId('solutions'),
     byId('homes'),
     { key: 'showroom', label: t.nav.showroom, href: showroom, current: false, icon: true },
-    { key: 'guides', label: t.guides.eyebrow, href: pageHref(lang, 'guides/'), current: path === 'guides/' },
+    { key: 'guides', label: t.guides.eyebrow, href: pageHref(lang, 'guides/'), current: inSection('guides/') },
     byId('process'),
   ]
   // "Products": things that exist already. "Custom": things built to order.

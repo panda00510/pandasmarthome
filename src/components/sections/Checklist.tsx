@@ -34,7 +34,7 @@ export function ChecklistPage() {
   const host = site.url ? new URL(site.url).host : null
 
   return (
-    <article className="checklist shell pt-8 pb-14 lg:pt-12">
+    <article className="checklist shell page-head pb-14">
       <div className="print:hidden">
         <a
           href={pageHref(lang, 'guides/')}
@@ -48,10 +48,10 @@ export function ChecklistPage() {
       <p className="eyebrow mt-4 print:hidden">
         {c.eyebrow}
       </p>
-      <h1 className="mt-4 text-[1.875rem] leading-[1.15] font-semibold tracking-[-0.03em] text-balance text-ink-950 sm:text-[2.5rem]">
+      <h1 className="mt-4 title-article text-ink-950">
         {c.title}
       </h1>
-      <p className="mt-3 max-w-3xl text-base leading-relaxed text-ink-700 sm:text-lg">{c.lead}</p>
+      <p className="mt-3 max-w-3xl text-lead text-ink-700">{c.lead}</p>
 
       <div className="mt-6 flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4 print:hidden">
         <Button type="button" size="lg" onClick={() => window.print()} className="w-full sm:w-auto">

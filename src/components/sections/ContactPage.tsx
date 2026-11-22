@@ -14,14 +14,14 @@ export function ContactPage() {
 
   return (
     <>
-      <div className="shell pt-10 pb-12 lg:pt-14">
+      <div className="shell page-head pb-12">
         <p className="eyebrow">
           {c.eyebrow}
         </p>
-        <h1 className="mt-5 max-w-4xl text-[2.25rem] leading-[1.06] font-semibold tracking-[-0.035em] text-balance text-ink-950 sm:text-[3rem]">
+        <h1 className="mt-5 max-w-4xl title-display text-ink-950">
           {c.title}
         </h1>
-        <p className="mt-4 max-w-2xl text-base leading-relaxed text-ink-600 sm:text-lg">{c.lead}</p>
+        <p className="mt-4 max-w-2xl text-lead text-ink-600">{c.lead}</p>
 
         <h2 className="mt-10 text-[1.375rem] font-semibold tracking-[-0.02em] text-ink-950">{c.nextTitle}</h2>
         <ol className="mt-5 grid gap-4 md:grid-cols-3">

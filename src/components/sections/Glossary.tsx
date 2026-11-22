@@ -42,7 +42,7 @@ export function GlossaryPage({ glossaries }: { glossaries: Partial<Record<Lang, 
   }
 
   return (
-    <article className="shell pt-10 pb-16 lg:pt-14 lg:pb-24">
+    <article className="shell page-head pb-16 lg:pb-24">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }}
@@ -50,10 +50,10 @@ export function GlossaryPage({ glossaries }: { glossaries: Partial<Record<Lang, 
       <p className="eyebrow">
         {g.eyebrow}
       </p>
-      <h1 className="mt-5 max-w-4xl text-[2.25rem] leading-[1.06] font-semibold tracking-[-0.035em] text-balance text-ink-950 sm:text-[3rem]">
+      <h1 className="mt-5 max-w-4xl title-display text-ink-950">
         {g.title}
       </h1>
-      <p className="mt-4 max-w-2xl text-base leading-relaxed text-ink-600 sm:text-lg">{g.lead}</p>
+      <p className="mt-4 max-w-2xl text-lead text-ink-600">{g.lead}</p>
 
       <nav aria-label={g.jumpTo} className="mt-8">
         <ul className="flex flex-wrap gap-2">

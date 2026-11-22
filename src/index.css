@@ -220,6 +220,22 @@
     }
   }
 
+  /* Top of an inner page (title, lead): the same on every page that is not a
+     dark hero. The bottom padding stays with the page. */
+  .page-head {
+    padding-top: 2.5rem;
+  }
+  @media (width >= 768px) {
+    .page-head {
+      padding-top: 3.5rem;
+    }
+  }
+  @media (width >= 1280px) {
+    .page-head {
+      padding-top: 4rem;
+    }
+  }
+
   /* Vertical rhythm between major sections. */
   .band {
     padding-block: 4rem;
@@ -384,7 +400,9 @@
      .title-display  page and section titles (h1 on index pages, every
                      SectionHeading), 32 → 44 → 56px
      .title-section  a sub-section inside a page, 28 → 36px
+     .title-article  the h1 of a guide or topic page, 30 → 40 → 44px
      .title-card     the title of a card, 17px
+     .text-lead      the paragraph under a title, 16 → 18 → 20px
      Colour stays a utility, so the same role works on paper and on ink.     */
   .title-display {
     font-size: 2rem;
@@ -398,6 +416,19 @@
     line-height: 1.15;
     font-weight: 600;
     letter-spacing: -0.025em;
+  }
+  /* The h1 of a guide or topic page: a reading column, so a step below display. */
+  .title-article {
+    font-size: 1.875rem;
+    line-height: 1.15;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    text-wrap: balance;
+  }
+  /* The paragraph under a page or section title. */
+  .text-lead {
+    font-size: 1rem;
+    line-height: 1.65;
   }
   .title-card {
     font-size: 1.0625rem;
@@ -414,13 +445,27 @@
       font-size: 2.25rem;
       line-height: 1.1;
     }
+    .title-article {
+      font-size: 2.5rem;
+      line-height: 1.1;
+    }
+    .text-lead {
+      font-size: 1.125rem;
+    }
   }
   @media (width >= 1024px) {
     .title-display {
       font-size: 3.5rem;
     }
+    .title-article {
+      font-size: 2.75rem;
+    }
+    .text-lead {
+      font-size: 1.25rem;
+    }
   }
   html:lang(zh) .title-display,
+  html:lang(zh) .title-article,
   html:lang(zh) .title-section {
     letter-spacing: -0.01em;
   }

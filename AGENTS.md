@@ -80,7 +80,7 @@ node scripts/check-form.mjs --dry                    # 每周表单自检的解�
 ## 设计约定
 
 - bamboo 绿是唯一强调色；`ember` 只用于灯光 / 舒适度语境。设计令牌全在 `src/index.css`。
-- 标题用三档类：`.title-display`（页 / 区块标题）、`.title-section`（页内小节）、`.title-card`（卡片标题），别再写一次性的字号。卡片图标用 `.icon-tile`，“了解更多 →”用 `.link-more`。区块眉标写成 `<p className="eyebrow">`（自带短横线），卡片里的眉标用 `<span>`。
+- 标题用这几档类：`.title-display`（页 / 区块标题）、`.title-article`（指南和主题页的 h1）、`.title-section`（页内小节）、`.title-card`（卡片标题），标题下的导语用 `.text-lead`，内页顶部留白用 `.page-head`，别再写一次性的字号。卡片图标用 `.icon-tile`，“了解更多 →”用 `.link-more`。区块眉标写成 `<p className="eyebrow">`（自带短横线），卡片里的眉标用 `<span>`。
 - 页眉与页脚分组一致：智能家居、产品、定制、资料与公司；页脚分组在 `Footer.tsx` 的 `columns`。新增页面要同时考虑这两处。
 - 熊猫标识几何**只在** `src/components/brand/pandaPath.ts`；favicon、og-image.svg、分享卡都由 `npm run og` 从它生成，别手抄 path、别手改 `public/favicon.svg`。熊猫只用于 logo / favicon / 分享卡。
 - 图库照片必须标明 illustrative（`PhotoTag` + alt 以 "Illustrative photo" 开头），不能冒充本公司案例。
