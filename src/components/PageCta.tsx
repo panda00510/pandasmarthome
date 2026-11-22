@@ -7,15 +7,17 @@ import { showroomHref } from '../lib/showroom'
 export function PageCta({ className = '' }: { className?: string }) {
   const { t, lang } = useI18n()
   return (
-    <aside className={`rounded-panel bg-ink-950 p-6 text-paper sm:p-9 print:hidden ${className}`}>
-      <h2 className="text-xl font-semibold sm:text-2xl">{t.cta.title}</h2>
-      <p className="mt-2 max-w-2xl leading-relaxed text-[#c7cdd2]">{t.cta.lead}</p>
-      <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-        <Button as="a" href={pageHref(lang, 'contact/')} variant="glow">
+    <aside className={`bevel-dark relative isolate overflow-hidden rounded-panel bg-ink-950 p-6 text-paper sm:p-10 print:hidden ${className}`}>
+      <span aria-hidden="true" className="hairline-dark pointer-events-none absolute inset-x-0 top-0" />
+      <span aria-hidden="true" className="stage-grid pointer-events-none absolute inset-0 -z-10 opacity-75" />
+      <h2 className="title-section text-paper">{t.cta.title}</h2>
+      <p className="mt-3 max-w-2xl leading-relaxed text-ink-300">{t.cta.lead}</p>
+      <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+        <Button as="a" href={pageHref(lang, 'contact/')} variant="glow" size="lg">
           {t.cta.primary}
           <ArrowRight size={16} aria-hidden="true" />
         </Button>
-        <Button as="a" href={showroomHref(lang)} variant="outlineDark">
+        <Button as="a" href={showroomHref(lang)} variant="outlineDark" size="lg">
           <Box size={16} aria-hidden="true" />
           {t.cta.secondary}
         </Button>

@@ -14,9 +14,9 @@ const SOCIAL_LABELS: Record<string, string> = {
   xiaohongshu: '小红书',
 }
 
-const LINK = 'inline-flex min-h-11 items-center text-sm text-ink-300 transition-colors hover:text-paper'
-const LINK_ICON = 'inline-flex min-h-11 items-center gap-2 transition-colors hover:text-paper'
-const HEAD = 'text-xs font-semibold tracking-[0.14em] text-ink-400 uppercase'
+const LINK = 'inline-flex min-h-11 items-center text-sm text-paper/78 transition-colors hover:text-ember-300'
+const LINK_ICON = 'inline-flex min-h-11 items-center gap-2 transition-colors hover:text-ember-300'
+const HEAD = 'font-mono text-[0.6875rem] font-semibold tracking-[0.16em] text-ember-300 uppercase'
 
 export function Footer() {
   const { t, lang, path } = useI18n()
@@ -66,29 +66,32 @@ export function Footer() {
 
   // max-sm:pb: room under the footer for the phone quick-action bar (App.tsx).
   return (
-    <footer className="bg-ink-950 text-ink-300 max-sm:pb-[calc(4rem+env(safe-area-inset-bottom))] print:pb-0">
-      <div className="shell pt-12 pb-8 lg:pt-16 lg:pb-10">
-        <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,2.4fr)] lg:gap-16">
-          {/* Brand */}
-          <div>
+    <footer className="relative bg-ink-950 text-paper/80 max-sm:pb-[calc(4rem+env(safe-area-inset-bottom))] print:pb-0">
+      <div aria-hidden="true" className="hairline-dark" />
+      <div className="shell pt-14 pb-10 lg:pt-20 lg:pb-12">
+        <div className="grid gap-12 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,2.2fr)] lg:gap-16">
+          {/* Architectural colophon & contact ledger */}
+          <div className="lg:border-r lg:border-paper/12 lg:pr-12">
             <a
               href={`${home}#top`}
-              className="inline-flex min-h-11 items-center rounded-lg text-paper transition-opacity hover:opacity-70"
+              className="inline-flex min-h-11 items-center text-paper transition-opacity hover:opacity-75"
               aria-label={t.a11y.homeLink}
             >
               <Wordmark />
             </a>
-            <p className="mt-5 hidden max-w-sm text-[0.9375rem] leading-relaxed text-ink-400 sm:block">{t.footer.blurb}</p>
+            <p className="mt-5 hidden max-w-sm text-[0.9375rem] leading-relaxed text-ink-300 sm:block">
+              {t.footer.blurb}
+            </p>
 
             {socialLinks.length > 0 ? (
-              <ul className="mt-3 flex flex-wrap gap-x-4">
+              <ul className="mt-4 flex flex-wrap gap-x-4">
                 {socialLinks.map(([key, url]) => (
                   <li key={key}>
                     <a
                       href={url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex min-h-11 items-center gap-1 text-sm text-ink-300 transition-colors hover:text-paper"
+                      className="inline-flex min-h-11 items-center gap-1 text-sm text-paper/80 transition-colors hover:text-ember-300"
                     >
                       {SOCIAL_LABELS[key] ?? key}
                       <ExternalLink size={12} aria-hidden="true" />
@@ -97,16 +100,14 @@ export function Footer() {
                 ))}
               </ul>
             ) : null}
-            {/* Contact: every row is conditional; nothing is invented. */}
-            <div className="mt-8">
-              <h2 className={HEAD}>
-                {t.footer.contactTitle}
-              </h2>
-              <ul className="mt-4 flex flex-wrap gap-x-4 text-sm text-ink-300 lg:block">
+
+            <div className="mt-8 border-t border-paper/12 pt-6">
+              <h2 className={HEAD}>{t.footer.contactTitle}</h2>
+              <ul className="mt-3 flex flex-wrap gap-x-4 text-sm text-paper/85 lg:block">
                 {site.email ? (
                   <li>
                     <a href={`mailto:${site.email}`} className={LINK_ICON}>
-                      <Mail size={14} aria-hidden="true" />
+                      <Mail size={14} aria-hidden="true" className="text-ember-300" />
                       {site.email}
                     </a>
                   </li>
@@ -114,7 +115,7 @@ export function Footer() {
                 {site.telephone ? (
                   <li>
                     <a href={`tel:${site.telephone.replace(/\s+/g, '')}`} className={LINK_ICON}>
-                      <Phone size={14} aria-hidden="true" />
+                      <Phone size={14} aria-hidden="true" className="text-ember-300" />
                       {site.telephone}
                     </a>
                   </li>
@@ -127,27 +128,30 @@ export function Footer() {
                       rel="noopener noreferrer"
                       className={LINK_ICON}
                     >
-                      <MessageCircle size={14} aria-hidden="true" />
+                      <MessageCircle size={14} aria-hidden="true" className="text-ember-300" />
                       WhatsApp
                     </a>
                   </li>
                 ) : null}
-                {formattedAddress ? <li className="py-1">{formattedAddress}</li> : null}
+                {formattedAddress ? <li className="py-1.5 text-ink-300">{formattedAddress}</li> : null}
                 {!hasAnyContactDetail ? (
-                  <li className="py-1 text-ink-400 italic">{t.contact.pendingDetails}</li>
+                  <li className="py-1.5 text-ink-400 italic">{t.contact.pendingDetails}</li>
                 ) : null}
-                <li className="py-1 text-ink-400">
+                <li className="py-1.5 text-ink-300">
                   {t.contact.labels.serviceArea}: {lang === 'zh' ? site.serviceAreaZh : site.serviceArea}
                 </li>
               </ul>
             </div>
           </div>
 
-          {/* Navigation: the same groups as the header (smart home, products, custom), then resources. */}
-          <nav aria-label={t.a11y.navFooter} className="grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-4 lg:col-span-1">
-            {columns.map((column) => (
-              <div key={column.title}>
-                <h2 className={HEAD}>{column.title}</h2>
+          {/* Four hairline-topped navigation columns */}
+          <nav aria-label={t.a11y.navFooter} className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-4">
+            {columns.map((column, i) => (
+              <div key={column.title} className="border-t border-paper/14 pt-4">
+                <span aria-hidden="true" className="numeral block text-[0.6875rem] text-ink-400">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <h2 className={`${HEAD} mt-1`}>{column.title}</h2>
                 <ul className="mt-3">
                   {column.links.map((link) => (
                     <li key={link.href}>
@@ -160,16 +164,13 @@ export function Footer() {
               </div>
             ))}
           </nav>
-
         </div>
 
-        {/* Credits and legal share one row; the disclaimers fold away but stay readable. */}
-        <div className="mt-12 flex flex-wrap items-center gap-x-6 border-t border-white/10 pt-3 text-sm text-ink-400 lg:mt-12">
+        {/* Credits and legal colophon row */}
+        <div className="mt-12 flex flex-wrap items-center gap-x-6 border-t border-paper/12 pt-4 text-sm text-ink-400">
           <a href={pageHref(lang, 'privacy/')} className={LINK_ICON + ' min-h-11'}>
             {t.footer.privacy}
           </a>
-          {/* Served from public/ by the prebuild copy of ASSET_SOURCES.md.
-              BASE_URL keeps it correct when the site lives at a sub-path. */}
           <a
             href={import.meta.env.BASE_URL + t.footer.creditsHref}
             target="_blank"
@@ -183,13 +184,13 @@ export function Footer() {
             <summary className="inline-flex min-h-11 cursor-pointer list-none items-center text-sm text-ink-400 transition-colors hover:text-paper [&::-webkit-details-marker]:hidden">
               {t.footer.legalTitle}
             </summary>
-            <p className="max-w-4xl text-xs leading-relaxed text-ink-400">{t.footer.disclaimer}</p>
-            <p className="mt-2 max-w-4xl text-xs leading-relaxed text-ink-400">{t.footer.imageNote}</p>
+            <p className="max-w-4xl pt-2 text-xs leading-relaxed text-ink-300">{t.footer.disclaimer}</p>
+            <p className="mt-2 max-w-4xl text-xs leading-relaxed text-ink-300">{t.footer.imageNote}</p>
           </details>
-          {site.registrationNumber ? <span>{site.registrationNumber}</span> : null}
+          {site.registrationNumber ? <span className="font-mono text-xs">{site.registrationNumber}</span> : null}
         </div>
 
-        <p className="mt-2 text-xs text-ink-400">
+        <p className="mt-3 font-mono text-xs tracking-[0.04em] text-ink-400">
           © {year} {companyName}. {t.footer.rights}
         </p>
       </div>

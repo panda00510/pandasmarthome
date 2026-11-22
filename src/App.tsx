@@ -48,7 +48,7 @@ export default function App() {
 
       <a
         href="#main"
-        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-60 focus:rounded-full focus:bg-ink-950 focus:px-5 focus:py-3 focus:text-sm focus:font-medium focus:text-paper"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-60 focus:rounded-[3px] focus:bg-ink-950 focus:px-5 focus:py-3 focus:text-sm focus:font-medium focus:text-paper"
       >
         {t.a11y.skipToContent}
       </a>
@@ -81,7 +81,7 @@ export default function App() {
       {bar ? (
         <nav
           aria-label={t.a11y.quickActions}
-          className="fixed inset-x-0 bottom-0 z-40 flex gap-2 border-t border-ink-200 bg-paper/95 px-4 pt-2 pb-[calc(0.5rem+env(safe-area-inset-bottom))] backdrop-blur-sm sm:hidden print:hidden"
+          className="fixed inset-x-0 bottom-0 z-40 flex gap-2 border-t border-ink-950/15 bg-paper/96 px-4 pt-2 pb-[calc(0.5rem+env(safe-area-inset-bottom))] backdrop-blur-md sm:hidden print:hidden"
         >
           {whatsapp ? (
             <Button as="a" href={whatsapp} target="_blank" rel="noopener noreferrer" data-track-source="bar" size="sm" className="flex-1">
@@ -89,8 +89,8 @@ export default function App() {
               WhatsApp
             </Button>
           ) : null}
-          <Button as="a" href={showroomHref(lang)} variant="secondary" size="sm" className="flex-1 bg-paper">
-            <Box size={16} aria-hidden="true" />
+          <Button as="a" href={showroomHref(lang)} variant="secondary" size="sm" className="flex-1">
+            <Box size={16} aria-hidden="true" className="text-ember-500" />
             {t.nav.showroom}
           </Button>
         </nav>

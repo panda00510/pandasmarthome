@@ -24,9 +24,7 @@ type NavLink = { key: string; label: string; href: string; current: boolean; ico
 
 export function Header() {
   const { t, lang, path } = useI18n()
-  // Section anchors live on the homepage; from a guide they go back there.
   const home = path ? pageHref(lang) : ''
-  // The form is on the homepage and on /contact/; elsewhere the CTA opens /contact/.
   const contactHref = path === '' || path === 'contact/' ? '#contact' : pageHref(lang, 'contact/')
   const [open, setOpen] = useState(false)
   const showroom = showroomHref(lang)
@@ -39,9 +37,6 @@ export function Header() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  // While the mobile panel is open: focus moves into it, the rest of the page
-  // is inert (so Tab stays in the header), body scroll is locked, and Escape
-  // closes it and returns focus to the menu button.
   const menuButton = useRef<HTMLButtonElement>(null)
   useEffect(() => {
     if (!open) return
@@ -63,20 +58,15 @@ export function Header() {
     }
   }, [open])
 
-  // A section's own page and everything under it: /solutions/ also covers
-  // /solutions/smart-lighting/, /guides/ covers every guide.
   const inSection = (page: string) => path === page || path.startsWith(page)
-  // Seven entries: services, products, software, your home, showroom, guides, process.
   const byId = (id: string): NavLink => {
     const item = t.nav.items.find((entry) => entry.id === id)!
     const page = PAGE_ITEMS[id]
     return { key: id, label: item.label, href: pageHref(lang, page), current: inSection(page) }
   }
-  // Pages that open on an ink hero start with a dark header until the page
-  // scrolls; then it becomes frosted paper everywhere.
-  const dark = (path === '' || path === 'products/' || path === 'custom-hardware/' || path === 'signage/') && !scrolled && !open
+  // Homepage and Products now open on sunlit travertine; only remaining dark-hero subpages keep the dark top bar.
+  const dark = (path === 'custom-hardware/' || path === 'signage/') && !scrolled && !open
 
-  // Primary row: services, your home, showroom, [Products ▾], [Custom ▾], guides, process.
   const links: NavLink[] = [
     byId('solutions'),
     byId('homes'),
@@ -84,7 +74,6 @@ export function Header() {
     { key: 'guides', label: t.guides.eyebrow, href: pageHref(lang, 'guides/'), current: inSection('guides/') },
     byId('process'),
   ]
-  // "Products": things that exist already. "Custom": things built to order.
   const productLinks: NavLink[] = [
     { key: 'signage', label: t.signage.navLabel, href: pageHref(lang, 'signage/'), current: path === 'signage/' },
     { key: 'devices', label: t.products.nav.devices, href: pageHref(lang, 'products/'), current: path === 'products/' },
@@ -108,40 +97,40 @@ export function Header() {
     { id: 'products-menu', label: t.products.nav.group, items: productLinks },
     { id: 'custom-menu', label: t.custom.nav, items: customLinks },
   ]
+
   const linkClass = (link: NavLink) =>
-    `inline-flex min-h-11 items-center gap-1 rounded-full px-2 text-sm font-medium whitespace-nowrap transition-colors ${
+    `relative inline-flex min-h-11 items-center gap-1.5 px-2.5 text-[0.875rem] font-medium whitespace-nowrap transition-colors ${
       dark
         ? link.current
-          ? 'bg-white/10 text-bamboo-300'
-          : 'text-ink-300 hover:bg-white/8 hover:text-paper'
+          ? 'text-ember-300 after:absolute after:inset-x-2.5 after:bottom-1 after:h-[1.5px] after:bg-ember-300'
+          : 'text-paper/80 hover:text-paper'
         : link.current
-          ? 'bg-bamboo-50 text-bamboo-800'
-          : 'text-ink-700 hover:bg-ink-100 hover:text-ink-950'
+          ? 'text-brand after:absolute after:inset-x-2.5 after:bottom-1 after:h-[1.5px] after:bg-brand'
+          : 'text-ink-700 hover:text-ink-950'
     }`
   const desktopLink = (link: NavLink) => (
     <a key={link.key} href={link.href} aria-current={link.current ? 'page' : undefined} className={linkClass(link)}>
-      {link.icon ? <Box size={15} aria-hidden="true" /> : null}
+      {link.icon ? <Box size={14} aria-hidden="true" className={dark ? 'text-ember-300' : 'text-ember-500'} /> : null}
       {link.label}
     </a>
   )
-
 
   return (
     <header
       className={`sticky top-0 z-50 border-b transition-[background-color,border-color,box-shadow] duration-300 ${
         dark
-          ? 'border-white/8 bg-ink-950 text-paper'
+          ? 'border-paper/12 bg-ink-950/92 text-paper backdrop-blur-md'
           : scrolled || open
-            ? 'border-ink-200/70 bg-paper/75 shadow-[0_8px_30px_-20px_rgb(12_15_19/0.25)] backdrop-blur-xl backdrop-saturate-150'
-            : 'border-transparent bg-paper'
+            ? 'border-ink-950/14 bg-paper/94 text-ink-950 shadow-[0_8px_24px_-20px_rgb(20_34_28/0.25)] backdrop-blur-md'
+            : 'border-ink-950/12 bg-paper text-ink-950'
       }`}
     >
-      {/* Inline links (seven entries, two of them dropdowns) need the full 1200px shell, reached at 1280px. Below that the wordmark
-          would shrink, so the menu button stays until then. */}
-      <div className="shell flex h-16 items-center justify-between gap-3 min-[1280px]:h-[4.5rem]">
+      <div className="shell flex h-16 items-center justify-between gap-3 min-[1280px]:h-[4.75rem]">
         <a
           href={`${home}#top`}
-          className={`inline-flex min-h-11 min-w-0 items-center rounded-lg transition-opacity hover:opacity-70 ${dark ? 'text-paper' : 'text-ink-950'}`}
+          className={`inline-flex min-h-11 min-w-0 items-center transition-opacity hover:opacity-75 min-[1280px]:shrink-0 ${
+            dark ? 'text-paper' : 'text-ink-950'
+          }`}
           aria-label={t.a11y.homeLink}
         >
           <Wordmark className="max-w-full" />
@@ -156,7 +145,6 @@ export function Header() {
         </nav>
 
         <div className="flex shrink-0 items-center gap-2 sm:gap-3">
-          {/* On a 404 the other language's copy of the address is a 404 too, so the toggle goes to its home. */}
           <LangToggle lang={lang} path={pagePaths.includes(path) ? path : ''} label={t.a11y.languageSwitcher} dark={dark} />
 
           <Button
@@ -177,11 +165,13 @@ export function Header() {
             aria-expanded={open}
             aria-controls="mobile-nav"
             aria-label={open ? t.a11y.closeMenu : t.a11y.openMenu}
-            className={`-mr-1 inline-flex h-11 w-11 items-center justify-center rounded-full transition-colors min-[1280px]:hidden ${
-              dark ? 'text-paper hover:bg-white/10' : 'text-ink-800 hover:bg-ink-100'
+            className={`-mr-1 inline-flex h-11 w-11 items-center justify-center rounded-[3px] border transition-colors min-[1280px]:hidden ${
+              dark
+                ? 'border-paper/18 text-paper hover:bg-paper/10'
+                : 'border-ink-950/15 bg-surface text-ink-950 hover:border-ink-950/35'
             }`}
           >
-            {open ? <X size={22} aria-hidden="true" /> : <Menu size={22} aria-hidden="true" />}
+            {open ? <X size={20} aria-hidden="true" /> : <Menu size={20} aria-hidden="true" />}
           </button>
         </div>
       </div>
@@ -190,37 +180,45 @@ export function Header() {
       <div
         id="mobile-nav"
         hidden={!open}
-        className="border-t border-ink-200/70 bg-paper/95 backdrop-blur-xl min-[1280px]:hidden"
+        className="border-t border-ink-950/12 bg-paper min-[1280px]:hidden"
       >
-        <nav aria-label={t.a11y.navMobile} className="shell flex flex-col gap-1 py-4">
-          {links.map((link) => (
-            <a
-              key={link.key}
-              href={link.href}
-              aria-current={link.current ? 'page' : undefined}
-              onClick={() => setOpen(false)}
-              className="inline-flex min-h-12 items-center gap-2 rounded-xl px-3 text-base font-medium text-ink-800 transition-colors hover:bg-ink-100 aria-[current=page]:bg-bamboo-50 aria-[current=page]:text-bamboo-800"
-            >
-              {link.icon ? <Box size={17} aria-hidden="true" /> : null}
-              {link.label}
-            </a>
-          ))}
+        <nav aria-label={t.a11y.navMobile} className="shell flex flex-col py-4">
+          <div className="divide-y divide-ink-950/10 border-y border-ink-950/10">
+            {links.map((link) => (
+              <a
+                key={link.key}
+                href={link.href}
+                aria-current={link.current ? 'page' : undefined}
+                onClick={() => setOpen(false)}
+                className="flex min-h-12 items-center justify-between gap-2 px-1 text-[0.9375rem] font-medium text-ink-900 transition-colors hover:text-brand aria-[current=page]:text-brand"
+              >
+                <span className="inline-flex items-center gap-2">
+                  {link.icon ? <Box size={16} aria-hidden="true" className="text-ember-500" /> : null}
+                  {link.label}
+                </span>
+                {link.current ? <span aria-hidden="true" className="h-1.5 w-1.5 bg-brand" /> : null}
+              </a>
+            ))}
+          </div>
           {groups.map((group) => (
-            <div key={group.id} className="flex flex-col gap-1">
-              <p className="mt-3 border-t border-ink-200/70 px-3 pt-4 text-xs font-semibold tracking-[0.14em] text-ink-500 uppercase">
+            <div key={group.id} className="mt-5">
+              <p className="font-mono text-[0.6875rem] font-semibold tracking-[0.16em] text-ember-500 uppercase">
                 {group.label}
               </p>
-              {group.items.map((link) => (
-                <a
-                  key={link.key}
-                  href={link.href}
-                  aria-current={link.current ? 'page' : undefined}
-                  onClick={() => setOpen(false)}
-                  className="inline-flex min-h-12 items-center rounded-xl px-3 text-base font-medium text-ink-800 transition-colors hover:bg-ink-100 aria-[current=page]:bg-bamboo-50 aria-[current=page]:text-bamboo-800"
-                >
-                  {link.label}
-                </a>
-              ))}
+              <div className="mt-2 divide-y divide-ink-950/10 border-y border-ink-950/10">
+                {group.items.map((link) => (
+                  <a
+                    key={link.key}
+                    href={link.href}
+                    aria-current={link.current ? 'page' : undefined}
+                    onClick={() => setOpen(false)}
+                    className="flex min-h-12 items-center justify-between px-1 text-[0.9375rem] font-medium text-ink-900 transition-colors hover:text-brand aria-[current=page]:text-brand"
+                  >
+                    <span>{link.label}</span>
+                    {link.current ? <span aria-hidden="true" className="h-1.5 w-1.5 bg-brand" /> : null}
+                  </a>
+                ))}
+              </div>
             </div>
           ))}
           <Button
@@ -228,7 +226,7 @@ export function Header() {
             href={contactHref}
             data-track="nav_cta_click"
             size="lg"
-            className="mt-3 w-full"
+            className="mt-5 w-full"
             onClick={() => setOpen(false)}
           >
             {t.nav.cta}
@@ -239,10 +237,6 @@ export function Header() {
   )
 }
 
-/**
- * A dropdown group in the desktop nav. A disclosure button, not an ARIA menu:
- * Tab moves through the links; Escape, an outside click or tabbing away closes it.
- */
 function NavMenu({ id, label, items, dark }: { id: string; label: string; items: NavLink[]; dark: boolean }) {
   const [show, setShow] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
@@ -283,19 +277,23 @@ function NavMenu({ id, label, items, dark }: { id: string; label: string; items:
         aria-expanded={show}
         aria-controls={id}
         onClick={() => setShow((v) => !v)}
-        className={`inline-flex min-h-11 cursor-pointer items-center gap-1 rounded-full px-2 text-sm font-medium whitespace-nowrap transition-colors ${
+        className={`relative inline-flex min-h-11 cursor-pointer items-center gap-1 px-2.5 text-[0.875rem] font-medium whitespace-nowrap transition-colors ${
           dark
-            ? `hover:bg-white/8 ${current ? 'bg-white/10 text-bamboo-300' : show ? 'bg-white/8 text-paper' : 'text-ink-300 hover:text-paper'}`
-            : current
-              ? 'bg-bamboo-50 text-bamboo-800'
+            ? current
+              ? 'text-ember-300 after:absolute after:inset-x-2.5 after:bottom-1 after:h-[1.5px] after:bg-ember-300'
               : show
-                ? 'bg-ink-100 text-ink-950'
-                : 'text-ink-700 hover:bg-ink-100 hover:text-ink-950'
+                ? 'text-paper'
+                : 'text-paper/80 hover:text-paper'
+            : current
+              ? 'text-brand after:absolute after:inset-x-2.5 after:bottom-1 after:h-[1.5px] after:bg-brand'
+              : show
+                ? 'text-ink-950'
+                : 'text-ink-700 hover:text-ink-950'
         }`}
       >
         {label}
         <ChevronDown
-          size={15}
+          size={14}
           aria-hidden="true"
           className={`transition-transform duration-200 motion-reduce:transition-none ${show ? 'rotate-180' : ''}`}
         />
@@ -303,20 +301,21 @@ function NavMenu({ id, label, items, dark }: { id: string; label: string; items:
       <div
         id={id}
         hidden={!show}
-        className="absolute top-full left-1/2 mt-2 w-64 -translate-x-1/2 rounded-2xl border border-ink-200/80 bg-paper p-2 text-ink-900 shadow-lift"
+        className="absolute top-full left-1/2 mt-2 w-64 -translate-x-1/2 rounded-[4px] border border-ink-950/16 bg-surface p-1.5 text-ink-950 shadow-lift"
       >
-        <ul>
+        <ul className="divide-y divide-ink-950/[0.07]">
           {items.map((item) => (
             <li key={item.key}>
               <a
                 href={item.href}
                 aria-current={item.current ? 'page' : undefined}
                 onClick={() => setShow(false)}
-                className={`flex min-h-11 items-center rounded-xl px-3 text-sm font-medium transition-colors hover:bg-ink-100 ${
-                  item.current ? 'bg-bamboo-50 text-bamboo-800' : 'text-ink-800'
+                className={`flex min-h-11 items-center justify-between px-3 text-sm font-medium transition-colors hover:bg-paper hover:text-brand ${
+                  item.current ? 'bg-paper text-brand' : 'text-ink-800'
                 }`}
               >
-                {item.label}
+                <span>{item.label}</span>
+                {item.current ? <span aria-hidden="true" className="h-1.5 w-1.5 bg-brand" /> : null}
               </a>
             </li>
           ))}
@@ -331,9 +330,11 @@ function LangToggle({ lang, path, label, dark }: { lang: Lang; path: string; lab
     <div
       role="group"
       aria-label={label}
-      className={`flex items-center rounded-full ${dark ? 'bg-white/8' : 'bg-ink-100'}`}
+      className={`flex items-center overflow-hidden rounded-[3px] border ${
+        dark ? 'border-paper/20 bg-paper/[0.06]' : 'border-ink-950/18 bg-surface'
+      }`}
     >
-      {LANGS.map((option) => {
+      {LANGS.map((option, idx) => {
         const active = option.code === lang
         return (
           <a
@@ -344,12 +345,16 @@ function LangToggle({ lang, path, label, dark }: { lang: Lang; path: string; lab
             data-track-to={option.code}
             lang={option.code === 'zh' ? 'zh-Hans' : 'en'}
             hrefLang={option.code === 'zh' ? 'zh-Hans' : 'en'}
-            className={`inline-flex h-11 min-w-11 items-center justify-center rounded-full px-2 text-sm sm:px-3 font-semibold whitespace-nowrap transition-colors ${
+            className={`inline-flex h-10 min-w-10 items-center justify-center px-2.5 text-xs font-semibold tracking-[0.04em] whitespace-nowrap transition-colors sm:px-3 ${
+              idx > 0 ? (dark ? 'border-l border-paper/15' : 'border-l border-ink-950/12') : ''
+            } ${
               active
-                ? 'bg-white text-ink-950 shadow-[0_1px_2px_rgb(12_15_19/0.08)]'
+                ? dark
+                  ? 'bg-paper text-ink-950'
+                  : 'bg-ink-950 text-paper'
                 : dark
-                  ? 'text-ink-300 hover:text-paper'
-                  : 'text-ink-600 hover:text-ink-900'
+                  ? 'text-paper/75 hover:text-paper'
+                  : 'text-ink-600 hover:bg-paper hover:text-ink-950'
             }`}
           >
             {option.label}

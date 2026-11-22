@@ -14,7 +14,7 @@ import {
 import lighting640 from '../../assets/photos/bedroom-lighting-640.webp'
 import lighting960 from '../../assets/photos/bedroom-lighting-960.webp'
 import { formattedAddress, hasAnyContactDetail, site } from '../../config/site'
-import { Button, SectionHeading } from '../ui'
+import { Button, PhotoTag, SectionHeading } from '../ui'
 import { pageHref, useI18n } from '../../i18n/context'
 import { track } from '../../lib/track'
 import { whatsappHref } from '../../lib/whatsapp'
@@ -186,8 +186,8 @@ export function Contact() {
   }
 
   return (
-    <section id="contact" className="band border-t border-ink-200/70 bg-paper-alt">
-      <div className="shell grid gap-10 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1fr)] lg:gap-16">
+    <section id="contact" className="band border-t border-ink-950/12 bg-paper-alt">
+      <div className="shell grid gap-10 lg:grid-cols-[minmax(0,0.88fr)_minmax(0,1fr)] lg:gap-16">
         {/* ---- Details ---------------------------------------------------- */}
         <div>
           <SectionHeading eyebrow={c.eyebrow} title={c.title} lead={c.lead} shortOnPhone />
@@ -196,17 +196,19 @@ export function Contact() {
             <div
               role="tablist"
               aria-label={c.title}
-              className="mt-6 grid grid-cols-2 gap-1 rounded-full bg-ink-100 p-1 lg:hidden"
+              className="mt-6 grid grid-cols-2 overflow-hidden rounded-[3px] border border-ink-950/16 bg-surface lg:hidden"
             >
-              {(['form', 'chat'] as const).map((id) => (
+              {(['form', 'chat'] as const).map((id, idx) => (
                 <button
                   key={id}
                   type="button"
                   role="tab"
                   aria-selected={tab === id}
                   onClick={() => setTab(id)}
-                  className={`h-11 cursor-pointer rounded-full text-sm font-semibold transition-colors ${
-                    tab === id ? 'bg-white text-ink-950 shadow-soft' : 'text-ink-600'
+                  className={`h-11 cursor-pointer text-sm font-semibold transition-colors ${
+                    idx > 0 ? 'border-l border-ink-950/14' : ''
+                  } ${
+                    tab === id ? 'bg-ink-950 text-paper' : 'text-ink-700 hover:text-ink-950'
                   }`}
                 >
                   {id === 'form' ? c.form.title : c.whatsappCta}
@@ -216,104 +218,110 @@ export function Contact() {
           ) : null}
 
           <div className={`${tab === 'chat' || !site.whatsappLink ? '' : 'hidden'} lg:block`}>
-          {(site.whatsappLink ?? site.email) ? (
-            <div className="mt-6 flex flex-col gap-3 sm:flex-row lg:mt-8">
-              {site.whatsappLink ? (
-                <Button
-                  as="a"
-                  href={whatsappHref(t.contact.whatsappGreeting)!}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  variant="accent"
-                  size="lg"
-                >
-                  <MessageCircle size={17} aria-hidden="true" />
-                  {c.whatsappCta}
-                </Button>
-              ) : null}
-              {site.email ? (
-                <Button as="a" href={`mailto:${site.email}`} variant="secondary" size="lg">
-                  <Mail size={17} aria-hidden="true" />
-                  {c.emailCta}
-                </Button>
-              ) : null}
-            </div>
-          ) : null}
-
-          <dl className="mt-9 space-y-4 border-t border-ink-200 pt-8">
-            {site.email ? (
-              <DetailRow icon={<Mail size={16} />} label={c.labels.email}>
-                <a href={`mailto:${site.email}`} className="hover:text-bamboo-700">
-                  {site.email}
-                </a>
-              </DetailRow>
-            ) : null}
-
-            {site.telephone ? (
-              <DetailRow icon={<Phone size={16} />} label={c.labels.phone}>
-                <a href={`tel:${site.telephone.replace(/\s+/g, '')}`} className="hover:text-bamboo-700">
-                  {site.telephone}
-                </a>
-              </DetailRow>
-            ) : null}
-
-            {site.whatsappNumber ? (
-              <DetailRow icon={<MessageCircle size={16} />} label={c.labels.whatsapp}>
-                +{site.whatsappNumber}
-              </DetailRow>
-            ) : null}
-
-            {formattedAddress ? (
-              <DetailRow icon={<MapPin size={16} />} label={c.labels.address}>
-                {formattedAddress}
-              </DetailRow>
-            ) : null}
-
-            <DetailRow icon={<MapPin size={16} />} label={c.labels.serviceArea}>
-              {lang === 'zh' ? site.serviceAreaZh : site.serviceArea}
-            </DetailRow>
-          </dl>
-
-          {/*
-            Nothing is invented: when no channel is configured the page says so
-            plainly instead of rendering a placeholder phone number.
-          */}
-          {!hasAnyContactDetail ? (
-            <div className="mt-6 flex items-start gap-3 rounded-2xl border border-dashed border-ink-300 bg-white px-5 py-4">
-              <Info size={17} className="mt-0.5 shrink-0 text-ink-500" aria-hidden="true" />
-              <div>
-                <p className="text-[0.9375rem] font-medium text-ink-900">{c.pendingDetails}</p>
-                <p className="mt-1 text-sm leading-relaxed text-ink-600">{c.pendingDetailsNote}</p>
+            {(site.whatsappLink ?? site.email) ? (
+              <div className="mt-6 flex flex-col gap-3 sm:flex-row lg:mt-8">
+                {site.whatsappLink ? (
+                  <Button
+                    as="a"
+                    href={whatsappHref(t.contact.whatsappGreeting)!}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    variant="accent"
+                    size="lg"
+                  >
+                    <MessageCircle size={17} aria-hidden="true" />
+                    {c.whatsappCta}
+                  </Button>
+                ) : null}
+                {site.email ? (
+                  <Button as="a" href={`mailto:${site.email}`} variant="secondary" size="lg">
+                    <Mail size={17} aria-hidden="true" />
+                    {c.emailCta}
+                  </Button>
+                ) : null}
               </div>
-            </div>
-          ) : null}
+            ) : null}
 
-          <img
-            src={lighting960}
-            srcSet={`${lighting640} 640w, ${lighting960} 960w`}
-            sizes="(min-width: 1200px) 430px, 36vw"
-            alt=""
-            width={960}
-            height={720}
-            loading="lazy"
-            decoding="async"
-            className="mt-8 hidden aspect-[16/7] w-full rounded-panel object-cover opacity-90 lg:block"
-          />
+            <dl className="mt-8 space-y-4 border-t border-ink-950/12 pt-7">
+              {site.email ? (
+                <DetailRow icon={<Mail size={15} />} label={c.labels.email}>
+                  <a href={`mailto:${site.email}`} className="transition-colors hover:text-brand">
+                    {site.email}
+                  </a>
+                </DetailRow>
+              ) : null}
+
+              {site.telephone ? (
+                <DetailRow icon={<Phone size={15} />} label={c.labels.phone}>
+                  <a href={`tel:${site.telephone.replace(/\s+/g, '')}`} className="transition-colors hover:text-brand">
+                    {site.telephone}
+                  </a>
+                </DetailRow>
+              ) : null}
+
+              {site.whatsappNumber ? (
+                <DetailRow icon={<MessageCircle size={15} />} label={c.labels.whatsapp}>
+                  +{site.whatsappNumber}
+                </DetailRow>
+              ) : null}
+
+              {formattedAddress ? (
+                <DetailRow icon={<MapPin size={15} />} label={c.labels.address}>
+                  {formattedAddress}
+                </DetailRow>
+              ) : null}
+
+              <DetailRow icon={<MapPin size={15} />} label={c.labels.serviceArea}>
+                {lang === 'zh' ? site.serviceAreaZh : site.serviceArea}
+              </DetailRow>
+            </dl>
+
+            {/*
+              Nothing is invented: when no channel is configured the page says so
+              plainly instead of rendering a placeholder phone number.
+            */}
+            {!hasAnyContactDetail ? (
+              <div className="mt-6 flex items-start gap-3 rounded-card border border-dashed border-ink-950/24 bg-surface px-5 py-4">
+                <Info size={17} className="mt-0.5 shrink-0 text-ink-500" aria-hidden="true" />
+                <div>
+                  <p className="text-[0.9375rem] font-medium text-ink-950">{c.pendingDetails}</p>
+                  <p className="mt-1 text-sm leading-relaxed text-ink-600">{c.pendingDetailsNote}</p>
+                </div>
+              </div>
+            ) : null}
+
+            <figure className="plate-frame mt-8 hidden lg:block">
+              <div className="relative overflow-hidden rounded-[2px]">
+                <img
+                  src={lighting960}
+                  srcSet={`${lighting640} 640w, ${lighting960} 960w`}
+                  sizes="(min-width: 1200px) 430px, 36vw"
+                  alt=""
+                  width={960}
+                  height={720}
+                  loading="lazy"
+                  decoding="async"
+                  className="block aspect-[16/8] w-full object-cover"
+                />
+                <PhotoTag>{t.footer.imageTag}</PhotoTag>
+              </div>
+            </figure>
           </div>
         </div>
 
         {/* ---- Form ------------------------------------------------------- */}
-        <div className={`card p-5 sm:p-8 ${tab === 'form' || !site.whatsappLink ? '' : 'hidden'} lg:block`}>
-          <h3 className="text-lg font-semibold text-ink-950">{c.form.title}</h3>
+        <div className={`card relative overflow-hidden rounded-panel p-5 sm:p-8 lg:p-9 ${tab === 'form' || !site.whatsappLink ? '' : 'hidden'} lg:block`}>
+          <span aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-[3px] bg-ink-950" />
+          <h3 className="title-group text-ink-950">{c.form.title}</h3>
 
           {MODE === 'none' ? (
             <div
               role="note"
-              className="mt-5 flex items-start gap-3 rounded-2xl bg-ember-300/20 px-5 py-4 ring-1 ring-ember-400/40"
+              className="mt-5 flex items-start gap-3 rounded-[3px] border border-ember-500/35 bg-paper px-5 py-4"
             >
               <TriangleAlert size={17} className="mt-0.5 shrink-0 text-ember-600" aria-hidden="true" />
               <div>
-                <p className="text-[0.9375rem] font-medium text-ink-900">
+                <p className="text-[0.9375rem] font-medium text-ink-950">
                   {c.states.unconfiguredTitle}
                 </p>
                 <p className="mt-1 text-sm leading-relaxed text-ink-700">
@@ -325,7 +333,7 @@ export function Contact() {
 
           {MODE === 'mailto' ? (
             <p className="mt-4 flex items-start gap-2.5 text-sm leading-relaxed text-ink-600">
-              <Mail size={15} className="mt-0.5 shrink-0 text-ink-400" aria-hidden="true" />
+              <Mail size={15} className="mt-0.5 shrink-0 text-ink-500" aria-hidden="true" />
               {c.form.viaEmailNote}
             </p>
           ) : null}
@@ -371,9 +379,9 @@ export function Contact() {
               />
 
               <details
-                className="group rounded-card border border-ink-200 bg-paper-alt/60"
+                className="group rounded-[3px] border border-ink-950/15 bg-paper/75"
               >
-                <summary className="flex min-h-12 cursor-pointer list-none items-center justify-between gap-3 px-4 text-sm font-semibold text-ink-800 [&::-webkit-details-marker]:hidden">
+                <summary className="flex min-h-12 cursor-pointer list-none items-center justify-between gap-3 px-4 text-sm font-semibold text-ink-900 [&::-webkit-details-marker]:hidden">
                   {c.form.message}
                   <ChevronDown
                     size={16}
@@ -418,7 +426,7 @@ export function Contact() {
                 {c.form.consent.split('{privacy}')[0]}
                 <a
                   href={pageHref(lang, 'privacy/')}
-                  className="underline decoration-ink-300 underline-offset-2 hover:text-bamboo-700"
+                  className="underline decoration-ink-400 underline-offset-2 hover:text-brand"
                 >
                   {c.form.privacyLink}
                 </a>
@@ -485,12 +493,15 @@ function DetailRow({
 }) {
   return (
     <div className="flex items-start gap-3.5">
-      <span className="mt-0.5 shrink-0 text-ink-400" aria-hidden="true">
+      <span
+        className="mt-0.5 grid size-9 shrink-0 place-items-center rounded-[2px] border border-ink-950/14 bg-surface text-brand"
+        aria-hidden="true"
+      >
         {icon}
       </span>
       <div>
-        <dt className="text-xs font-semibold tracking-wide text-ink-500 uppercase">{label}</dt>
-        <dd className="mt-1 text-[0.9375rem] text-ink-800">{children}</dd>
+        <dt className="font-mono text-[0.65rem] font-semibold tracking-[0.14em] text-ink-500 uppercase">{label}</dt>
+        <dd className="mt-0.5 text-[0.9375rem] font-medium text-ink-900">{children}</dd>
       </div>
     </div>
   )

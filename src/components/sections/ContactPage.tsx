@@ -1,4 +1,4 @@
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, ArrowUpRight } from 'lucide-react'
 import { pageHref, useI18n } from '../../i18n/context'
 import { Contact } from './Contact'
 
@@ -14,43 +14,59 @@ export function ContactPage() {
 
   return (
     <>
-      <div className="shell page-head pb-12">
+      <div className="shell page-head pb-14 lg:pb-16">
         <p className="eyebrow">
           {c.eyebrow}
         </p>
         <h1 className="mt-5 max-w-4xl title-display text-ink-950">
           {c.title}
         </h1>
-        <p className="mt-4 max-w-2xl text-lead text-ink-600">{c.lead}</p>
+        <p className="mt-5 max-w-2xl text-lead text-ink-600">{c.lead}</p>
 
-        <h2 className="mt-10 title-group text-ink-950">{c.nextTitle}</h2>
-        <ol className="mt-5 grid gap-4 md:grid-cols-3">
+        <h2 className="mt-12 title-group text-ink-950">{c.nextTitle}</h2>
+        <ol className="mt-5 grid overflow-hidden rounded-card border border-ink-950/15 bg-surface divide-y divide-ink-950/12 md:grid-cols-3 md:divide-x md:divide-y-0">
           {c.next.map((step, i) => (
-            <li key={step.title} className="card">
-              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-brand text-sm font-semibold text-white tabular-nums">
-                {i + 1}
+            <li key={step.title} className="p-5 sm:p-6">
+              <span className="font-display text-2xl leading-none font-normal text-ember-500 tabular-nums">
+                {String(i + 1).padStart(2, '0')}
               </span>
-              <h3 className="mt-3 text-base font-semibold text-ink-950">{step.title}</h3>
-              <p className="mt-1.5 text-[0.9375rem] leading-relaxed text-ink-700">{step.body}</p>
+              <h3 className="title-card mt-4 text-ink-950">{step.title}</h3>
+              <p className="mt-2 text-[0.9375rem] leading-relaxed text-ink-600">{step.body}</p>
             </li>
           ))}
         </ol>
-        <p className="mt-4 max-w-3xl text-sm leading-relaxed text-ink-600">{c.note}</p>
+        <p className="mt-5 max-w-3xl text-sm leading-relaxed text-ink-600">{c.note}</p>
 
-        <h2 className="mt-10 text-base font-semibold text-ink-950">{c.otherTitle}</h2>
-        <ul className="mt-3 grid gap-x-6 gap-y-2 sm:grid-cols-2">
-          {c.other.map((item) => (
-            <li key={item.path}>
-              <a href={pageHref(lang, item.path)} className="group inline-flex min-h-11 items-start gap-1.5 py-1">
-                <span>
-                  <span className="font-semibold text-bamboo-700 group-hover:text-bamboo-600">{item.label}</span>
-                  <span className="block text-sm text-ink-600">{item.body}</span>
-                </span>
-                <ArrowRight size={15} aria-hidden="true" className="mt-1 shrink-0 text-bamboo-700" />
-              </a>
-            </li>
-          ))}
-        </ul>
+        <div className="mt-12 border-t border-ink-950/12 pt-8">
+          <h2 className="font-mono text-xs font-semibold tracking-[0.14em] text-ember-500 uppercase">{c.otherTitle}</h2>
+          <ul className="mt-4 grid gap-3 sm:grid-cols-2">
+            {c.other.map((item) => (
+              <li key={item.path}>
+                <a
+                  href={pageHref(lang, item.path)}
+                  className="card group flex h-full items-start justify-between gap-4 p-4 sm:p-5"
+                >
+                  <span className="min-w-0">
+                    <span className="block font-semibold text-ink-950 transition-colors group-hover:text-brand">
+                      {item.label}
+                    </span>
+                    <span className="mt-1 block text-sm leading-relaxed text-ink-600">{item.body}</span>
+                  </span>
+                  <span
+                    aria-hidden="true"
+                    className="grid size-8 shrink-0 place-items-center rounded-[2px] border border-ink-950/15 bg-paper text-ink-600 transition-colors group-hover:border-ink-950 group-hover:bg-ink-950 group-hover:text-paper"
+                  >
+                    <ArrowUpRight size={15} />
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+          <a href={pageHref(lang, 'solutions/')} className="link-more mt-4 hover:text-ink-950">
+            {t.hubs.solutions.all}
+            <ArrowRight size={15} aria-hidden="true" />
+          </a>
+        </div>
       </div>
       <Contact />
     </>

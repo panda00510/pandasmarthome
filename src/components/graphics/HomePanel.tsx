@@ -23,18 +23,29 @@ const ROOM_OFFSETS = [
 const clamp = (n: number) => Math.max(0, Math.min(100, n))
 
 /**
- * Interactive control panel shown in the hero.
- *
- * The scenes and rooms actually work: picking one re-runs the readings the
- * way the real system would. It is a demonstration rather than a screenshot —
- * built from live DOM, so it stays sharp at any density, translates with the
- * rest of the site, and cannot be mistaken for another vendor's product UI.
+ * Interactive architectural wall-keypad demonstration shown beside the hero plate.
+ * Styled like a matte limestone & brass residential control plate (zero dark glass):
+ * selecting a room or scene updates the live readings and crossfades the hero render.
  */
-export function HomePanel({ compact = false }: { compact?: boolean }) {
+export function HomePanel({
+  compact = false,
+  sceneIndex: controlledScene,
+  onSceneChange,
+}: {
+  compact?: boolean
+  sceneIndex?: number
+  onSceneChange?: (index: number) => void
+}) {
   const { t } = useI18n()
   const panel = t.hero.panel
-  const [sceneIndex, setSceneIndex] = useState(0)
+  const [internalScene, setInternalScene] = useState(0)
   const [roomIndex, setRoomIndex] = useState(0)
+
+  const sceneIndex = controlledScene ?? internalScene
+  const selectScene = (index: number) => {
+    if (onSceneChange) onSceneChange(index)
+    else setInternalScene(index)
+  }
 
   const scene = SCENES[sceneIndex] ?? SCENES[0]
   const offset = ROOM_OFFSETS[roomIndex] ?? ROOM_OFFSETS[0]
@@ -44,77 +55,100 @@ export function HomePanel({ compact = false }: { compact?: boolean }) {
   const humidity = useAnimatedNumber(scene.humidity)
 
   return (
-    <div className={`${compact ? 'w-[17rem] sm:w-[18rem]' : 'w-[19rem] sm:w-[21rem]'} rounded-[1.25rem] border border-white/12 bg-ink-950/88 p-4 text-paper shadow-[0_24px_60px_-24px_rgb(12_15_19/0.65)] backdrop-blur-xl`}>
-      <div className="flex items-start justify-between">
-        <div>
-          <p className="text-[0.9375rem] leading-none font-semibold">{panel.title}</p>
-          <p className="mt-1.5 text-xs text-ink-400">{panel.subtitle}</p>
+    <div
+      className={`${
+        compact ? 'w-full' : 'w-full'
+      } flex h-full flex-col rounded-panel border border-ink-950/18 bg-surface p-4 text-ink-950 shadow-soft sm:p-5`}
+    >
+      {/* Top machined wall-plate header */}
+      <div className="flex items-start justify-between gap-3 border-b border-ink-950/12 pb-3.5">
+        <div className="min-w-0">
+          <p className="font-display text-lg leading-none font-medium text-ink-950">{panel.title}</p>
+          <p className="mt-1.5 font-mono text-[0.6875rem] tracking-[0.06em] text-ink-500 uppercase">
+            {panel.subtitle}
+          </p>
         </div>
-        <span className="relative mt-1 flex h-2 w-2" aria-hidden="true">
-          <span className="absolute inline-flex h-2 w-2 rounded-full bg-bamboo-400 [animation:ping-soft_2.4s_var(--ease-out-soft)_infinite]" />
-          <span className="relative inline-flex h-2 w-2 rounded-full bg-bamboo-400" />
+        <span className="mt-0.5 inline-flex items-center gap-1.5 rounded-[2px] border border-brand/25 bg-bamboo-50 px-2 py-1">
+          <span className="relative flex h-2 w-2" aria-hidden="true">
+            <span className="absolute inline-flex h-2 w-2 rounded-full bg-brand [animation:ping-soft_2.4s_var(--ease-out-soft)_infinite]" />
+            <span className="relative inline-flex h-2 w-2 rounded-full bg-brand" />
+          </span>
+          <span className="numeral text-[0.625rem] font-semibold text-brand">LOCAL</span>
         </span>
       </div>
 
-      {compact ? null : (
-        <>
-      {/* Rooms */}
-      <div className="mt-4 flex flex-wrap gap-1.5" role="group" aria-label={panel.title}>
+      {/* Room selector strip */}
+      <div
+        className="mt-3.5 grid grid-cols-4 overflow-hidden rounded-[3px] border border-ink-950/14 bg-paper"
+        role="group"
+        aria-label={panel.title}
+      >
         {panel.rooms.map((room, i) => (
           <button
             key={room}
             type="button"
             onClick={() => setRoomIndex(i)}
             aria-pressed={i === roomIndex}
-            className={`cursor-pointer rounded-full px-2.5 py-1 text-[0.6875rem] font-medium transition-colors duration-300 ${
+            className={`min-h-9 cursor-pointer px-1.5 text-[0.75rem] font-medium transition-colors ${
+              i > 0 ? 'border-l border-ink-950/12' : ''
+            } ${
               i === roomIndex
-                ? 'bg-paper text-ink-950'
-                : 'bg-white/8 text-ink-300 hover:bg-white/15 hover:text-paper'
+                ? 'bg-ink-950 text-paper'
+                : 'text-ink-700 hover:bg-paper-alt hover:text-ink-950'
             }`}
           >
-            {room}
+            <span className="block truncate">{room}</span>
           </button>
         ))}
       </div>
 
-      {/* Readings */}
-      <div className="mt-3 grid grid-cols-2 gap-2">
-        <div className="rounded-xl bg-white/6 p-3">
-          <Lightbulb
-            size={15}
-            className={`transition-colors duration-500 ${
-              scene.lights ? 'text-ember-400' : 'text-ink-600'
-            }`}
-            aria-hidden="true"
-          />
-          <p className="mt-2 text-lg leading-none font-semibold tabular-nums">
-            {Math.round(brightness)}%
+      {/* Live architectural telemetry readout */}
+      <div className="mt-3 grid grid-cols-2 divide-x divide-ink-950/12 rounded-[3px] border border-ink-950/12 bg-paper">
+        <div className="p-3">
+          <div className="flex items-center justify-between">
+            <Lightbulb
+              size={14}
+              className={`transition-colors duration-300 ${
+                scene.lights ? 'text-ember-500' : 'text-ink-400'
+              }`}
+              aria-hidden="true"
+            />
+            <span className="numeral text-[0.625rem] font-semibold text-ink-500 uppercase">LUX</span>
+          </div>
+          <p className="mt-2 font-display text-2xl leading-none font-normal text-ink-950 tabular-nums">
+            {Math.round(brightness)}
+            <span className="ml-0.5 font-sans text-xs font-medium text-ink-500">%</span>
           </p>
-          <div className="mt-2 h-1 overflow-hidden rounded-full bg-white/12">
+          <div className="mt-2.5 h-1 overflow-hidden bg-ink-950/10">
             <div
-              className="h-1 rounded-full bg-ember-400"
+              className="h-1 bg-ember-500 transition-[width] duration-300"
               style={{ width: `${brightness}%` }}
             />
           </div>
         </div>
 
-        <div className="rounded-xl bg-white/6 p-3">
-          <Thermometer size={15} className="text-bamboo-300" aria-hidden="true" />
-          <p className="mt-2 text-lg leading-none font-semibold tabular-nums">
+        <div className="p-3">
+          <div className="flex items-center justify-between">
+            <Thermometer size={14} className="text-brand" aria-hidden="true" />
+            <span className="numeral text-[0.625rem] font-semibold text-ink-500 uppercase">
+              RH {Math.round(humidity)}%
+            </span>
+          </div>
+          <p className="mt-2 font-display text-2xl leading-none font-normal text-ink-950 tabular-nums">
             {temp.toFixed(1)}
-            <span className="text-xs font-medium text-ink-400">°C</span>
+            <span className="ml-0.5 font-sans text-xs font-medium text-ink-500">°C</span>
           </p>
-          <p className="mt-2 text-[0.6875rem] text-ink-400 tabular-nums">
-            RH {Math.round(humidity)}%
-          </p>
+          <div className="mt-2.5 h-1 overflow-hidden bg-ink-950/10">
+            <div
+              className="h-1 bg-brand transition-[width] duration-300"
+              style={{ width: `${Math.min(100, Math.max(15, humidity))}%` }}
+            />
+          </div>
         </div>
       </div>
 
-        </>
-      )}
-
-      {/* Scenes — these are the real control */}
-      <ul className="mt-3 space-y-1.5">
+      {/* Physical engraved-style scene switches */}
+      <ul className="mt-3.5 space-y-2">
         {panel.scenes.map((sceneCopy, i) => {
           const Icon = SCENE_ICONS[i] ?? Blinds
           const on = i === sceneIndex
@@ -122,57 +156,53 @@ export function HomePanel({ compact = false }: { compact?: boolean }) {
             <li key={sceneCopy.name}>
               <button
                 type="button"
-                onClick={() => setSceneIndex(i)}
+                onClick={() => selectScene(i)}
                 aria-pressed={on}
-                className={`flex w-full cursor-pointer items-center gap-3 rounded-xl px-3 py-2.5 text-left transition-colors duration-300 ${
-                  on ? 'bg-white/14' : 'bg-white/6 hover:bg-white/10'
+                className={`flex min-h-[3.25rem] w-full cursor-pointer items-center gap-3 rounded-[3px] border px-3 py-2.5 text-left transition-all duration-200 ${
+                  on
+                    ? 'border-ink-950 bg-ink-950 text-paper'
+                    : 'border-ink-950/14 bg-paper text-ink-900 hover:border-ink-950/38 hover:bg-surface'
                 }`}
               >
-                <Icon
-                  size={15}
-                  className={`shrink-0 transition-colors duration-300 ${
-                    on ? 'text-bamboo-300' : 'text-ink-300'
+                <span
+                  className={`grid size-7 shrink-0 place-items-center rounded-[2px] border transition-colors ${
+                    on
+                      ? 'border-ember-400/45 bg-ember-400/18 text-ember-300'
+                      : 'border-ink-950/12 bg-surface text-ink-700'
                   }`}
-                  aria-hidden="true"
-                />
+                >
+                  <Icon size={14} aria-hidden="true" />
+                </span>
                 <span className="min-w-0 flex-1">
-                  <span className="block truncate text-[0.8125rem] font-medium">
+                  <span className={`block truncate text-[0.8125rem] font-semibold ${on ? 'text-paper' : 'text-ink-950'}`}>
                     {sceneCopy.name}
                   </span>
-                  <span className="block truncate text-[0.6875rem] text-ink-400">
+                  <span className={`block truncate text-[0.6875rem] ${on ? 'text-ink-300' : 'text-ink-500'}`}>
                     {sceneCopy.detail}
                   </span>
                 </span>
                 <span
                   aria-hidden="true"
-                  className={`h-4 w-7 shrink-0 rounded-full p-[3px] transition-colors duration-300 ${
-                    on ? 'bg-bamboo-500' : 'bg-white/15'
+                  className={`h-4 w-1 shrink-0 transition-colors ${
+                    on ? 'bg-ember-400' : 'bg-ink-950/15'
                   }`}
-                >
-                  <span
-                    className={`block h-2.5 w-2.5 rounded-full bg-white transition-transform duration-300 ${
-                      on ? 'translate-x-3' : ''
-                    }`}
-                  />
-                </span>
+                />
               </button>
             </li>
           )
         })}
       </ul>
 
-      {compact ? null : (
-      <p className="mt-3.5 flex items-center gap-2 text-[0.6875rem] text-ink-400">
+      <p className="mt-auto flex items-center gap-2 border-t border-ink-950/12 pt-3 text-[0.6875rem] text-ink-500">
         <Lock
-          size={11}
-          className={`shrink-0 transition-colors duration-500 ${
-            scene.locked ? 'text-bamboo-400' : 'text-ink-600'
+          size={12}
+          className={`shrink-0 transition-colors duration-300 ${
+            scene.locked ? 'text-brand' : 'text-ink-500'
           }`}
           aria-hidden="true"
         />
-        {panel.status}
+        <span className="truncate font-mono tracking-[0.03em]">{panel.status}</span>
       </p>
-      )}
     </div>
   )
 }
