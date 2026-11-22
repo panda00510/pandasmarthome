@@ -1860,6 +1860,55 @@ export const en: Content = {
     ],
   },
 
+  contactPage: {
+    navLabel: 'Contact & quotes',
+    metaTitle: 'Contact us or ask for a quote | Panda Smart Home',
+    metaDescription:
+      'Send your home type and what you want to solve, or a device, software or signage idea. We reply with an honest view and a written scope before any work.',
+    eyebrow: 'Contact',
+    title: 'Ask for advice or a quote',
+    lead: 'Tell us your home type and what you want to solve first, or describe the device, software or screens you have in mind. A floor plan helps if you have one.',
+    nextTitle: 'What happens after you send it',
+    next: [
+      {
+        title: 'We read it and reply',
+        body: 'We reply on the email or phone number you give, in English or Chinese, with an honest view of what is worth doing.',
+      },
+      {
+        title: 'A conversation, then a look at the home',
+        body: 'How the household lives and what you already own, then a site visit or a floor plan review.',
+      },
+      {
+        title: 'A written scope before anything is bought',
+        body: 'A device list, network plan and scope in writing, with an indicative schedule. Custom work is quoted in writing before it starts.',
+      },
+    ],
+    note: 'Sending this form does not book a date or commit you to anything. Timing is agreed with the written scope.',
+    otherTitle: 'Asking about something specific?',
+    other: [
+      {
+        path: 'custom-hardware/',
+        label: 'Custom AI hardware',
+        body: 'A short project brief for the device you have in mind.',
+      },
+      {
+        path: 'software/',
+        label: 'Custom software',
+        body: 'A short brief for booking, inventory, bots or internal tools.',
+      },
+      {
+        path: 'signage/',
+        label: 'Panda Signage',
+        body: 'Information screens and meeting room door panels.',
+      },
+      {
+        path: 'products/',
+        label: 'Desk screen devices',
+        body: 'Pre-order a device, or ask for custom features.',
+      },
+    ],
+  },
+
   glossary: {
     navLabel: 'Glossary',
     metaTitle: 'Smart home glossary: Matter, Zigbee, neutral wire | Panda',

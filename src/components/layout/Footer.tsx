@@ -100,6 +100,11 @@ export function Footer() {
                 </a>
               </li>
               <li>
+                <a href={pageHref(lang, 'contact/')} className={LINK}>
+                  {t.contactPage.navLabel}
+                </a>
+              </li>
+              <li>
                 <a href={showroomHref(lang)} className={LINK}>
                   {t.nav.showroom}
                 </a>

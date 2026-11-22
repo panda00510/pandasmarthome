@@ -1793,6 +1793,55 @@ export const zh: Content = {
     ],
   },
 
+  contactPage: {
+    navLabel: '联系与询价',
+    metaTitle: '联系我们 / 询价｜Panda智能家居',
+    metaDescription:
+      '告诉我们户型和想先解决什么，或者你想做的设备、软件、信息屏。动工前，我们给你实在的建议和书面范围。',
+    eyebrow: '联系',
+    title: '咨询或询价',
+    lead: '告诉我们你的户型和最想先解决什么，或者描述你想做的设备、软件或屏幕。有平面图的话更好。',
+    nextTitle: '发送之后会怎样',
+    next: [
+      {
+        title: '我们看过后回复你',
+        body: '通过你留下的邮箱或电话，用中文或英文回复，实话实说哪些值得做。',
+      },
+      {
+        title: '先聊一聊，再看房子',
+        body: '了解家里怎么生活、已经有哪些设备，然后上门查看或审阅平面图。',
+      },
+      {
+        title: '买任何东西之前，先有书面范围',
+        body: '书面的设备清单、网络规划和工作范围，附参考时间表。定制项目在动工前书面报价。',
+      },
+    ],
+    note: '发送表单不会预约任何日期，也不代表你做了任何承诺。时间安排随书面范围一起确定。',
+    otherTitle: '想问具体的某一项？',
+    other: [
+      {
+        path: 'custom-hardware/',
+        label: 'AI 硬件定制',
+        body: '针对你想做的设备的简短需求单。',
+      },
+      {
+        path: 'software/',
+        label: '软件定制',
+        body: '预约、库存、机器人或内部工具的简短需求单。',
+      },
+      {
+        path: 'signage/',
+        label: 'Panda Signage 信息屏',
+        body: '信息屏和会议室门牌。',
+      },
+      {
+        path: 'products/',
+        label: '桌面屏幕设备',
+        body: '预购设备，或询问定制功能。',
+      },
+    ],
+  },
+
   glossary: {
     navLabel: '术语表',
     metaTitle: '智能家居术语表：Matter、Zigbee、零线是什么｜Panda智能家居',

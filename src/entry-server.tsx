@@ -10,6 +10,7 @@ import { dictionaries, langPath, type Lang } from './i18n/context'
 import { LanguageProvider } from './i18n/LanguageProvider'
 import * as Checklist from './components/sections/Checklist'
 import * as ComparePage from './components/sections/ComparePage'
+import * as ContactPage from './components/sections/ContactPage'
 import * as FaqPage from './components/sections/FaqPage'
 import * as Glossary from './components/sections/Glossary'
 import { glossary as glossaryEn } from './content/glossary.en'
@@ -26,7 +27,7 @@ import { viewFiles, viewOf, views } from './views'
 // The browser loads copy, page chunks and article bodies on demand (main.tsx);
 // the prerender has everything up front, so render() stays synchronous.
 Object.assign(dictionaries, { en, zh })
-Object.assign(views, { checklist: Checklist, compare: ComparePage, faq: FaqPage, glossary: { ...Glossary, glossaries: { en: glossaryEn, zh: glossaryZh } }, guides: Guides, hardware: Hardware, home: Home, hub: Hub, products: Products, signage: Signage, software: Software })
+Object.assign(views, { checklist: Checklist, compare: ComparePage, contact: ContactPage, faq: FaqPage, glossary: { ...Glossary, glossaries: { en: glossaryEn, zh: glossaryZh } }, guides: Guides, hardware: Hardware, home: Home, hub: Hub, products: Products, signage: Signage, software: Software })
 fillGuideBodies(
   Object.fromEntries(
     Object.entries(

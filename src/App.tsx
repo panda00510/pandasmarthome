@@ -132,6 +132,10 @@ function Page({ path, guide }: { path: string; guide: Guide | undefined }) {
     const { ChecklistPage } = v.checklist!
     return <ChecklistPage />
   }
+  if (view === 'contact') {
+    const { ContactPage } = v.contact!
+    return <ContactPage />
+  }
   if (view === 'compare') {
     const { ComparePage } = v.compare!
     return <ComparePage />

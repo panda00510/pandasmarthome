@@ -56,6 +56,7 @@ node scripts/check-form.mjs --dry                    # 每周表单自检的解�
 - 用户可见文案只在 `src/content/en.ts` 与 `zh.ts`，类型在 `types.ts`；**两种语言同一批改**（类型检查会拦住只改一边）。
 - 指南 / 专题页是 `src/content/guides/`、`src/content/pages/` 下的 `<slug>.en.md` + `.zh.md`，两种语言都必须有。
 - 常见问题页 `/faq/` 自动汇总首页、产品、软件、硬件定制、信息屏各页的 FAQ（`src/content/faqGroups.ts`），不单独写问题；改问题去各页的 content 块。
+- 询价页 `/contact/` 复用首页的 `Contact` 表单（同一端点、同一 CSP），文案在 content 的 `contactPage` 块；不承诺档期、不写回复时限。页眉“预约咨询”在首页跳 `#contact`，其他页打开 `/contact/`。
 - 对比页 `/compare/` 的文案在 content 的 `compare` 块：设备列与 `products.items` 同 id、同顺序；只写各页已写明的能力，不写价格、不比竞品。产品说明改了要同步这里。
 - 术语表词条在 `src/content/glossary.en.ts` / `glossary.zh.ts`（只在 /glossary/ 加载；两边 id 必须一致、链接必须是站内真实页面，构建会检查）。每条只复述指南里已有的说法。
 - 所有 wa.me 链接走 `src/lib/whatsapp.ts`；各页预填开场白在 content 的 `whatsapp` 块，不带访客个人信息。

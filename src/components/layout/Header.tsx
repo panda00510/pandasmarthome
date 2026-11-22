@@ -26,6 +26,8 @@ export function Header() {
   const { t, lang, path } = useI18n()
   // Section anchors live on the homepage; from a guide they go back there.
   const home = path ? pageHref(lang) : ''
+  // The form is on the homepage and on /contact/; elsewhere the CTA opens /contact/.
+  const contactHref = path === '' || path === 'contact/' ? '#contact' : pageHref(lang, 'contact/')
   const [open, setOpen] = useState(false)
   const showroom = showroomHref(lang)
   const [scrolled, setScrolled] = useState(false)
@@ -154,7 +156,7 @@ export function Header() {
 
           <Button
             as="a"
-            href={`${home}#contact`}
+            href={contactHref}
             data-track="nav_cta_click"
             size="sm"
             variant={dark ? 'glow' : 'primary'}
@@ -217,7 +219,7 @@ export function Header() {
           ))}
           <Button
             as="a"
-            href={`${home}#contact`}
+            href={contactHref}
             data-track="nav_cta_click"
             size="lg"
             className="mt-3 w-full"

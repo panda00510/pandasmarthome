@@ -611,6 +611,20 @@ export type Content = {
     labels: { fits: string; get: string; quote: string; more: string }
     services: { id: string; path: string; title: string; fits: string; get: string; quote: string }[]
   }
+  contactPage: {
+    navLabel: string
+    metaTitle: string
+    metaDescription: string
+    eyebrow: string
+    title: string
+    lead: string
+    nextTitle: string
+    next: { title: string; body: string }[]
+    /** What sending the form does not do. */
+    note: string
+    otherTitle: string
+    other: { path: string; label: string; body: string }[]
+  }
   glossary: {
     navLabel: string
     metaTitle: string

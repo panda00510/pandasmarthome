@@ -385,7 +385,7 @@ export function Seo() {
     !guide && path !== '' && site.url
       ? [
           {
-            '@type': hubOf(path) || path === 'guides/' ? 'CollectionPage' : 'WebPage',
+            '@type': hubOf(path) || path === 'guides/' ? 'CollectionPage' : path === 'contact/' ? 'ContactPage' : 'WebPage',
             '@id': id('webpage'),
             url,
             name: title,
