@@ -235,6 +235,7 @@ export const pagePaths = [
   'signage/',
   'renovation-checklist/',
   'glossary/',
+  'faq/',
   ...guidesIn('en').map((guide) => guide.path),
   ...pagesIn('en').map((page) => page.path),
   ...HUBS.map((hub) => `${hub}/`),
@@ -280,6 +281,9 @@ export function pageMeta(lang: Lang, path: string) {
   }
   if (path === 'renovation-checklist/') {
     return { title: t.checklist.metaTitle, description: t.checklist.metaDescription, guide: null }
+  }
+  if (path === 'faq/') {
+    return { title: t.faq.page.metaTitle, description: t.faq.page.metaDescription, guide: null }
   }
   if (path === 'glossary/') {
     return { title: t.glossary.metaTitle, description: t.glossary.metaDescription, guide: null }

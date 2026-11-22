@@ -11,7 +11,7 @@ const VISIBLE = 4
  * questions are listed; the rest sit in one more fold so the page stays short.
  */
 export function Faq() {
-  const { t } = useI18n()
+  const { t, lang } = useI18n()
   const first = t.faq.items.slice(0, VISIBLE)
   const rest = t.faq.items.slice(VISIBLE)
 
@@ -53,6 +53,13 @@ export function Faq() {
               <div className="divide-y divide-ink-200 border-y border-ink-200">{rest.map(row)}</div>
             </details>
           ) : null}
+          <a
+            href={pageHref(lang, 'faq/')}
+            className="mt-2 inline-flex min-h-11 items-center gap-1.5 text-sm font-semibold text-bamboo-700 hover:text-bamboo-600"
+          >
+            {t.faq.all}
+            <ArrowRight size={15} aria-hidden="true" />
+          </a>
           <LatestGuides />
         </div>
       </div>

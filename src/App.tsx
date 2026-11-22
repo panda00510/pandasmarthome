@@ -132,6 +132,10 @@ function Page({ path, guide }: { path: string; guide: Guide | undefined }) {
     const { ChecklistPage } = v.checklist!
     return <ChecklistPage />
   }
+  if (view === 'faq') {
+    const { FaqPage } = v.faq!
+    return <FaqPage />
+  }
   if (view === 'glossary') {
     const { GlossaryPage, glossaries } = v.glossary!
     return <GlossaryPage glossaries={glossaries} />

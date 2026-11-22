@@ -334,6 +334,7 @@ src/
       Home.tsx       the homepage, section by section
       NotFound.tsx   the 404 page
       Glossary.tsx   the /glossary/ page (+ its DefinedTermSet JSON-LD)
+      FaqPage.tsx    the /faq/ page (all FAQs, grouped; JSON-LD in Seo.tsx)
       Planner.tsx    homepage "plan starter": three questions → device groups from products.install (copy in content `planner`); its form button pre-fills the enquiry form
     Choices.tsx      pill radio / checkbox groups shared by the plan starter and the briefs
     ProjectBrief.tsx the project brief on /custom-hardware/ and /software/ (copy in content `hardware.brief` / `software.brief`)
@@ -345,7 +346,7 @@ src/
 
 Pages (each also under `/zh/`): `/`, `/solutions/…`, `/homes/…`,
 `/how-it-works/`, `/guides/…`, `/products/`, `/software/`,
-`/custom-hardware/`, `/signage/`, `/renovation-checklist/`, `/glossary/`, `/about/`, `/privacy/`. The 3D showroom is a separate build at `/showroom/`.
+`/custom-hardware/`, `/signage/`, `/renovation-checklist/`, `/glossary/`, `/faq/`, `/about/`, `/privacy/`. The 3D showroom is a separate build at `/showroom/`.
 
 ---
 
@@ -493,6 +494,12 @@ fails the type check until the other is updated too.
   (services included as `makesOffer`, `areaServed` = Singapore + its five
   regions), a `FAQPage` built from the FAQ copy, and a `WebSite` node.
 * JSON-LD `Article` + `BreadcrumbList` on every guide page.
+* `/faq/`: one `FAQPage` with every question from the home, products,
+  software, custom hardware and signage FAQs (`src/content/faqGroups.ts`).
+  It writes no questions of its own — edit them on the page that owns them.
+  Those pages keep their own `FAQPage` too; Google now shows FAQ rich results
+  only for government and health sites, so the repeat is for crawlers and AI
+  answers, not for a rich result.
 * `/glossary/`: `DefinedTermSet` + one `DefinedTerm` per entry (`url` = the
   term's `#id` anchor); `llms.txt` lists each term with its first sentence. The
   build fails if the two languages list different term ids or a term links to

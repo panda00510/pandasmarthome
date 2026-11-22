@@ -1310,6 +1310,17 @@ export const zh: Content = {
         a: '单一区域改造通常一到两天。全屋系统会跟着装修周期分阶段推进。书面方案中会附上大致时间表。',
       },
     ],
+    all: '全部问题',
+    page: {
+      metaTitle: '常见问题：智能家居、产品、信息屏与定制｜Panda智能家居',
+      metaDescription:
+        '集中回答：新加坡智能家居设计安装、预购桌面设备、软件与 AI 硬件定制，以及 Panda Signage 信息屏。',
+      title: '常见问题',
+      lead: '各页面已经回答过的问题，按业务集中在这里。每一组都链到详细说明的页面。',
+      homeGroup: '智能家居安装',
+      jumpTo: '跳到',
+      groupLink: '查看{page}页面',
+    },
   },
 
   contact: {

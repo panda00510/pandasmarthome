@@ -135,6 +135,8 @@ Matter 选题已有 `what-is-matter`，没有重复写。
 | 2027-01-22 | WhatsApp replies and bookings for a small shop: when custom is worth it | WhatsApp booking bot Singapore、SME booking system、小店 预约系统 定制 | 软件定制 | 是否使用 WhatsApp Business API 及其费用由谁承担；有无可演示的样例 | 计划 |
 | 2027-02-05 | How much does a smart home cost in Singapore? | smart home cost Singapore、新加坡智能家居 多少钱 | 智能家居安装 | **真实价格区间**（按户型或房间） | 待素材。备选题"太阳能 / EV 充电桩家庭的能耗监测"已于 2026-11-22 先行发布（`solar-ev-charger-energy-monitoring`），本题仍等真实价格区间 |
 
+另：2026-11-22 上线了常见问题页 `/faq/`（中英，33 问，全部来自首页 / 产品 / 软件 / 硬件定制 / 信息屏已有的 FAQ，带 FAQPage 结构化数据），页脚的“常见问题”和首页 FAQ 底部都链过去。
+
 另：2026-11-13 上线了可打印的装修前清单页 `/renovation-checklist/`（不是文章，内容全部来自已有指南），已从两篇装修指南和 /homes/bto-smart-home/ 内链。
 
 每篇的要求：开头 2–3 句直接回答；`points:` 三要点；`## Common questions` 3–4 问；3 个以上内链；不写编造的数字和规定。已有文章每季度复核一次，有实质修改再改 `updated`。

@@ -381,6 +381,20 @@ export type Content = {
     title: string
     lead: string
     items: { q: string; a: string }[]
+    /** Link from the homepage FAQ to /faq/. */
+    all: string
+    /** /faq/: every FAQ on the site, grouped by business line. */
+    page: {
+      metaTitle: string
+      metaDescription: string
+      title: string
+      lead: string
+      /** Group name for the homepage questions. */
+      homeGroup: string
+      jumpTo: string
+      /** "More on {page}" link under each group. */
+      groupLink: string
+    }
   }
   contact: {
     eyebrow: string

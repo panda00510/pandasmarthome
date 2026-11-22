@@ -18,6 +18,7 @@ const loaders = {
   hardware: () => import('./components/sections/Hardware'),
   signage: () => import('./components/sections/Signage'),
   checklist: () => import('./components/sections/Checklist'),
+  faq: () => import('./components/sections/FaqPage'),
   // The terms come in this page's language only (content/glossary.<lang>.ts).
   glossary: async (lang: Lang) => {
     const [view, data] = await Promise.all([
@@ -40,6 +41,7 @@ export const viewFiles: Record<View, string> = {
   hardware: 'src/components/sections/Hardware.tsx',
   signage: 'src/components/sections/Signage.tsx',
   checklist: 'src/components/sections/Checklist.tsx',
+  faq: 'src/components/sections/FaqPage.tsx',
   glossary: 'src/components/sections/Glossary.tsx',
 }
 
@@ -58,6 +60,7 @@ const PAGES: Record<string, View> = {
   'signage/': 'signage',
   'renovation-checklist/': 'checklist',
   'glossary/': 'glossary',
+  'faq/': 'faq',
 }
 
 /** Which chunk a page needs; null for an unknown address (the 404 view is in the main bundle). */

@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { brand, brandAssets } from '../config/brand'
 import { ogImageFor } from '../config/ogImages'
 import { hasAddress, site, socialLinks } from '../config/site'
+import { faqGroups } from '../content/faqGroups'
 import { hubOf, pageMeta } from '../content/guides'
 import { langPath, useI18n } from '../i18n/context'
 
@@ -140,6 +141,20 @@ export function Seo() {
       name: item.q,
       acceptedAnswer: { '@type': 'Answer', text: item.a },
     })),
+  }
+
+  // /faq/ repeats every page's questions, so it carries them all as one FAQPage.
+  const allFaq = {
+    '@type': 'FAQPage',
+    '@id': id('faq'),
+    isPartOf: site.url ? { '@id': `${site.url}#website` } : undefined,
+    mainEntity: faqGroups(t).flatMap((group) =>
+      group.items.map((item) => ({
+        '@type': 'Question',
+        name: item.q,
+        acceptedAnswer: { '@type': 'Answer', text: item.a },
+      })),
+    ),
   }
 
   // Article pages describe the article and its place in the site; the FAQ
@@ -405,7 +420,9 @@ export function Seo() {
               ? [hardwareService, hardwareFaq]
               : path === 'signage/'
                 ? [signageService, signageFaq]
-                : article),
+                : path === 'faq/'
+                  ? [allFaq]
+                  : article),
       ...indexPage,
       {
         '@type': 'WebSite',

@@ -9,6 +9,7 @@ import { fillGuideBodies, findGuide, guidePath, guidesIn, latestGuideUpdate, pag
 import { dictionaries, langPath, type Lang } from './i18n/context'
 import { LanguageProvider } from './i18n/LanguageProvider'
 import * as Checklist from './components/sections/Checklist'
+import * as FaqPage from './components/sections/FaqPage'
 import * as Glossary from './components/sections/Glossary'
 import { glossary as glossaryEn } from './content/glossary.en'
 import { glossary as glossaryZh } from './content/glossary.zh'
@@ -24,7 +25,7 @@ import { viewFiles, viewOf, views } from './views'
 // The browser loads copy, page chunks and article bodies on demand (main.tsx);
 // the prerender has everything up front, so render() stays synchronous.
 Object.assign(dictionaries, { en, zh })
-Object.assign(views, { checklist: Checklist, glossary: { ...Glossary, glossaries: { en: glossaryEn, zh: glossaryZh } }, guides: Guides, hardware: Hardware, home: Home, hub: Hub, products: Products, signage: Signage, software: Software })
+Object.assign(views, { checklist: Checklist, faq: FaqPage, glossary: { ...Glossary, glossaries: { en: glossaryEn, zh: glossaryZh } }, guides: Guides, hardware: Hardware, home: Home, hub: Hub, products: Products, signage: Signage, software: Software })
 fillGuideBodies(
   Object.fromEntries(
     Object.entries(
@@ -264,7 +265,7 @@ ${['/showroom/', '/showroom/zh/']
       group.terms.map((term) => `- ${term.term}: ${term.body.slice(0, term.body.search(/\.(\s|$)/) + 1)}`),
     ),
     '',
-    '## FAQ',
+    `## FAQ${site.url ? ` (all questions, grouped: ${page('en', 'faq/')})` : ''}`,
     ...en.faq.items.flatMap((item) => [`### ${item.q}`, item.a, '']),
     `Contact: ${site.url ? page('en') + '#contact' : 'see website'}`,
     '',

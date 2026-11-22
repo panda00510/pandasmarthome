@@ -1352,6 +1352,17 @@ export const en: Content = {
         a: 'A focused single-area retrofit is often a day or two. A whole-home system runs alongside your renovation timeline. You get an indicative schedule with the written scope.',
       },
     ],
+    all: 'All questions',
+    page: {
+      metaTitle: 'FAQ: smart homes, devices, signage, custom builds | Panda',
+      metaDescription:
+        'Answers in one place: smart home installation in Singapore, pre-order desk devices, custom software and AI hardware, and Panda Signage screens.',
+      title: 'Frequently asked questions',
+      lead: 'Every question answered on our pages, collected in one place and grouped by what we do. Each group links to the page with the full details.',
+      homeGroup: 'Smart home installation',
+      jumpTo: 'Jump to',
+      groupLink: 'More on {page}',
+    },
   },
 
   contact: {

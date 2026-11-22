@@ -115,7 +115,7 @@ export function Footer() {
                 </a>
               </li>
               <li>
-                <a href={`${home}#faq`} className={LINK}>
+                <a href={pageHref(lang, 'faq/')} className={LINK}>
                   {t.faq.eyebrow}
                 </a>
               </li>
