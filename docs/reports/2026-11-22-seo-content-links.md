@@ -93,4 +93,18 @@
 
 ## 线上核对
 
-部署后补在下面。
+部署于提交 `c63ce73`，GitHub Actions Deploy 运行 45015665237，结果 success。
+
+- **返回状态**：下面 17 个地址都返回 200。
+  - 首页、`/zh/`
+  - `/solutions/`、`/zh/solutions/`
+  - 新场景页中英文
+  - `/solutions/smart-aircon-control/`
+  - `/homes/condo-smart-home/`、`/homes/older-home-upgrade/`
+  - `/guides/`、`/zh/guides/`、`/guides/what-is-matter/`
+  - `/how-it-works/`、`/zh/how-it-works/`、`/about/`
+  - `sitemap.xml`、`llms.txt`
+- **新场景页**：线上 sitemap 已收录。JSON-LD 有 WebPage、Service、FAQPage、BreadcrumbList，描述是新的。
+- **指南列表的结构化数据**：线上 `/guides/` 和 `/zh/guides/` 各有 35 个 ListItem，即 33 篇指南加 2 级面包屑。
+- **“更多指南”**：线上 `/guides/what-is-matter/` 末尾链到同分类的多层有地住宅网络和隐私两篇。
+- **提交 IndexNow**：deploy 工作流在发布后自动运行 `scripts/indexnow.mjs`，向 IndexNow 提交更新的地址。
