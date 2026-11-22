@@ -69,8 +69,8 @@
 
 | 场景 | 上一轮 | 本轮 |
 |---|---|---|
-| 桌面 1 倍屏 | 123 KB | 约 180 KB |
-| 手机 3 倍屏 | 216 KB | 约 330 KB |
+| 桌面 1 倍屏 | 123 KB | 163 KB（线上实测） |
+| 手机 3 倍屏 | 216 KB | 313 KB（线上实测） |
 
 增加的部分是新增的大图。所有图片都是 WebP、按 `srcset` 选尺寸。首屏图以外的图片都懒加载；首屏渲染图加了 `fetchpriority="high"`。
 
@@ -82,4 +82,13 @@
 
 ## 线上核对
 
-部署后补充。
+- **部署**：内页对齐（`defb440`）和首页改版（`87922f9`）一起推送。GitHub Actions Deploy 运行 44992683581，结果 success。
+- **返回状态**：下面 20 个地址全部返回 200。
+  - 首页、`/zh/`
+  - `/products/`、`/zh/products/`、`/solutions/`、`/homes/`
+  - 三个场景页（含 `/zh/solutions/away-from-home/`）
+  - `/guides/`，以及一篇指南
+  - `/faq/`、`/zh/faq/`、`/compare/`、`/contact/`、`/zh/contact/`、`/glossary/`、`/software/`
+  - `sitemap.xml`
+- **首屏渲染图**：图片文件返回 200。
+- **改版后截图**：部署后从线上截取，即本目录的 `after-*.webp`。内页的截图在 `inner-pages-2026-11-22/after-*.webp`。
