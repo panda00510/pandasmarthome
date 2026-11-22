@@ -95,6 +95,11 @@ export function Footer() {
                 </a>
               </li>
               <li>
+                <a href={pageHref(lang, 'compare/')} className={LINK}>
+                  {t.compare.navLabel}
+                </a>
+              </li>
+              <li>
                 <a href={showroomHref(lang)} className={LINK}>
                   {t.nav.showroom}
                 </a>

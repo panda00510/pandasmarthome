@@ -335,6 +335,7 @@ src/
       NotFound.tsx   the 404 page
       Glossary.tsx   the /glossary/ page (+ its DefinedTermSet JSON-LD)
       FaqPage.tsx    the /faq/ page (all FAQs, grouped; JSON-LD in Seo.tsx)
+      ComparePage.tsx the /compare/ page: the four desk devices side by side, then which service fits (copy in content `compare`; no prices)
       Planner.tsx    homepage "plan starter": three questions → device groups from products.install (copy in content `planner`); its form button pre-fills the enquiry form
     Choices.tsx      pill radio / checkbox groups shared by the plan starter and the briefs
     ProjectBrief.tsx the project brief on /custom-hardware/ and /software/ (copy in content `hardware.brief` / `software.brief`)
@@ -346,7 +347,7 @@ src/
 
 Pages (each also under `/zh/`): `/`, `/solutions/…`, `/homes/…`,
 `/how-it-works/`, `/guides/…`, `/products/`, `/software/`,
-`/custom-hardware/`, `/signage/`, `/renovation-checklist/`, `/glossary/`, `/faq/`, `/about/`, `/privacy/`. The 3D showroom is a separate build at `/showroom/`.
+`/custom-hardware/`, `/signage/`, `/renovation-checklist/`, `/glossary/`, `/faq/`, `/compare/`, `/about/`, `/privacy/`. The 3D showroom is a separate build at `/showroom/`.
 
 ---
 

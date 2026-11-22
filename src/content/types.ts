@@ -589,6 +589,28 @@ export type Content = {
     pages: Record<string, string>
   }
   /** /glossary/ page copy. The terms themselves are in content/glossary.<lang>.ts (loaded only on that page). */
+  compare: {
+    navLabel: string
+    metaTitle: string
+    metaDescription: string
+    eyebrow: string
+    title: string
+    lead: string
+    devicesTitle: string
+    devicesLead: string
+    /** Row labels of the device table; each row is a field of `devices`. */
+    rows: { screen: string; does: string; homeAssistant: string; power: string; suits: string }
+    /** One per product in `products.items`, same ids and order. */
+    devices: { id: string; screen: string; does: string; homeAssistant: string; power: string; suits: string }[]
+    devicesNotes: string[]
+    devicesLink: string
+    /** Link from /products/ to this page. */
+    fromProducts: string
+    servicesTitle: string
+    servicesLead: string
+    labels: { fits: string; get: string; quote: string; more: string }
+    services: { id: string; path: string; title: string; fits: string; get: string; quote: string }[]
+  }
   glossary: {
     navLabel: string
     metaTitle: string

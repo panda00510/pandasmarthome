@@ -295,6 +295,11 @@ export function ProductsPage() {
               {p.preparingLink}
             </a>
           </p>
+          <p className="mt-2 text-sm">
+            <a href={pageHref(lang, 'compare/')} className="font-semibold text-bamboo-700 hover:text-bamboo-600">
+              {t.compare.fromProducts}
+            </a>
+          </p>
         </div>
       </section>
 
