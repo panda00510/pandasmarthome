@@ -56,6 +56,7 @@ export const en: Content = {
       hardware: 'Custom AI hardware',
       software: 'Custom software',
     },
+    protocols: 'Works with Zigbee · Thread · Matter',
     imageAlt:
       'Illustrative photo: modern living room with a corner sofa, curtains and track lighting',
     panel: {
@@ -1614,6 +1615,7 @@ export const en: Content = {
     blurb:
       'Open, local-first smart home design and installation for homes across Singapore.',
     navTitle: 'Explore',
+    groups: { home: 'Smart home', resources: 'Resources' },
     legalTitle: 'Legal',
     contactTitle: 'Contact',
     credits: 'Image credits & licences',

@@ -108,7 +108,9 @@ export function Header() {
   const linkClass = (link: NavLink) =>
     `inline-flex min-h-11 items-center gap-1 rounded-full px-2 text-sm font-medium whitespace-nowrap transition-colors ${
       dark
-        ? 'text-ink-300 hover:bg-white/8 hover:text-paper'
+        ? link.current
+          ? 'bg-white/8 text-paper'
+          : 'text-ink-300 hover:bg-white/8 hover:text-paper'
         : link.current
           ? 'bg-ink-100 text-ink-950'
           : 'text-ink-700 hover:bg-ink-100 hover:text-ink-950'
@@ -192,8 +194,9 @@ export function Header() {
             <a
               key={link.key}
               href={link.href}
+              aria-current={link.current ? 'page' : undefined}
               onClick={() => setOpen(false)}
-              className="inline-flex min-h-12 items-center gap-2 rounded-xl px-3 text-base font-medium text-ink-800 transition-colors hover:bg-ink-100"
+              className="inline-flex min-h-12 items-center gap-2 rounded-xl px-3 text-base font-medium text-ink-800 transition-colors hover:bg-ink-100 aria-[current=page]:bg-ink-100 aria-[current=page]:text-ink-950"
             >
               {link.icon ? <Box size={17} aria-hidden="true" /> : null}
               {link.label}
@@ -201,7 +204,7 @@ export function Header() {
           ))}
           {groups.map((group) => (
             <div key={group.id} className="flex flex-col gap-1">
-              <p className="mt-3 border-t border-ink-200/70 px-3 pt-4 text-xs font-semibold tracking-[0.14em] text-bamboo-700 uppercase">
+              <p className="mt-3 border-t border-ink-200/70 px-3 pt-4 text-xs font-semibold tracking-[0.14em] text-ink-500 uppercase">
                 {group.label}
               </p>
               {group.items.map((link) => (
@@ -210,7 +213,7 @@ export function Header() {
                   href={link.href}
                   aria-current={link.current ? 'page' : undefined}
                   onClick={() => setOpen(false)}
-                  className="inline-flex min-h-12 items-center rounded-xl px-3 text-base font-medium text-ink-800 transition-colors hover:bg-ink-100"
+                  className="inline-flex min-h-12 items-center rounded-xl px-3 text-base font-medium text-ink-800 transition-colors hover:bg-ink-100 aria-[current=page]:bg-ink-100 aria-[current=page]:text-ink-950"
                 >
                   {link.label}
                 </a>
@@ -277,12 +280,12 @@ function NavMenu({ id, label, items, dark }: { id: string; label: string; items:
         aria-expanded={show}
         aria-controls={id}
         onClick={() => setShow((v) => !v)}
-        className={`inline-flex min-h-11 cursor-pointer items-center gap-1 rounded-full px-2 text-sm font-semibold whitespace-nowrap transition-colors ${
+        className={`inline-flex min-h-11 cursor-pointer items-center gap-1 rounded-full px-2 text-sm font-medium whitespace-nowrap transition-colors ${
           dark
-            ? 'text-bamboo-300 hover:bg-white/8 hover:text-bamboo-200'
-            : current
-              ? 'bg-bamboo-50 text-bamboo-800'
-              : 'text-bamboo-700 hover:bg-bamboo-50 hover:text-bamboo-800'
+            ? `hover:bg-white/8 hover:text-paper ${show ? 'bg-white/8 text-paper' : 'text-ink-300'}`
+            : current || show
+              ? 'bg-ink-100 text-ink-950'
+              : 'text-ink-700 hover:bg-ink-100 hover:text-ink-950'
         }`}
       >
         {label}

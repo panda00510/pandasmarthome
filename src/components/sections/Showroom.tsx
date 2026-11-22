@@ -27,7 +27,6 @@ export function Showroom() {
       <div className="shell grid items-center gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-16">
         <div data-reveal>
           <p className="eyebrow text-bamboo-300!">
-            <span aria-hidden="true" className="h-px w-6 bg-bamboo-300/60" />
             {s.eyebrow}
           </p>
           <h2 className="mt-5 text-[2.25rem] leading-[1.04] font-semibold tracking-[-0.04em] sm:text-[3.25rem] lg:text-[3.25rem]">

@@ -48,7 +48,6 @@ export function GlossaryPage({ glossaries }: { glossaries: Partial<Record<Lang, 
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }}
       />
       <p className="eyebrow">
-        <span aria-hidden="true" className="h-px w-6 bg-bamboo-500/50" />
         {g.eyebrow}
       </p>
       <h1 className="mt-5 max-w-4xl text-[2.25rem] leading-[1.06] font-semibold tracking-[-0.035em] text-balance text-ink-950 sm:text-[3rem]">

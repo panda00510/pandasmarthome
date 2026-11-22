@@ -31,7 +31,6 @@ export function SoftwarePage() {
       <section className="border-b border-ink-200/70">
         <div className="shell pt-10 pb-10 lg:pt-14 lg:pb-14">
           <p className="eyebrow">
-            <span aria-hidden="true" className="h-px w-6 bg-bamboo-500/50" />
             {s.eyebrow}
           </p>
           <h1 className="mt-5 max-w-4xl text-[2.25rem] leading-[1.06] font-semibold tracking-[-0.035em] text-balance text-ink-950 sm:text-[3rem] lg:text-[3.5rem]">
@@ -86,7 +85,7 @@ export function SoftwarePage() {
               return (
                 <li key={item.id}>
                   <article id={item.id} className="card flex h-full scroll-mt-28 flex-col p-5 sm:p-6">
-                    <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-bamboo-50 text-bamboo-700 ring-1 ring-bamboo-100">
+                    <span className="icon-tile">
                       <Icon size={20} aria-hidden="true" />
                     </span>
                     <h2 className="mt-4 text-[1.2rem] leading-snug font-semibold tracking-[-0.02em] text-ink-950">
@@ -165,7 +164,7 @@ export function SoftwarePage() {
 
       <section className="band border-t border-ink-200/70">
         <div className="shell">
-          <h2 className="max-w-3xl text-[1.75rem] leading-[1.15] font-semibold tracking-[-0.025em] text-ink-950 sm:text-4xl">
+          <h2 className="max-w-3xl title-section text-ink-950">
             {s.processTitle}
           </h2>
           <ol className="mt-8 grid gap-x-5 gap-y-5 lg:grid-cols-5">
@@ -175,7 +174,7 @@ export function SoftwarePage() {
                   {i + 1}
                 </span>
                 <div className="lg:mt-4">
-                  <h3 className="text-[1.0625rem] leading-snug font-semibold text-ink-950">{step.title}</h3>
+                  <h3 className="title-card text-ink-950">{step.title}</h3>
                   <p className="mt-1.5 text-sm leading-relaxed text-ink-600">{step.body}</p>
                 </div>
               </li>
@@ -198,7 +197,7 @@ export function SoftwarePage() {
 
       <section className="band border-t border-ink-200/70">
         <div className="shell grid gap-8 lg:grid-cols-[minmax(0,0.7fr)_minmax(0,1.3fr)] lg:gap-16">
-          <h2 className="text-[1.75rem] leading-[1.15] font-semibold tracking-[-0.025em] text-ink-950 sm:text-4xl">
+          <h2 className="title-section text-ink-950">
             {s.faqTitle}
           </h2>
           <div className="divide-y divide-ink-200 border-y border-ink-200">

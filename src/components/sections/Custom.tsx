@@ -60,7 +60,7 @@ export function Custom() {
               <ModuleArt />
             </span>
             <span className="eyebrow relative text-bamboo-300!">{hw.eyebrow}</span>
-            <span className="relative mt-4 block text-[1.75rem] leading-[1.1] font-semibold tracking-[-0.03em] sm:max-w-[62%] sm:text-[2.25rem]">
+            <span className="relative mt-4 block title-section sm:max-w-[62%]">
               {hw.homeTitle}
             </span>
             <span className="relative mt-4 block max-w-lg text-[0.9375rem] leading-relaxed text-ink-300 sm:text-base">
@@ -83,7 +83,7 @@ export function Custom() {
 
           <a href={pageHref(lang, 'software/')} data-reveal className="card group flex flex-col p-6 sm:p-8">
             <span className="eyebrow">{sw.eyebrow}</span>
-            <span className="mt-4 block text-[1.75rem] leading-[1.1] font-semibold tracking-[-0.03em] text-ink-950 sm:text-[2.25rem]">
+            <span className="mt-4 block title-section text-ink-950">
               {sw.homeTitle}
             </span>
             <span className="mt-4 block max-w-lg text-[0.9375rem] leading-relaxed text-ink-600 sm:text-base">
@@ -111,7 +111,7 @@ export function Custom() {
           >
             <span className="flex flex-col">
               <span className="eyebrow">{sg.eyebrow}</span>
-              <span className="mt-4 block text-[1.75rem] leading-[1.1] font-semibold tracking-[-0.03em] text-ink-950 sm:text-[2.25rem]">
+              <span className="mt-4 block title-section text-ink-950">
                 {sg.homeTitle}
               </span>
               <span className="mt-4 block max-w-xl text-[0.9375rem] leading-relaxed text-ink-600 sm:text-base">
@@ -143,7 +143,7 @@ export function Custom() {
 
         <a
           href={pageHref(lang, 'products/')}
-          className="mt-6 inline-flex min-h-11 items-center gap-1.5 text-sm font-semibold text-bamboo-700 hover:text-bamboo-600"
+          className="link-more mt-6 hover:text-bamboo-600"
         >
           {c.devicesCta}
           <ArrowRight size={15} aria-hidden="true" />

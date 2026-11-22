@@ -55,7 +55,7 @@ export function Faq() {
           ) : null}
           <a
             href={pageHref(lang, 'faq/')}
-            className="mt-2 inline-flex min-h-11 items-center gap-1.5 text-sm font-semibold text-bamboo-700 hover:text-bamboo-600"
+            className="link-more mt-2 hover:text-bamboo-600"
           >
             {t.faq.all}
             <ArrowRight size={15} aria-hidden="true" />
@@ -95,7 +95,7 @@ function LatestGuides() {
       </ul>
       <a
         href={pageHref(lang, 'guides/')}
-        className="mt-2 inline-flex min-h-11 items-center gap-1.5 text-sm font-semibold text-bamboo-700 hover:text-bamboo-600"
+        className="link-more mt-2 hover:text-bamboo-600"
       >
         {t.guides.all}
         <ArrowRight size={15} aria-hidden="true" />

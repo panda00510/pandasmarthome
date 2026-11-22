@@ -15,7 +15,6 @@ export function ComparePage() {
   return (
     <article className="shell pt-10 pb-16 lg:pt-14 lg:pb-24">
       <p className="eyebrow">
-        <span aria-hidden="true" className="h-px w-6 bg-bamboo-500/50" />
         {c.eyebrow}
       </p>
       <h1 className="mt-5 max-w-4xl text-[2.25rem] leading-[1.06] font-semibold tracking-[-0.035em] text-balance text-ink-950 sm:text-[3rem]">
@@ -65,7 +64,7 @@ export function ComparePage() {
         </ul>
         <a
           href={pageHref(lang, 'products/')}
-          className="mt-3 inline-flex min-h-11 items-center gap-1.5 text-sm font-semibold text-bamboo-700 hover:text-bamboo-600"
+          className="link-more mt-3 hover:text-bamboo-600"
         >
           {c.devicesLink}
           <ArrowRight size={15} aria-hidden="true" />
@@ -91,7 +90,7 @@ export function ComparePage() {
               </dl>
               <a
                 href={pageHref(lang, service.path)}
-                className="mt-4 inline-flex min-h-11 items-center gap-1.5 text-sm font-semibold text-bamboo-700 hover:text-bamboo-600"
+                className="link-more mt-4 hover:text-bamboo-600"
               >
                 {c.labels.more}
                 <ArrowRight size={15} aria-hidden="true" />

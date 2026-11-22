@@ -56,6 +56,7 @@ export const zh: Content = {
       hardware: 'AI 硬件定制',
       software: '软件定制',
     },
+    protocols: '支持 Zigbee · Thread · Matter',
     imageAlt: '示意图：配有转角沙发、窗帘和轨道灯的现代客厅',
     panel: {
       title: '我的家',
@@ -1548,6 +1549,7 @@ export const zh: Content = {
     blurb:
       '面向全新加坡住宅的开放式、本地优先智能家居设计与安装服务。',
     navTitle: '浏览',
+    groups: { home: '智能家居', resources: '资料与公司' },
     legalTitle: '法律信息',
     contactTitle: '联系',
     credits: '图片来源与许可',

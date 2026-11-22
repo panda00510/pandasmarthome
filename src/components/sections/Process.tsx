@@ -27,7 +27,7 @@ export function Process() {
                 ) : null}
               </div>
               <div className="pb-1 lg:mt-4">
-                <h3 className="text-[1.0625rem] leading-snug font-semibold text-ink-950">
+                <h3 className="title-card text-ink-950">
                   {step.title}
                 </h3>
                 <p className="mt-1.5 line-clamp-2 text-[0.9375rem] leading-relaxed text-ink-600 sm:line-clamp-none lg:text-sm">

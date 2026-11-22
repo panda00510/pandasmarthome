@@ -45,11 +45,11 @@ export function Solutions() {
                   href={pageHref(lang, PAGES[item.id] ?? 'solutions/')}
                   className="card group flex h-full flex-col items-start gap-3 p-4 transition-colors hover:border-bamboo-200 sm:flex-row sm:gap-4 sm:p-5 lg:p-6"
                 >
-                  <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-bamboo-50 text-bamboo-700 ring-1 ring-bamboo-100 transition-colors group-hover:bg-brand group-hover:text-white">
+                  <span className="icon-tile">
                     <Icon size={20} aria-hidden="true" />
                   </span>
                   <span className="min-w-0">
-                    <span className="block text-[1.0625rem] leading-snug font-semibold text-ink-950">
+                    <span className="block title-card text-ink-950">
                       {item.title}
                     </span>
                     <span className="mt-1.5 hidden text-[0.9375rem] leading-relaxed text-ink-600 sm:block">
@@ -64,7 +64,7 @@ export function Solutions() {
 
         <a
           href={pageHref(lang, 'solutions/')}
-          className="mt-6 inline-flex min-h-11 items-center gap-1.5 text-sm font-semibold text-bamboo-700 hover:text-bamboo-600"
+          className="link-more mt-6 hover:text-bamboo-600"
         >
           {t.hubs.solutions.all}
           <ArrowRight size={15} aria-hidden="true" />

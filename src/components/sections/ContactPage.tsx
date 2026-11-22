@@ -16,7 +16,6 @@ export function ContactPage() {
     <>
       <div className="shell pt-10 pb-12 lg:pt-14">
         <p className="eyebrow">
-          <span aria-hidden="true" className="h-px w-6 bg-bamboo-500/50" />
           {c.eyebrow}
         </p>
         <h1 className="mt-5 max-w-4xl text-[2.25rem] leading-[1.06] font-semibold tracking-[-0.035em] text-balance text-ink-950 sm:text-[3rem]">

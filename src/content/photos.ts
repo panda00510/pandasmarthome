@@ -1,5 +1,5 @@
 /**
- * Responsive photo set (800 / 1200 / 1600 px WebP) and the credit record for
+ * Responsive photo set (480 / 800 / 1200 / 1600 px WebP) and the credit record for
  * every Pexels photograph on the site. The photos are stock imagery that
  * illustrates a home type or a room: none is a Panda Smart Home installation
  * or a client project, and the site never presents them as one.
@@ -11,7 +11,7 @@ const urls = import.meta.glob<string>('../assets/photos/*.webp', {
   import: 'default',
 })
 
-const WIDTHS = [800, 1200, 1600] as const
+const WIDTHS = [480, 800, 1200, 1600] as const
 
 export function responsive(slug: string) {
   const url = (w: number) => urls[`../assets/photos/${slug}-${w}.webp`]

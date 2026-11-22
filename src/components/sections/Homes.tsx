@@ -36,7 +36,7 @@ export function Homes() {
                   href={pageHref(lang, PAGES[item.id] ?? 'homes/')}
                   className="card group flex h-full flex-col overflow-hidden transition-colors hover:border-bamboo-200"
                 >
-                  <span className="relative block">
+                  <span className="relative block overflow-hidden">
                   <img
                     src={photo.src}
                     srcSet={photo.srcSet}
@@ -46,19 +46,19 @@ export function Homes() {
                     height={675}
                     loading="lazy"
                     decoding="async"
-                    className="block aspect-[16/10] w-full object-cover"
+                    className="block aspect-[16/10] w-full object-cover transition-transform duration-500 ease-(--ease-out-soft) group-hover:scale-[1.04] motion-reduce:transition-none"
                   />
                   <PhotoTag>{t.footer.imageTag}</PhotoTag>
                   </span>
                   <span className="flex flex-1 flex-col p-4 lg:p-5">
                     <span className="eyebrow">{item.subtitle}</span>
-                    <span className="mt-1.5 block text-[1rem] leading-snug font-semibold text-ink-950 lg:text-[1.0625rem]">
+                    <span className="title-card mt-1.5 block text-ink-950">
                       {item.title}
                     </span>
                     <span className="mt-2 hidden text-[0.9375rem] leading-relaxed text-ink-600 sm:block lg:hidden">
                       {item.body}
                     </span>
-                    <span className="mt-auto inline-flex min-h-11 items-center gap-1.5 pt-2 text-sm font-semibold text-bamboo-700">
+                    <span className="link-more mt-auto pt-2">
                       {t.guides.learnMore}
                       <ArrowRight size={15} aria-hidden="true" />
                     </span>
@@ -72,7 +72,7 @@ export function Homes() {
         <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <a
             href={pageHref(lang, 'homes/')}
-            className="inline-flex min-h-11 items-center gap-1.5 text-sm font-semibold text-bamboo-700 hover:text-bamboo-600"
+            className="link-more hover:text-bamboo-600"
           >
             {t.hubs.homes.all}
             <ArrowRight size={15} aria-hidden="true" />

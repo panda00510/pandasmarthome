@@ -18,26 +18,57 @@ const LINK = 'inline-flex min-h-11 items-center text-sm text-ink-300 transition-
 const LINK_ICON = 'inline-flex min-h-11 items-center gap-2 transition-colors hover:text-paper'
 const HEAD = 'text-xs font-semibold tracking-[0.14em] text-ink-400 uppercase'
 
-/** Nav items that open their own page instead of scrolling the homepage. */
-const PAGE_FOR: Record<string, string> = {
-  solutions: 'solutions/',
-  products: 'products/',
-  software: 'software/',
-  homes: 'homes/',
-  process: 'how-it-works/',
-}
-
 export function Footer() {
   const { t, lang, path } = useI18n()
   const home = path ? pageHref(lang) : ''
   const year = new Date().getFullYear()
   const companyName = lang === 'zh' ? site.companyNameZh : site.companyName
+  const page = (to: string) => pageHref(lang, to)
+  const navLabel = (id: string) => t.nav.items.find((item) => item.id === id)!.label
+  const columns = [
+    {
+      title: t.footer.groups.home,
+      links: [
+        { href: page('solutions/'), label: navLabel('solutions') },
+        { href: page('homes/'), label: navLabel('homes') },
+        { href: page('how-it-works/'), label: navLabel('process') },
+        { href: showroomHref(lang), label: t.nav.showroom },
+        { href: `${home}#plan`, label: t.planner.navLabel },
+      ],
+    },
+    {
+      title: t.products.nav.group,
+      links: [
+        { href: page('signage/'), label: t.signage.navLabel },
+        { href: page('products/'), label: t.products.nav.devices },
+        { href: `${page('products/')}#smart-home-devices`, label: t.products.nav.install },
+      ],
+    },
+    {
+      title: t.custom.nav,
+      links: [
+        { href: page('custom-hardware/'), label: t.hardware.navLabel },
+        { href: page('software/'), label: navLabel('software') },
+      ],
+    },
+    {
+      title: t.footer.groups.resources,
+      links: [
+        { href: page('guides/'), label: t.guides.eyebrow },
+        { href: page('faq/'), label: t.faq.eyebrow },
+        { href: page('glossary/'), label: t.glossary.navLabel },
+        { href: page('compare/'), label: t.compare.navLabel },
+        { href: page('about/'), label: t.footer.about },
+        { href: page('contact/'), label: t.contactPage.navLabel },
+      ],
+    },
+  ]
 
   // max-sm:pb: room under the footer for the phone quick-action bar (App.tsx).
   return (
     <footer className="bg-ink-950 text-ink-300 max-sm:pb-[calc(4rem+env(safe-area-inset-bottom))] print:pb-0">
       <div className="shell pt-12 pb-8 lg:pt-16 lg:pb-10">
-        <div className="grid gap-10 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_minmax(0,1fr)] lg:gap-12">
+        <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,2.4fr)] lg:gap-16">
           {/* Brand */}
           <div>
             <a
@@ -66,121 +97,70 @@ export function Footer() {
                 ))}
               </ul>
             ) : null}
+            {/* Contact: every row is conditional; nothing is invented. */}
+            <div className="mt-8">
+              <h2 className={HEAD}>
+                {t.footer.contactTitle}
+              </h2>
+              <ul className="mt-4 flex flex-wrap gap-x-4 text-sm text-ink-300 lg:block">
+                {site.email ? (
+                  <li>
+                    <a href={`mailto:${site.email}`} className={LINK_ICON}>
+                      <Mail size={14} aria-hidden="true" />
+                      {site.email}
+                    </a>
+                  </li>
+                ) : null}
+                {site.telephone ? (
+                  <li>
+                    <a href={`tel:${site.telephone.replace(/\s+/g, '')}`} className={LINK_ICON}>
+                      <Phone size={14} aria-hidden="true" />
+                      {site.telephone}
+                    </a>
+                  </li>
+                ) : null}
+                {site.whatsappLink ? (
+                  <li>
+                    <a
+                      href={whatsappHref(pageWhatsappMessage(t, lang, path))!}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={LINK_ICON}
+                    >
+                      <MessageCircle size={14} aria-hidden="true" />
+                      WhatsApp
+                    </a>
+                  </li>
+                ) : null}
+                {formattedAddress ? <li className="py-1">{formattedAddress}</li> : null}
+                {!hasAnyContactDetail ? (
+                  <li className="py-1 text-ink-400 italic">{t.contact.pendingDetails}</li>
+                ) : null}
+                <li className="py-1 text-ink-400">
+                  {t.contact.labels.serviceArea}: {lang === 'zh' ? site.serviceAreaZh : site.serviceArea}
+                </li>
+              </ul>
+            </div>
           </div>
 
-          {/* Navigation: two columns on a phone so it stays short. */}
-          <nav aria-label={t.a11y.navFooter}>
-            <h2 className={HEAD}>
-              {t.footer.navTitle}
-            </h2>
-            <ul className="mt-4 grid grid-cols-2 gap-x-6">
-              {t.nav.items.map((item) => (
-                <li key={item.id}>
-                  <a
-                    href={PAGE_FOR[item.id] ? pageHref(lang, PAGE_FOR[item.id]) : `${home}#${item.id}`}
-                    className={LINK}
-                  >
-                    {item.label}
-                  </a>
-                </li>
-              ))}
-              <li>
-                <a href={pageHref(lang, 'custom-hardware/')} className={LINK}>
-                  {t.hardware.navLabel}
-                </a>
-              </li>
-              <li>
-                <a href={pageHref(lang, 'signage/')} className={LINK}>
-                  {t.signage.navLabel}
-                </a>
-              </li>
-              <li>
-                <a href={pageHref(lang, 'compare/')} className={LINK}>
-                  {t.compare.navLabel}
-                </a>
-              </li>
-              <li>
-                <a href={pageHref(lang, 'contact/')} className={LINK}>
-                  {t.contactPage.navLabel}
-                </a>
-              </li>
-              <li>
-                <a href={showroomHref(lang)} className={LINK}>
-                  {t.nav.showroom}
-                </a>
-              </li>
-              <li>
-                <a href={pageHref(lang, 'guides/')} className={LINK}>
-                  {t.guides.eyebrow}
-                </a>
-              </li>
-              <li>
-                <a href={pageHref(lang, 'glossary/')} className={LINK}>
-                  {t.glossary.navLabel}
-                </a>
-              </li>
-              <li>
-                <a href={`${home}#plan`} className={LINK}>
-                  {t.planner.navLabel}
-                </a>
-              </li>
-              <li>
-                <a href={pageHref(lang, 'faq/')} className={LINK}>
-                  {t.faq.eyebrow}
-                </a>
-              </li>
-              <li>
-                <a href={pageHref(lang, 'about/')} className={LINK}>
-                  {t.footer.about}
-                </a>
-              </li>
-            </ul>
+          {/* Navigation: the same groups as the header (smart home, products, custom), then resources. */}
+          <nav aria-label={t.a11y.navFooter} className="grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-4 lg:col-span-1">
+            {columns.map((column) => (
+              <div key={column.title}>
+                <h2 className={HEAD}>{column.title}</h2>
+                <ul className="mt-3">
+                  {column.links.map((link) => (
+                    <li key={link.href}>
+                      <a href={link.href} className={LINK}>
+                        {link.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
           </nav>
 
-          {/* Contact: every row is conditional; nothing is invented. */}
-          <div>
-            <h2 className={HEAD}>
-              {t.footer.contactTitle}
-            </h2>
-            <ul className="mt-4 flex flex-wrap gap-x-4 text-sm text-ink-300 lg:block">
-              {site.email ? (
-                <li>
-                  <a href={`mailto:${site.email}`} className={LINK_ICON}>
-                    <Mail size={14} aria-hidden="true" />
-                    {site.email}
-                  </a>
-                </li>
-              ) : null}
-              {site.telephone ? (
-                <li>
-                  <a href={`tel:${site.telephone.replace(/\s+/g, '')}`} className={LINK_ICON}>
-                    <Phone size={14} aria-hidden="true" />
-                    {site.telephone}
-                  </a>
-                </li>
-              ) : null}
-              {site.whatsappLink ? (
-                <li>
-                  <a
-                    href={whatsappHref(pageWhatsappMessage(t, lang, path))!}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={LINK_ICON}
-                  >
-                    <MessageCircle size={14} aria-hidden="true" />
-                    WhatsApp
-                  </a>
-                </li>
-              ) : null}
-              {formattedAddress ? <li className="py-1">{formattedAddress}</li> : null}
-              {!hasAnyContactDetail ? (
-                <li className="py-1 text-ink-400 italic">{t.contact.pendingDetails}</li>
-              ) : null}
-              <li className="py-1 text-ink-400">
-                {t.contact.labels.serviceArea}: {lang === 'zh' ? site.serviceAreaZh : site.serviceArea}
-              </li>
-            </ul>
-          </div>
         </div>
 
         {/* Credits and legal share one row; the disclaimers fold away but stay readable. */}

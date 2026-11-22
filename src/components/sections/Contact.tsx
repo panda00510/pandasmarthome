@@ -11,7 +11,8 @@ import {
   Send,
   TriangleAlert,
 } from 'lucide-react'
-import lighting from '../../assets/photos/bedroom-lighting.webp'
+import lighting640 from '../../assets/photos/bedroom-lighting-640.webp'
+import lighting960 from '../../assets/photos/bedroom-lighting-960.webp'
 import { formattedAddress, hasAnyContactDetail, site } from '../../config/site'
 import { Button, SectionHeading } from '../ui'
 import { pageHref, useI18n } from '../../i18n/context'
@@ -288,10 +289,12 @@ export function Contact() {
           ) : null}
 
           <img
-            src={lighting}
+            src={lighting960}
+            srcSet={`${lighting640} 640w, ${lighting960} 960w`}
+            sizes="(min-width: 1200px) 430px, 36vw"
             alt=""
-            width={1280}
-            height={959}
+            width={960}
+            height={720}
             loading="lazy"
             decoding="async"
             className="mt-8 hidden aspect-[16/7] w-full rounded-panel object-cover opacity-90 lg:block"

@@ -5,7 +5,7 @@
  */
 import { execFileSync } from 'node:child_process'
 import { existsSync } from 'node:fs'
-import { mkdir, readFile, rm, writeFile } from 'node:fs/promises'
+import { mkdir, readdir, readFile, rm, writeFile } from 'node:fs/promises'
 import { fileURLToPath } from 'node:url'
 
 const at = (p) => fileURLToPath(new URL(`../${p}`, import.meta.url))
@@ -33,6 +33,13 @@ const preloads = (lang, path) =>
     .filter((key) => !inEntry.has(key))
     .map((key) => `<link rel="modulepreload" crossorigin href="${base}${manifest[key].file}">`)
     .join('\n    ')
+
+// English pages set their Latin text in Inter, which the browser would only
+// find after the CSS arrives; preload the basic Latin file so the headline
+// swaps early. Chinese pages lead with the system CJK fonts and skip it.
+const interLatin = (await readdir(at('dist/assets'))).find((file) => /^inter-latin-[\w-]{8}\.woff2$/.test(file))
+if (!interLatin) throw new Error('dist/assets has no inter-latin-*.woff2')
+const fontPreload = `<link rel="preload" as="font" type="font/woff2" crossorigin href="${base}assets/${interLatin}">`
 
 const attr = (value) =>
   value.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
@@ -72,6 +79,7 @@ for (const { lang, path } of [...routes, ...notFoundRoutes]) {
   if (lang === 'zh') page = page.replace('href="/feed.xml"', 'href="/zh/feed.xml"')
   if (head) page = page.replace('</head>', () => `    ${head}\n  </head>`)
   page = page.replace('</head>', () => `    ${preloads(lang, path)}\n  </head>`)
+  if (lang === 'en') page = page.replace('</head>', () => `    ${fontPreload}\n  </head>`)
   // The 404 page: never indexed, no canonical (render() returns no head for it).
   if (notFound) page = setMeta(page, 'robots', 'noindex')
   // Social scrapers need an absolute og:image; the template only has a relative one.

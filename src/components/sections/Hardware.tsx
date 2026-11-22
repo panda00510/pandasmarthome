@@ -86,7 +86,6 @@ export function HardwarePage() {
           <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:gap-14">
           <div>
           <p className="eyebrow text-bamboo-300!">
-            <span aria-hidden="true" className="h-px w-6 bg-bamboo-300/60" />
             {h.eyebrow}
           </p>
           <h1 className="mt-5 max-w-4xl text-[2.25rem] leading-[1.04] font-semibold tracking-[-0.04em] sm:text-[3.5rem] lg:text-[3.75rem] lg:leading-[1.02]">
@@ -140,7 +139,7 @@ export function HardwarePage() {
               const Icon = ICONS[group.id] ?? Network
               return (
                 <li key={group.id} className="card flex flex-col p-6 lg:p-7">
-                  <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-bamboo-50 text-bamboo-700 ring-1 ring-bamboo-100">
+                  <span className="icon-tile">
                     <Icon size={20} aria-hidden="true" />
                   </span>
                   <h3 className="mt-5 text-[1.125rem] leading-snug font-semibold tracking-[-0.015em] text-ink-950">
@@ -200,7 +199,7 @@ export function HardwarePage() {
             {h.steps.map((step, i) => (
               <li key={step.title} className="border-t border-ink-200 pt-5">
                 <span className="numeral text-sm font-semibold text-bamboo-700">{numeral(i)}</span>
-                <h3 className="mt-2 text-[1.0625rem] leading-snug font-semibold text-ink-950">{step.title}</h3>
+                <h3 className="mt-2 title-card text-ink-950">{step.title}</h3>
                 <p className="mt-1.5 text-sm leading-relaxed text-ink-600">{step.body}</p>
               </li>
             ))}

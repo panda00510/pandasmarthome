@@ -20,7 +20,7 @@ section).
 Licensed under the [Pexels License](https://www.pexels.com/license/): free for
 commercial use, no attribution required. They are credited here anyway. Each
 photo is cropped by hand to the framing noted below and served as responsive
-WebP at 800, 1200 and 1600 px wide
+WebP at 480, 800, 1200 and 1600 px wide
 (`src/assets/photos/<name>-<width>.webp`, built by `scripts/make-photos.mjs`).
 The same record is kept in `src/content/photos.ts`.
 
@@ -41,7 +41,7 @@ page needs one yet, so it is not in the repository.
 
 | File | Where used | Author | Licence | Source page |
 | --- | --- | --- | --- | --- |
-| `src/assets/photos/bedroom-lighting.webp` (from `.jpg`) | "Get in touch" | SPL Interiors1 | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0) | [Commons](https://commons.wikimedia.org/wiki/File:Balanced_Modern_Bedroom_Design_with_Neutral_Tones_and_Layered_Lighting.jpg) |
+| `src/assets/photos/bedroom-lighting-{640,960}.webp` (from `.jpg`) | "Get in touch" | SPL Interiors1 | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0) | [Commons](https://commons.wikimedia.org/wiki/File:Balanced_Modern_Bedroom_Design_with_Neutral_Tones_and_Layered_Lighting.jpg) |
 
 CC BY requires credit to the author, a licence statement and a link back to the
 source. This file satisfies that; it is published at `/asset-sources.txt` and

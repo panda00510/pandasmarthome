@@ -15,7 +15,6 @@ export function FaqPage() {
   return (
     <article className="shell pt-10 pb-16 lg:pt-14 lg:pb-24">
       <p className="eyebrow">
-        <span aria-hidden="true" className="h-px w-6 bg-bamboo-500/50" />
         {t.faq.eyebrow}
       </p>
       <h1 className="mt-5 max-w-4xl text-[2.25rem] leading-[1.06] font-semibold tracking-[-0.035em] text-balance text-ink-950 sm:text-[3rem]">
@@ -57,7 +56,7 @@ export function FaqPage() {
             </div>
             <a
               href={pageHref(lang, group.path)}
-              className="mt-2 inline-flex min-h-11 items-center gap-1.5 text-sm font-semibold text-bamboo-700 hover:text-bamboo-600"
+              className="link-more mt-2 hover:text-bamboo-600"
             >
               {p.groupLink.replace('{page}', group.title)}
               <ArrowRight size={15} aria-hidden="true" />

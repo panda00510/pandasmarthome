@@ -46,7 +46,6 @@ export function ProductsPage() {
       <section className="border-b border-ink-200/70">
         <div className="shell pt-10 pb-10 lg:pt-14 lg:pb-14">
           <p className="eyebrow">
-            <span aria-hidden="true" className="h-px w-6 bg-bamboo-500/50" />
             {p.eyebrow}
           </p>
           <h1 className="mt-5 max-w-4xl text-[2.25rem] leading-[1.06] font-semibold tracking-[-0.035em] text-balance text-ink-950 sm:text-[3rem] lg:text-[3.5rem]">
@@ -147,7 +146,7 @@ export function ProductsPage() {
                 <li key={item.id}>
                   <article id={item.id} className="card scroll-mt-28 overflow-hidden">
                     <div className="grid lg:grid-cols-[minmax(0,0.86fr)_minmax(0,1.14fr)]">
-                      <figure className="relative bg-bamboo-50/60">
+                      <figure className="art-stage relative">
                         <div className="relative aspect-[4/3] w-full">
                           <div className="absolute inset-0 p-3 sm:p-6">
                             <ProductArt id={item.id} lang={lang} />
@@ -228,7 +227,7 @@ export function ProductsPage() {
       <section id="smart-home-devices" className="band scroll-mt-24 border-t border-ink-200/70 bg-paper-alt">
         <div className="shell">
           <p className="eyebrow">{p.install.eyebrow}</p>
-          <h2 className="mt-4 max-w-3xl text-[1.75rem] leading-[1.15] font-semibold tracking-[-0.025em] text-ink-950 sm:text-4xl">
+          <h2 className="mt-4 max-w-3xl title-section text-ink-950">
             {p.install.title}
           </h2>
           <p className="mt-4 max-w-3xl text-lg leading-relaxed text-ink-600">{p.install.lead}</p>
@@ -238,7 +237,7 @@ export function ProductsPage() {
               return (
                 <li key={group.id}>
                   <article id={group.id} className="card flex h-full scroll-mt-28 flex-col p-5 sm:p-6">
-                    <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-bamboo-50 text-bamboo-700 ring-1 ring-bamboo-100">
+                    <span className="icon-tile">
                       <Icon size={20} aria-hidden="true" />
                     </span>
                     <h3 className="mt-4 text-[1.2rem] leading-snug font-semibold tracking-[-0.02em] text-ink-950">
@@ -305,7 +304,7 @@ export function ProductsPage() {
 
       <section className="band border-t border-ink-200/70">
         <div className="shell grid gap-8 lg:grid-cols-[minmax(0,0.7fr)_minmax(0,1.3fr)] lg:gap-16">
-          <h2 className="text-[1.75rem] leading-[1.15] font-semibold tracking-[-0.025em] text-ink-950 sm:text-4xl">
+          <h2 className="title-section text-ink-950">
             {p.faqTitle}
           </h2>
           <div className="divide-y divide-ink-200 border-y border-ink-200">

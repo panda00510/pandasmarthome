@@ -41,6 +41,8 @@ export type Content = {
     trust: string[]
     /** Compact row under the trust strip linking the other three lines of business. */
     also: { label: string; signage: string; hardware: string; software: string }
+    /** Label pinned to the hero panel from 1024px: the protocols named in the platform section ("Protocols we work with"). */
+    protocols: string
     imageAlt: string
     panel: {
       title: string
@@ -545,6 +547,8 @@ export type Content = {
   footer: {
     blurb: string
     navTitle: string
+    /** Column headings in the footer; Products and Custom reuse the header's group names. */
+    groups: { home: string; resources: string }
     legalTitle: string
     contactTitle: string
     credits: string

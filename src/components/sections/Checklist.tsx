@@ -46,7 +46,6 @@ export function ChecklistPage() {
       </div>
 
       <p className="eyebrow mt-4 print:hidden">
-        <span aria-hidden="true" className="h-px w-6 bg-bamboo-500/50" />
         {c.eyebrow}
       </p>
       <h1 className="mt-4 text-[1.875rem] leading-[1.15] font-semibold tracking-[-0.03em] text-balance text-ink-950 sm:text-[2.5rem]">

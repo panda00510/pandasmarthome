@@ -98,7 +98,6 @@ export function GuidesIndex() {
   return (
     <section className="shell pt-10 pb-16 lg:pt-14 lg:pb-24">
       <p className="eyebrow">
-        <span aria-hidden="true" className="h-px w-6 bg-bamboo-500/50" />
         {t.guides.eyebrow}
       </p>
       <h1 className="mt-5 max-w-4xl text-[2.25rem] leading-[1.06] font-semibold tracking-[-0.035em] text-balance text-ink-950 sm:text-[3rem] lg:text-[3.5rem]">

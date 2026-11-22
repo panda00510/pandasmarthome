@@ -364,12 +364,22 @@ tokens, so everything is available as normal utilities (`bg-bamboo-500`,
   `bamboo` green is the single accent; `ember` is reserved for warmth in
   lighting/comfort contexts only.
 * **Type** — Inter (self-hosted variable, Latin) with a native CJK stack for
-  Chinese. `html:lang(zh)` switches `--font-zh` automatically.
+  Chinese. `html:lang(zh)` switches `--font-zh` automatically. English pages
+  preload the basic-Latin Inter file (added by `scripts/prerender.mjs`).
+  Three heading roles replace one-off sizes: `.title-display` (page and
+  section titles, 32 → 44 → 56px; `SectionHeading` uses it), `.title-section`
+  (a sub-section inside a page, 28 → 36px) and `.title-card` (17px). Colour
+  stays a utility, so each role works on paper and on ink.
 * **Layout** — `.shell` caps content at 1200px with 20px/32px gutters;
   `.band` sets the vertical rhythm between sections.
 * **Components** — `.btn`, `.field`, `.card`, `.eyebrow` are the shared
   primitives; variants live in `src/components/ui.tsx`. Linked cards
   (`a.card`) lift on hover; reduced motion keeps only the colour change.
+  A section-level eyebrow (`p.eyebrow`) draws its own short rule; a card
+  eyebrow (`span.eyebrow`) does not. `.icon-tile` is the one icon square on
+  light cards (it fills with the brand colour when its link is hovered),
+  `.link-more` the "Learn more →" link, `.art-stage` the lit background
+  behind product drawings.
 * **Buttons** — `primary` (brand green), `secondary`, `ghost`, `inverse`, and
   for ink bands `glow` (bright bamboo with dark text, ≈7:1) and `outlineDark`.
 * **Elevation** — `shadow-soft`, `shadow-lift`, plus `shadow-stage` (deep
@@ -383,8 +393,10 @@ tokens, so everything is available as normal utilities (`bg-bamboo-500`,
   depends on an animation or a scroll to be visible; `[data-reveal]` hiding
   is added by JS and only below the fold.
 
-Breakpoints are Tailwind defaults. The layout was checked at 375, 768 and
-1440 px.
+Breakpoints are Tailwind defaults. The layout was checked at 375, 390, 768
+and 1440 px. Navigation: the header and the footer use the same groups
+(smart home pages, Products, Custom, then resources); only the current page
+is highlighted in the header.
 
 ---
 

@@ -1,4 +1,4 @@
-import { ArrowRight, CodeXml, Cpu, Monitor } from 'lucide-react'
+import { ArrowRight, CodeXml, Cpu, Monitor, Network } from 'lucide-react'
 import { HomePanel } from '../graphics/HomePanel'
 import { Button } from '../ui'
 import { Showroom } from './Showroom'
@@ -19,11 +19,10 @@ export function Hero() {
         <div aria-hidden="true" className="stage-grid pointer-events-none absolute inset-0 -z-10" />
         <div aria-hidden="true" className="stage-glow pointer-events-none absolute -inset-[10%] -z-10" />
 
-        <div className="shell grid items-center gap-12 pt-10 sm:pt-16 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)] lg:gap-10 lg:pt-20">
+        <div className="shell grid items-center gap-10 pt-10 sm:gap-12 sm:pt-16 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:gap-8 lg:pt-20">
           {/* No entrance animation on the copy: the headline is the LCP element. */}
           <div>
             <p className="eyebrow text-bamboo-300!">
-              <span aria-hidden="true" className="h-px w-6 bg-bamboo-300/60" />
               {t.hero.eyebrow}
             </p>
 
@@ -50,16 +49,22 @@ export function Hero() {
             </div>
           </div>
 
-          {/* Glass stage: concentric rings and a floor glow under the live panel. */}
-          {/* Hidden on phones so the hero stays short; no entrance animation, it is on the first screen. */}
-          <div className="relative hidden justify-center py-6 sm:flex lg:justify-end lg:py-0">
+          {/* Glass stage: concentric rings and a floor glow under the live panel.
+              On a phone it follows the buttons in its compact size, so the first
+              screen is still the headline and the call to action. No entrance
+              animation: on larger screens it is on the first screen. */}
+          <div className="relative flex justify-center py-2 sm:py-6 lg:justify-end lg:py-0">
             <div aria-hidden="true" className="pointer-events-none absolute inset-0 grid place-items-center">
-              <span className="absolute size-[22rem] rounded-full border border-white/[0.07] sm:size-[28rem]" />
-              <span className="absolute size-[15rem] rounded-full border border-white/[0.09] sm:size-[19rem]" />
-              <span className="absolute size-[18rem] rounded-full bg-[radial-gradient(closest-side,rgb(63_174_126/0.28),transparent)] blur-2xl" />
+              <span className="absolute size-[20rem] rounded-full border border-white/[0.07] sm:size-[28rem] xl:size-[32rem]" />
+              <span className="absolute size-[14rem] rounded-full border border-white/[0.09] sm:size-[19rem] xl:size-[22rem]" />
+              <span className="absolute size-[16rem] rounded-full bg-[radial-gradient(closest-side,rgb(63_174_126/0.3),transparent)] blur-2xl sm:size-[20rem]" />
             </div>
-            <div className="relative lg:translate-x-2 xl:scale-105">
+            <div className="relative lg:translate-x-2 xl:scale-110">
               <HomePanel />
+              <p className="absolute -bottom-10 -left-10 hidden items-center gap-2 rounded-full border border-white/12 bg-ink-900/85 px-3.5 py-2 text-xs font-medium whitespace-nowrap text-ink-200 shadow-lift backdrop-blur-md lg:inline-flex">
+                <Network size={14} aria-hidden="true" className="text-bamboo-300" />
+                {t.hero.protocols}
+              </p>
             </div>
           </div>
         </div>
@@ -86,7 +91,7 @@ export function Hero() {
 
           {/* The other lines of business: quiet links, so the smart home CTA stays the main action. */}
           <nav aria-label={t.hero.also.label} className="mt-6 flex flex-wrap items-center gap-2 lg:mt-8">
-            <span className="mr-1 text-xs font-semibold tracking-[0.14em] text-ink-400 uppercase">{t.hero.also.label}</span>
+            <span className="mr-1 w-full pb-1 text-xs font-semibold tracking-[0.14em] text-ink-400 uppercase sm:w-auto sm:pb-0">{t.hero.also.label}</span>
             {[
               { href: pageHref(lang, 'signage/'), label: t.hero.also.signage, Icon: Monitor },
               { href: pageHref(lang, 'custom-hardware/'), label: t.hero.also.hardware, Icon: Cpu },

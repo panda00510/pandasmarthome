@@ -96,14 +96,10 @@ export function SectionHeading({
     >
       <div>
       <p className={`eyebrow ${dark ? 'text-bamboo-300!' : ''}`}>
-        <span
-          aria-hidden="true"
-          className={`h-px w-6 ${dark ? 'bg-bamboo-300/60' : 'bg-bamboo-500/50'}`}
-        />
         {eyebrow}
       </p>
       <Heading
-        className={`mt-5 text-[2rem] leading-[1.1] font-semibold tracking-[-0.03em] text-balance sm:text-[2.75rem] sm:leading-[1.06] lg:text-[3.5rem] ${
+        className={`title-display mt-5 ${
           dark ? 'text-paper' : 'text-ink-950'
         }`}
       >

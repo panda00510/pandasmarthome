@@ -1,5 +1,5 @@
 /**
- * Builds the responsive WebP set the site serves (800 / 1200 / 1600 px wide)
+ * Builds the responsive WebP set the site serves (480 / 800 / 1200 / 1600 px wide)
  * from the Pexels originals listed in src/content/photos.ts.
  *
  *   node scripts/make-photos.mjs <folder holding the original JPEGs>
@@ -15,7 +15,7 @@ import { join } from 'node:path'
 const from = process.argv[2]
 if (!from) throw new Error('usage: node scripts/make-photos.mjs <folder with original JPEGs>')
 const out = fileURLToPath(new URL('../src/assets/photos/', import.meta.url))
-const WIDTHS = [800, 1200, 1600]
+const WIDTHS = [480, 800, 1200, 1600]
 
 const jobs = [
   // slug, original file, aspect (w/h), top offset as a share of the original height, left share

@@ -96,12 +96,12 @@ function IconCards({ pages, icons, lang, more, heading: Heading = 'h2' }: CardPr
                 href={pageHref(lang, page.path)}
                 className="card group flex h-full flex-col p-5 transition-colors hover:border-bamboo-200 lg:p-6"
               >
-                <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-bamboo-50 text-bamboo-700 ring-1 ring-bamboo-100 transition-colors group-hover:bg-brand group-hover:text-white">
+                <span className="icon-tile">
                   <Icon size={24} aria-hidden="true" />
                 </span>
-                <Heading className="mt-4 text-[1.0625rem] leading-snug font-semibold text-ink-950">{page.title}</Heading>
+                <Heading className="mt-4 title-card text-ink-950">{page.title}</Heading>
                 <p className="mt-2 line-clamp-3 text-[0.9375rem] leading-relaxed text-ink-600">{page.description}</p>
-                <span className="mt-auto inline-flex min-h-11 items-center gap-1.5 pt-3 text-sm font-semibold text-bamboo-700">
+                <span className="link-more mt-auto pt-3">
                   {more}
                   <ArrowRight size={15} aria-hidden="true" />
                 </span>
@@ -127,7 +127,7 @@ function HomesMenu({ items, lang, more, tag }: { items: Guide[]; lang: Lang; mor
                 href={pageHref(lang, page.path)}
                 className="card group flex h-full flex-col overflow-hidden transition-colors hover:border-bamboo-200"
               >
-                <span className="relative block">
+                <span className="relative block overflow-hidden">
                 <img
                   src={photo.src}
                   srcSet={photo.srcSet}
@@ -137,14 +137,14 @@ function HomesMenu({ items, lang, more, tag }: { items: Guide[]; lang: Lang; mor
                   height={675}
                   loading="lazy"
                   decoding="async"
-                  className="block aspect-[16/9] w-full object-cover"
+                  className="block aspect-[16/9] w-full object-cover transition-transform duration-500 ease-(--ease-out-soft) group-hover:scale-[1.04] motion-reduce:transition-none"
                 />
                 <PhotoTag>{tag}</PhotoTag>
                 </span>
                 <span className="flex flex-1 flex-col p-5 lg:p-6">
-                  <h2 className="text-[1.125rem] leading-snug font-semibold text-ink-950">{page.title}</h2>
+                  <h2 className="title-card text-ink-950">{page.title}</h2>
                   <span className="mt-2 line-clamp-3 text-[0.9375rem] leading-relaxed text-ink-600">{page.description}</span>
-                  <span className="mt-auto inline-flex min-h-11 items-center gap-1.5 pt-3 text-sm font-semibold text-bamboo-700">
+                  <span className="link-more mt-auto pt-3">
                     {more}
                     <ArrowRight size={15} aria-hidden="true" />
                   </span>
@@ -159,7 +159,7 @@ function HomesMenu({ items, lang, more, tag }: { items: Guide[]; lang: Lang; mor
           href={pageHref(lang, older.path)}
           className="card mt-4 flex items-start gap-4 p-5 transition-colors hover:border-bamboo-200 sm:items-center lg:p-6"
         >
-          <span className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-bamboo-50 text-bamboo-700 ring-1 ring-bamboo-100">
+          <span className="icon-tile">
             <History size={24} aria-hidden="true" />
           </span>
           <span className="min-w-0 flex-1">
