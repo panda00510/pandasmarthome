@@ -4,7 +4,7 @@ description: Condo renovation comes with MCST rules, facade restrictions and bui
 published: 2026-11-06
 updated: 2026-11-06
 path: homes/condo-smart-home/
-related: smart-home-for-renters, what-is-matter, smart-door-lock-guide, wifi-for-smart-home
+related: condo-smart-home-upgrade-cost-factors, smart-door-lock-guide, wifi-for-smart-home, smart-home-for-renters
 ---
 A condo is not just a bigger flat. Renovation windows, facade restrictions and building systems such as intercoms and access control all shape what you can do. We plan around them, so the smart home you end up with works with the building, not against it.
 

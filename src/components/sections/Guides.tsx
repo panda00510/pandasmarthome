@@ -5,7 +5,9 @@ import {
   FEATURED,
   guidesIn,
   HUBS,
+  pagesIn,
   readMinutes,
+  SITUATION_PATHS,
   TOPIC_IDS,
   type Guide,
 } from '../../content/guides'
@@ -176,6 +178,16 @@ function headings(source: string) {
     .map((block, i) => ({ id: `s${i + 1}`, text: block.slice(3).replace(/\*\*|\[|\]\([^)]*\)/g, '') }))
 }
 
+/**
+ * "More guides" under a guide: the next three in its topic, wrapping round, so
+ * every guide is linked from three neighbours instead of all pointing at the newest.
+ */
+function nextInTopic(all: Guide[], guide: Guide) {
+  const same = all.filter((other) => other.topic === guide.topic)
+  const at = same.findIndex((other) => other.slug === guide.slug)
+  return [1, 2, 3].map((k) => same[(at + k) % same.length]).filter((other, i, list) => other.slug !== guide.slug && list.indexOf(other) === i)
+}
+
 /** /guides/<slug>/ and the topic pages. */
 export function GuidePage({ guide }: { guide: Guide }) {
   const { t, lang } = useI18n()
@@ -183,7 +195,14 @@ export function GuidePage({ guide }: { guide: Guide }) {
   const hub = HUBS.find((name) => guide.path.startsWith(`${name}/`)) ?? null
   const others = isPage
     ? guide.related.flatMap((slug) => guidesIn(lang).filter((other) => other.slug === slug)).slice(0, 3)
-    : guidesIn(lang).filter((other) => other.slug !== guide.slug).slice(0, 3)
+    : nextInTopic(guidesIn(lang), guide)
+  // Topic pages in a hub link across to their siblings: the other home types, or the pages by situation.
+  const siblings =
+    isPage && hub
+      ? pagesIn(lang).filter(
+          (page) => page.path !== guide.path && (hub === 'homes' ? page.path.startsWith('homes/') : SITUATION_PATHS.includes(page.path)),
+        )
+      : []
   // Topic pages get the contents list too, so the reading column sits beside it on desktop.
   const toc = headings(guide.body).filter((h) => h.text !== t.guides.related)
   const legal = guide.path === 'about/' || guide.path === 'privacy/'
@@ -205,7 +224,13 @@ export function GuidePage({ guide }: { guide: Guide }) {
               {guide.heading}
             </h1>
             <p className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-ink-600">
-              <span className="font-medium text-ink-800">{t.guides.byline}</span>
+              {guide.path === 'about/' ? (
+                <span className="font-medium text-ink-800">{t.guides.byline}</span>
+              ) : (
+                <a href={pageHref(lang, 'about/')} className="font-medium text-ink-800 underline decoration-ink-300 underline-offset-2 hover:decoration-bamboo-600">
+                  {t.guides.byline}
+                </a>
+              )}
               <span>
                 {t.guides.updated}{' '}
                 <time dateTime={guide.updated}>{formatDate(guide.updated, lang)}</time>
@@ -320,9 +345,31 @@ export function GuidePage({ guide }: { guide: Guide }) {
         </div>
       </article>
 
-      {others.length ? (
+      {others.length || siblings.length ? (
         <section className="border-t border-ink-200/70 bg-paper-alt">
           <div className="shell py-12 lg:py-16">
+            {siblings.length ? (
+              <nav aria-labelledby="siblings" className="mb-12 lg:mb-14">
+                <h2 id="siblings" className="title-group text-ink-950">
+                  {hub === 'homes' ? t.hubs.homes.title : t.hubs.solutions.situations}
+                </h2>
+                <ul className="mt-4 grid gap-2 sm:grid-cols-2">
+                  {siblings.map((page) => (
+                    <li key={page.path}>
+                      <a
+                        href={pageHref(lang, page.path)}
+                        className="card flex min-h-14 items-center justify-between gap-3 px-4 py-3 text-[0.9375rem] font-medium text-ink-900 transition-colors hover:border-bamboo-200 hover:text-bamboo-800"
+                      >
+                        {page.heading.split(/[:：—]/)[0].trim()}
+                        <ArrowRight size={16} aria-hidden="true" className="shrink-0 text-bamboo-700" />
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+            ) : null}
+            {others.length ? (
+            <>
             <h2 className="title-section text-ink-950">
               {isPage ? t.guides.related : t.guides.more}
             </h2>
@@ -331,6 +378,8 @@ export function GuidePage({ guide }: { guide: Guide }) {
                 <GuideCard key={other.slug} guide={other} lang={lang} />
               ))}
             </div>
+            </>
+            ) : null}
           </div>
         </section>
       ) : null}

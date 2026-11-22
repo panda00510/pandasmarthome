@@ -4,7 +4,7 @@ description: 公寓装修有管理处（MCST）规定、外立面限制，还要
 published: 2026-11-06
 updated: 2026-11-06
 path: homes/condo-smart-home/
-related: smart-home-for-renters, what-is-matter, smart-door-lock-guide, wifi-for-smart-home
+related: condo-smart-home-upgrade-cost-factors, smart-door-lock-guide, wifi-for-smart-home, smart-home-for-renters
 ---
 公寓不只是更大的一套房子。装修时段、外立面限制，以及对讲机、门禁这类大楼系统，都会影响你能做什么。我们围绕这些来规划，让最终的智能家居和大楼配合，而不是对着干。
 

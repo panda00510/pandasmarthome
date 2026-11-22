@@ -221,6 +221,14 @@ export const pagesIn = (lang: Lang) => topicPages.filter((page) => page.lang ===
 export const findGuide = (lang: Lang, path: string) =>
   everything.find((item) => item.lang === lang && item.path === path)
 
+/** The pages by situation under /solutions/, in the order they are listed. */
+export const SITUATION_PATHS = [
+  'solutions/away-from-home/',
+  'solutions/nights-and-sleep/',
+  'solutions/family-home/',
+  'solutions/heat-and-humidity/',
+]
+
 export const HUBS = ['solutions', 'homes'] as const
 export type Hub = (typeof HUBS)[number]
 

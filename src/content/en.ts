@@ -179,10 +179,10 @@ export const en: Content = {
       title: 'What we design and install',
       lead: 'Each area of the home on its own page: what we set up, what to decide first, and the questions people ask.',
       all: 'All solutions',
-      situations: 'By situation: time away, nights, a family home',
+      situations: 'By situation: time away, nights, a family home, heat and damp',
       metaTitle: 'Smart Home Solutions in Singapore | Panda Smart Home',
       metaDescription:
-        'Smart lighting, aircon control, motorised curtains, door locks and security, home controls and energy monitoring for Singapore homes.',
+        'Smart lighting, aircon control, motorised curtains, door locks and security, home controls and energy monitoring for Singapore homes, also planned by situation.',
     },
     homes: {
       eyebrow: 'Your home',

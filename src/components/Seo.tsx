@@ -3,7 +3,7 @@ import { brand, brandAssets } from '../config/brand'
 import { ogImageFor } from '../config/ogImages'
 import { hasAddress, site, socialLinks } from '../config/site'
 import { faqGroups } from '../content/faqGroups'
-import { hubOf, pageMeta, pagesIn } from '../content/guides'
+import { guidePath, guidesIn, hubOf, pageMeta, pagesIn } from '../content/guides'
 import { langPath, useI18n } from '../i18n/context'
 
 /** Upsert a `<meta>` tag by its name/property attribute. */
@@ -379,14 +379,16 @@ export function Seo() {
         }
       : null
 
-  // /solutions/ and /homes/ list their topic pages; /compare/ lists the services it
+  // /solutions/ and /homes/ list their topic pages; /guides/ lists every guide; /compare/ lists the services it
   // compares (devices are left out: no Product markup for pre-order items, see above).
   const hubName = hubOf(path)
   const listed = hubName
     ? pagesIn(lang)
         .filter((page) => page.path.startsWith(`${hubName}/`))
         .map((page) => ({ name: page.title, path: page.path }))
-    : path === 'compare/'
+    : path === 'guides/'
+      ? guidesIn(lang).map((item) => ({ name: item.title, path: guidePath(item.slug) }))
+      : path === 'compare/'
       ? t.compare.services.map((item) => ({ name: item.title, path: item.path, description: item.fits }))
       : null
   const pageList =

@@ -1,6 +1,6 @@
 ---
 title: How we work — from the first conversation to handover
-description: A predictable process with a written plan before any device is bought. The five steps from consultation and survey to installation, handover and support.
+description: Five steps from first chat to handover: a survey, a written device list and network plan before anything is bought, installation, and the admin login for you.
 published: 2026-11-06
 updated: 2026-11-08
 path: how-it-works/

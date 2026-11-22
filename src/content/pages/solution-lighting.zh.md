@@ -4,7 +4,7 @@ description: 晚上柔和调暗，打扫时全亮，半夜不用到处找对的 
 published: 2026-11-06
 updated: 2026-11-06
 path: solutions/smart-lighting/
-related: presence-sensor-mmwave-radar-vs-motion, no-neutral-smart-switches, renovation-smart-home-prep
+related: smart-switch-or-smart-bulb, no-neutral-smart-switches, presence-sensor-mmwave-radar-vs-motion
 ---
 好的智能灯光，大多体现在没人去想它的时候：走廊的灯夜里自动调暗，客厅的灯随着傍晚变化，床边的开关仍然是你预期的样子。我们逐个回路选硬件，因为卧室的最佳答案，很少是厨房的最佳答案。
 

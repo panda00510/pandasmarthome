@@ -4,7 +4,7 @@ description: Warm and dim in the evening, bright for cleaning, and no hunting fo
 published: 2026-11-06
 updated: 2026-11-06
 path: solutions/smart-lighting/
-related: presence-sensor-mmwave-radar-vs-motion, no-neutral-smart-switches, renovation-smart-home-prep
+related: smart-switch-or-smart-bulb, no-neutral-smart-switches, presence-sensor-mmwave-radar-vs-motion
 ---
 Good smart lighting is mostly about what happens when nobody is thinking about it: the hallway light that is dim at night, the living room that changes with the evening, the switch by the bed that still does what you expect. We choose the hardware circuit by circuit, because the right answer for a bedroom is rarely the right answer for a kitchen.
 
