@@ -25,7 +25,7 @@ related: wifi-for-smart-home, ai-upgrade-existing-cctv, smart-door-lock-guide, s
 
 ### 有地住宅需要拉有线网络吗？
 
-有线连到接入点，比只靠 Wi-Fi 更可靠，尤其是跨楼层的时候。我们和你一起规划走线路径，最好在天花板和墙面封上之前。
+有线连到接入点，比只靠 Wi-Fi 更可靠，尤其是跨楼层的时候。我们和你一起规划走线路径，最好在天花板和墙面封上之前。具体布局可以看 [多层有地住宅的网络规划](/zh/guides/landed-home-network-multi-floor/)。
 
 ### 摄像头能本地录像吗？
 

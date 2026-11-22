@@ -79,6 +79,7 @@ const TOPICS: Record<string, (typeof TOPIC_IDS)[number]> = {
   'smart-home-for-renters': 'devices',
   'what-is-matter': 'platforms',
   'wifi-for-smart-home': 'platforms',
+  'landed-home-network-multi-floor': 'platforms',
   'smart-home-without-internet': 'platforms',
   'local-smart-home-vs-google-apple-smartthings': 'platforms',
   'smart-home-privacy-local-vs-cloud': 'platforms',
@@ -86,6 +87,7 @@ const TOPICS: Record<string, (typeof TOPIC_IDS)[number]> = {
   'custom-esp32-device-or-off-the-shelf': 'business',
   'esp32-ai-voice-assistant-what-it-can-do': 'business',
   'ai-upgrade-existing-cctv': 'business',
+  'esp32-camera-vision-what-it-can-do': 'business',
 }
 
 /** Shown first on /guides/: one main pick, then two. */

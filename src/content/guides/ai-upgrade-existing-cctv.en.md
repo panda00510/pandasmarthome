@@ -38,6 +38,8 @@ This is the first thing to check, and it is where the answer is "it depends".
 
 Counting people and watching spaces involves personal data. In Singapore, organisations that use CCTV have duties under the PDPA, including telling people why footage is collected. If you run a business, check the guidance from the Personal Data Protection Commission and put clear notices in place. Keeping the processing on site, with access limited to the people who need it, helps, but it does not replace the obligation to tell people.
 
+For a small camera built for one job rather than recording, see [what an ESP32-S3 camera device can do](/guides/esp32-camera-vision-what-it-can-do/).
+
 ## Common questions
 
 ### Do I need to replace my cameras to add AI?

@@ -37,6 +37,8 @@ Not every device needs to join your Wi-Fi. Battery-powered sensors, switches and
 - **Consider a separate network** for smart devices, so a cheap gadget is not sharing a network with your laptop. Check that your hub can still reach the devices before you rely on it.
 - **Note your Wi-Fi name and password** somewhere safe. Replacing a router later means re-pairing devices that were tied to the old settings.
 
+For a house over several floors, see [network planning for a multi-storey landed home](/guides/landed-home-network-multi-floor/).
+
 ## Common questions
 
 ### Do I need a mesh system for a smart home?

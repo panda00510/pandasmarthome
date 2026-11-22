@@ -25,7 +25,7 @@ In a landed house, the first problem is rarely automation. It is coverage: a sig
 
 ### Do I need a wired network for a landed house?
 
-Wired runs to access points are more reliable than depending on Wi-Fi alone, especially across floors. We plan the cable routes with you, ideally before ceilings and walls are finished.
+Wired runs to access points are more reliable than depending on Wi-Fi alone, especially across floors. We plan the cable routes with you, ideally before ceilings and walls are finished. Our guide to [network planning for a multi-storey landed home](/guides/landed-home-network-multi-floor/) covers the layout.
 
 ### Can cameras record locally?
 
