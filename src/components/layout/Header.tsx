@@ -11,7 +11,6 @@ const LANGS: { code: Lang; label: string }[] = [
   { code: 'zh', label: '中文' },
 ]
 
-/** Nav items that open their own page instead of scrolling the homepage. */
 const PAGE_ITEMS: Record<string, string> = {
   solutions: 'solutions/',
   products: 'products/',
@@ -25,7 +24,7 @@ type NavLink = { key: string; label: string; href: string; current: boolean; ico
 export function Header() {
   const { t, lang, path } = useI18n()
   const home = path ? pageHref(lang) : ''
-  const contactHref = path === '' || path === 'contact/' ? '#contact' : pageHref(lang, 'contact/')
+  const contactHref = path === '' || path === 'smart-home/' || path === 'contact/' ? '#contact' : pageHref(lang, 'contact/')
   const [open, setOpen] = useState(false)
   const showroom = showroomHref(lang)
   const [scrolled, setScrolled] = useState(false)
@@ -64,61 +63,56 @@ export function Header() {
     const page = PAGE_ITEMS[id]
     return { key: id, label: item.label, href: pageHref(lang, page), current: inSection(page) }
   }
-  // Homepage and Products now open on sunlit travertine; only remaining dark-hero subpages keep the dark top bar.
   const dark = (path === 'custom-hardware/' || path === 'signage/') && !scrolled && !open
 
-  const showroomLink: NavLink = {
-    key: 'showroom',
-    label: t.nav.showroom,
-    href: showroom,
-    current: false,
-    icon: true,
-  }
-  const solutionLinks: NavLink[] = [byId('solutions'), byId('homes'), byId('process')]
-  const productLinks: NavLink[] = [
+  const hardwareLinks: NavLink[] = [
     { key: 'devices', label: t.products.nav.devices, href: pageHref(lang, 'products/'), current: path === 'products/' },
-    {
-      key: 'install',
-      label: t.products.nav.install,
-      href: `${pageHref(lang, 'products/')}#smart-home-devices`,
-      current: false,
-    },
-    { key: 'signage', label: t.signage.navLabel, href: pageHref(lang, 'signage/'), current: path === 'signage/' },
     {
       key: 'hardware',
       label: t.hardware.navLabel,
       href: pageHref(lang, 'custom-hardware/'),
       current: path === 'custom-hardware/',
     },
+    {
+      key: 'upcoming',
+      label: t.upcoming.title,
+      href: pageHref(lang, 'solutions/upcoming-products/'),
+      current: path === 'solutions/upcoming-products/',
+    },
+    { key: 'compare', label: t.compare.navLabel, href: pageHref(lang, 'compare/'), current: inSection('compare/') },
+  ]
+
+  const smartHomeLinks: NavLink[] = [
+    {
+      key: 'smart-home',
+      label: t.smartHomePage.overviewLabel,
+      href: pageHref(lang, 'smart-home/'),
+      current: path === 'smart-home/',
+    },
+    byId('solutions'),
+    byId('homes'),
+    byId('process'),
+    { key: 'showroom', label: t.nav.showroom, href: showroom, current: false, icon: true },
+  ]
+
+  const businessLinks: NavLink[] = [
+    { key: 'signage', label: t.signage.navLabel, href: pageHref(lang, 'signage/'), current: path === 'signage/' },
     byId('software'),
   ]
+
   const resourceLinks: NavLink[] = [
     { key: 'guides', label: t.guides.eyebrow, href: pageHref(lang, 'guides/'), current: inSection('guides/') },
     { key: 'faq', label: t.faq.eyebrow, href: pageHref(lang, 'faq/'), current: inSection('faq/') },
-    { key: 'compare', label: t.compare.navLabel, href: pageHref(lang, 'compare/'), current: inSection('compare/') },
-  ]
-  const groups = [
-    { id: 'solutions-menu', label: t.nav.groups.solutions, items: solutionLinks },
-    { id: 'products-menu', label: t.nav.groups.products, items: productLinks },
-    { id: 'resources-menu', label: t.nav.groups.resources, items: resourceLinks },
+    { key: 'glossary', label: t.glossary.navLabel, href: pageHref(lang, 'glossary/'), current: inSection('glossary/') },
+    { key: 'about', label: t.footer.about, href: pageHref(lang, 'about/'), current: path === 'about/' },
   ]
 
-  const linkClass = (link: NavLink) =>
-    `relative inline-flex min-h-11 items-center gap-1.5 px-2.5 text-[0.875rem] font-medium whitespace-nowrap transition-colors ${
-      dark
-        ? link.current
-          ? 'text-ember-300 after:absolute after:inset-x-2.5 after:bottom-1 after:h-[1.5px] after:bg-ember-300'
-          : 'text-paper/80 hover:text-paper'
-        : link.current
-          ? 'text-brand after:absolute after:inset-x-2.5 after:bottom-1 after:h-[1.5px] after:bg-brand'
-          : 'text-ink-700 hover:text-ink-950'
-    }`
-  const desktopLink = (link: NavLink) => (
-    <a key={link.key} href={link.href} aria-current={link.current ? 'page' : undefined} className={linkClass(link)}>
-      {link.icon ? <Box size={14} aria-hidden="true" className={dark ? 'text-ember-300' : 'text-ember-500'} /> : null}
-      {link.label}
-    </a>
-  )
+  const groups = [
+    { id: 'hardware-menu', label: t.nav.groups.hardware, items: hardwareLinks },
+    { id: 'smarthome-menu', label: t.nav.groups.smartHome, items: smartHomeLinks },
+    { id: 'business-menu', label: t.nav.groups.business, items: businessLinks },
+    { id: 'resources-menu', label: t.nav.groups.resources, items: resourceLinks },
+  ]
 
   return (
     <header
@@ -141,12 +135,8 @@ export function Header() {
           <Wordmark className="max-w-full" />
         </a>
 
-        <nav aria-label={t.a11y.navPrimary} className="hidden items-center gap-0.5 min-[1280px]:flex">
-          {groups.slice(0, 2).map((group) => (
-            <NavMenu key={group.id} id={group.id} label={group.label} items={group.items} dark={dark} />
-          ))}
-          {desktopLink(showroomLink)}
-          {groups.slice(2).map((group) => (
+        <nav aria-label={t.a11y.navPrimary} className="hidden items-center gap-1 min-[1280px]:flex">
+          {groups.map((group) => (
             <NavMenu key={group.id} id={group.id} label={group.label} items={group.items} dark={dark} />
           ))}
         </nav>
@@ -187,7 +177,7 @@ export function Header() {
       <div
         id="mobile-nav"
         hidden={!open}
-        className="border-t border-ink-950/12 bg-paper min-[1280px]:hidden"
+        className="max-h-[calc(100dvh-4rem)] overflow-y-auto border-t border-ink-950/12 bg-paper min-[1280px]:hidden"
       >
         <nav aria-label={t.a11y.navMobile} className="shell flex flex-col py-4">
           {groups.map((group) => (
@@ -204,27 +194,22 @@ export function Header() {
                     onClick={() => setOpen(false)}
                     className="flex min-h-12 items-center justify-between px-1 text-[0.9375rem] font-medium text-ink-900 transition-colors hover:text-brand aria-[current=page]:text-brand"
                   >
-                    <span>{link.label}</span>
+                    <span className="inline-flex items-center gap-2">
+                      {link.icon ? <Box size={15} aria-hidden="true" className="text-ember-500" /> : null}
+                      {link.label}
+                    </span>
                     {link.current ? <span aria-hidden="true" className="h-1.5 w-1.5 bg-brand" /> : null}
                   </a>
                 ))}
               </div>
             </div>
           ))}
-          <a
-            href={showroomLink.href}
-            onClick={() => setOpen(false)}
-            className="mt-5 flex min-h-12 items-center gap-2 px-1 text-[0.9375rem] font-medium text-ink-900 transition-colors hover:text-brand"
-          >
-            <Box size={16} aria-hidden="true" className="text-ember-500" />
-            {showroomLink.label}
-          </a>
           <Button
             as="a"
             href={contactHref}
             data-track="nav_cta_click"
             size="lg"
-            className="mt-2 w-full"
+            className="mt-5 w-full"
             onClick={() => setOpen(false)}
           >
             {t.nav.cta}
@@ -312,7 +297,10 @@ function NavMenu({ id, label, items, dark }: { id: string; label: string; items:
                   item.current ? 'bg-paper text-brand' : 'text-ink-800'
                 }`}
               >
-                <span>{item.label}</span>
+                <span className="inline-flex items-center gap-2">
+                  {item.icon ? <Box size={14} aria-hidden="true" className="text-ember-500" /> : null}
+                  {item.label}
+                </span>
                 {item.current ? <span aria-hidden="true" className="h-1.5 w-1.5 bg-brand" /> : null}
               </a>
             </li>

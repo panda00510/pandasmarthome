@@ -4,12 +4,12 @@ export const en: Content = {
   htmlLang: 'en',
 
   meta: {
-    title: 'Panda Smart Home | Smart Home Installation in Singapore',
+    title: 'Panda Smart | Smart AI Hardware & Local Systems in Singapore',
     description:
-      'Smart home design and installation for HDB, BTO, condo and landed homes in Singapore. Also Panda Signage displays, custom AI hardware and custom software.',
+      'Smart AI hardware and open local systems in Singapore: ESP32-S3 desk AI devices, custom AI hardware prototypes with source handover, Panda Smart Home, and Panda Signage.',
     keywords:
-      'smart home Singapore, smart home installation Singapore, smart home company Singapore, smart home solutions Singapore, home automation Singapore, smart home system Singapore, whole home automation, HDB smart home, BTO smart home, BTO renovation smart home, condo smart home, landed house smart home, smart lighting Singapore, smart switch Singapore, no neutral smart switch, smart aircon control Singapore, smart curtains Singapore, motorised curtains Singapore, motorised blinds Singapore, digital lock Singapore, smart door lock Singapore, CCTV installation Singapore, home security Singapore, energy monitoring, Matter, Zigbee, Thread, Apple Home, Google Home, Alexa',
-    ogImageAlt: 'Panda Smart Home — open smart home solutions in Singapore',
+      'smart AI hardware Singapore, ESP32 AI hardware, ESP32-S3 voice assistant, Home Assistant touch panel, smart pixel clock, custom IoT hardware Singapore, Edge AI device, local smart home Singapore, Panda Smart Home, Panda Signage, Matter, Zigbee, Thread, ESPHome, Home Assistant',
+    ogImageAlt: 'Panda Smart — smart AI hardware and local systems in Singapore',
   },
 
   a11y: {
@@ -17,7 +17,7 @@ export const en: Content = {
     quickActions: 'Quick actions',
     openMenu: 'Open navigation menu',
     closeMenu: 'Close navigation menu',
-    homeLink: 'Panda Smart Home — back to top',
+    homeLink: 'Panda Smart — back to top',
     languageSwitcher: 'Switch language',
     navPrimary: 'Primary',
     navMobile: 'Primary mobile',
@@ -26,15 +26,137 @@ export const en: Content = {
 
   nav: {
     items: [
-      { id: 'solutions', label: 'Services' },
-      { id: 'products', label: 'Products' },
-      { id: 'software', label: 'Software' },
-      { id: 'homes', label: 'Your home' },
+      { id: 'solutions', label: 'Smart home areas' },
+      { id: 'products', label: 'Desk AI devices' },
+      { id: 'software', label: 'Custom software' },
+      { id: 'homes', label: 'By home type' },
       { id: 'process', label: 'How it works' },
     ],
     showroom: '3D showroom',
-    cta: 'Book a consultation',
-    groups: { solutions: 'Solutions', products: 'Products', resources: 'Resources' },
+    cta: 'Start a project',
+    groups: {
+      hardware: 'AI Hardware',
+      smartHome: 'Smart Home',
+      business: 'Business',
+      resources: 'Resources',
+    },
+  },
+
+  aiHome: {
+    eyebrow: 'Smart AI hardware · Singapore',
+    specBar: 'ESP32-S3 · LOCAL-FIRST · SOURCE HANDOVER',
+    titleLead: 'Smart AI hardware you own,',
+    titleAccent: 'built for real rooms and desks.',
+    lead: 'Finished ESP32-S3 desk devices ready to customise, bespoke AI and IoT hardware prototypes built to order, and local-first systems including Panda Smart Home and Panda Signage — with firmware and source handed over to you.',
+    primaryCta: 'Start a hardware project',
+    secondaryCta: 'Explore desk devices',
+    ctaNote: 'In English or Chinese · Built and supported in Singapore · Written quote before work starts',
+    showcaseEyebrow: 'Desk AI hardware line-up',
+    showcaseCaption: 'Pre-order / built to order · Illustrative drawings, not finished unit photos',
+    viewDeviceCta: 'View specs & pre-order',
+    trust: [
+      'ESP32-S3 & open local protocols',
+      'Firmware and source handed to you',
+      'Runs locally, works without lock-in',
+      'Indicative SGD prices, quoted in writing',
+    ],
+    devices: {
+      eyebrow: 'Ready-to-customize devices',
+      title: 'Desk AI & screen hardware',
+      lead: 'Four enclosed ESP32 screen devices open for pre-order, with Singapore data, Home Assistant integration and custom firmware available before anything is ordered.',
+      viewAll: 'See all desk & smart-home devices',
+      compareCta: 'Compare all four devices',
+    },
+    customBand: {
+      eyebrow: 'Custom ESP32 AI hardware',
+      title: 'From an idea to a working AI device',
+      lead: 'Voice assistants with tool calls, camera vision, offline wake words, AI companions, LVGL touch panels and sensor nodes — prototyped and handed over with full source.',
+      cta: 'Explore custom hardware & brief',
+      tiersLabel: 'Three transparent custom levels',
+    },
+    systems: {
+      eyebrow: 'Systems built on open hardware',
+      title: 'Complete local systems for homes and businesses',
+      lead: 'Beyond standalone desk devices and prototypes, we deploy three complete productised systems built on the same local-first hardware principles.',
+      smartHomeBadge: '01 · Flagship System Product',
+      smartHomeTitle: 'Panda Smart Home',
+      smartHomeLead:
+        'Whole-home local automation for Singapore HDB, BTO, condo and landed homes — lighting, aircon, curtains, locks and sensors on one local controller, with no monthly fee and an interactive 3D showroom to try before you renovate.',
+      smartHomeHighlights: [
+        'Lighting, aircon, curtains, locks & sensors',
+        'Local controller · works offline',
+        'HDB, BTO, condo & landed homes',
+        'Admin login & device list handed over',
+      ],
+      smartHomeCta: 'Explore Panda Smart Home',
+      showroomCta: 'Try the 3D showroom',
+      signageBadge: '02 · Commercial Displays',
+      softwareBadge: '03 · Companion Software',
+    },
+    process: {
+      eyebrow: 'How a build runs',
+      title: 'Five steps from brief to handover',
+      lead: 'Every custom hardware or system job starts with feasibility and a written scope before parts are ordered.',
+      cta: 'See custom hardware details',
+    },
+    faq: {
+      eyebrow: 'FAQ',
+      title: 'Straight answers before you order or build',
+      lead: 'How pre-orders, custom firmware, indicative SGD pricing and local systems actually work.',
+      guidesTitle: 'Hardware & local-AI guides',
+      items: [
+        {
+          q: 'Are the desk AI devices in stock?',
+          a: 'No. All four desk screen devices are open for pre-order and marked coming soon. Message us on WhatsApp and we confirm timing and any customisation before you commit.',
+        },
+        {
+          q: 'Can you customise the firmware, layout or AI persona?',
+          a: 'Yes. We can adjust the screen layout, add NEA weather or LTA bus arrivals, wire in Home Assistant or MQTT, set up Chinese/English voice personas and MCP tool calls, or brand the UI for a shop or office.',
+        },
+        {
+          q: 'Do I keep the firmware and source code on a custom hardware build?',
+          a: 'Yes. When a custom ESP32 hardware build is handed over, the working unit, firmware, source code and documentation belong to you — no vendor lock-in.',
+        },
+        {
+          q: 'Are the prices shown final checkout prices?',
+          a: 'No. Every “from S$X” figure is an indicative starting price in Singapore dollars. Your actual quote depends on enclosure, screen size, parts and scope, and is confirmed in writing before work starts.',
+        },
+        {
+          q: 'Do your AI devices work with Panda Smart Home and Home Assistant?',
+          a: 'Yes. Our Home Assistant touch panel, smart pixel clock and custom ESP32 nodes integrate natively with Home Assistant, ESPHome, MQTT and Matter — and can be bundled with a Panda Smart Home installation.',
+        },
+        {
+          q: 'Are the images on this site photographs of finished units or client projects?',
+          a: 'No. Device drawings are labelled as illustrations and interior visuals are labelled as illustrative. We do not publish placeholder customer quotes or pass illustrations off as completed projects.',
+        },
+      ],
+    },
+    contact: {
+      title: 'Tell us what you want to build or deploy',
+      lead: 'Whether you are pre-ordering a desk AI device, scoping a custom ESP32 prototype, or planning Panda Smart Home or Panda Signage, send a short note and we reply in English or Chinese.',
+      projectTypeLabel: 'What are you interested in?',
+      projectTypeOptions: [
+        'Select…',
+        'Desk AI devices (pre-order)',
+        'Custom ESP32 AI hardware',
+        'Panda Smart Home installation',
+        'Panda Signage displays',
+        'Custom business software',
+        'Not sure yet, advise me',
+      ],
+      messagePlaceholder:
+        'e.g. Pre-order the voice assistant or touch panel, build a custom ESP32 sensor/voice device, or plan smart home lighting and aircon.',
+      whatsappGreeting: "Hi Panda Smart, I'd like to discuss an AI hardware device or project.",
+      mailSubject: 'Panda Smart project enquiry',
+    },
+  },
+
+  smartHomePage: {
+    navLabel: 'Panda Smart Home',
+    overviewLabel: 'Smart Home overview',
+    metaTitle: 'Panda Smart Home | Open Smart Home Installation in Singapore',
+    metaDescription:
+      'Local-first smart home design and installation for HDB, BTO, condo and landed homes across Singapore. Lighting, aircon, curtains, locks and cameras on one open system.',
   },
 
   hero: {
@@ -1619,7 +1741,7 @@ export const en: Content = {
 
   footer: {
     blurb:
-      'Smart homes that run locally, mix brands and are handed over to you. Designed and installed across Singapore.',
+      'Smart AI hardware, custom ESP32 devices, and open local systems — including Panda Smart Home and Panda Signage — built and supported in Singapore.',
     navTitle: 'Explore',
     groups: { home: 'Solutions', resources: 'Resources' },
     legalTitle: 'Legal',
@@ -1629,13 +1751,13 @@ export const en: Content = {
     about: 'About us',
     privacy: 'Privacy policy',
     rights: 'All rights reserved.',
-    builtWith: 'Serving HDB, condo and landed homes across Singapore.',
+    builtWith: 'Smart AI hardware and local systems in Singapore.',
     disclaimer:
-      'Panda Smart Home integrates compatible third-party products through supported connection methods. Product names and trademarks belong to their respective owners. Compatibility does not imply official partnership or endorsement.',
-    imageTag: 'Illustrative photo',
+      'Panda Smart integrates compatible third-party products through supported connection methods. Product names and trademarks belong to their respective owners. Compatibility does not imply official partnership or endorsement.',
+    imageTag: 'Illustrative',
     renderTag: '3D showroom render',
     imageNote:
-      'Photographs are illustrative stock images from Pexels. They are not Panda Smart Home installations or client projects.',
+      'Interior images are illustrative architectural visualizations and device drawings are illustrations — none is a photograph of a client installation or mass-produced unit.',
   },
 
   planner: {

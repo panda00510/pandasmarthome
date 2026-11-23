@@ -4,12 +4,12 @@ export const zh: Content = {
   htmlLang: 'zh-Hans-SG',
 
   meta: {
-    title: 'Panda智能家居｜新加坡智能家居设计与安装',
+    title: 'Panda 智能｜新加坡 Smart AI 硬件与本地化智能系统',
     description:
-      'Panda智能家居为全新加坡的组屋、预购组屋、公寓与有地住宅提供智能家居设计与安装。灯光、空调、窗帘、门锁与摄像头接入同一套本地系统，不绑定单一品牌。',
+      '新加坡 Smart AI 硬件与开放式本地系统：ESP32-S3 桌面 AI 屏幕设备、按需定制 AI 硬件原型（源码交付），以及 Panda 智能家居与 Panda Signage 信息屏系统。',
     keywords:
-      '新加坡智能家居, 新加坡智能家居安装, 新加坡智能家居公司, 新加坡全屋智能, 全屋智能家居, 智能家居方案, 家居自动化, 组屋智能家居, 组屋装修, BTO 智能家居, BTO 装修, 公寓智能家居, 有地住宅智能家居, 智能灯光, 智能开关, 无零线开关, 空调智能控制, 智能窗帘, 电动窗帘, 电动百叶窗, 智能门锁, 电子门锁, 监控摄像头安装, 家居安防, 能耗监测, Matter, Zigbee, Thread, 苹果家庭, Google Home, Alexa',
-    ogImageAlt: 'Panda智能家居 — 新加坡开放式智能家居解决方案',
+      'Smart AI 硬件, 新加坡 AI 硬件, ESP32 AI 硬件定制, ESP32-S3 语音助手, Home Assistant 触控面板, 智能像素时钟, 边缘 AI 设备, 新加坡智能家居, Panda 智能家居, Panda Signage 信息屏, Matter, Zigbee, Thread, ESPHome',
+    ogImageAlt: 'Panda 智能 — 新加坡 Smart AI 硬件与本地化智能系统',
   },
 
   a11y: {
@@ -17,7 +17,7 @@ export const zh: Content = {
     quickActions: '快捷操作',
     openMenu: '打开导航菜单',
     closeMenu: '关闭导航菜单',
-    homeLink: 'Panda智能家居 — 返回顶部',
+    homeLink: 'Panda 智能 — 返回顶部',
     languageSwitcher: '切换语言',
     navPrimary: '主导航',
     navMobile: '手机主导航',
@@ -26,15 +26,137 @@ export const zh: Content = {
 
   nav: {
     items: [
-      { id: 'solutions', label: '服务' },
-      { id: 'products', label: '产品' },
+      { id: 'solutions', label: '智能家居区域' },
+      { id: 'products', label: '桌面 AI 设备' },
       { id: 'software', label: '软件定制' },
-      { id: 'homes', label: '适合你的家' },
-      { id: 'process', label: '服务流程' },
+      { id: 'homes', label: '按住宅类型' },
+      { id: 'process', label: '安装流程' },
     ],
     showroom: '3D 样板间',
-    cta: '预约咨询',
-    groups: { solutions: '方案', products: '产品', resources: '资料' },
+    cta: '咨询项目',
+    groups: {
+      hardware: 'AI 硬件',
+      smartHome: '智能家居',
+      business: '商业方案',
+      resources: '资料',
+    },
+  },
+
+  aiHome: {
+    eyebrow: '智能 AI 硬件 · 新加坡',
+    specBar: 'ESP32-S3 · 本地优先 · 固件与源码交付',
+    titleLead: '真正归你所有的',
+    titleAccent: 'Smart AI 硬件。',
+    lead: '面向新加坡个人、家庭与小团队：开箱即可按需定制的 ESP32-S3 桌面 AI 设备、从想法做到实物的 AI 硬件定制原型，以及基于开放硬件的 Panda 智能家居与 Panda Signage 信息屏——固件与源码交到你手上。',
+    primaryCta: '咨询硬件定制或预购',
+    secondaryCta: '查看桌面 AI 设备',
+    ctaNote: '中英文沟通 · 新加坡本地设计与支持 · 动工前书面报价',
+    showcaseEyebrow: '桌面 AI 硬件系列',
+    showcaseCaption: '预购 / 按需定制 · 概念示意图，非量产实拍照片',
+    viewDeviceCta: '查看规格与预购',
+    trust: [
+      'ESP32-S3 与开放本地协议',
+      '固件与源码完整交付，无锁定',
+      '本地优先运行，断网照常工作',
+      '新币参考起步价，书面确认再动工',
+    ],
+    devices: {
+      eyebrow: '桌面 AI 屏幕设备',
+      title: '插电即用，也支持按需定制',
+      lead: '四款带外壳、屏幕与预装固件的 ESP32 桌面设备现开放预购，支持新加坡 NEA 天气、LTA 巴士、Home Assistant 联动及定制界面。',
+      viewAll: '查看全部桌面与智能家居设备',
+      compareCta: '对比四款设备规格',
+    },
+    customBand: {
+      eyebrow: 'AI 硬件定制（ESP32）',
+      title: '从想法到一台能用的 AI 硬件',
+      lead: '支持工具调用的语音助手、ESP32-S3 摄像头视觉、离线唤醒词、AI 陪伴桌面机器人、LVGL 触控面板与传感节点——原型验证后连同固件与源码一并交付。',
+      cta: '查看硬件定制能力与需求单',
+      tiersLabel: '三档透明参考起步价',
+    },
+    systems: {
+      eyebrow: '基于开放硬件的落地系统',
+      title: '从桌面设备延伸到完整空间系统',
+      lead: '除了单台桌面 AI 硬件与定制原型，我们也把同一套本地优先、无厂商绑定的硬件架构做成三套成熟落地产品。',
+      smartHomeBadge: '01 · 核心系统产品',
+      smartHomeTitle: 'Panda 智能家居',
+      smartHomeLead:
+        '面向新加坡 HDB、BTO、公寓与有地住宅的本地化全屋智能系统——灯光、空调、窗帘、门锁与传感器统一跑在本地主机上，无月费，还可先在 3D 样板间里亲手试效果。',
+      smartHomeHighlights: [
+        '灯光、空调、窗帘、门锁与传感器',
+        '本地主机运行，断网照常使用',
+        '覆盖组屋、BTO、公寓与有地住宅',
+        '管理员账号与设备清单完整交付',
+      ],
+      smartHomeCta: '了解 Panda 智能家居',
+      showroomCta: '体验 3D 样板间',
+      signageBadge: '02 · 商业信息屏',
+      softwareBadge: '03 · 配套业务软件',
+    },
+    process: {
+      eyebrow: '开发与交付流程',
+      title: '从沟通到交付，清晰五步',
+      lead: '无论是硬件定制还是系统落地，动工与采购前都先评估可行性并给出书面范围与报价。',
+      cta: '查看 AI 硬件定制详情',
+    },
+    faq: {
+      eyebrow: '常见问题',
+      title: '下单或定制前，先把关键问题说清楚',
+      lead: '关于预购状态、功能定制、新币起步价、源码归属以及如何与智能家居联动。',
+      guidesTitle: 'AI 硬件与本地系统指南',
+      items: [
+        {
+          q: '四款桌面 AI 设备现在有现货吗？',
+          a: '目前没有现货，均处于预购 / 即将推出状态。你可以通过 WhatsApp 告诉我们需要的型号或定制想法，确认排期与细节后再决定是否下单。',
+        },
+        {
+          q: '可以定制界面、数据或 AI 角色吗？',
+          a: '可以。屏幕排版、新加坡 NEA 天气或 LTA 巴士到站、Home Assistant / MQTT 接入、中英文语音角色与 MCP 工具调用，以及门店品牌界面都可按需定制，报价前书面确认。',
+        },
+        {
+          q: '定制硬件完成后，固件和源码归我吗？',
+          a: '归你。定制 ESP32 硬件项目交付时，样机、固件、源代码和说明文档都会交到你手上，不绑定我们的服务器。',
+        },
+        {
+          q: '页面上的“S$XX 起”是最终成交价吗？',
+          a: '不是，它是新币参考起步价。实际价格取决于屏幕尺寸、外壳、元器件与功能范围，会在动工前通过书面报价确认。',
+        },
+        {
+          q: '这些 AI 硬件能接入 Panda 智能家居或 Home Assistant 吗？',
+          a: '可以。Home Assistant 触控面板、智能像素时钟与定制 ESP32 节点都原生支持 Home Assistant、ESPHome、MQTT 或 Matter，也可直接打包进全屋智能方案。',
+        },
+        {
+          q: '页面上的产品图和室内图是实拍吗？',
+          a: '不是。设备图为概念示意图，室内图为建筑效果示意图，均已明确标注。我们不放虚假客户评价，也不拿示意图冒充实拍案例。',
+        },
+      ],
+    },
+    contact: {
+      title: '说说你想做的硬件或系统',
+      lead: '无论是预购桌面 AI 设备、评估 ESP32 定制原型，还是规划 Panda 智能家居或信息屏，留个简短说明即可，我们支持中英文回复。',
+      projectTypeLabel: '你想了解哪类项目？',
+      projectTypeOptions: [
+        '请选择…',
+        '桌面 AI 屏幕设备（预购）',
+        'ESP32 AI 硬件定制',
+        'Panda 智能家居方案',
+        'Panda Signage 信息屏',
+        '小生意软件定制',
+        '还没想好，请给建议',
+      ],
+      messagePlaceholder:
+        '例如：想预购语音助手或触控面板、定制一款 ESP32 语音/视觉设备，或规划全屋智能灯光与空调。',
+      whatsappGreeting: '你好 Panda 智能，我想咨询 AI 硬件产品或定制项目。',
+      mailSubject: 'Panda 智能项目咨询',
+    },
+  },
+
+  smartHomePage: {
+    navLabel: 'Panda 智能家居',
+    overviewLabel: '智能家居总览',
+    metaTitle: 'Panda 智能家居｜新加坡开放式本地智能家居设计与安装',
+    metaDescription:
+      '面向新加坡组屋、BTO、公寓与有地住宅的本地化智能家居设计与安装。灯光、空调、窗帘、门锁与摄像头接入同一套本地系统，不绑定品牌。',
   },
 
   hero: {
@@ -1553,7 +1675,7 @@ export const zh: Content = {
 
   footer: {
     blurb:
-      '本地运行、品牌随意搭配、系统交到你手上的智能家居。全新加坡设计与安装。',
+      'Smart AI 硬件、ESP32 定制设备与开放式本地系统——包含 Panda 智能家居与 Panda Signage 信息屏。新加坡本地设计与支持。',
     navTitle: '浏览',
     groups: { home: '方案', resources: '资料' },
     legalTitle: '法律信息',
@@ -1563,12 +1685,12 @@ export const zh: Content = {
     about: '关于我们',
     privacy: '隐私政策',
     rights: '保留所有权利。',
-    builtWith: '服务全新加坡组屋、公寓与有地住宅。',
+    builtWith: '新加坡 Smart AI 硬件与本地化智能系统。',
     disclaimer:
-      'Panda智能家居通过支持的连接方式集成兼容的第三方产品。相关产品名称及商标归各自所有，设备兼容不代表与相关品牌存在官方合作或认可关系。',
+      'Panda 智能通过支持的连接方式集成兼容的第三方产品。相关产品名称及商标归各自所有，设备兼容不代表与相关品牌存在官方合作或认可关系。',
     imageTag: '示意图',
     renderTag: '3D 样板间渲染',
-    imageNote: '网站上的照片是来自 Pexels 的示意图库图片，不是 Panda 智能家居的安装现场或客户项目。',
+    imageNote: '页面室内图为建筑效果示意图，设备图为概念示意图，均非真实客户现场或量产实物拍摄。',
   },
 
   planner: {

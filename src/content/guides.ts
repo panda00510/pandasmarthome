@@ -238,6 +238,7 @@ export const hubOf = (path: string): Hub | null => HUBS.find((hub) => path === `
 /** Every page path below a language root, for the prerender and the sitemap. */
 export const pagePaths = [
   '',
+  'smart-home/',
   'guides/',
   'products/',
   'software/',
@@ -275,6 +276,9 @@ export function pageMeta(lang: Lang, path: string) {
   const hub = hubOf(path)
   if (hub) {
     return { title: t.hubs[hub].metaTitle, description: t.hubs[hub].metaDescription, guide: null }
+  }
+  if (path === 'smart-home/') {
+    return { title: t.smartHomePage.metaTitle, description: t.smartHomePage.metaDescription, guide: null }
   }
   if (path === 'guides/') {
     return { title: t.guides.metaTitle, description: t.guides.metaDescription, guide: null }

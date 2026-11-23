@@ -8,16 +8,16 @@
 
 export const brand = {
   /** Full brand name. Used in the wordmark, footer, SEO title and JSON-LD. */
-  name: 'Panda Smart Home',
+  name: 'Panda Smart',
   /** Chinese brand name. */
-  nameZh: 'Panda智能家居',
+  nameZh: 'Panda 智能',
   /** Short form for tight spaces (mobile nav, favicon alt text). */
   shortName: 'Panda',
   shortNameZh: 'Panda',
   /** Two-letter/word mark fallback if the SVG mark fails to render. */
   initials: 'P',
-  taglineEn: 'Open smart home solutions for Singapore homes',
-  taglineZh: '面向新加坡住宅的开放式智能家居方案',
+  taglineEn: 'Smart AI hardware and local systems in Singapore',
+  taglineZh: '新加坡智能 AI 硬件与本地化智能系统',
 } as const
 
 /**

@@ -1,31 +1,30 @@
+import { AiHero } from './AiHero'
+import {
+  AiFaqSection,
+  CustomHardwareSection,
+  DeskDevicesSection,
+  HardwareProcessSection,
+  SystemsSection,
+} from './AiHardwareSections'
 import { Contact } from './Contact'
-import { Custom } from './Custom'
-import { Faq } from './Faq'
-import { Hero } from './Hero'
-import { Homes } from './Homes'
-import { Planner } from './Planner'
-import { Process } from './Process'
-import { Showroom } from './Showroom'
-import { Solutions } from './Solutions'
 
 /**
- * Streamlined homepage flow — zero repeated images, zero duplicated scene lists:
- * Hero (travertine) -> Solutions + Situations index (alabaster) -> 3D Showroom (deep forest)
- * -> Homes (sandstone) -> Process + Deliverables (alabaster) -> Custom & Products (travertine)
- * -> Plan starter (sandstone) -> FAQ + Compatibility + Guides (alabaster) -> Contact (travertine).
+ * Panda Smart homepage — focused on Smart AI Hardware, with Panda Smart Home
+ * positioned cleanly as one of Panda's flagship local system products:
+ * AiHero (travertine) -> Desk AI Devices (alabaster) -> Custom ESP32 AI Hardware (deep forest)
+ * -> Complete Local Systems incl. Panda Smart Home (sandstone) -> 5-Step Process (alabaster)
+ * -> Hardware FAQ & Guides (travertine) -> Project Contact (sandstone).
  */
 export function HomePage() {
   return (
     <>
-      <Hero />
-      <Solutions />
-      <Showroom />
-      <Homes />
-      <Process />
-      <Custom />
-      <Planner />
-      <Faq />
-      <Contact />
+      <AiHero />
+      <DeskDevicesSection />
+      <CustomHardwareSection />
+      <SystemsSection />
+      <HardwareProcessSection />
+      <AiFaqSection />
+      <Contact mode="hardware" />
     </>
   )
 }

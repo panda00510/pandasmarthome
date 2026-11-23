@@ -11,6 +11,7 @@ import type { Lang } from './i18n/context'
  */
 const loaders = {
   home: () => import('./components/sections/Home'),
+  smartHome: () => import('./components/sections/SmartHomePage'),
   guides: () => import('./components/sections/Guides'),
   hub: () => import('./components/sections/Hub'),
   products: () => import('./components/sections/Products'),
@@ -36,6 +37,7 @@ export type View = keyof typeof loaders
 /** Source of each chunk, for the per-page modulepreload links (scripts/prerender.mjs checks them against the manifest). */
 export const viewFiles: Record<View, string> = {
   home: 'src/components/sections/Home.tsx',
+  smartHome: 'src/components/sections/SmartHomePage.tsx',
   guides: 'src/components/sections/Guides.tsx',
   hub: 'src/components/sections/Hub.tsx',
   products: 'src/components/sections/Products.tsx',
@@ -57,6 +59,7 @@ export async function loadView(view: View | null, lang: Lang) {
 
 const PAGES: Record<string, View> = {
   '': 'home',
+  'smart-home/': 'smartHome',
   'guides/': 'guides',
   'products/': 'products',
   'software/': 'software',

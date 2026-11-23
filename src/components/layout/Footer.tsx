@@ -25,25 +25,28 @@ export function Footer() {
   const companyName = lang === 'zh' ? site.companyNameZh : site.companyName
   const page = (to: string) => pageHref(lang, to)
   const navLabel = (id: string) => t.nav.items.find((item) => item.id === id)!.label
+
   const columns = [
     {
-      title: t.nav.groups.solutions,
+      title: t.nav.groups.hardware,
       links: [
+        { href: page('products/'), label: t.products.nav.devices },
+        { href: page('custom-hardware/'), label: t.hardware.navLabel },
+        { href: page('solutions/upcoming-products/'), label: t.upcoming.title },
+        { href: page('compare/'), label: t.compare.navLabel },
+        { href: page('signage/'), label: t.signage.navLabel },
+        { href: page('software/'), label: navLabel('software') },
+      ],
+    },
+    {
+      title: t.nav.groups.smartHome,
+      links: [
+        { href: page('smart-home/'), label: t.smartHomePage.navLabel },
         { href: page('solutions/'), label: navLabel('solutions') },
         { href: page('homes/'), label: navLabel('homes') },
         { href: page('how-it-works/'), label: navLabel('process') },
         { href: showroomHref(lang), label: t.nav.showroom },
-        { href: `${home}#plan`, label: t.planner.navLabel },
-      ],
-    },
-    {
-      title: t.nav.groups.products,
-      links: [
-        { href: page('products/'), label: t.products.nav.devices },
-        { href: `${page('products/')}#smart-home-devices`, label: t.products.nav.install },
-        { href: page('signage/'), label: t.signage.navLabel },
-        { href: page('custom-hardware/'), label: t.hardware.navLabel },
-        { href: page('software/'), label: navLabel('software') },
+        { href: `${page('smart-home/')}#plan`, label: t.planner.navLabel },
       ],
     },
     {
@@ -52,7 +55,6 @@ export function Footer() {
         { href: page('guides/'), label: t.guides.eyebrow },
         { href: page('faq/'), label: t.faq.eyebrow },
         { href: page('glossary/'), label: t.glossary.navLabel },
-        { href: page('compare/'), label: t.compare.navLabel },
         { href: page('about/'), label: t.footer.about },
         { href: page('contact/'), label: t.contactPage.navLabel },
       ],

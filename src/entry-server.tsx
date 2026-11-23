@@ -21,13 +21,14 @@ import * as Home from './components/sections/Home'
 import * as Hub from './components/sections/Hub'
 import * as Products from './components/sections/Products'
 import * as Signage from './components/sections/Signage'
+import * as SmartHomePage from './components/sections/SmartHomePage'
 import * as Software from './components/sections/Software'
 import { viewFiles, viewOf, views } from './views'
 
 // The browser loads copy, page chunks and article bodies on demand (main.tsx);
 // the prerender has everything up front, so render() stays synchronous.
 Object.assign(dictionaries, { en, zh })
-Object.assign(views, { checklist: Checklist, compare: ComparePage, contact: ContactPage, faq: FaqPage, glossary: { ...Glossary, glossaries: { en: glossaryEn, zh: glossaryZh } }, guides: Guides, hardware: Hardware, home: Home, hub: Hub, products: Products, signage: Signage, software: Software })
+Object.assign(views, { checklist: Checklist, compare: ComparePage, contact: ContactPage, faq: FaqPage, glossary: { ...Glossary, glossaries: { en: glossaryEn, zh: glossaryZh } }, guides: Guides, hardware: Hardware, home: Home, hub: Hub, products: Products, signage: Signage, smartHome: SmartHomePage, software: Software })
 fillGuideBodies(
   Object.fromEntries(
     Object.entries(
@@ -186,11 +187,11 @@ ${['/showroom/', '/showroom/zh/']
     site.url ? `Website: ${page('en')} (中文: ${page('zh')})` : '',
     '',
     '## About',
-    `- Who: ${brand.name} (${brand.nameZh}), a smart home design and installation business.`,
-    '- Where: across Singapore (all five regions, listed below) — HDB (BTO and resale), condominium and landed homes.',
+    `- Who: ${brand.name} (${brand.nameZh}), a smart AI hardware and open local systems studio in Singapore.`,
+    '- Core focus: ESP32-S3 desk AI screen devices (pre-order), custom AI and IoT hardware prototypes with full firmware and source handover, plus local systems built on open protocols.',
+    '- Systems & products: Panda Smart Home (whole-home local automation for HDB, BTO, condo and landed homes across Singapore, with an interactive 3D showroom), Panda Signage (self-hosted digital signage and meeting room displays), and custom companion software.',
     '- Languages: English and Simplified Chinese; every page exists in both.',
-    '- Also: Panda Signage (self-hosted digital signage displays), custom ESP32 AI hardware (prototypes and one-off builds) and custom software — each has its own page, listed below.',
-    '- Approach: lighting, aircon, curtains, locks and cameras on one local system, on open platforms, with no vendor lock-in.',
+    '- Approach: local-first hardware and open platforms (ESPHome, Home Assistant, MQTT, Matter, Zigbee, Thread) with no vendor lock-in.',
     '- Prices on this site are indicative starting prices in SGD, not checkout prices; the amount is agreed before anything is ordered.',
     site.email ? `- Email: ${site.email}` : '',
     site.url ? `- Contact form: ${page('en')}#contact` : '',

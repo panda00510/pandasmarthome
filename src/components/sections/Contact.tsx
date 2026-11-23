@@ -52,7 +52,7 @@ function isUsableContact(value: string): boolean {
   return /^[+()\d][\s\-()\d]{6,}$/.test(trimmed) && trimmed.replace(/\D/g, '').length >= 8
 }
 
-export function Contact() {
+export function Contact({ mode = 'hardware' }: { mode?: 'hardware' | 'home' }) {
   const { t, lang } = useI18n()
   const ids = useId()
   const [status, setStatus] = useState<Status>('idle')
@@ -62,6 +62,14 @@ export function Contact() {
 
   const enabled = MODE !== 'none'
   const c = t.contact
+  const isHardware = mode === 'hardware'
+  const sectionTitle = isHardware ? t.aiHome.contact.title : c.title
+  const sectionLead = isHardware ? t.aiHome.contact.lead : c.lead
+  const primarySelectLabel = isHardware ? t.aiHome.contact.projectTypeLabel : c.form.homeType
+  const primarySelectOptions = isHardware ? t.aiHome.contact.projectTypeOptions : c.form.homeTypeOptions
+  const messagePlaceholder = isHardware ? t.aiHome.contact.messagePlaceholder : c.form.messagePlaceholder
+  const whatsappGreeting = isHardware ? t.aiHome.contact.whatsappGreeting : c.whatsappGreeting
+  const mailSubject = isHardware ? t.aiHome.contact.mailSubject : c.mailSubject
   const formRef = useRef<HTMLFormElement>(null)
   // What the last prefill wrote into each field. A field is only replaced while
   // it still holds exactly that (or is empty); anything the visitor typed or
@@ -131,14 +139,14 @@ export function Contact() {
       const body = [
         `${c.form.name}: ${name}`,
         `${c.form.contact}: ${contact}`,
-        `${c.form.homeType}: ${homeType || '—'}`,
+        `${primarySelectLabel}: ${homeType || '—'}`,
         `${c.form.startWith}: ${startWith || '—'}`,
         ...(message ? ['', c.form.message, message] : []),
       ].join('\n')
 
       window.location.href =
         `mailto:${site.email}` +
-        `?subject=${encodeURIComponent(`${c.mailSubject} — ${name}`)}` +
+        `?subject=${encodeURIComponent(`${mailSubject} — ${name}`)}` +
         `&body=${encodeURIComponent(body)}`
 
       // Deliberately NOT "sent": it only counts once they press send in their
@@ -158,7 +166,7 @@ export function Contact() {
           // services (Web3Forms and friends) read to route and title the
           // notification email. A custom endpoint can simply ignore them.
           ...(site.formAccessKey ? { access_key: site.formAccessKey } : {}),
-          subject: `${c.mailSubject} — ${name}`,
+          subject: `${mailSubject} — ${name}`,
           from_name: name,
           // Give the service a real reply-to when the visitor left an email.
           ...(contact.includes('@') ? { email: contact } : {}),
@@ -186,16 +194,16 @@ export function Contact() {
   }
 
   return (
-    <section id="contact" className="band border-t border-ink-950/12 bg-paper">
+    <section id="contact" className={`band border-t border-ink-950/12 ${isHardware ? 'bg-paper-alt' : 'bg-paper'}`}>
       <div className="shell grid gap-10 lg:grid-cols-[minmax(0,0.88fr)_minmax(0,1fr)] lg:gap-16">
         {/* ---- Details ---------------------------------------------------- */}
         <div>
-          <SectionHeading eyebrow={c.eyebrow} title={c.title} lead={c.lead} shortOnPhone />
+          <SectionHeading eyebrow={c.eyebrow} title={sectionTitle} lead={sectionLead} shortOnPhone />
 
           {site.whatsappLink ? (
             <div
               role="tablist"
-              aria-label={c.title}
+              aria-label={sectionTitle}
               className="mt-6 grid grid-cols-2 overflow-hidden rounded-[3px] border border-ink-950/16 bg-surface lg:hidden"
             >
               {(['form', 'chat'] as const).map((id, idx) => (
@@ -223,7 +231,7 @@ export function Contact() {
                 {site.whatsappLink ? (
                   <Button
                     as="a"
-                    href={whatsappHref(t.contact.whatsappGreeting)!}
+                    href={whatsappHref(whatsappGreeting)!}
                     target="_blank"
                     rel="noopener noreferrer"
                     variant="accent"
@@ -290,22 +298,24 @@ export function Contact() {
               </div>
             ) : null}
 
-            <figure className="plate-frame mt-8 hidden lg:block">
-              <div className="relative overflow-hidden rounded-[2px]">
-                <img
-                  src={lighting960}
-                  srcSet={`${lighting640} 640w, ${lighting960} 960w`}
-                  sizes="(min-width: 1200px) 430px, 36vw"
-                  alt=""
-                  width={960}
-                  height={720}
-                  loading="lazy"
-                  decoding="async"
-                  className="block aspect-[16/8] w-full object-cover"
-                />
-                <PhotoTag>{t.footer.imageTag}</PhotoTag>
-              </div>
-            </figure>
+            {!isHardware ? (
+              <figure className="plate-frame mt-8 hidden lg:block">
+                <div className="relative overflow-hidden rounded-[2px]">
+                  <img
+                    src={lighting960}
+                    srcSet={`${lighting640} 640w, ${lighting960} 960w`}
+                    sizes="(min-width: 1200px) 430px, 36vw"
+                    alt=""
+                    width={960}
+                    height={720}
+                    loading="lazy"
+                    decoding="async"
+                    className="block aspect-[16/8] w-full object-cover"
+                  />
+                  <PhotoTag>{t.footer.imageTag}</PhotoTag>
+                </div>
+              </figure>
+            ) : null}
           </div>
         </div>
 
@@ -374,8 +384,8 @@ export function Contact() {
               <SelectField
                 id={`${ids}-home`}
                 name="homeType"
-                label={c.form.homeType}
-                options={c.form.homeTypeOptions}
+                label={primarySelectLabel}
+                options={primarySelectOptions}
               />
 
               <details
@@ -401,7 +411,7 @@ export function Contact() {
                     id={`${ids}-message`}
                     name="message"
                     label={c.form.message}
-                    placeholder={c.form.messagePlaceholder}
+                    placeholder={messagePlaceholder}
                     multiline
                   />
                 </div>

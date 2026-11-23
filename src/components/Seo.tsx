@@ -100,7 +100,7 @@ export function Seo() {
     image: site.url ? site.url + brandAssets.ogImage : undefined,
     areaServed,
     knowsLanguage: ['en', 'zh-Hans'],
-    knowsAbout: ['Smart home', 'Home automation', 'Matter', 'Zigbee', 'Thread', 'Home Assistant', 'ESP32'],
+    knowsAbout: ['Smart AI hardware', 'ESP32', 'ESP32-S3', 'Edge AI', 'Home Assistant', 'ESPHome', 'MQTT', 'Matter', 'Zigbee', 'Thread', 'Smart home', 'Digital signage'],
     // Registered entity number (UEN), only when configured.
     identifier: site.registrationNumber
       ? { '@type': 'PropertyValue', propertyID: 'UEN', value: site.registrationNumber }
@@ -129,6 +129,17 @@ export function Seo() {
         serviceType: 'Smart home installation',
         areaServed,
       },
+    })),
+  }
+
+  const homeFaq = {
+    '@type': 'FAQPage',
+    '@id': id('faq'),
+    isPartOf: site.url ? { '@id': `${site.url}#website` } : undefined,
+    mainEntity: t.aiHome.faq.items.map((item) => ({
+      '@type': 'Question',
+      name: item.q,
+      acceptedAnswer: { '@type': 'Answer', text: item.a },
     })),
   }
 
@@ -439,8 +450,10 @@ export function Seo() {
     '@graph': [
       business,
       ...(path === ''
-        ? [faq]
-        : path === 'products/'
+        ? [homeFaq]
+        : path === 'smart-home/'
+          ? [faq]
+          : path === 'products/'
           ? [productList, productFaq]
           : path === 'software/'
             ? [softwareList, softwareFaq]

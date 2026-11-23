@@ -1,3 +1,4 @@
+import { useId } from 'react'
 import type { Lang } from '../../i18n/context'
 
 /**
@@ -88,15 +89,15 @@ function Cable({ d }: { d: string }) {
 }
 
 export function ProductArt({ id, lang }: { id: string; lang: Lang }) {
-  if (id === 'panel') return <PanelArt lang={lang} />
-  if (id === 'pixel') return <PixelArt />
-  if (id === 'weather') return <WeatherArt lang={lang} />
-  return <VoiceArt lang={lang} />
+  const uid = useId().replace(/:/g, '')
+  if (id === 'panel') return <PanelArt lang={lang} p={`pp-${uid}`} />
+  if (id === 'pixel') return <PixelArt p={`px-${uid}`} />
+  if (id === 'weather') return <WeatherArt lang={lang} p={`pw-${uid}`} />
+  return <VoiceArt lang={lang} p={`pv-${uid}`} />
 }
 
 /** Small speaker box with a square LCD (Xiaozhi-style face), mic holes and a grille. */
-function VoiceArt({ lang }: { lang: Lang }) {
-  const p = 'pv'
+function VoiceArt({ lang, p }: { lang: Lang; p: string }) {
   const listening = lang === 'zh' ? '聆听中…' : 'Listening…'
   const holes = []
   for (let r = 0; r < 4; r++) {
@@ -137,8 +138,7 @@ function VoiceArt({ lang }: { lang: Lang }) {
 }
 
 /** 5-inch class touch panel on an aluminium desk stand, showing NEA and LTA cards. */
-function PanelArt({ lang }: { lang: Lang }) {
-  const p = 'pp'
+function PanelArt({ lang, p }: { lang: Lang; p: string }) {
   const bus = lang === 'zh' ? '巴士' : 'Bus'
   const mins = lang === 'zh' ? '4 分钟' : '4 min'
   const next = lang === 'zh' ? '下一班 11 分钟' : 'Next 11 min'
@@ -196,8 +196,7 @@ function PanelArt({ lang }: { lang: Lang }) {
 }
 
 /** AWTRIX-style 32×8 LED clock: white case, smoked diffuser, lit LEDs with glow. */
-function PixelArt() {
-  const p = 'px'
+function PixelArt({ p }: { p: string }) {
   const cols = 32
   const rows = 8
   const cell = 5.4
@@ -257,8 +256,7 @@ function PixelArt() {
 }
 
 /** Small cube with a square colour screen: time, date, NEA weather and a week strip. */
-function WeatherArt({ lang }: { lang: Lang }) {
-  const p = 'pw'
+function WeatherArt({ lang, p }: { lang: Lang; p: string }) {
   const date = lang === 'zh' ? '11月11日 周二' : 'Tue 11 Nov'
   const days = lang === 'zh' ? ['一', '二', '三', '四', '五'] : ['M', 'T', 'W', 'T', 'F']
   return (

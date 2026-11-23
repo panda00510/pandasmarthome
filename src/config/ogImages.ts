@@ -32,6 +32,7 @@ export type OgCard = {
 
 type Key =
   | 'home'
+  | 'smart-home'
   | 'solutions'
   | 'homes'
   | 'products'
@@ -46,9 +47,23 @@ export const OG_CARDS: Record<Key, { en?: OgCard; zh?: OgCard }> = {
   // English home keeps the hand-authored public/og-image.svg.
   home: {
     zh: {
-      eyebrow: '开放式智能家居 · 新加坡',
+      eyebrow: '智能 AI 硬件 · 新加坡',
+      lines: ['真正归你所有的', 'Smart AI 硬件。'],
+      sub: ['ESP32-S3 桌面 AI 设备、按需硬件定制与开放式本地系统，', '固件与源码交付，无厂商绑定。'],
+    },
+  },
+  'smart-home': {
+    en: {
+      eyebrow: 'PANDA SMART HOME',
+      lines: ['A home that answers', 'to you, not the cloud.'],
+      sub: ['Local-first smart home design and installation', 'for HDB, condo and landed homes in Singapore.'],
+      alt: 'Panda Smart Home — open local smart home solutions in Singapore',
+    },
+    zh: {
+      eyebrow: 'PANDA 智能家居',
       lines: ['真正听你的家，', '而不是听云端的。'],
       sub: ['不同品牌的灯光、空调、窗帘、门锁与摄像头，', '在一套属于你的本地系统上协同运作。'],
+      alt: 'Panda 智能家居 — 新加坡开放式本地智能家居方案',
     },
   },
   solutions: {

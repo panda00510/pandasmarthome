@@ -1,7 +1,8 @@
-# Panda Smart Home
+# Panda Smart
 
-Marketing site for **Panda Smart Home** (Panda智能家居) — open, local-first smart
-home design and installation for homes across Singapore.
+Marketing site for **Panda Smart** (Panda 智能) — Smart AI hardware (ESP32-S3 desk
+devices and custom AI hardware) and open, local-first systems including **Panda Smart Home**
+(`/smart-home/`), Panda Signage, and companion software in Singapore.
 
 Bilingual static site (English at `/`, 简体中文 at `/zh/`) with a guides section and no backend. Vite + React 19 +
 TypeScript + Tailwind CSS v4.

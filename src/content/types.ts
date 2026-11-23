@@ -29,7 +29,78 @@ export type Content = {
     showroom: string
     cta: string
     /** Top-level header/footer group labels (dropdowns, not pages). */
-    groups: { solutions: string; products: string; resources: string }
+    groups: { hardware: string; smartHome: string; business: string; resources: string }
+  }
+  /** Smart AI Hardware homepage copy (replaces Smart Home as the root page focus). */
+  aiHome: {
+    eyebrow: string
+    specBar: string
+    titleLead: string
+    titleAccent: string
+    lead: string
+    primaryCta: string
+    secondaryCta: string
+    ctaNote: string
+    showcaseEyebrow: string
+    showcaseCaption: string
+    viewDeviceCta: string
+    trust: string[]
+    devices: {
+      eyebrow: string
+      title: string
+      lead: string
+      viewAll: string
+      compareCta: string
+    }
+    customBand: {
+      eyebrow: string
+      title: string
+      lead: string
+      cta: string
+      tiersLabel: string
+    }
+    systems: {
+      eyebrow: string
+      title: string
+      lead: string
+      smartHomeBadge: string
+      smartHomeTitle: string
+      smartHomeLead: string
+      smartHomeHighlights: string[]
+      smartHomeCta: string
+      showroomCta: string
+      signageBadge: string
+      softwareBadge: string
+    }
+    process: {
+      eyebrow: string
+      title: string
+      lead: string
+      cta: string
+    }
+    faq: {
+      eyebrow: string
+      title: string
+      lead: string
+      guidesTitle: string
+      items: { q: string; a: string }[]
+    }
+    contact: {
+      title: string
+      lead: string
+      projectTypeLabel: string
+      projectTypeOptions: string[]
+      messagePlaceholder: string
+      whatsappGreeting: string
+      mailSubject: string
+    }
+  }
+  /** Dedicated /smart-home/ product overview page metadata. */
+  smartHomePage: {
+    navLabel: string
+    overviewLabel: string
+    metaTitle: string
+    metaDescription: string
   }
   hero: {
     /** Overlay link on the hero photo into the 3D showroom. */

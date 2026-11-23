@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Box, MessageCircle } from 'lucide-react'
+import { Box, Cpu, MessageCircle } from 'lucide-react'
 import { Footer } from './components/layout/Footer'
 import { Header } from './components/layout/Header'
 import { Seo } from './components/Seo'
@@ -7,7 +7,7 @@ import { NotFound } from './components/sections/NotFound'
 import { findGuide, hubOf, pagePaths, type Guide } from './content/guides'
 import { Button } from './components/ui'
 import { useReveal } from './hooks/motion'
-import { useI18n } from './i18n/context'
+import { pageHref, useI18n } from './i18n/context'
 import { pageWhatsappMessage, whatsappHref } from './lib/whatsapp'
 import { viewOf, views } from './views'
 import { showroomHref } from './lib/showroom'
@@ -89,10 +89,23 @@ export default function App() {
               WhatsApp
             </Button>
           ) : null}
-          <Button as="a" href={showroomHref(lang)} variant="secondary" size="sm" className="flex-1">
-            <Box size={16} aria-hidden="true" className="text-ember-500" />
-            {t.nav.showroom}
-          </Button>
+          {path === 'smart-home/' || path.startsWith('solutions/') || path.startsWith('homes/') || path === 'how-it-works/' ? (
+            <Button as="a" href={showroomHref(lang)} variant="secondary" size="sm" className="flex-1">
+              <Box size={16} aria-hidden="true" className="text-ember-500" />
+              {t.nav.showroom}
+            </Button>
+          ) : (
+            <Button
+              as="a"
+              href={pageHref(lang, path === 'products/' ? 'custom-hardware/' : 'products/')}
+              variant="secondary"
+              size="sm"
+              className="flex-1"
+            >
+              <Cpu size={16} aria-hidden="true" className="text-brand" />
+              {path === 'products/' ? t.hardware.navLabel : t.products.nav.devices}
+            </Button>
+          )}
         </nav>
       ) : null}
     </>
@@ -104,6 +117,10 @@ function Page({ path, guide }: { path: string; guide: Guide | undefined }) {
   const { lang } = useI18n()
   const view = viewOf(lang, path)
   const v = views
+  if (view === 'smartHome') {
+    const { SmartHomePage } = v.smartHome!
+    return <SmartHomePage />
+  }
   if (view === 'guides') {
     const { GuidePage, GuidesIndex } = v.guides!
     return guide ? <GuidePage guide={guide} /> : <GuidesIndex />
