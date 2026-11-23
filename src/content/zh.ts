@@ -26,7 +26,7 @@ export const zh: Content = {
 
   nav: {
     items: [
-      { id: 'solutions', label: '智能家居区域' },
+      { id: 'solutions', label: '全屋方案' },
       { id: 'products', label: '桌面 AI 设备' },
       { id: 'software', label: '软件定制' },
       { id: 'homes', label: '按住宅类型' },
@@ -153,7 +153,7 @@ export const zh: Content = {
 
   smartHomePage: {
     navLabel: 'Panda 智能家居',
-    overviewLabel: '智能家居总览',
+    overviewLabel: '方案总览',
     metaTitle: 'Panda 智能家居｜新加坡开放式本地智能家居设计与安装',
     metaDescription:
       '面向新加坡组屋、BTO、公寓与有地住宅的本地化智能家居设计与安装。灯光、空调、窗帘、门锁与摄像头接入同一套本地系统，不绑定品牌。',

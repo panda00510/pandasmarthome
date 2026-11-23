@@ -65,22 +65,19 @@ export function Header() {
   }
   const dark = (path === 'custom-hardware/' || path === 'signage/') && !scrolled && !open
 
-  const hardwareLinks: NavLink[] = [
-    { key: 'devices', label: t.products.nav.devices, href: pageHref(lang, 'products/'), current: path === 'products/' },
-    {
-      key: 'hardware',
-      label: t.hardware.navLabel,
-      href: pageHref(lang, 'custom-hardware/'),
-      current: path === 'custom-hardware/',
-    },
-    {
-      key: 'upcoming',
-      label: t.upcoming.title,
-      href: pageHref(lang, 'solutions/upcoming-products/'),
-      current: path === 'solutions/upcoming-products/',
-    },
-    { key: 'compare', label: t.compare.navLabel, href: pageHref(lang, 'compare/'), current: inSection('compare/') },
-  ]
+  const deskDevicesLink: NavLink = {
+    key: 'devices',
+    label: t.nav.items.find((entry) => entry.id === 'products')!.label,
+    href: pageHref(lang, 'products/'),
+    current: path === 'products/' || inSection('compare/'),
+  }
+
+  const customHardwareLink: NavLink = {
+    key: 'hardware',
+    label: t.hardware.navLabel,
+    href: pageHref(lang, 'custom-hardware/'),
+    current: path === 'custom-hardware/',
+  }
 
   const smartHomeLinks: NavLink[] = [
     {
@@ -90,29 +87,41 @@ export function Header() {
       current: path === 'smart-home/',
     },
     byId('solutions'),
-    byId('homes'),
-    byId('process'),
     { key: 'showroom', label: t.nav.showroom, href: showroom, current: false, icon: true },
   ]
+  const smartHomeActive =
+    path === 'smart-home/' || inSection('solutions/') || inSection('homes/') || inSection('how-it-works/')
 
   const businessLinks: NavLink[] = [
     { key: 'signage', label: t.signage.navLabel, href: pageHref(lang, 'signage/'), current: path === 'signage/' },
     byId('software'),
   ]
+  const businessActive = path === 'signage/' || path === 'software/'
 
-  const resourceLinks: NavLink[] = [
-    { key: 'guides', label: t.guides.eyebrow, href: pageHref(lang, 'guides/'), current: inSection('guides/') },
-    { key: 'faq', label: t.faq.eyebrow, href: pageHref(lang, 'faq/'), current: inSection('faq/') },
-    { key: 'glossary', label: t.glossary.navLabel, href: pageHref(lang, 'glossary/'), current: inSection('glossary/') },
-    { key: 'about', label: t.footer.about, href: pageHref(lang, 'about/'), current: path === 'about/' },
-  ]
+  const guidesLink: NavLink = {
+    key: 'guides',
+    label: t.guides.eyebrow,
+    href: pageHref(lang, 'guides/'),
+    current: inSection('guides/') || inSection('faq/') || inSection('glossary/'),
+  }
 
-  const groups = [
-    { id: 'hardware-menu', label: t.nav.groups.hardware, items: hardwareLinks },
+  const mobileGroups = [
+    { id: 'hardware-menu', label: t.nav.groups.hardware, items: [deskDevicesLink, customHardwareLink] },
     { id: 'smarthome-menu', label: t.nav.groups.smartHome, items: smartHomeLinks },
     { id: 'business-menu', label: t.nav.groups.business, items: businessLinks },
-    { id: 'resources-menu', label: t.nav.groups.resources, items: resourceLinks },
+    { id: 'resources-menu', label: t.nav.groups.resources, items: [guidesLink] },
   ]
+
+  const topLinkClass = (active: boolean) =>
+    `relative inline-flex min-h-11 items-center px-2.5 text-[0.875rem] font-medium whitespace-nowrap transition-colors ${
+      dark
+        ? active
+          ? 'text-ember-300 after:absolute after:inset-x-2.5 after:bottom-1 after:h-[1.5px] after:bg-ember-300'
+          : 'text-paper/80 hover:text-paper'
+        : active
+          ? 'text-brand after:absolute after:inset-x-2.5 after:bottom-1 after:h-[1.5px] after:bg-brand'
+          : 'text-ink-700 hover:text-ink-950'
+    }`
 
   return (
     <header
@@ -136,9 +145,41 @@ export function Header() {
         </a>
 
         <nav aria-label={t.a11y.navPrimary} className="hidden items-center gap-1 min-[1280px]:flex">
-          {groups.map((group) => (
-            <NavMenu key={group.id} id={group.id} label={group.label} items={group.items} dark={dark} />
-          ))}
+          <a
+            href={deskDevicesLink.href}
+            aria-current={deskDevicesLink.current ? 'page' : undefined}
+            className={topLinkClass(deskDevicesLink.current)}
+          >
+            {deskDevicesLink.label}
+          </a>
+          <a
+            href={customHardwareLink.href}
+            aria-current={customHardwareLink.current ? 'page' : undefined}
+            className={topLinkClass(customHardwareLink.current)}
+          >
+            {customHardwareLink.label}
+          </a>
+          <NavMenu
+            id="smarthome-menu"
+            label={t.nav.groups.smartHome}
+            items={smartHomeLinks}
+            active={smartHomeActive}
+            dark={dark}
+          />
+          <NavMenu
+            id="business-menu"
+            label={t.nav.groups.business}
+            items={businessLinks}
+            active={businessActive}
+            dark={dark}
+          />
+          <a
+            href={guidesLink.href}
+            aria-current={guidesLink.current ? 'page' : undefined}
+            className={topLinkClass(guidesLink.current)}
+          >
+            {guidesLink.label}
+          </a>
         </nav>
 
         <div className="flex shrink-0 items-center gap-2 sm:gap-3">
@@ -180,7 +221,7 @@ export function Header() {
         className="max-h-[calc(100dvh-4rem)] overflow-y-auto border-t border-ink-950/12 bg-paper min-[1280px]:hidden"
       >
         <nav aria-label={t.a11y.navMobile} className="shell flex flex-col py-4">
-          {groups.map((group) => (
+          {mobileGroups.map((group) => (
             <div key={group.id} className="mt-5 first:mt-0">
               <p className="font-mono text-[0.6875rem] font-semibold tracking-[0.16em] text-ember-500 uppercase">
                 {group.label}
@@ -220,7 +261,19 @@ export function Header() {
   )
 }
 
-function NavMenu({ id, label, items, dark }: { id: string; label: string; items: NavLink[]; dark: boolean }) {
+function NavMenu({
+  id,
+  label,
+  items,
+  active,
+  dark,
+}: {
+  id: string
+  label: string
+  items: NavLink[]
+  active: boolean
+  dark: boolean
+}) {
   const [show, setShow] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
   const buttonRef = useRef<HTMLButtonElement>(null)
@@ -244,7 +297,7 @@ function NavMenu({ id, label, items, dark }: { id: string; label: string; items:
     }
   }, [show])
 
-  const current = items.some((item) => item.current)
+  const current = active || items.some((item) => item.current)
 
   return (
     <div
@@ -284,16 +337,16 @@ function NavMenu({ id, label, items, dark }: { id: string; label: string; items:
       <div
         id={id}
         hidden={!show}
-        className="absolute top-full left-1/2 mt-2 w-64 -translate-x-1/2 rounded-[4px] border border-ink-950/16 bg-surface p-1.5 text-ink-950 shadow-lift"
+        className="absolute top-full left-1/2 mt-2 min-w-48 -translate-x-1/2 rounded-[4px] border border-ink-950/16 bg-surface p-1 text-ink-950 shadow-lift"
       >
-        <ul className="divide-y divide-ink-950/[0.07]">
+        <ul className="divide-y divide-ink-950/[0.06]">
           {items.map((item) => (
             <li key={item.key}>
               <a
                 href={item.href}
                 aria-current={item.current ? 'page' : undefined}
                 onClick={() => setShow(false)}
-                className={`flex min-h-11 items-center justify-between px-3 text-sm font-medium transition-colors hover:bg-paper hover:text-brand ${
+                className={`flex min-h-10 items-center justify-between gap-3 px-3 text-sm font-medium whitespace-nowrap transition-colors hover:bg-paper hover:text-brand ${
                   item.current ? 'bg-paper text-brand' : 'text-ink-800'
                 }`}
               >

@@ -32,8 +32,8 @@ export function Footer() {
       links: [
         { href: page('products/'), label: t.products.nav.devices },
         { href: page('custom-hardware/'), label: t.hardware.navLabel },
-        { href: page('solutions/upcoming-products/'), label: t.upcoming.title },
         { href: page('compare/'), label: t.compare.navLabel },
+        { href: page('solutions/upcoming-products/'), label: t.upcoming.eyebrow },
         { href: page('signage/'), label: t.signage.navLabel },
         { href: page('software/'), label: navLabel('software') },
       ],

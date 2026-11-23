@@ -26,7 +26,7 @@ export const en: Content = {
 
   nav: {
     items: [
-      { id: 'solutions', label: 'Smart home areas' },
+      { id: 'solutions', label: 'Solutions' },
       { id: 'products', label: 'Desk AI devices' },
       { id: 'software', label: 'Custom software' },
       { id: 'homes', label: 'By home type' },
@@ -153,7 +153,7 @@ export const en: Content = {
 
   smartHomePage: {
     navLabel: 'Panda Smart Home',
-    overviewLabel: 'Smart Home overview',
+    overviewLabel: 'Overview',
     metaTitle: 'Panda Smart Home | Open Smart Home Installation in Singapore',
     metaDescription:
       'Local-first smart home design and installation for HDB, BTO, condo and landed homes across Singapore. Lighting, aircon, curtains, locks and cameras on one open system.',
