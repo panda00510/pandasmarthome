@@ -41,7 +41,7 @@ export function Solutions() {
         />
 
         {/* 6-cell hairline architectural index */}
-        <ul className="reveal-group mt-9 grid overflow-hidden rounded-card border border-ink-950/15 bg-paper sm:grid-cols-2 lg:mt-12 lg:grid-cols-3">
+        <ul className="reveal-group mt-9 grid overflow-hidden rounded-card border border-ink-950/15 bg-paper sm:grid-cols-2 sm:auto-rows-fr lg:mt-12 lg:grid-cols-3">
           {t.solutions.items.map((item, i) => {
             const Icon = ICONS[item.id] ?? Lightbulb
             return (

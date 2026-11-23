@@ -524,22 +524,26 @@ function SelectField({
       <label htmlFor={id} className="block text-sm font-medium text-ink-800">
         {label}
       </label>
-      <select
-        id={id}
-        name={name}
-        defaultValue=""
-        className="field mt-2 appearance-none bg-[length:1rem] bg-[right_0.9rem_center] bg-no-repeat pr-10"
-        style={{
-          backgroundImage:
-            "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23667080' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
-        }}
-      >
-        {options.map((option, i) => (
-          <option key={option} value={i === 0 ? '' : option}>
-            {option}
-          </option>
-        ))}
-      </select>
+      <div className="relative mt-2">
+        <select
+          id={id}
+          name={name}
+          defaultValue=""
+          className="field appearance-none bg-none pr-10"
+          style={{ WebkitAppearance: 'none', MozAppearance: 'none', appearance: 'none' }}
+        >
+          {options.map((option, i) => (
+            <option key={option} value={i === 0 ? '' : option}>
+              {option}
+            </option>
+          ))}
+        </select>
+        <ChevronDown
+          size={15}
+          aria-hidden="true"
+          className="pointer-events-none absolute top-1/2 right-3.5 -translate-y-1/2 text-ink-500"
+        />
+      </div>
     </div>
   )
 }

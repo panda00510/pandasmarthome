@@ -172,7 +172,7 @@ export function Header() {
             aria-expanded={open}
             aria-controls="mobile-nav"
             aria-label={open ? t.a11y.closeMenu : t.a11y.openMenu}
-            className={`-mr-1 inline-flex h-11 w-11 items-center justify-center rounded-[3px] border transition-colors min-[1280px]:hidden ${
+            className={`inline-flex h-11 w-11 items-center justify-center rounded-[3px] border transition-colors min-[1280px]:hidden ${
               dark
                 ? 'border-paper/18 text-paper hover:bg-paper/10'
                 : 'border-ink-950/15 bg-surface text-ink-950 hover:border-ink-950/35'
@@ -191,7 +191,7 @@ export function Header() {
       >
         <nav aria-label={t.a11y.navMobile} className="shell flex flex-col py-4">
           {groups.map((group) => (
-            <div key={group.id} className="mt-5">
+            <div key={group.id} className="mt-5 first:mt-0">
               <p className="font-mono text-[0.6875rem] font-semibold tracking-[0.16em] text-ember-500 uppercase">
                 {group.label}
               </p>
@@ -343,7 +343,7 @@ function LangToggle({ lang, path, label, dark }: { lang: Lang; path: string; lab
             data-track-to={option.code}
             lang={option.code === 'zh' ? 'zh-Hans' : 'en'}
             hrefLang={option.code === 'zh' ? 'zh-Hans' : 'en'}
-            className={`inline-flex h-10 min-w-10 items-center justify-center px-2.5 text-xs font-semibold tracking-[0.04em] whitespace-nowrap transition-colors sm:px-3 ${
+            className={`inline-flex h-[2.625rem] min-w-10 items-center justify-center px-2.5 text-xs font-semibold tracking-[0.04em] whitespace-nowrap transition-colors sm:px-3 ${
               idx > 0 ? (dark ? 'border-l border-paper/15' : 'border-l border-ink-950/12') : ''
             } ${
               active

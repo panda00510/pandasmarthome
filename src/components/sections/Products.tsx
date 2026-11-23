@@ -58,24 +58,24 @@ export function ProductsPage() {
         </div>
 
         <div className="shell pt-9 pb-14 sm:pt-12 lg:pt-14 lg:pb-18">
-          <div className="grid gap-7 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)] lg:items-end lg:gap-14">
+          <div className="grid gap-7 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] lg:items-start lg:gap-10">
             <h1 className="title-display text-ink-950">{p.title}</h1>
-            <div className="lg:border-l lg:border-ink-950/14 lg:pl-8">
+            <div className="min-w-0 lg:border-l lg:border-ink-950/14 lg:pl-8">
               <p className="text-lead text-ink-700">{p.lead}</p>
-              <div className="mt-6 flex flex-col gap-2.5 sm:flex-row sm:items-center">
+              <div className="mt-6 flex flex-col gap-2.5 sm:flex-row sm:flex-wrap sm:items-center">
                 <Button
                   as="a"
                   href={enquiryHref(p.enquireAll)}
                   target="_blank"
                   rel="noopener noreferrer"
                   variant="primary"
-                  size="lg"
+                  size="md"
                   className="w-full sm:w-auto"
                 >
                   <MessageCircle size={17} aria-hidden="true" />
                   {p.enquire}
                 </Button>
-                <Button as="a" href="#customize" variant="secondary" size="lg" className="w-full sm:w-auto">
+                <Button as="a" href="#customize" variant="secondary" size="md" className="w-full sm:w-auto">
                   <SlidersHorizontal size={16} aria-hidden="true" className="text-ember-500" />
                   {p.custom.cta}
                 </Button>
@@ -170,13 +170,15 @@ export function ProductsPage() {
             </div>
           </aside>
 
-          <ul className="mt-6 grid overflow-hidden rounded-card border border-ink-950/14 bg-surface divide-y divide-ink-950/12 sm:grid-cols-2 sm:divide-y-0 lg:grid-cols-3 lg:divide-x">
+          <ul className="mt-6 grid overflow-hidden rounded-card border border-ink-950/14 bg-surface divide-y divide-ink-950/12 lg:grid-cols-5 lg:divide-x lg:divide-y-0">
             {p.points.map((point, i) => (
-              <li key={point.title} className="p-5 sm:p-6">
+              <li key={point.title} className="p-5">
                 <span className="numeral text-xs font-semibold text-ember-500">
                   {String(i + 1).padStart(2, '0')}
                 </span>
-                <p className="mt-2 font-display text-[1.0625rem] font-medium text-ink-950">{point.title}</p>
+                <p className="mt-2 font-display text-[1rem] leading-snug font-medium text-ink-950 lg:min-h-[2.75rem]">
+                  {point.title}
+                </p>
                 <p className="mt-1.5 text-sm leading-relaxed text-ink-600">{point.body}</p>
               </li>
             ))}
@@ -240,8 +242,8 @@ export function ProductsPage() {
                         </p>
 
                         <div className="mt-auto pt-6">
-                          <div className="flex flex-col gap-4 border-t border-ink-950/12 pt-5 sm:flex-row sm:items-end sm:justify-between">
-                            <p>
+                          <div className="flex flex-col gap-4 border-t border-ink-950/12 pt-5 sm:flex-row sm:flex-wrap sm:items-end sm:justify-between">
+                            <p className="shrink-0">
                               <span className="block font-mono text-[0.6875rem] font-semibold tracking-[0.14em] text-ink-500 uppercase">
                                 {p.priceLabel}
                               </span>
@@ -249,13 +251,13 @@ export function ProductsPage() {
                                 {price}
                               </span>
                             </p>
-                            <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row">
+                            <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:flex-wrap">
                               <Button
                                 as="a"
                                 href={enquiryHref(message)}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                size="lg"
+                                size="md"
                                 className="w-full sm:w-auto"
                                 aria-label={`${p.enquire}: ${item.title}`}
                               >
@@ -268,7 +270,7 @@ export function ProductsPage() {
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 variant="secondary"
-                                size="lg"
+                                size="md"
                                 className="w-full sm:w-auto"
                                 aria-label={`${p.custom.cta}: ${item.title}`}
                               >
@@ -323,8 +325,9 @@ export function ProductsPage() {
                           <PhotoTag className="top-3! bottom-auto! left-3!">{t.footer.imageTag}</PhotoTag>
                         </>
                       ) : (
-                        <div className="art-stage grid size-full place-items-center p-6">
+                        <div className="art-stage relative grid size-full place-items-center p-6">
                           <CardArt id="control" tone="light" />
+                          <PhotoTag className="top-3! bottom-auto! left-3!">{p.illustration}</PhotoTag>
                         </div>
                       )}
                     </div>

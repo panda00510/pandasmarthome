@@ -139,15 +139,18 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Four hairline-topped navigation columns */}
+          {/* Three hairline-topped navigation columns */}
           <nav aria-label={t.a11y.navFooter} className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3">
             {columns.map((column, i) => (
-              <div key={column.title} className="border-t border-paper/14 pt-4">
+              <div
+                key={column.title}
+                className={`border-t border-paper/14 pt-4 ${i === 2 ? 'col-span-2 sm:col-span-1' : ''}`}
+              >
                 <span aria-hidden="true" className="numeral block text-[0.6875rem] text-ink-400">
                   {String(i + 1).padStart(2, '0')}
                 </span>
                 <h2 className={`${HEAD} mt-1`}>{column.title}</h2>
-                <ul className="mt-3">
+                <ul className={`mt-3 ${i === 2 ? 'grid grid-cols-2 gap-x-6 sm:block' : ''}`}>
                   {column.links.map((link) => (
                     <li key={link.href}>
                       <a href={link.href} className={LINK}>

@@ -50,7 +50,7 @@ export function Homes() {
                     <PhotoTag>{t.footer.imageTag}</PhotoTag>
                   </span>
                   <span className="flex flex-1 flex-col p-4 lg:p-5">
-                    <span className="flex items-start justify-between gap-2 lg:min-h-[2.125rem]">
+                    <span className="flex items-start justify-between gap-2 sm:min-h-[2.25rem]">
                       <span className="eyebrow text-[0.65rem]! leading-[1.35] tracking-[0.11em]!">{item.subtitle}</span>
                       <ArrowUpRight
                         size={14}
@@ -58,7 +58,7 @@ export function Homes() {
                         className="mt-0.5 hidden shrink-0 text-ink-400 transition-colors group-hover:text-ink-950 sm:block"
                       />
                     </span>
-                    <span className="title-card mt-2 block text-ink-950">
+                    <span className="title-card mt-2 block text-ink-950 lg:min-h-[3rem]">
                       {item.title}
                     </span>
                     <span className="mt-2 hidden line-clamp-3 text-sm leading-relaxed text-ink-600 sm:block">

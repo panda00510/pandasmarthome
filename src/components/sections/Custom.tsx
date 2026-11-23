@@ -76,10 +76,10 @@ export function Custom() {
                 </span>
 
                 <span className="eyebrow mt-5">{eyebrow}</span>
-                <span className="title-group mt-2.5 block text-ink-950 transition-colors group-hover:text-brand">
+                <span className="title-group mt-2.5 block text-ink-950 transition-colors group-hover:text-brand lg:min-h-[3.75rem]">
                   {title}
                 </span>
-                <span className="mt-2.5 block text-sm leading-relaxed text-ink-600">
+                <span className="mt-2.5 block text-sm leading-relaxed text-ink-600 lg:min-h-[5.75rem]">
                   {lead}
                 </span>
 

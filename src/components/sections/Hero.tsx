@@ -26,9 +26,9 @@ const SCENE_VISUALS = [
 
 /**
  * Tropical Monograph Hero — Sunlit travertine editorial spread.
- * Monumental serif headline + action column, framed architectural scene plate
- * paired beside the interactive matte-stone wall keypad, closed by a 4-column
- * local-first trust ledger.
+ * Both the headline split and the exhibition-plate / wall-keypad row below
+ * share the exact same 1.34fr / 1fr architectural column axis so every edge
+ * and vertical rule aligns cleanly across desktop viewports.
  */
 export function Hero() {
   const { t, lang } = useI18n()
@@ -48,15 +48,15 @@ export function Hero() {
         </div>
       </div>
 
-      {/* Editorial headline split */}
+      {/* Editorial headline split — shares exact 1.34fr / 1fr column axis with the plate + keypad below */}
       <div className="shell pt-8 pb-10 sm:pt-11 sm:pb-12 lg:pt-13 lg:pb-14">
-        <div className="grid gap-6 lg:grid-cols-[minmax(0,1.22fr)_minmax(0,0.78fr)] lg:items-end lg:gap-14">
-          <div>
+        <div className="grid gap-6 lg:grid-cols-[minmax(0,1.34fr)_minmax(0,1fr)] lg:items-start lg:gap-6">
+          <div className="lg:pr-6">
             <h1
               className={`font-display text-ink-950 ${
                 lang === 'zh'
-                  ? 'text-[2.375rem] leading-[1.12] font-medium tracking-[-0.015em] sm:text-[3.375rem] lg:text-[3.75rem] xl:text-[4.25rem]'
-                  : 'text-[2.625rem] leading-[1.03] font-normal tracking-[-0.025em] sm:text-[3.75rem] lg:text-[4.25rem] xl:text-[4.875rem]'
+                  ? 'text-[2.375rem] leading-[1.12] font-medium tracking-[-0.015em] sm:text-[3.375rem] lg:text-[3.625rem] xl:text-[4.125rem]'
+                  : 'text-[2.625rem] leading-[1.03] font-normal tracking-[-0.025em] sm:text-[3.75rem] lg:text-[4rem] xl:text-[4.625rem]'
               }`}
             >
               {t.hero.titleLead}
@@ -67,17 +67,17 @@ export function Hero() {
             </h1>
           </div>
 
-          <div className="lg:border-l lg:border-ink-950/14 lg:pl-8">
-            <p className="text-[0.98rem] leading-[1.68] text-ink-700 sm:text-[1.0625rem]">
+          <div className="min-w-0 lg:border-l lg:border-ink-950/14 lg:pl-6">
+            <p className="text-[0.98rem] leading-[1.68] text-ink-700 sm:text-[1.03125rem]">
               {t.hero.lead}
             </p>
 
-            <div className="mt-6 flex flex-col gap-2.5 sm:flex-row sm:items-center">
-              <Button as="a" href="#contact" variant="primary" size="lg" className="w-full sm:w-auto">
+            <div className="mt-6 flex flex-col gap-2.5 sm:flex-row sm:flex-wrap sm:items-center">
+              <Button as="a" href="#contact" variant="primary" size="md" className="w-full sm:w-auto">
                 {t.hero.primaryCta}
                 <ArrowRight size={16} aria-hidden="true" />
               </Button>
-              <Button as="a" href={showroomHref(lang)} variant="secondary" size="lg" className="w-full sm:w-auto">
+              <Button as="a" href={showroomHref(lang)} variant="secondary" size="md" className="w-full sm:w-auto">
                 <Box size={16} aria-hidden="true" className="text-ember-500" />
                 {t.hero.showroomCta}
               </Button>
@@ -90,8 +90,8 @@ export function Hero() {
           </div>
         </div>
 
-        {/* Exhibition plate + tactile matte-stone wall keypad side by side */}
-        <div className="mt-8 grid gap-4 sm:mt-10 lg:grid-cols-[minmax(0,1.45fr)_minmax(0,0.78fr)] lg:items-stretch lg:gap-5">
+        {/* Exhibition plate + tactile matte-stone wall keypad on the exact same 1.34fr / 1fr axis */}
+        <div className="mt-8 grid gap-4 sm:mt-10 lg:grid-cols-[minmax(0,1.34fr)_minmax(0,1fr)] lg:items-stretch lg:gap-6">
           <figure className="plate-frame flex flex-col">
             <div className="relative aspect-[16/9] w-full flex-1 overflow-hidden rounded-[2px] bg-ink-950">
               {SCENE_VISUALS.map((visual, i) => {
@@ -101,7 +101,7 @@ export function Hero() {
                     key={visual.id}
                     src={visual.image.src}
                     srcSet={visual.image.srcSet}
-                    sizes="(min-width: 1200px) 780px, (min-width: 1024px) 62vw, 100vw"
+                    sizes="(min-width: 1200px) 720px, (min-width: 1024px) 58vw, 100vw"
                     alt={isActive ? `${t.hero.imageAlt} — ${activeScene.name}` : ''}
                     aria-hidden={isActive ? undefined : true}
                     width={1376}

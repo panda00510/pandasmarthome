@@ -28,7 +28,7 @@ export function Process() {
                 </span>
               </div>
               <div className="min-w-0 lg:mt-4">
-                <h3 className="title-card text-ink-950">
+                <h3 className="title-card text-ink-950 lg:min-h-[3rem]">
                   {step.title}
                 </h3>
                 <p className="mt-2 text-sm leading-relaxed text-ink-600">

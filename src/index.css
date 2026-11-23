@@ -319,6 +319,14 @@
       box-shadow 0.2s var(--ease-out-soft),
       background-color 0.2s var(--ease-out-soft);
   }
+  select.field {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+  }
+  select.field::picker-icon {
+    display: none;
+  }
   .field::placeholder {
     color: var(--color-ink-500);
   }
@@ -463,6 +471,7 @@
     line-height: 1.24;
     font-weight: 500;
     letter-spacing: -0.012em;
+    text-wrap: balance;
   }
   .title-card {
     font-family: var(--font-display);
@@ -470,6 +479,7 @@
     line-height: 1.26;
     font-weight: 500;
     letter-spacing: -0.01em;
+    text-wrap: balance;
   }
   @media (width >= 640px) {
     .title-group {
