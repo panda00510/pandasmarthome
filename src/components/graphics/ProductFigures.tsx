@@ -10,10 +10,10 @@ import type { Lang } from '../../i18n/context'
  * one. Gradient ids are prefixed per figure (each figure appears once a page).
  */
 
-const UI_DIM = '#8b939e'
-const UI_TEXT = '#f4f5f2'
-const GREEN = 'var(--color-bamboo-500)'
-const AMBER = '#f5a524'
+const UI_DIM = '#96a39b'
+const UI_TEXT = '#f4efe6'
+const GREEN = 'var(--color-bamboo-300)'
+const AMBER = '#d9a459'
 
 const GLYPH: Record<string, string[]> = {
   '0': ['111', '101', '101', '101', '111'],
@@ -51,28 +51,28 @@ function Materials({ p }: { p: string }) {
   return (
     <defs>
       <linearGradient id={`${p}-shell`} x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stopColor="#ffffff" />
-        <stop offset="0.55" stopColor="#f1f1ee" />
-        <stop offset="1" stopColor="#dcdcd7" />
+        <stop offset="0" stopColor="#fcfaf6" />
+        <stop offset="0.58" stopColor="#efe9de" />
+        <stop offset="1" stopColor="#d8cfc0" />
       </linearGradient>
       <linearGradient id={`${p}-side`} x1="0" y1="0" x2="1" y2="0">
-        <stop offset="0" stopColor="#d6d6d0" />
-        <stop offset="1" stopColor="#b9bab3" />
+        <stop offset="0" stopColor="#cec4b4" />
+        <stop offset="1" stopColor="#b2a896" />
       </linearGradient>
       <linearGradient id={`${p}-glass`} x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0" stopColor="#ffffff" stopOpacity="0.13" />
-        <stop offset="0.38" stopColor="#ffffff" stopOpacity="0.03" />
-        <stop offset="0.39" stopColor="#ffffff" stopOpacity="0" />
+        <stop offset="0" stopColor="#fcfaf6" stopOpacity="0.14" />
+        <stop offset="0.38" stopColor="#fcfaf6" stopOpacity="0.03" />
+        <stop offset="0.39" stopColor="#fcfaf6" stopOpacity="0" />
       </linearGradient>
       <linearGradient id={`${p}-metal`} x1="0" y1="0" x2="1" y2="0">
-        <stop offset="0" stopColor="#c9cbcd" />
-        <stop offset="0.5" stopColor="#eef0f1" />
-        <stop offset="1" stopColor="#a9acaf" />
+        <stop offset="0" stopColor="#9f907a" />
+        <stop offset="0.5" stopColor="#d9cbb6" />
+        <stop offset="1" stopColor="#857763" />
       </linearGradient>
       <radialGradient id={`${p}-shadow`}>
-        <stop offset="0" stopColor="#11151a" stopOpacity="0.32" />
-        <stop offset="0.6" stopColor="#11151a" stopOpacity="0.1" />
-        <stop offset="1" stopColor="#11151a" stopOpacity="0" />
+        <stop offset="0" stopColor="#14221c" stopOpacity="0.28" />
+        <stop offset="0.6" stopColor="#14221c" stopOpacity="0.08" />
+        <stop offset="1" stopColor="#14221c" stopOpacity="0" />
       </radialGradient>
     </defs>
   )
@@ -266,8 +266,8 @@ function WeatherArt({ lang }: { lang: Lang }) {
       <Materials p={p} />
       <defs>
         <linearGradient id={`${p}-screen`} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#14263b" />
-          <stop offset="1" stopColor="#0a1220" />
+          <stop offset="0" stopColor="#193127" />
+          <stop offset="1" stopColor="#0e1c16" />
         </linearGradient>
       </defs>
       <ellipse cx="124" cy="162" rx="72" ry="9" fill={`url(#${p}-shadow)`} />

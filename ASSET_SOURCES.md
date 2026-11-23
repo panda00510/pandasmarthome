@@ -9,43 +9,26 @@ written directly from the Wikimedia Commons API at download time.
 
 ---
 
-## 1. Photography
+## 1. Illustrative Architectural Visualizations & Photography
 
-All photographs are illustrative stock images. **None is a Panda Smart Home
-installation or a client project**, and the site says so (footer and home-type
-section).
+All interior images on the site are **illustrative architectural visualizations** created specifically for this site. **None is a photograph of a Panda Smart Home installation or a client project**, and every use carries an explicit `Illustrative` / `示意图` label plus the footer disclaimer.
 
-### 1a. Pexels (in use)
+### 1a. Original Illustrative Architectural Visualizations (in use)
 
-Licensed under the [Pexels License](https://www.pexels.com/license/): free for
-commercial use, no attribution required. They are credited here anyway. Each
-photo is cropped by hand to the framing noted below and served as responsive
-WebP at 480, 800, 1200 and 1600 px wide
-(`src/assets/photos/<name>-<width>.webp`, built by `scripts/make-photos.mjs`).
-The same record is kept in `src/content/photos.ts`.
+Created specifically for the site's Tropical Monograph design system and served as self-hosted responsive WebP sets (`src/assets/photos/<name>-<width>.webp`):
 
-| Files | Where used | Photographer | Source page | Notes |
-| --- | --- | --- | --- | --- |
-| `hero-living-*.webp` | Home page hero | Max Vakhtbovych | [Pexels](https://www.pexels.com/photo/modern-living-room-design-with-corner-sofa-6920439/) | Living room, 16:10 |
-| `home-bto-*.webp` | Home types: BTO & new keys | CK Seng | [Pexels](https://www.pexels.com/photo/singapore-skyline-with-high-rise-apartments-34035022/) | High-rise apartment blocks, 16:9 |
-| `home-hdb-*.webp` | Home types: HDB resale | CK Seng | [Pexels](https://www.pexels.com/photo/colorful-residential-building-in-urban-park-setting-34965019/) | Residential block beside a lawn, 16:9 |
-| `home-condo-*.webp` | Home types: condominiums | Quang Nguyen Vinh | [Pexels](https://www.pexels.com/photo/modern-condominium-located-on-riverside-in-modern-city-6416109/) | Condominium towers by a river, 16:9; location not stated, so not captioned as a place |
-| `home-landed-*.webp` | Home types: landed & larger homes | Abdullah Asad | [Pexels](https://www.pexels.com/photo/houses-with-terraces-12359215/) | Modern house with terraces, cropped from a portrait original to 16:9; location unconfirmed, **never described as Singapore** |
+| Files | Where used | Notes |
+| --- | --- | --- |
+| `hero-morning-*.webp`, `hero-movie-*.webp`, `hero-away-*.webp` | Home page hero (interactive scene plate) & Products installed-devices cards | Illustrative architectural interior visualizations (Good morning, Movie night, Away); 16:9 |
+| `home-bto-*.webp` | Home types: BTO & new keys; Products sensors card | Illustrative Singapore BTO living room interior; 16:9 |
+| `home-hdb-*.webp` | Home types: HDB resale | Illustrative renovated HDB living & dining interior; 16:9 |
+| `home-condo-*.webp` | Home types: condominiums | Illustrative Singapore condo living & balcony interior; 16:9 |
+| `home-landed-*.webp` | Home types: landed & larger homes | Illustrative tropical-modernist landed living atrium; 16:9 |
+| `bedroom-lighting-{640,960}.webp` | "Get in touch" contact section | Illustrative Singapore master bedroom evening lighting; 16:9 |
 
-A sixth candidate (Max Vakhtbovych, bedroom with window,
-[Pexels](https://www.pexels.com/photo/bedroom-interior-with-bed-against-window-in-house-6956623/))
-was approved for use only where a curtain service needs a bedroom picture. No
-page needs one yet, so it is not in the repository.
+### 1b. Retired third-party stock photographs (record kept)
 
-### 1b. Wikimedia Commons
-
-| File | Where used | Author | Licence | Source page |
-| --- | --- | --- | --- | --- |
-| `src/assets/photos/bedroom-lighting-{640,960}.webp` (from `.jpg`) | "Get in touch" | SPL Interiors1 | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0) | [Commons](https://commons.wikimedia.org/wiki/File:Balanced_Modern_Bedroom_Design_with_Neutral_Tones_and_Layered_Lighting.jpg) |
-
-CC BY requires credit to the author, a licence statement and a link back to the
-source. This file satisfies that; it is published at `/asset-sources.txt` and
-linked from the site footer ("Image credits & licences").
+Previously used Pexels stock photographs (`hero-living`, prior `home-{bto,hdb,condo,landed}`) and Wikimedia Commons `bedroom-lighting.jpg` (SPL Interiors1, CC BY 4.0) were replaced on 2026-11-23 by the unified illustrative architectural visualizations above. Earlier retired Wikimedia provenance also stays in [`src/assets/photos/_credits.json`](src/assets/photos/_credits.json).
 
 ### 1c. Retired photographs (record kept, files removed from the site)
 

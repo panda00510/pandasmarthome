@@ -16,10 +16,10 @@ import { pageHref, useI18n } from '../../i18n/context'
  * device drawings are labelled as illustrations.
  */
 
-const INSTALL_RENDERS: Record<string, ReturnType<typeof responsive>> = {
-  'switches-lighting': responsive('showroom-living'),
-  sensors: responsive('showroom-away'),
-  'curtains-locks-security': responsive('showroom-door'),
+const INSTALL_VISUALS: Record<string, ReturnType<typeof responsive>> = {
+  'switches-lighting': responsive('hero-morning'),
+  sensors: responsive('home-bto'),
+  'curtains-locks-security': responsive('hero-away'),
 }
 
 function formatPrice(template: string, amount: number) {
@@ -302,25 +302,25 @@ export function ProductsPage() {
 
           <ul className="reveal-group mt-10 grid gap-5 sm:grid-cols-2 lg:mt-14">
             {p.install.groups.map((group, i) => {
-              const render = INSTALL_RENDERS[group.id]
+              const visual = INSTALL_VISUALS[group.id]
               return (
                 <li key={group.id} data-reveal className="flex">
                   <article id={group.id} className="card flex w-full scroll-mt-28 flex-col overflow-hidden bg-paper!">
                     <div className="relative aspect-[16/9] w-full overflow-hidden border-b border-ink-950/12 bg-ink-950">
-                      {render ? (
+                      {visual ? (
                         <>
                           <img
-                            src={render.src}
-                            srcSet={render.srcSet}
+                            src={visual.src}
+                            srcSet={visual.srcSet}
                             sizes="(min-width: 1200px) 580px, (min-width: 640px) 50vw, 100vw"
                             alt=""
-                            width={1600}
-                            height={1000}
+                            width={1376}
+                            height={768}
                             loading="lazy"
                             decoding="async"
-                            className={`block size-full object-cover ${group.id === 'switches-lighting' ? 'object-[22%_50%]' : ''}`}
+                            className="block size-full object-cover"
                           />
-                          <PhotoTag className="top-3! bottom-auto! left-3!">{t.footer.renderTag}</PhotoTag>
+                          <PhotoTag className="top-3! bottom-auto! left-3!">{t.footer.imageTag}</PhotoTag>
                         </>
                       ) : (
                         <div className="art-stage grid size-full place-items-center p-6">

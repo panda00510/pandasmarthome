@@ -4,30 +4,27 @@ import { Faq } from './Faq'
 import { Hero } from './Hero'
 import { Homes } from './Homes'
 import { Planner } from './Planner'
-import { Platform } from './Platform'
 import { Process } from './Process'
 import { Showroom } from './Showroom'
-import { Situations } from './Situations'
 import { Solutions } from './Solutions'
-import { Upcoming } from './Upcoming'
 
-/** The homepage sections, in order. Its own chunk (see src/views.ts). */
+/**
+ * Streamlined homepage flow — zero repeated images, zero duplicated scene lists:
+ * Hero (travertine) -> Solutions + Situations index (alabaster) -> 3D Showroom (deep forest)
+ * -> Homes (sandstone) -> Process + Deliverables (alabaster) -> Custom & Products (travertine)
+ * -> Plan starter (sandstone) -> FAQ + Compatibility + Guides (alabaster) -> Contact (travertine).
+ */
 export function HomePage() {
   return (
     <>
-      {/* Light and ink bands alternate: hero (ink), services, showroom (ink),
-          situations (paper-alt), products, homes (paper-alt), process. */}
       <Hero />
       <Solutions />
       <Showroom />
-      <Situations />
-      <Custom />
       <Homes />
       <Process />
-      <Platform />
-      <Faq />
-      <Upcoming />
+      <Custom />
       <Planner />
+      <Faq />
       <Contact />
     </>
   )

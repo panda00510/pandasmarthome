@@ -47,14 +47,14 @@ export function Planner() {
   const [noteBefore, noteAfter] = (homeOption?.note ?? '').split('{link}')
 
   return (
-    <section id="plan" className="band bg-surface">
+    <section id="plan" className="band border-t border-ink-950/12 bg-paper-alt">
       <div className="shell grid gap-10 lg:grid-cols-[minmax(0,0.82fr)_minmax(0,1.18fr)] lg:gap-16">
         <div className="lg:sticky lg:top-28 lg:self-start">
           <SectionHeading eyebrow={p.eyebrow} title={p.title} lead={p.lead} />
         </div>
 
         <form
-          className="relative space-y-7 overflow-x-clip rounded-panel border border-ink-950/16 bg-paper p-5 shadow-soft sm:p-8"
+          className="relative space-y-6 overflow-x-clip rounded-panel border border-ink-950/16 bg-surface p-5 shadow-soft sm:p-8"
           onSubmit={(event) => {
             event.preventDefault()
             if (!complete) return

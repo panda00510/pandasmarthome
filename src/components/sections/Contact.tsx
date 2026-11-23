@@ -186,7 +186,7 @@ export function Contact() {
   }
 
   return (
-    <section id="contact" className="band border-t border-ink-950/12 bg-paper-alt">
+    <section id="contact" className="band border-t border-ink-950/12 bg-paper">
       <div className="shell grid gap-10 lg:grid-cols-[minmax(0,0.88fr)_minmax(0,1fr)] lg:gap-16">
         {/* ---- Details ---------------------------------------------------- */}
         <div>

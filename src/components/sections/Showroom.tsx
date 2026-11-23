@@ -9,10 +9,9 @@ const clip = `${import.meta.env.BASE_URL}media/showroom-demo`
 const noop = () => () => {}
 
 /**
- * The homepage's deep botanical-forest showcase band for the 3D showroom
- * (/showroom/). Provides deliberate mid-page contrast against the sunlit
- * travertine monograph sections, framing the 12 s auto-demo clip inside an
- * architectural screening plate.
+ * Compact deep botanical-forest showcase band for the interactive 3D showroom
+ * (/showroom/). Focuses purely on the live walkthrough clip and floor-plan
+ * launchers without repeating the hero's scene list.
  */
 export function Showroom() {
   const { t, lang } = useI18n()
@@ -25,25 +24,13 @@ export function Showroom() {
       <div aria-hidden="true" className="stage-grid pointer-events-none absolute inset-0 -z-10" />
       <div aria-hidden="true" className="stage-glow pointer-events-none absolute -inset-[10%] -z-10" />
 
-      <div className="shell grid items-center gap-10 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:gap-16">
+      <div className="shell grid items-center gap-8 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-14">
         <div data-reveal>
           <p className="eyebrow text-ember-300!">{s.eyebrow}</p>
           <h2 className="title-display mt-4 text-paper">{s.title}</h2>
-          <p className="mt-5 max-w-xl text-base leading-relaxed text-ink-300 sm:text-lg">{s.lead}</p>
+          <p className="mt-4 max-w-xl text-base leading-relaxed text-ink-300 sm:text-[1.0625rem]">{s.lead}</p>
 
-          <ol className="mt-7 divide-y divide-paper/12 border-y border-paper/14 lg:mt-8">
-            {t.hero.panel.scenes.map((scene, i) => (
-              <li key={scene.name} className="flex items-baseline gap-4 py-3.5 transition-colors hover:bg-paper/[0.03]">
-                <span className="numeral text-xs font-semibold text-ember-300">{String(i + 1).padStart(2, '0')}</span>
-                <span className="min-w-0 text-[0.9375rem] leading-snug">
-                  <span className="font-medium text-paper">{scene.name}</span>
-                  <span className="text-ink-400"> · {scene.detail}</span>
-                </span>
-              </li>
-            ))}
-          </ol>
-
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+          <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
             <Button as="a" href={href} variant="glow" size="lg" className="w-full sm:w-auto">
               {t.hero.showroomCta}
               <ArrowRight size={17} aria-hidden="true" />
