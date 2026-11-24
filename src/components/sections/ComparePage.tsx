@@ -38,7 +38,7 @@ export function ComparePage() {
                 <td className="sticky left-0 z-10 w-[16%] bg-paper p-4" />
                 {c.devices.map((device) => (
                   <th key={device.id} scope="col" className="p-4 font-semibold text-ink-950">
-                    <a href={pageHref(lang, `products/#${device.id}`)} className="text-brand underline underline-offset-4">
+                    <a href={pageHref(lang, `products/#${device.id}`)} className="inline-block py-1 text-brand underline underline-offset-4">
                       {names[device.id]}
                     </a>
                   </th>
