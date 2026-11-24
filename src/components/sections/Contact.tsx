@@ -53,7 +53,7 @@ function isUsableContact(value: string): boolean {
 }
 
 export function Contact({ mode = 'hardware' }: { mode?: 'hardware' | 'home' }) {
-  const { t, lang } = useI18n()
+  const { t, lang, path } = useI18n()
   const ids = useId()
   const [status, setStatus] = useState<Status>('idle')
   const [errors, setErrors] = useState<Errors>({})
@@ -63,12 +63,14 @@ export function Contact({ mode = 'hardware' }: { mode?: 'hardware' | 'home' }) {
   const enabled = MODE !== 'none'
   const c = t.contact
   const isHardware = mode === 'hardware'
-  const sectionTitle = isHardware ? t.aiHome.contact.title : c.title
-  const sectionLead = isHardware ? t.aiHome.contact.lead : c.lead
-  const primarySelectLabel = isHardware ? t.aiHome.contact.projectTypeLabel : c.form.homeType
-  const primarySelectOptions = isHardware ? t.aiHome.contact.projectTypeOptions : c.form.homeTypeOptions
-  const messagePlaceholder = isHardware ? t.aiHome.contact.messagePlaceholder : c.form.messagePlaceholder
-  const whatsappGreeting = isHardware ? t.aiHome.contact.whatsappGreeting : c.whatsappGreeting
+  const project = t.aiHome.contact
+  const isContactPage = path === 'contact/'
+  const [projectType, setProjectType] = useState('')
+  const residential = !isHardware || projectType === project.projectTypes.home
+  const sectionTitle = isContactPage ? t.contactPage.title : isHardware ? project.title : c.title
+  const sectionLead = isContactPage ? t.contactPage.lead : isHardware ? project.lead : c.lead
+  const messagePlaceholder = residential ? c.form.messagePlaceholder : project.messagePlaceholder
+  const whatsappGreeting = isHardware ? t.whatsapp.general : c.whatsappGreeting
   const mailSubject = isHardware ? t.aiHome.contact.mailSubject : c.mailSubject
   const formRef = useRef<HTMLFormElement>(null)
   // What the last prefill wrote into each field. A field is only replaced while
@@ -118,6 +120,8 @@ export function Contact({ mode = 'hardware' }: { mode?: 'hardware' | 'home' }) {
     const name = ((data.get('name') as string) ?? '').trim()
     const contact = ((data.get('contact') as string) ?? '').trim()
     const message = ((data.get('message') as string) ?? '').trim()
+    const selectedProject = ((data.get('projectType') as string) ?? '').trim()
+    const device = ((data.get('device') as string) ?? '').trim()
     const homeType = ((data.get('homeType') as string) ?? '').trim()
     const startWith = ((data.get('startWith') as string) ?? '').trim()
 
@@ -139,8 +143,10 @@ export function Contact({ mode = 'hardware' }: { mode?: 'hardware' | 'home' }) {
       const body = [
         `${c.form.name}: ${name}`,
         `${c.form.contact}: ${contact}`,
-        `${primarySelectLabel}: ${homeType || '—'}`,
-        `${c.form.startWith}: ${startWith || '—'}`,
+        ...(selectedProject ? [`${project.projectTypeLabel}: ${selectedProject}`] : []),
+        ...(device ? [`${project.deviceLabel}: ${device}`] : []),
+        ...(homeType ? [`${c.form.homeType}: ${homeType}`] : []),
+        ...(startWith ? [`${c.form.startWith}: ${startWith}`] : []),
         ...(message ? ['', c.form.message, message] : []),
       ].join('\n')
 
@@ -174,6 +180,8 @@ export function Contact({ mode = 'hardware' }: { mode?: 'hardware' | 'home' }) {
           contact,
           // Omitted rather than sent as null, so it does not show up as an
           // empty row in the notification email.
+          ...(selectedProject ? { projectType: selectedProject } : {}),
+          ...(device ? { device } : {}),
           ...(homeType ? { homeType } : {}),
           ...(startWith ? { startWith } : {}),
           page: window.location.pathname,
@@ -186,6 +194,7 @@ export function Contact({ mode = 'hardware' }: { mode?: 'hardware' | 'home' }) {
       setStatus('success')
       track('contact_form_submit', { method: 'endpoint' })
       form.reset()
+      setProjectType('')
       prefilled.current = {}
     } catch {
       setStatus('error')
@@ -198,7 +207,7 @@ export function Contact({ mode = 'hardware' }: { mode?: 'hardware' | 'home' }) {
       <div className="shell grid gap-10 lg:grid-cols-[minmax(0,0.88fr)_minmax(0,1fr)] lg:gap-16">
         {/* ---- Details ---------------------------------------------------- */}
         <div>
-          <SectionHeading eyebrow={c.eyebrow} title={sectionTitle} lead={sectionLead} shortOnPhone />
+          <SectionHeading eyebrow={isContactPage ? t.contactPage.eyebrow : c.eyebrow} title={sectionTitle} lead={sectionLead} shortOnPhone={!isContactPage} level={isContactPage ? 1 : 2} />
 
           {site.whatsappLink ? (
             <div
@@ -381,12 +390,26 @@ export function Contact({ mode = 'hardware' }: { mode?: 'hardware' | 'home' }) {
                 required
               />
 
-              <SelectField
-                id={`${ids}-home`}
-                name="homeType"
-                label={primarySelectLabel}
-                options={primarySelectOptions}
-              />
+              {isHardware && (
+                <SelectField
+                  id={`${ids}-project`}
+                  name="projectType"
+                  label={project.projectTypeLabel}
+                  options={[c.form.homeTypeOptions[0], ...Object.values(project.projectTypes)]}
+                  onChange={setProjectType}
+                />
+              )}
+              {residential && (
+                <SelectField id={`${ids}-home`} name="homeType" label={c.form.homeType} options={c.form.homeTypeOptions} />
+              )}
+              {projectType === project.projectTypes.preorder && (
+                <SelectField
+                  id={`${ids}-device`}
+                  name="device"
+                  label={project.deviceLabel}
+                  options={[c.form.homeTypeOptions[0], ...t.products.items.map((item) => item.title)]}
+                />
+              )}
 
               <details
                 className="group rounded-[3px] border border-ink-950/15 bg-paper/75"
@@ -400,12 +423,14 @@ export function Contact({ mode = 'hardware' }: { mode?: 'hardware' | 'home' }) {
                   />
                 </summary>
                 <div className="space-y-5 px-4 pb-4">
-                  <SelectField
-                    id={`${ids}-start`}
-                    name="startWith"
-                    label={c.form.startWith}
-                    options={c.form.startWithOptions}
-                  />
+                  {residential && (
+                    <SelectField
+                      id={`${ids}-start`}
+                      name="startWith"
+                      label={c.form.startWith}
+                      options={c.form.startWithOptions}
+                    />
+                  )}
 
                   <Field
                     id={`${ids}-message`}
@@ -523,11 +548,13 @@ function SelectField({
   name,
   label,
   options,
+  onChange,
 }: {
   id: string
   name: string
   label: string
   options: string[]
+  onChange?: (value: string) => void
 }) {
   return (
     <div>
@@ -539,6 +566,7 @@ function SelectField({
           id={id}
           name={name}
           defaultValue=""
+          onChange={(event) => onChange?.(event.target.value)}
           className="field appearance-none bg-none pr-10"
           style={{ WebkitAppearance: 'none', MozAppearance: 'none', appearance: 'none' }}
         >

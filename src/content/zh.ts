@@ -26,7 +26,7 @@ export const zh: Content = {
 
   nav: {
     items: [
-      { id: 'solutions', label: '全屋方案' },
+      { id: 'solutions', label: '按功能与场景' },
       { id: 'products', label: '桌面 AI 设备' },
       { id: 'software', label: '软件定制' },
       { id: 'homes', label: '按住宅类型' },
@@ -47,7 +47,7 @@ export const zh: Content = {
     specBar: 'ESP32-S3 · 本地优先 · 固件与源码交付',
     titleLead: '真正归你所有的',
     titleAccent: 'Smart AI 硬件。',
-    lead: '面向新加坡个人、家庭与小团队：开箱即可按需定制的 ESP32-S3 桌面 AI 设备、从想法做到实物的 AI 硬件定制原型，以及基于开放硬件的 Panda 智能家居与 Panda Signage 信息屏——固件与源码交到你手上。',
+    lead: '四款桌面设备可预购，也可按你的需求定制 ESP32 原型。定制硬件连同固件和源码一起交付。',
     primaryCta: '咨询硬件定制或预购',
     secondaryCta: '查看桌面 AI 设备',
     ctaNote: '中英文沟通 · 新加坡本地设计与支持 · 动工前书面报价',
@@ -57,7 +57,7 @@ export const zh: Content = {
     trust: [
       'ESP32-S3 与开放本地协议',
       '固件与源码完整交付，无锁定',
-      '本地优先运行，断网照常工作',
+      '兼容的智能家居设备支持本地控制',
       '新币参考起步价，书面确认再动工',
     ],
     devices: {
@@ -135,25 +135,24 @@ export const zh: Content = {
       title: '说说你想做的硬件或系统',
       lead: '无论是预购桌面 AI 设备、评估 ESP32 定制原型，还是规划 Panda 智能家居或信息屏，留个简短说明即可，我们支持中英文回复。',
       projectTypeLabel: '你想了解哪类项目？',
-      projectTypeOptions: [
-        '请选择…',
-        '桌面 AI 屏幕设备（预购）',
-        'ESP32 AI 硬件定制',
-        'Panda 智能家居方案',
-        'Panda Signage 信息屏',
-        '小生意软件定制',
-        '还没想好，请给建议',
-      ],
+      projectTypes: {
+        preorder: '桌面 AI 屏幕设备（预购）',
+        hardware: 'ESP32 AI 硬件定制',
+        home: 'Panda 智能家居方案',
+        signage: 'Panda Signage 信息屏',
+        software: '小生意软件定制',
+        other: '还没想好，请给建议',
+      },
+      deviceLabel: '想预购哪款设备？（选填）',
       messagePlaceholder:
         '例如：想预购语音助手或触控面板、定制一款 ESP32 语音/视觉设备，或规划全屋智能灯光与空调。',
-      whatsappGreeting: '你好 Panda 智能，我想咨询 AI 硬件产品或定制项目。',
       mailSubject: 'Panda 智能项目咨询',
     },
   },
 
   smartHomePage: {
     navLabel: 'Panda 智能家居',
-    overviewLabel: '方案总览',
+    overviewLabel: '智能家居总览',
     metaTitle: 'Panda 智能家居｜新加坡开放式本地智能家居设计与安装',
     metaDescription:
       '面向新加坡组屋、BTO、公寓与有地住宅的本地化智能家居设计与安装。灯光、空调、窗帘、门锁与摄像头接入同一套本地系统，不绑定品牌。',
@@ -376,7 +375,7 @@ export const zh: Content = {
         body: '基于 ESP32-S3，语音部分基于小智。外壳、屏幕和固件都已装好，USB-C 供电。',
         priceSgd: 69,
         specs: ['ESP32-S3', '中英双语语音', '带表情的屏幕', 'USB-C 供电'],
-        note: '不附送电源适配器。设置指南有中文和英文。',
+        note: 'AI 对话需连接服务器，使用云服务时需要联网。设备不含电源适配器，附中英文设置指南。',
       },
       {
         id: 'panel',
@@ -930,7 +929,7 @@ export const zh: Content = {
   },
 
   signage: {
-    navLabel: '信息屏系统',
+    navLabel: '信息屏与会议室门牌',
     sectionEyebrows: { capabilities: '能做什么', setup: '屏幕与部署', process: '流程', related: '搭配' },
     eyebrow: 'Panda Signage 信息屏系统',
     title: '信息屏与会议室门牌，一个后台统一管理',
@@ -1794,9 +1793,11 @@ export const zh: Content = {
   },
 
   whatsapp: {
+    general: '你好，Panda 智能，我想咨询：',
     guide: '你好，我看了你们的指南《{title}》，想问：',
     notFound: '你好，你们网站上有个链接打不开。我原本想找：',
     pages: {
+      'smart-home/': '你好，我想规划家里的智能家居。',
       'solutions/': '你好，我在看你们的智能家居方案。我的问题：',
       'solutions/smart-lighting/': '你好，我想咨询智能灯光。我的问题：',
       'solutions/smart-aircon-control/': '你好，我想咨询智能空调控制。我的问题：',
@@ -1829,6 +1830,7 @@ export const zh: Content = {
     title: '哪一种适合你的需要',
     lead: '先把四款桌面设备放在一起比，再看我们做的五件事各适合什么情况。价格见各产品和服务页面。',
     devicesTitle: '四款桌面屏幕设备',
+    scrollHint: '左右滑动可对比全部四款设备。',
     devicesLead: '四款都是成品，外壳、屏幕和固件都已装好。区别在于显示什么，以及需不需要 Home Assistant。',
     rows: {
       screen: '屏幕',
@@ -1841,7 +1843,7 @@ export const zh: Content = {
       {
         id: 'voice',
         screen: '能显示表情的屏幕',
-        does: '听懂并用中英文回答',
+        does: '连接本地或云端服务器，用中文或英文回答',
         homeAssistant: '—',
         power: 'USB-C',
         suits: '书桌或床头，想开口用中文或英文提问',
@@ -1929,10 +1931,10 @@ export const zh: Content = {
     navLabel: '联系与询价',
     metaTitle: '联系我们 / 询价｜Panda智能家居',
     metaDescription:
-      '告诉我们户型和想先解决什么，或者你想做的设备、软件、信息屏。动工前，我们给你实在的建议和书面范围。',
+      '咨询桌面设备预购、硬件原型、智能家居安装、信息屏或软件定制。',
     eyebrow: '联系',
     title: '咨询或询价',
-    lead: '告诉我们你的户型和最想先解决什么，或者描述你想做的设备、软件或屏幕。有平面图的话更好。',
+    lead: '选一项你感兴趣的产品或服务，或者直接写下你的想法。我们可以用中文或英文回复。',
     nextTitle: '发送之后会怎样',
     next: [
       {
@@ -1940,12 +1942,12 @@ export const zh: Content = {
         body: '通过你留下的邮箱或电话，用中文或英文回复，实话实说哪些值得做。',
       },
       {
-        title: '先聊一聊，再看房子',
-        body: '了解家里怎么生活、已经有哪些设备，然后上门查看或审阅平面图。',
+        title: '确认具体需求',
+        body: '预购设备先确认型号和供货情况。定制项目先了解使用场景和需要实现的功能。',
       },
       {
-        title: '买任何东西之前，先有书面范围',
-        body: '书面的设备清单、网络规划和工作范围，附参考时间表。定制项目在动工前书面报价。',
+        title: '由你决定下一步',
+        body: '预购前确认价格。安装和定制项目会先给出书面范围与报价，再安排动工。',
       },
     ],
     note: '发送表单不会预约任何日期，也不代表你做了任何承诺。时间安排随书面范围一起确定。',

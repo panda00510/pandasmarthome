@@ -34,8 +34,6 @@ export function Footer() {
         { href: page('custom-hardware/'), label: t.hardware.navLabel },
         { href: page('compare/'), label: t.compare.navLabel },
         { href: page('solutions/upcoming-products/'), label: t.upcoming.eyebrow },
-        { href: page('signage/'), label: t.signage.navLabel },
-        { href: page('software/'), label: navLabel('software') },
       ],
     },
     {
@@ -47,6 +45,13 @@ export function Footer() {
         { href: page('how-it-works/'), label: navLabel('process') },
         { href: showroomHref(lang), label: t.nav.showroom },
         { href: `${page('smart-home/')}#plan`, label: t.planner.navLabel },
+      ],
+    },
+    {
+      title: t.nav.groups.business,
+      links: [
+        { href: page('signage/'), label: t.signage.navLabel },
+        { href: page('software/'), label: navLabel('software') },
       ],
     },
     {
@@ -141,18 +146,18 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Three hairline-topped navigation columns */}
-          <nav aria-label={t.a11y.navFooter} className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3">
+          {/* Business and resource links */}
+          <nav aria-label={t.a11y.navFooter} className="grid grid-cols-2 gap-x-6 gap-y-10 xl:grid-cols-4">
             {columns.map((column, i) => (
               <div
                 key={column.title}
-                className={`border-t border-paper/14 pt-4 ${i === 2 ? 'col-span-2 sm:col-span-1' : ''}`}
+                className="border-t border-paper/14 pt-4"
               >
                 <span aria-hidden="true" className="numeral block text-[0.6875rem] text-ink-400">
                   {String(i + 1).padStart(2, '0')}
                 </span>
                 <h2 className={`${HEAD} mt-1`}>{column.title}</h2>
-                <ul className={`mt-3 ${i === 2 ? 'grid grid-cols-2 gap-x-6 sm:block' : ''}`}>
+                <ul className="mt-3">
                   {column.links.map((link) => (
                     <li key={link.href}>
                       <a href={link.href} className={LINK}>

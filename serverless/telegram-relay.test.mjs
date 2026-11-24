@@ -45,6 +45,11 @@ assert.match(sent.body.text, /tan@example\.com/)
 assert.match(sent.body.text, /Condominium/)
 assert.equal(res.headers.get('Access-Control-Allow-Origin'), GOOD)
 
+await post({ name: 'Buyer', contact: 'test@example.com', projectType: 'Pre-order', device: 'Clock <test>' })
+assert.match(sent.body.text, /<b>Project:<\/b> Pre-order/)
+assert.match(sent.body.text, /<b>Device:<\/b> Clock &lt;test&gt;/)
+assert.doesNotMatch(sent.body.text, /Home type:/)
+
 // --- CORS preflight ---------------------------------------------------------
 res = await post(null, GOOD, 'OPTIONS')
 assert.equal(res.status, 204)

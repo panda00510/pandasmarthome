@@ -14,16 +14,9 @@ export function ContactPage() {
 
   return (
     <>
-      <div className="shell page-head pb-14 lg:pb-16">
-        <p className="eyebrow">
-          {c.eyebrow}
-        </p>
-        <h1 className="mt-5 max-w-4xl title-display text-ink-950">
-          {c.title}
-        </h1>
-        <p className="mt-5 max-w-2xl text-lead text-ink-600">{c.lead}</p>
-
-        <h2 className="mt-12 title-group text-ink-950">{c.nextTitle}</h2>
+      <Contact />
+      <div className="shell py-14 lg:py-16">
+        <h2 className="title-group text-ink-950">{c.nextTitle}</h2>
         <ol className="mt-5 grid overflow-hidden rounded-card border border-ink-950/15 bg-surface divide-y divide-ink-950/12 md:grid-cols-3 md:divide-x md:divide-y-0">
           {c.next.map((step, i) => (
             <li key={step.title} className="p-5 sm:p-6">
@@ -68,7 +61,6 @@ export function ContactPage() {
           </a>
         </div>
       </div>
-      <Contact />
     </>
   )
 }

@@ -67,7 +67,10 @@ export default {
     const name = field('name')
     const contact = field('contact')
     const message = field('message')
+    const project = field('projectType')
+    const device = field('device')
     const homeType = field('homeType')
+    const startWith = field('startWith')
 
     if (!name || !contact) {
       return json({ error: 'Missing required fields' }, 400, cors)
@@ -78,7 +81,10 @@ export default {
       '',
       `<b>Name:</b> ${esc(name)}`,
       `<b>Contact:</b> ${esc(contact)}`,
-      `<b>Home type:</b> ${esc(homeType || '—')}`,
+      ...(project ? [`<b>Project:</b> ${esc(project)}`] : []),
+      ...(device ? [`<b>Device:</b> ${esc(device)}`] : []),
+      ...(homeType ? [`<b>Home type:</b> ${esc(homeType)}`] : []),
+      ...(startWith ? [`<b>Priority:</b> ${esc(startWith)}`] : []),
       `<b>Language:</b> ${esc(String(body.language ?? '—'))}`,
       '',
       message ? esc(message) : '—',

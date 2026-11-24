@@ -30,14 +30,17 @@ export function ComparePage() {
         <p className="mt-2 max-w-2xl text-[1.0625rem] leading-[1.65] text-ink-700">{c.devicesLead}</p>
 
         {/* The table scrolls sideways on its own on a phone; the page does not. */}
-        <div className="mt-6 overflow-x-auto rounded-2xl border border-ink-200 bg-white">
+        <p className="mt-4 text-sm text-ink-600 md:hidden">{c.scrollHint}</p>
+        <div role="region" aria-labelledby="devices" tabIndex={0} className="mt-2 md:mt-6 overflow-x-auto rounded-2xl border border-ink-200 bg-white">
           <table className="w-full min-w-[44rem] border-collapse text-left text-[0.9375rem] leading-snug">
             <thead>
               <tr className="border-b border-ink-200 bg-paper">
-                <td className="w-[16%] p-4" />
+                <td className="sticky left-0 z-10 w-[16%] bg-paper p-4" />
                 {c.devices.map((device) => (
                   <th key={device.id} scope="col" className="p-4 font-semibold text-ink-950">
-                    {names[device.id]}
+                    <a href={pageHref(lang, `products/#${device.id}`)} className="text-brand underline underline-offset-4">
+                      {names[device.id]}
+                    </a>
                   </th>
                 ))}
               </tr>
@@ -45,7 +48,7 @@ export function ComparePage() {
             <tbody>
               {rows.map((row) => (
                 <tr key={row} className="border-b border-ink-200/70 last:border-0">
-                  <th scope="row" className="p-4 align-top text-sm font-medium text-ink-600">
+                  <th scope="row" className="sticky left-0 z-10 bg-white p-4 align-top text-sm font-medium text-ink-600">
                     {c.rows[row]}
                   </th>
                   {c.devices.map((device) => (

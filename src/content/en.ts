@@ -26,7 +26,7 @@ export const en: Content = {
 
   nav: {
     items: [
-      { id: 'solutions', label: 'Solutions' },
+      { id: 'solutions', label: 'By function and scenario' },
       { id: 'products', label: 'Desk AI devices' },
       { id: 'software', label: 'Custom software' },
       { id: 'homes', label: 'By home type' },
@@ -47,7 +47,7 @@ export const en: Content = {
     specBar: 'ESP32-S3 · LOCAL-FIRST · SOURCE HANDOVER',
     titleLead: 'Smart AI hardware you own,',
     titleAccent: 'built for real rooms and desks.',
-    lead: 'Finished ESP32-S3 desk devices ready to customise, bespoke AI and IoT hardware prototypes built to order, and local-first systems including Panda Smart Home and Panda Signage — with firmware and source handed over to you.',
+    lead: 'Explore four desk devices available for pre-order, or tell us about an ESP32 prototype you want to build. Custom hardware comes with its firmware and source code.',
     primaryCta: 'Start a hardware project',
     secondaryCta: 'Explore desk devices',
     ctaNote: 'In English or Chinese · Built and supported in Singapore · Written quote before work starts',
@@ -57,7 +57,7 @@ export const en: Content = {
     trust: [
       'ESP32-S3 & open local protocols',
       'Firmware and source handed to you',
-      'Runs locally, works without lock-in',
+      'Local control for compatible smart home devices',
       'Indicative SGD prices, quoted in writing',
     ],
     devices: {
@@ -135,25 +135,24 @@ export const en: Content = {
       title: 'Tell us what you want to build or deploy',
       lead: 'Whether you are pre-ordering a desk AI device, scoping a custom ESP32 prototype, or planning Panda Smart Home or Panda Signage, send a short note and we reply in English or Chinese.',
       projectTypeLabel: 'What are you interested in?',
-      projectTypeOptions: [
-        'Select…',
-        'Desk AI devices (pre-order)',
-        'Custom ESP32 AI hardware',
-        'Panda Smart Home installation',
-        'Panda Signage displays',
-        'Custom business software',
-        'Not sure yet, advise me',
-      ],
+      projectTypes: {
+        preorder: 'Desk AI devices (pre-order)',
+        hardware: 'Custom ESP32 AI hardware',
+        home: 'Panda Smart Home installation',
+        signage: 'Panda Signage displays',
+        software: 'Custom business software',
+        other: 'Not sure yet, advise me',
+      },
+      deviceLabel: 'Desk device (optional)',
       messagePlaceholder:
         'e.g. Pre-order the voice assistant or touch panel, build a custom ESP32 sensor/voice device, or plan smart home lighting and aircon.',
-      whatsappGreeting: "Hi Panda Smart, I'd like to discuss an AI hardware device or project.",
       mailSubject: 'Panda Smart project enquiry',
     },
   },
 
   smartHomePage: {
     navLabel: 'Panda Smart Home',
-    overviewLabel: 'Overview',
+    overviewLabel: 'Smart home overview',
     metaTitle: 'Panda Smart Home | Open Smart Home Installation in Singapore',
     metaDescription:
       'Local-first smart home design and installation for HDB, BTO, condo and landed homes across Singapore. Lighting, aircon, curtains, locks and cameras on one open system.',
@@ -381,7 +380,7 @@ export const en: Content = {
         body: 'Built on an ESP32-S3 board and based on the Xiaozhi voice assistant. The enclosure, screen and firmware are already installed, and it is powered by USB-C.',
         priceSgd: 69,
         specs: ['ESP32-S3', 'Chinese and English voice', 'Screen with expressions', 'USB-C power'],
-        note: 'A mains power adapter is not included. The setup guide is in Chinese and English.',
+        note: 'AI conversations use a server. Cloud-based replies need internet access. A mains adapter is not included. The setup guide is in English and Chinese.',
       },
       {
         id: 'panel',
@@ -968,7 +967,7 @@ export const en: Content = {
   },
 
   signage: {
-    navLabel: 'Panda Signage',
+    navLabel: 'Signage & room panels',
     sectionEyebrows: { capabilities: 'Capabilities', setup: 'Screens and hosting', process: 'Process', related: 'Works with' },
     eyebrow: 'Panda Signage',
     title: 'Digital signage and meeting room displays, run from one place',
@@ -1861,9 +1860,11 @@ export const en: Content = {
   },
 
   whatsapp: {
+    general: "Hi Panda Smart, I have a question.",
     guide: 'Hi Panda Smart Home, I read your guide "{title}" and have a question: ',
     notFound: "Hi Panda Smart Home, a link on your site didn't work for me. I was looking for: ",
     pages: {
+      'smart-home/': "Hi Panda Smart, I would like to plan a smart home.",
       'solutions/': "Hi Panda Smart Home, I'm looking at your smart home solutions. My question: ",
       'solutions/smart-lighting/': "Hi Panda Smart Home, I'd like to ask about smart lighting. My question: ",
       'solutions/smart-aircon-control/': "Hi Panda Smart Home, I'd like to ask about smart aircon control. My question: ",
@@ -1896,6 +1897,7 @@ export const en: Content = {
     title: 'Which one fits what you need',
     lead: 'Our four desk devices side by side, then the five things we do and when each one fits. Prices are on each product and service page.',
     devicesTitle: 'The four desk screen devices',
+    scrollHint: 'Scroll sideways to compare all four devices.',
     devicesLead: 'All four are finished devices with the enclosure, screen and firmware in place. They differ in what they show and whether they need Home Assistant.',
     rows: {
       screen: 'Screen',
@@ -1908,7 +1910,7 @@ export const en: Content = {
       {
         id: 'voice',
         screen: 'Screen with expressions',
-        does: 'Listens and replies in Chinese and English',
+        does: 'Answers in Chinese and English using a local or cloud server',
         homeAssistant: '—',
         power: 'USB-C',
         suits: 'A desk or bedside, for asking questions out loud in Chinese or English',
@@ -1996,10 +1998,10 @@ export const en: Content = {
     navLabel: 'Contact & quotes',
     metaTitle: 'Contact us or ask for a quote | Panda Smart Home',
     metaDescription:
-      'Send your home type and what you want to solve, or a device, software or signage idea. We reply with an honest view and a written scope before any work.',
+      'Ask about a desk device, a hardware prototype, smart home installation, signage or custom software.',
     eyebrow: 'Contact',
     title: 'Ask for advice or a quote',
-    lead: 'Tell us your home type and what you want to solve first, or describe the device, software or screens you have in mind. A floor plan helps if you have one.',
+    lead: 'Choose a project or tell us what you have in mind. We can reply in English or Chinese.',
     nextTitle: 'What happens after you send it',
     next: [
       {
@@ -2007,12 +2009,12 @@ export const en: Content = {
         body: 'We reply on the email or phone number you give, in English or Chinese, with an honest view of what is worth doing.',
       },
       {
-        title: 'A conversation, then a look at the home',
-        body: 'How the household lives and what you already own, then a site visit or a floor plan review.',
+        title: 'We confirm the details',
+        body: 'For a pre-order, we confirm the model and availability. For custom work, we discuss the intended use and requirements.',
       },
       {
-        title: 'A written scope before anything is bought',
-        body: 'A device list, network plan and scope in writing, with an indicative schedule. Custom work is quoted in writing before it starts.',
+        title: 'You review the next step',
+        body: 'We confirm the price before a pre-order. For installation or custom work, we agree the scope and quote in writing before work starts.',
       },
     ],
     note: 'Sending this form does not book a date or commit you to anything. Timing is agreed with the written scope.',

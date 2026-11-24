@@ -89,9 +89,9 @@ export type Content = {
       title: string
       lead: string
       projectTypeLabel: string
-      projectTypeOptions: string[]
+      projectTypes: Record<'preorder' | 'hardware' | 'home' | 'signage' | 'software' | 'other', string>
+      deviceLabel: string
       messagePlaceholder: string
-      whatsappGreeting: string
       mailSubject: string
     }
   }
@@ -678,11 +678,12 @@ export type Content = {
   }
   /** Opening WhatsApp line per page (src/lib/whatsapp.ts). Says where the visitor came from, never who they are. */
   whatsapp: {
+    general: string
     /** Guide pages: "{title}" is the guide heading, shortened so the message stays within 200 characters. */
     guide: string
     /** The 404 page. */
     notFound: string
-    /** Complete messages keyed by page path ("homes/bto-smart-home/"). Unlisted pages use contact.whatsappGreeting. */
+    /** Complete messages keyed by page path ("homes/bto-smart-home/"). Unlisted pages use the general greeting. */
     pages: Record<string, string>
   }
   /** /glossary/ page copy. The terms themselves are in content/glossary.<lang>.ts (loaded only on that page). */
@@ -694,6 +695,7 @@ export type Content = {
     title: string
     lead: string
     devicesTitle: string
+    scrollHint: string
     devicesLead: string
     /** Row labels of the device table; each row is a field of `devices`. */
     rows: { screen: string; does: string; homeAssistant: string; power: string; suits: string }

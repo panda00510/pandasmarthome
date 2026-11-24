@@ -135,13 +135,17 @@ and the weekly server-side form check will not notice.
 
 ### The enquiry form
 
-The homepage plan starter can pre-fill this form (home type, "start with"
+The home page and the standalone enquiry page share a project selector. The form opens at the top of `/contact/`, followed by the next steps and service links. Desk pre-orders offer the four current models. Only residential enquiries show home type and priorities. Switching projects keeps the message and drops fields from the previous project. The English and Chinese forms use the same fields.
+
+The plan starter on `/smart-home/` can pre-fill the residential form (home type, "start with"
 when there is a one-to-one match, and the message) through an in-memory
 window event — nothing is stored or put in the URL. It never touches name or
-contact, and never overwrites what the visitor typed: with text already in
+contact, and preserves what the visitor typed: with text already in
 the message field the summary is appended once. The option mapping is by
 index into `contact.form.*Options` in `Planner.tsx`; keep it in step when
 reordering those options.
+
+To regression-test switching from a residential enquiry to a pre-order, start the dev server with `VITE_FORM_ENDPOINT=/test-enquiry npm run dev`. In a second terminal run `node scripts/check-enquiry.mjs http://localhost:5173`. The check uses a local Playwright installation (`PLAYWRIGHT_CORE` can point to it, and `CHROMIUM` can select a browser executable), intercepts the POST and verifies the fields and form reset in both languages.
 
 The form has three modes, picked automatically:
 
@@ -228,10 +232,12 @@ when the visitor's contact value looks like an email address (it becomes the
 reply-to). `subject` and `from_name` are what hosted services use to title the
 notification; a custom endpoint can ignore all three.
 
+The optional `projectType`, `device`, `homeType` and `startWith` fields carry the selected labels. A residential plan may omit `projectType`. The Telegram relay accepts the same fields, including legacy enquiries with only `homeType`.
+
 A 2xx response shows the success state; anything else shows the error state.
 The endpoint must send permissive CORS headers for the site's origin.
 
-The form validates name, contact (email **or** phone, ≥ 8 digits) and message
+The form requires a name and validates the contact (email **or** phone, ≥ 8 digits)
 before sending, and includes a hidden honeypot field named `company` — treat
 any submission where it is non-empty as spam.
 
@@ -338,9 +344,9 @@ src/
       NotFound.tsx   the 404 page
       Glossary.tsx   the /glossary/ page (+ its DefinedTermSet JSON-LD)
       FaqPage.tsx    the /faq/ page (all FAQs, grouped; JSON-LD in Seo.tsx)
-      ContactPage.tsx the /contact/ page: page heading, what happens after sending, links to the service briefs, then the same Contact form as the homepage (header CTA opens it from every page but home)
-      ComparePage.tsx the /compare/ page: the four desk devices side by side, then which service fits (copy in content `compare`; no prices)
-      Planner.tsx    homepage "plan starter": three questions → device groups from products.install (copy in content `planner`); its form button pre-fills the enquiry form
+      ContactPage.tsx the /contact/ page: shared enquiry form, then next steps and service briefs
+      ComparePage.tsx the /compare/ page: four devices side by side, linked to their product sections, followed by service comparisons. On phones the table scrolls horizontally with fixed row headings
+      Planner.tsx    smart home "plan starter": three questions → device groups from products.install (copy in content `planner`); its form button pre-fills the enquiry form
     Choices.tsx      pill radio / checkbox groups shared by the plan starter and the briefs
     ProjectBrief.tsx the project brief on /custom-hardware/ and /software/ (copy in content `hardware.brief` / `software.brief`)
     ui.tsx           Button, SectionHeading, Chip, PhotoTag
@@ -353,7 +359,7 @@ Pages (each also under `/zh/`): `/`, `/solutions/…` (by device, plus three
 by situation: `away-from-home/`, `nights-and-sleep/`, `family-home/`, from
 `src/content/pages/scenario-*.md`), `/homes/…`,
 `/how-it-works/`, `/guides/…`, `/products/`, `/software/`,
-`/custom-hardware/`, `/signage/`, `/renovation-checklist/`, `/glossary/`, `/faq/`, `/compare/`, `/contact/`, `/about/`, `/privacy/`. The 3D showroom is a separate build at `/showroom/`.
+`/custom-hardware/`, `/signage/`, `/renovation-checklist/`, `/glossary/`, `/faq/`, `/compare/`, `/contact/`, `/about/`, `/privacy/`. The residential overview is at `/smart-home/`. The 3D showroom is a separate build at `/showroom/`.
 
 ---
 
@@ -416,10 +422,7 @@ as Tailwind v4 `@theme` utilities (`bg-paper`, `text-ink-950`, `bg-brand`,
   is added by JS and only below the fold.
 
 Breakpoints are Tailwind defaults. The layout was checked at 375, 390, 768
-and 1440 px. Navigation: the header and the footer use the same groups
-(smart home pages, Products, Custom, then resources); the current section
-is highlighted in the header (a guide highlights Guides, a solution or scenario
-page highlights Services).
+and 1440 px. The desktop header links directly to Desk AI devices, Custom AI hardware and Guides. Smart Home groups the overview, solutions by function and scenario, and the 3D showroom. Business groups signage and room panels with custom software. The mobile menu keeps eight page links and the project enquiry button. Footer links are grouped under AI Hardware, Smart Home, Business and Resources. General WhatsApp links use a neutral opener; product pre-order links retain the selected model and indicative price.
 
 ---
 

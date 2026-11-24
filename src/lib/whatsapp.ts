@@ -40,5 +40,5 @@ export function pageWhatsappMessage(t: Content, lang: Lang, path: string): strin
     'custom-hardware/': t.hardware.enquireAll,
     'signage/': t.signage.enquireAll,
   }
-  return w.pages[path] ?? enquiry[path] ?? t.contact.whatsappGreeting
+  return w.pages[path] ?? enquiry[path] ?? w.general
 }
