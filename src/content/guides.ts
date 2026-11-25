@@ -75,6 +75,9 @@ const TOPICS: Record<string, (typeof TOPIC_IDS)[number]> = {
   'holiday-mode-away-from-home': 'security',
   'know-what-each-appliance-uses': 'energy',
   'water-heater-automation-singapore': 'energy',
+  'ai-sensors-smart-home-how-they-link': 'start',
+  'presence-sensor-radar-vs-motion-pir': 'energy',
+  'ai-camera-events-trigger-automations': 'security',
 }
 
 /** Shown first on /guides/: one main pick, then two. */

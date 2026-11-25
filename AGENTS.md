@@ -82,6 +82,16 @@ Deliver 改三栏面板；Platform 示意图放大去边框；Contact 去掉卧�
 `know-what-each-appliance-uses`、`water-heater-automation-singapore`。
 `src/content/guides.ts` 的 `TOPICS` 已加好对应条目。版式还没在浏览器里看过。
 
+### 再加三篇指南草稿：AI 硬件与传感器联动（等“发布”）
+
+2026-11-25 新增，同样带 `draft: true`，`TOPICS` 已登记：
+`ai-sensors-smart-home-how-they-link`（感知→判断→执行这条链，哪些环节在本地跑）、
+`presence-sensor-radar-vs-motion-pir`（雷达和 PIR 怎么选、保持时间等设置）、
+`ai-camera-events-trigger-automations`（AI 摄像头事件触发灯光和提醒，不自动开锁，PDPA 提示）。
+都互相链接，也链到旧的 CCTV、雷达跌倒、冷气、隐私等指南。已在开发模式看过三篇中英文，
+手机 390px 无溢出；没有数字和价格，没有出现 Home Assistant。
+GEO：`llms.txt` 由构建时自动从已发布指南生成，发布后不用另外改。
+
 ### 上线步骤
 
 用户说“部署”后：把这个分支合进 `main`（先确认 `main` 没有别人的新提交），推送，
